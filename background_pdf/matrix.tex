@@ -1,0 +1,996 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc} 
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{physics}
+\usepackage{float}
+\usepackage{multirow}
+\setlength{\parindent}{0pt}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{cancel} 
+
+\newcommand{\h}[2]{\color{#1} #2 \color{black} }
+
+\newcommand{\equalInM}[1]{\h{blue}{#1}} % umfasst mehr; inkl. Vorzeichen gleich über Sym-Anti und Anti-Sym und über die versch. Tableaus dieser Kategorie
+\newcommand{\equalInTableau}[1]{\h{magenta}{#1}} % Vorzeichen vertauscht zw. den versch. Tableaus, aber Vorzeichen gleich bzgl. Anti-Sym zu Sym-Anti-Tausch
+\newcommand{\equalAntiSym}[1]{\h{brown}{#1}} % zwar nicht in allen Tableaus einer M Sorte, aber gleich (inkl. Vorzeichen) bzgl. der Anti-Sym und der Sym-Anti Rechnung
+
+
+
+\usepackage{soul}   % Für das Hervorheben von Text
+
+
+\begin{document}
+
+\tableofcontents
+
+\section*{Index}
+Variablen beziehen sich auf...
+\begin{itemize}
+\item röm. Buchstaben = Hilfsparameter
+\item gr. Großbuchstaben = Hamiltonmatrix
+\item gr. Kleinbuchstaben = Überlappung
+\item $\Phi$, $\phi$ = Raumorbital
+\item $\sigma$, $\Sigma$ = Spin
+\item $\Sigma = \sigma$, daher wird nur die kleingeschriebene Variante verwendet
+\end{itemize}
+\newpage 
+
+
+\section{Matrixelemente}
+
+\subsection{Spin}
+
+$\sigma_{11} = \bra{\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right|_\sigma} \ket{\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right|_\sigma} = 1$ \\ \\
+
+$\sigma_{12} = \sigma_{21} = \bra{\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right|_\sigma }  \ket{\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+ \right|_\sigma} = \frac{1}{2}$ \\ \\ 
+
+$\sigma_{22} = \bra{\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right|_\sigma }  \ket{\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+ \right|_\sigma} = 1$ \\
+
+\subsection{Ortsanteile}
+\subsubsection{Hamiltonmatrixelemente $\Phi$}
+(s. 1., dann )
+\begin{gather}
+\Phi_{11} = \bra{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \hat{H} \ket{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \\
+ = + D - \frac{1}{2} \cdot (ac|ca) - \frac{1}{2} \cdot (bd|db) + 1 \cdot (ab|ba) + 1 \cdot (cd|dc) - \frac{1}{2} \cdot (bc|cb) - \frac{1}{2} \cdot (ad|da) \\ 
+ := D + A' \label{eq:def_A_Strich}
+ \end{gather} \\
+
+
+\begin{gather}
+\Phi_{12} = \bra{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \hat{H} \ket{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \\
+ = - \frac{1}{4} \cdot D - \frac{1}{4} \cdot (ab|ba) - \frac{1}{4} \cdot (cd|dc) - \frac{1}{4} \cdot (ac|ca) -  \frac{1}{4} \cdot (bd|db) + \frac{1}{2} \cdot (bc|cb) + \frac{1}{2} \cdot (ad|da) \\
+ \label{eq:def_B_Strich}
+ := -\frac{1}{4}\cdot D + B' 
+ \end{gather} \\
+
+
+
+\begin{gather}
+\Phi_{22} = \bra{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \hat{H} \ket{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \\
+= + D -  \frac{1}{2} \cdot (ab|ba) - \frac{1}{2} \cdot (cd|dc) + 1 \cdot (ac|ca) + 1 \cdot (bd|db) - \frac{1}{2} \cdot (bc|cb) - \frac{1}{2} \cdot (ad|da)
+\\
+\label{eq:def_C_Strich}
+:= D + C' 
+\end{gather} \\
+
+
+
+\subsubsection{Überlappungselemente $\phi$}
+$S^\Phi_{ii} = 1$ (s. gl. Funktionen treffen aufeinander), z.B.: 
+$$S^\Phi_{11} = \bra{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \ket{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} = 1 $$ \\
+
+
+$$\phi_{12} = \bra{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+}  \ket{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} $$
+
+\tiny 
+$$ \propto \bra{abcd - cbad - adcb + cdab + bacd - cabd - bdca + cdba
++ abdc - dbac - acdb + dcab + badc - dabc - bcda + dcba}$$
+$$ \ket{abcd - bacd - abdc + badc + cbad - bcad - cbda + bcda 
++adcb - dacb - adbc + dabc + cdab - dcab - cdba + dcba}$$
+\normalsize
+$$= \bra{abcd}\ket{abcd} - \bra{cbad}\ket{cbad} - \bra{adcb}\ket{adcb} + \bra{cdab}\ket{cdab} $$
+$$ - \bra{bacd}\ket{bacd}  - \bra{dcab}\ket{dcab}
+- \bra{abdc}\ket{abdc} -  \bra{cdba}\ket{cdba}  $$
+$$+ \bra{badc}\ket{badc} - \bra{bcda}\ket{bcda} - \bra{dabc}\ket{dabc} + \bra{dcba}\ket{dcba} = 4\cdot (+1) + 8 \cdot (-1) = -4 $$ mit Normierungsfaktor von je $\frac{1}{\sqrt{16}}$ folgt also: $\Phi_{12} = - \frac{1}{4} $ \\
+
+
+
+
+$$\phi_{22} = \bra{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \ket{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} = 1 $$ \\
+
+
+
+
+\newpage 
+\section{Matrix}
+
+$$ 0 = \left|
+  \begin{array}{ccc}
+  H_{11} - S_{11} \cdot E && H_{12} - S_{12}\cdot E \\
+  H_{12} - S_{12}\cdot E && H_{22} - S_{22} \cdot E 
+  \end{array}
+  \right|
+  $$
+  
+1. Überlappungsintegrale $S = \phi \cdot \sigma$ \\
+
+$S_{11} = \phi_{11} \cdot \sigma_{11} = \bra{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \ket{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \cdot \bra{\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right|_\sigma} \ket{\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right|_\sigma}
+= 1 \cdot 1 = 1$ \\ 
+
+$S_{12} = S_{21} = \phi_{12} \cdot \sigma_{12} = \phi_{12} \cdot \frac{1}{2} = - \frac{1}{4} \cdot \frac{1}{2} = - \frac{1}{8} $ \\ 
+
+$S_{22} = 1$  \\ \\
+
+
+2. Hamiltonmatrixelemente $H = \Phi \cdot \sigma$ :\\
+
+$$H_{11} = \Phi_{11} \cdot \sigma_{11}= \bra{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \hat{H} \ket{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \cdot \bra{\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right|_\sigma} \ket{\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right|_\sigma} = \Phi_{11}\cdot 1 := D + A'
+$$ \\
+
+
+$$H_{12} = \Phi_{12} \cdot \sigma_{12}= \bra{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \hat{H} \ket{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \cdot \bra{\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right|_\sigma} \ket{\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right|_\sigma} = \Phi_{12}\cdot \frac{1}{2} $$ 
+$$:= B \cdot \frac{1}{2} = \left( -\frac{1}{4}\cdot D + B' \right) \cdot \frac{1}{2} = - \frac{1}{8} \cdot D + \frac{1}{2} \cdot B'
+$$
+
+
+
+$$H_{22} = \Phi_{22} \cdot \sigma_{22}= \bra{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \hat{H} \ket{
+\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 3 \\ \hline 
+    2 & 4 \\
+    \hline 
+  \end{array}
+\right| _{\Phi}
+} \cdot \bra{\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right|_\sigma} \ket{\left|
+  \begin{array}{c|c}
+  \hline 
+    1 & 2 \\ \hline 
+    3 & 4 \\
+    \hline 
+  \end{array}
+\right|_\sigma} = \Phi_{22}\cdot 1 = D + C'
+$$
+
+
+\subsection{Startgleichung}
+Säkulargleichung: 
+$$ 0 = \left|
+  \begin{array}{ccc}
+  H_{11} - S_{11} \cdot E && H_{12} - S_{12}\cdot E \\
+  H_{12} - S_{12}\cdot E && H_{22} - S_{22} \cdot E 
+  \end{array}
+  \right|
+  $$
+  Spinanteile eingesetzt:
+  $$ \Leftrightarrow  0 = \left|
+  \begin{array}{ccc}
+  A - 1 \cdot E && \frac{1}{2} \cdot B + \frac{1}{8}\cdot E \\
+  \frac{1}{2} \cdot B + \frac{1}{8} \cdot E && C - 1 \cdot E 
+  \end{array}
+  \right|
+  $$
+  $$\Leftrightarrow 0 = \left|
+  \begin{array}{ccc}
+  \left( D+A' \right) -  1  \cdot E && \left( - \frac{1}{8} \cdot D + \frac{1}{2} \cdot B' \right) - \left( - \frac{1}{8} \right)\cdot E \\
+ -\frac{1}{8}\cdot D + \frac{1}{2} \cdot B'
+ + \frac{1}{8} \cdot E && \left(D+C' \right)  - 1  \cdot E 
+  \end{array}
+  \right|
+  $$
+  
+  
+\subsubsection{grober Ansatz}
+
+ $$   = \left|
+  \begin{array}{ccc}
+  A - E && \frac{1}{2} \cdot B + \frac{1}{8}\cdot E \\
+  \frac{1}{2} \cdot B + \frac{1}{8} \cdot E && C -  E 
+  \end{array}
+  \right|
+  $$
+  \begin{gather}
+  \label{eq:grobGl}
+  \Leftrightarrow 0 = \left( A-E\right) \cdot \left( C-E\right) 
+  - \left( \frac{B}{2} + \frac{E}{8}\right) ^2 
+  \end{gather} \\
+
+  
+\subsubsection{Ansatz mit D}
+  $$ 0 = \left|
+  \begin{array}{ccc}
+ D+A'  -  E &&  -\frac{1}{8}\cdot D + \frac{1}{2} \cdot B'
+ + \frac{1}{8} \cdot E\\
+ -\frac{1}{8}\cdot D + \frac{1}{2} \cdot B'
+ + \frac{1}{8} \cdot E && D+C'   -  E 
+  \end{array}
+  \right|
+  $$
+  $$ \Leftrightarrow 0 = 
+  \left( D+A'-E\right) \cdot \left( D+C'-E\right) 
+  - \left( -\frac{1}{8}\cdot D + \frac{1}{2} \cdot B'
+ + \frac{1}{8} \cdot E  \right) ^2 
+  $$
+
+
+\subsection{Lösungsversuche}
+
+\subsubsection{grob}\label{sec:grobeLsg} 
+Gl. \eqref{eq:grobGl} lautete:
+\begin{gather}
+\tag{\ref{eq:grobGl}}
+ 0 = \left( A-E\right) \cdot \left( C-E\right) 
+  - \left( \frac{B}{2} + \frac{E}{8}\right) ^2 
+ \end{gather}\\
+  
+Auflösen der Klammern, um gl. Variablen zusammenfassen zu können: 
+\begin{gather}
+0 = A\cdot C - A\cdot E - E\cdot C + E^2 - \left(  \frac{B^2}{4} + 2\cdot \frac{B}{2} \cdot \frac{E}{8} + \frac{E^2}{64}  \right)
+\end{gather}
+\begin{gather}
+\Leftrightarrow 0 =A\cdot C - E\cdot \left(A-C\right) + E^2 - \frac{B^2}{4} - \frac{B \cdot E}{8} - \frac{E^2}{64}
+\end{gather}
+
+sortieren nach Termen von E: 
+$$\Leftrightarrow 0 = E^2\cdot \left( 1-\frac{1}{64}\right) + E \cdot \left( C-A - \frac{B}{8}\right) + A \cdot C - \frac{B^2}{4} $$
+ $$\Leftrightarrow 0 = E^2\cdot \frac{63}{64} + E \cdot \left( C-A - \frac{B}{8}\right) + A \cdot C - \frac{B^2}{4} $$
+ Teilen durch Vorfaktor von $E^2$: 
+$$\Leftrightarrow 0 = E ^2 + E \cdot \underbrace{ \frac{64}{63}\cdot \left( C-A - \frac{B}{8}\right)}_p + \underbrace{\frac{64}{63} \cdot \left( A\cdot C - \frac{B^2}{4} \right) }_q$$
+ pq-Formel, um die Werte von $E$ zu erhalten: 
+ $$\Leftrightarrow E = \frac{1}{2}\cdot \frac{64}{63}\cdot \left( C-A - \frac{B}{8}\right) \pm \sqrt{ \left( \frac{32}{63}\cdot \left( C-A - \frac{B}{8}\right) \right) ^2 
+ - \frac{64}{63} \cdot \left( A\cdot C - \frac{B^2}{4} \right)
+ }
+  $$
+  $$\Leftrightarrow E =  \frac{32}{63}\cdot \left( C-A - \frac{B}{8}\right) \pm 
+  \sqrt{ \frac{32^2}{63^2}\cdot 
+\left( C-A - \frac{B}{8}\right) ^2 
+ - \frac{64}{63} \cdot  A\cdot C + \frac{16}{63} \cdot B^2 
+ }
+  $$
+    $$\Leftrightarrow E =  \frac{32}{63}\cdot \left( C-A - \frac{B}{8}\right) \pm 
+  \sqrt{
+  \frac{16}{63} \cdot \left( 
+     \frac{64}{63}\cdot 
+\left( C-A - \frac{B}{8}\right) ^2 
+ - 4 \cdot  A\cdot C + B^2 
+ \right)
+ }
+  $$
+  $$\Leftrightarrow E =  \frac{32}{63}\cdot \left( C-A - \frac{B}{8}\right) \pm 
+    \frac{4}{\sqrt{63} }
+  \cdot 
+  \sqrt{
+     \frac{64}{63}\cdot 
+\left( C-A - \frac{B}{8}\right) ^2 
+ - 4 \cdot  A\cdot C + B^2 
+ }
+  $$ \\
+  
+  Betrachtung des Terms unter der Wurzel, um die quadrierte Klammer aufzulösen:   
+$$ \frac{64}{63}\cdot \left( C-A - \frac{B}{8}\right) ^2 - 4 \cdot  A\cdot C + B^2 $$
+$$= \frac{64}{63}\cdot \left( C-A - \frac{B}{8}\right)\cdot \left( C-A - \frac{B}{8}\right) - 4 \cdot  A\cdot C + B^2 $$
+$$ \frac{64}{63}\cdot \left( 
+C ^2 - C \cdot A - C \cdot \frac{B}{8}
+- A \cdot C + A ^2 + A \cdot \frac{B}{8}
+- \frac{B}{8}\cdot C + \frac{B}{8}\cdot A + \frac{B^ 2}{64} 
+\right) - 4 \cdot  A\cdot C + B^2 $$
+$$= \frac{64}{63}\cdot \left( 
+C ^2 + A ^2 + \frac{B^ 2}{64} 
+- 2\cdot C \cdot A - C \cdot \frac{B}{4}
+ + A \cdot \frac{B}{4}
+\right) - 4 \cdot  A\cdot C + B^2 $$
+zusammenfassen gl. Terme der Variablen:
+$$= A^2 \cdot \frac{64}{63} 
++ B^2 \cdot \left( \frac{1}{63} + 1\right) + C ^2 \cdot \frac{64}{63} 
++ A\cdot B \cdot \left(   \frac{64}{63} \cdot \frac{1}{4}\right) 
+ + A\cdot C \cdot\left( -2 \cdot \frac{64}{63} - 4 \right) 
+ + B\cdot C \cdot \left(   \frac{64}{63} \cdot \frac{1}{4}\right) 
+$$
+$$= \left( A^2 + C ^2\right)\cdot \frac{64}{63} 
++ B^2 \cdot \frac{65}{63} 
++ \left( A+C\right) \cdot B \cdot\frac{16}{63} 
+ + A\cdot C \cdot \frac{-380}{63} 
+$$
+$$= 
+\frac{1}{63} \cdot \left(
+\left( A^2 + C ^2\right)\cdot 64
++ B^2 \cdot 65 
++ \left( A+C\right) \cdot B \cdot 16
+ - A\cdot C \cdot 380
+ \right) 
+$$
+d.h. aus $E$ wird demnach: 
+$$ E = \frac{32}{63}\cdot \left( C-A - \frac{B}{8}\right) \pm 
+    \frac{4}{\sqrt{63} }
+  \cdot 
+  \sqrt{\frac{1}{63}}\cdot 
+  \sqrt{
+     \left( A^2 + C ^2\right)\cdot 64
++ B^2 \cdot 65 
++ \left( A+C\right) \cdot B \cdot 16
+ - A\cdot C \cdot 380
+ }$$
+ \begin{gather} \label{eq:E_ABC}
+  \Leftrightarrow E = \frac{32}{63}\cdot \left( C-A - \frac{B}{8}\right) \pm 
+    \frac{4}{63}
+  \cdot 
+  \sqrt{
+     \left( A^2 + C ^2\right)\cdot 64
++ B^2 \cdot 65 
++ \left( A+C\right) \cdot B \cdot 16
+ - A\cdot C \cdot 380
+ }
+ \end{gather}
+
+
+\subsubsection{Einsetzen der D-Terme für A und C} \label{sec:einsetzenAC}
+aus \ref{sec:grobeLsg} kann Genaueres geschlussfolgert werden, wenn $A$, $B$ und $C$ konkreter formuliert werden. Wie oben gilt dabei: 
+\begin{gather}
+\label{eq:ABC_strich}
+ A= D+A' , \qquad B = - \frac{1}{4} \cdot D + B', \qquad C = D+C'
+ \end{gather}
+(da  $A = \Phi_{11} = H_{11}$, $B = \Phi_{12}$,$C = \Phi_{22} = H_{22}$)
+
+
+Zur Übersichtlichkeit wird $E$ (gemäß \eqref{eq:E_ABC}) folgenderweise in Teilterme zerlegt:
+ $$ E = \underbrace{\frac{32}{63}\cdot \left( C-A - \frac{B}{8}\right) }_{a} \pm 
+    \frac{4}{63}
+  \cdot 
+  \sqrt{
+  \underbrace{
+\underbrace{
+     \left( A^2 + C ^2\right)\cdot 64}_c
++ B^2 \cdot 65 
+\underbrace{ + \left( A+C\right) \cdot B \cdot 16}_d
+\underbrace{ - A\cdot C \cdot 380}_e
+ }_b}$$
+\begin{gather}
+\label{eq:E_in_abc}
+\Leftrightarrow E = a \pm \frac{4}{63} \cdot \sqrt{b} 
+= a \pm \frac{4}{63} \cdot \sqrt{c + B ^2 \cdot 65 + d + e} 
+\end{gather}
+
+Mit diesen Teiltermen sowie den Ausdrücken für $A$ und $C$ folgt: 
+\begin{itemize}
+\item $a = \frac{32}{63}\cdot \left( C-A - \frac{B}{8}\right)  = \frac{32}{63}\cdot \left( \left( D+C'\right) - \left( D+A'\right) - \frac{B}{8}\right) $
+\begin{gather}
+ = \frac{32}{63}\cdot \left( C' - A' 
+- \frac{B}{8}\right) 
+\label{eq:a_ACeingesetzt}
+\end{gather}
+
+\item $b= c + B ^2 \cdot 65 + d + e$
+\begin{itemize}
+\item[*] $c = \left( A^2 + C ^2\right)\cdot 64 $
+$$ =64\cdot  \left( \left( D+A'\right)^2 +  \left( D+C'\right) ^2\right) $$
+$$ = 64\cdot\left( \left( D^2 + 2 \cdot D \cdot A' +{A'}^2\right) +  
+\left( D^2 + 2 \cdot D \cdot C' +C'^2\right) \right) $$
+$$ = 64\cdot\left( 2 \cdot D^2 + 2 \cdot D \cdot \left( A' + C'\right) + A'^2 + C'^2
+ \right) $$
+ $$ = 128\cdot D^2 + 128 \cdot D \cdot \left( A' + C'\right) + 64\cdot \left( A'^2 + C'^2
+ \right) $$
+ 
+\item[*] $d =  \left( A+C\right) \cdot B \cdot 16$ 
+$$ =16 B \cdot \left( \left( D+A'\right)+\left( D+C'\right)\right)$$ 
+$$ =16 B \cdot \left(
+2 \cdot D + A' + C' 
+\right)$$ 
+$$ = 16 B \cdot 
+2 \cdot D + 16 B \cdot \left( A' + C' 
+\right)$$ 
+
+\item[*] $e=  - A\cdot C \cdot 380 $ 
+$$ =  - 380\cdot \left( D+A'\right)\cdot \left( D+C'\right) $$
+$$ =  - 380\cdot \left( 
+D ^2 + A' \cdot D + C' \cdot D + A' \cdot C' 
+\right) $$
+$$ =  - 380\cdot \left( 
+D ^2 + D \cdot \left( A' + C' \right) + A' \cdot C' 
+\right) $$
+$$ =  - 380\cdot 
+D ^2 - 380\cdot D   \left( A' + C' \right) 
+-380\cdot A' \cdot C' $$
+\end{itemize}
+\item im zusammengesetzten $b$ können die Terme von $D$ zusammengefasst werden: 
+$$b= c + B ^2 \cdot 65 + d + e$$
+$$=
+ \left( 128\cdot D^2 + 128 \cdot D \cdot \left( A' + C'\right) + 64\cdot \left( A'^2 + C'^2 \right)\right)  $$
+ $$ + B ^2 \cdot 65
++ \left(16 B \cdot 2 \cdot D + 16 B \cdot \left( A' + C' \right) \right) $$
+$$
++ \left(  - 380\cdot D ^2 - 380\cdot D   \left( A' + C' \right) -380\cdot A' \cdot C'\right)$$
+
+\begin{gather}
+\label{eq:b_zahlen}
+ =
+ D ^2 \cdot \left(128-380\right) \\
+ + D \cdot \left(
+ 128\cdot \left( A' + C' \right) + 32 \cdot B - 380 \cdot \left( A' + C'\right) 
+  \right) \notag \\ \notag
+ + \left( 
+ 64\cdot \left(A'^2 + C'^2\right) +65\cdot B^2 +
+ 16\cdot B\cdot \left(A' + C'\right) - 380 \cdot A' \cdot C' 
+ \right) 
+\end{gather}
+
+\begin{gather}
+\label{eq:b_summanden} 
+= -252\cdot D ^2 + D \cdot \left(
+ -252\cdot \left( A' + C' \right) + 32 \cdot B 
+  \right) \\ \notag
+ + \left( 
+ 64\cdot \left(A'^2 + C'^2\right) +65\cdot B^2 +
+ 16\cdot B\cdot \left(A' + C'\right) - 380 \cdot A' \cdot C' 
+ \right) 
+\end{gather}
+
+\begin{gather}
+ = -252\cdot D ^2 + 4D \cdot \left(8 \cdot B 
+ -63\cdot \left( A' + C' \right) 
+  \right)  \label{eq:b_nachD}\\ \notag
+ + 
+ 64\cdot \left(A'^2 + C'^2\right) +65\cdot B^2 +
+ 16\cdot B\cdot \left(A' + C'\right) - 380 \cdot A' \cdot C' 
+\end{gather}
+
+
+
+\end{itemize}
+  
+Damit ist $E$ nicht wirklich vereinfacht: 
+
+\begin{gather}
+\label{eq:e_nachACStrich}
+ E = 
+\frac{32}{63}\cdot \left( C' - A' 
+- \frac{B}{8}\right)  \pm \frac{4}{63} \cdot
+\\ \notag \sqrt{
+-252\cdot D ^2 + 4D \cdot \left(8 \cdot B 
+ -63\cdot \left( A' + C' \right) 
+  \right) 
+ + 
+ 64\cdot \left(A'^2 + C'^2\right) +65\cdot B^2 +
+ 16\cdot B\cdot \left(A' + C'\right) - 380 \cdot A' \cdot C' 
+} 
+\end{gather}
+
+
+
+\subsubsection*{B im Wurzelterm b}
+
+Im Term \eqref{eq:b_summanden} kommt auch $B$ in mehreren Potenzen vor, analog zu $D$. D.h. es könnte nach $D$ und $B$ sortiert werden. Es galt:
+
+\begin{gather} 
+b = 
+ -252\cdot D ^2 + D \cdot \left(
+ -252\cdot \left( A' + C' \right) + 32 \cdot B 
+  \right) \notag \\ \notag
+ + \left( 
+ 64\cdot \left(A'^2 + C'^2\right) +65\cdot B^2 +
+ 16\cdot B\cdot \left(A' + C'\right) - 380 \cdot A' \cdot C' 
+ \right) 
+\end{gather}
+D.h. ebenso gilt: 
+\begin{gather} 
+b = 
+\underbrace{-252\cdot D^2 }
++ \underbrace{23 \cdot B \cdot D}
++ \underbrace{65\cdot B ^2} \\ \notag
+\underbrace{
+-252\cdot D \cdot \left( A' + C'\right) 
++ 16 \cdot B \cdot \left(A' + C'\right) 
+}
+\underbrace{
++ 64\cdot \left( A'^2 + C'^2\right) - 380 \cdot A' \cdot C'
+}
+\end{gather}
+
+\begin{gather} 
+= 
+\underbrace{-252\cdot D^2 }
++ \underbrace{23 \cdot B \cdot D}
++ \underbrace{65\cdot B ^2} \\ \notag
++ \underbrace{
+4  \cdot \left( A' + C'\right) \cdot \left( -63\cdot D + 4\cdot B\right)
+}
+\underbrace{
++ 64\cdot \left( A'^2 + C'^2\right) - 380 \cdot A' \cdot C'
+}
+\end{gather}
+Zum Anwenden der bionomischen Formel gibt es u.a. das Problem, dass $B$ und $D$ nicht nur als Produkt, sondern zudem auch noch als Summanden vorliegen. 
+
+\subsubsection{B zu B'}
+Nach \ref{sec:einsetzenAC} kann auch noch $B$ eingesetzt werden. Mit \eqref{eq:ABC_strich} folgt für \eqref{eq:b_nachD}: 
+
+\begin{gather}
+ b = -252\cdot D ^2 + 4D \cdot \left(8 \cdot \left( - \frac{1}{4} \cdot D + B'\right)
+ -63\cdot \left( A' + C' \right) 
+  \right)  \label{eq:}\\ \notag
+ + 
+ 64\cdot \left(A'^2 + C'^2\right) +65\cdot \left( - \frac{1}{4} \cdot D + B'\right)^2 +
+ 16\cdot \left( - \frac{1}{4} \cdot D + B'\right)\cdot \left(A' + C'\right) - 380 \cdot A' \cdot C' 
+ \\ \notag \\ 
+   = -252\cdot D^2 + 4D \cdot 
+   \left(8 \cdot B' - 2\cdot D \right) 
+ -63\cdot \left( A' + C' \right) +64\cdot \left(A'^2 + C'^2 \right)
+ \\ \notag
+  +
+  65\cdot \left(
+ \frac{D^2}{16} - 2 \cdot \frac{1}{4} \cdot D \cdot B' + B'^2  
+  \right) +
+ 16\cdot \left( 
+ B' - \frac{1}{4} \cdot D
+ \right)
+ \cdot \left(A' + C'\right) - 380 \cdot A' \cdot C' 
+\end{gather} 
+
+\begin{gather}
+= -252 \cdot D ^2  + D \cdot 32 \cdot B' - 8 \cdot D ^2 
+-63\cdot \left( A' + C' \right) +64\cdot \left(A'^2 + C'^2 \right) \\
+\notag
++ \frac{65}{16}\cdot D ^2 - \frac{65}{2}\cdot D \cdot B' + 65 \cdot B'^2 \\ \notag 
++ 16 \cdot B' \cdot \left(A' + C' \right) 
+- 4 \cdot D \cdot \left(A' + C'\right) 
+- 380 \cdot A' \cdot C' 
+\end{gather}
+
+
+Es kann erneut nach Potenzen von $D$ sortiert werden: 
+\begin{gather}
+b = 
+D^2 \cdot  \left(
+-252-8+\frac{65}{16}
+ \right) 
+\\ \notag
++ D \cdot \left(
+32\cdot B' - \frac{65}{2} \cdot B' - 4\cdot \left(A' + C'\right) 
+ \right) \\ \notag
++ \left( 
+63\cdot \left(A' + C'\right) + 64 \cdot  \left(A'^2 + C'^2\right)
++ 65 \cdot B'^2 + 16 \cdot B' \cdot  \left(A' + C'\right)- 380 \cdot A' \cdot C'
+\right)  \\ \notag \\ \label{eq:b_mitBStrich}
+=  -\frac{4095}{16} \cdot D^2 
++ D\cdot \left( 
+- \frac{B'}{2} - 4\cdot \left(A' + C'\right) 
+\right) \\ \notag
++  
+\left(A' + C'\right) \cdot \left( 63+ 16\cdot B'\right) 
++ 64 \cdot  \left(A'^2 + C'^2\right)
++ 65 \cdot B'^2 
+- 380 \cdot A' \cdot C'
+\end{gather} \\
+
+
+
+\begin{gather}
+\end{gather} \\
+
+
+\subsection{A' und C'}
+$E$ abhängig von Termen wie $A'^2+C'^2$, $A'+C'$ und $A' \cdot C'$. Nach \eqref{eq:def_A_Strich}, \eqref{eq:def_C_Strich} und \eqref{eq:def_B_Strich} gilt: 
+
+\begin{gather}
+A' = - \frac{1}{2} \cdot (ac|ca) - \frac{1}{2} \cdot (bd|db) + 1 \cdot (ab|ba) + 1 \cdot (cd|dc) - \frac{1}{2} \cdot (bc|cb) - \frac{1}{2} \cdot (ad|da) \\ 
+C' =  -  \frac{1}{2} \cdot (ab|ba) - \frac{1}{2} \cdot (cd|dc) + 1 \cdot (ac|ca) + 1 \cdot (bd|db) - \frac{1}{2} \cdot (bc|cb) - \frac{1}{2} \cdot (ad|da) \\
+ B' = - \frac{1}{4} \cdot (ab|ba) - \frac{1}{4} \cdot (cd|dc) - \frac{1}{4} \cdot (ac|ca) -  \frac{1}{4} \cdot (bd|db) + \frac{1}{2} \cdot (bc|cb) + \frac{1}{2} \cdot (ad|da) \label{eq:b_strich}
+\end{gather} \\
+
+D.h. es folgt: 
+\begin{gather}
+A' + C' = 
+\frac{1}{2} (ac|ca) + \frac{1}{2} (bd|db) + \frac{1}{2} (ab|ba) + \frac{1}{2} (cd|dc) 
+- 1 (bc|cb) -1 (ad|da)
+\end{gather}
+Der Vergleich mit \eqref{eq:b_strich} zeigt: 
+\begin{gather}
+\label{eq:ACStrich_zu_BStrich}
+A' + C' = -2 \cdot B'
+\end{gather}
+
+\begin{gather}
+C' -  A'  =  
+- \frac{3}{2} \cdot (ab|ba) 
+- \frac{3}{2} \cdot(cd|dc)
++ \frac{1}{2} \cdot(ac|ca) 
++ \frac{1}{2} \cdot(bd|db) 
+- 1\cdot (bc|cb) - 1 \cdot(ad|da)
+\end{gather}
+ 
+
+\subsubsection{Einsetzen}
+Einsetzen von \eqref{eq:ACStrich_zu_BStrich} in die Terme von \eqref{eq:b_mitBStrich}: 
+
+Aus 
+\begin{gather}
+- \frac{B'}{2} - 4\cdot \left(A' + C'\right) 
+\end{gather} wird
+\begin{gather}
+- \frac{B'}{2} - 4\cdot \left(- 2 \cdot B'\right)  
+= - \frac{B'}{2} + 8\cdot B' = \frac{15}{2} \cdot B'
+\end{gather} \\
+
+
+Und aus 
+\begin{gather}
+\left(A' + C'\right) \cdot \left( 63+ 16\cdot B'\right) 
+\end{gather} wird 
+\begin{gather}
+\left(-2 \cdot B'\right) \cdot \left( 63+ 16\cdot B'\right) 
+= -2 \cdot B'\cdot \left( 63+ 16\cdot B'\right) \\ 
+= - 126 \cdot B' - 32 \cdot B'^2 
+\end{gather} \\
+
+
+Daraus folgt für den Wurzelterm $b$ also: 
+\begin{gather}
+b = -\frac{4095}{16} \cdot D^2 
++ D\cdot \left( 
+- \frac{B'}{2} - 4\cdot \left(A' + C'\right) 
+\right) 
+\tag{\ref{eq:b_mitBStrich}}
+\\ \notag
++  
+\left(A' + C'\right) \cdot \left( 63+ 16\cdot B'\right) 
++ 64 \cdot  \left(A'^2 + C'^2\right)
++ 65 \cdot B'^2 
+- 380 \cdot A' \cdot C'
+\\ \notag \\ 
+= -\frac{4095}{16} \cdot D^2 
++ D\cdot \left( 
+- \frac{15}{2} \cdot B'  
+\right) 
+\\ \notag
+- 126 \cdot B' - 32 \cdot B'^2
++ 64 \cdot  \left(A'^2 + C'^2\right)
++ 65 \cdot B'^2 
+- 380 \cdot A' \cdot C'
+\end{gather} 
+
+\begin{gather}
+= -\frac{4095}{16} \cdot D^2 
+- \frac{15}{2} \cdot D\cdot B'  
+\\ \notag
++ 33\cdot B'^2 
+-126 \cdot B' 
++ \left( 64 \cdot  \left(A'^2 + C'^2\right) - 380\cdot A' \cdot C' \right) 
+\end{gather}
+
+  
+bzw. nach $B'$-Potenzen sortiert: 
+\begin{gather}
+b = 
+ 33\cdot B'^2 
+ + B' \cdot \left( 
+ - \frac{15}{2} \cdot D-126
+ \right) \\ \notag
+-\frac{4095}{16} \cdot D^2 
++ \left( 64 \cdot  \left(A'^2 + C'^2\right) - 380\cdot A' \cdot C' \right) \\
+= 
+ 33\cdot B'^2 
+ - \frac{3}{2} \cdot B' \cdot \left( 
+ 5 \cdot D + 168
+ \right) \\ \notag
+-\frac{4095}{16} \cdot D^2 
++ \left( 64 \cdot  \left(A'^2 + C'^2\right) - 380\cdot A' \cdot C' \right)
+\end{gather} \\
+  
+  
+Laut \eqref{eq:e_nachACStrich} ist zudem noch der Vorfaktor $a$ von $B$ abhängig. Einsetzen führt zu:
+\begin{gather}
+ a = \frac{32}{63}\cdot \left( C' - A' 
+- \frac{B}{8}\right) 
+\tag{\ref{eq:a_ACeingesetzt}} \\ \notag \\
+ = \frac{32}{63}\cdot \left( C' - A' 
+- \frac{1}{8} \cdot \left( - \frac{1}{4} \cdot D + B' \right) 
+\right)  \\
+ = \frac{32}{63}\cdot \left( C' - A'  + \frac{D}{16} - \frac{B'}{8}
+ \right)
+\end{gather}
+
+Damit lautet $E$ also: 
+\begin{gather}
+\tag{\ref{eq:E_in_abc}}
+E = a \pm \frac{4}{63} \cdot \sqrt{b} 
+\\ 
+= \frac{32}{63}\cdot \left( C' - A'  + \frac{D}{16} - \frac{B'}{8}
+ \right) 
+ \pm \frac{4}{63}  \cdot \\ \notag 
+ \sqrt{ 33\cdot B'^2 
+ - \frac{3}{2} \cdot B' \cdot \left( 
+ 5 \cdot D + 168
+ \right)
+-\frac{4095}{16} \cdot D^2 
++ 64 \cdot  \left(A'^2 + C'^2\right) - 380\cdot A' \cdot C' }
+\end{gather}
+
+
+
+
+
+\begin{gather}
+\end{gather}
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+\end{document}
