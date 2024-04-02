@@ -11,7 +11,7 @@ class young_tableau(object):
     def check(self):
         if len(self.number_of_columns) != self.number_of_rows:
             raise Exception("young_tableau: non-fitting dimensions")
-        if not all(self.number_of_columns[i] >= self.number_of_columns[i + 1] for i in range(len(self.number_of_columns) - 1)):
+        if not all(self.number_of_columns[i] <= self.number_of_columns[i + 1] for i in range(len(self.number_of_columns) - 1)):
             raise Exception("young_tableau: unfulfilled young rule")
 
 
