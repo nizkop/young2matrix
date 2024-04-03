@@ -63,9 +63,9 @@ class StartWindow(QWidget):
 
 
     def clearLayout(self, layout=None):
+        """ Clears the current layout and its sublayouts """
         if layout is None:
             layout = self.layout
-        """Clears the current layout"""
         while layout.count():
             item = layout.takeAt(0)
             widget = item.widget()
@@ -73,11 +73,9 @@ class StartWindow(QWidget):
                 widget.setParent(None)
                 widget.deleteLater()
             else:
-                # Wenn das Element kein Widget ist, entfernen Sie es rekursiv
                 sublayout = item.layout()
                 if sublayout:
                     self.clearLayout(layout=sublayout)
-
 
     def back_to_start(self):
         self.clearLayout()
@@ -86,7 +84,7 @@ class StartWindow(QWidget):
 
     def open_page(self, page_number:int):
         self.clearLayout()
-        # getting the input information:
+        # getting and checking the input information:
         input_value = self.input_box.text()
         if not input_value:
             QMessageBox.warning(self, "Warnung", "Bitte geben Sie eine Permutationsgruppe ein.")

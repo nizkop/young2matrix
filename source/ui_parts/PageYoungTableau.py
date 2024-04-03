@@ -1,5 +1,5 @@
-
-from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QVBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib
@@ -11,7 +11,6 @@ from source.permutation_group import permutation_group
 class PageYoungTableaus(QWidget):
     def __init__(self, permutation_group:int, parent=None):
         super().__init__(parent)#main page
-        self.parent = parent
         self.layout = parent.layout
         self.permutation_group = permutation_group
         self.label = QLabel(f"Die möglichen (Standard-)Young-Tableaus zur Gruppe {self.permutation_group} lauten:")
@@ -36,21 +35,20 @@ class PageYoungTableaus(QWidget):
             self.add_equation(eq=t.to_tex())
 
     def add_equation(self, eq: str):
-        equation_widget = QWidget()
-        # equation_layout = QVBoxLayout(equation_widget)
-
         figure = plt.figure()
         ax = figure.add_subplot(111)
         ax.text(0.05, 0.5, f"${eq}$",
-                horizontalalignment='center', verticalalignment='center', fontsize=20)
+                horizontalalignment='left', verticalalignment='center', fontsize=20)
         ax.axis('off')
         figure.patch.set_facecolor('none')
 
         bbox = ax.get_window_extent().transformed(figure.dpi_scale_trans.inverted())
         width = int(bbox.width * figure.dpi)
         height = int(bbox.height * figure.dpi/3)
-
         canvas = FigureCanvas(figure)
         canvas.setFixedSize(width, height)
-        self.layout.addWidget(canvas)
-        self.layout.addWidget(equation_widget)
+
+        self.layout.addWidget(canvas, alignment=Qt.AlignLeft)
+        plt.close(figure)
+
+
