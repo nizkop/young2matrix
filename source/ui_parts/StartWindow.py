@@ -1,6 +1,7 @@
 import sys
 
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLabel, QLineEdit, QHBoxLayout, QMessageBox
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLabel, QLineEdit, QHBoxLayout, \
+    QMessageBox, QScrollArea
 from PyQt5.QtGui import QIcon
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
@@ -20,10 +21,16 @@ class StartWindow(QWidget):
             {"sign": "Φ", "class": PageYoungTableaus},#TODO
         ]
 
-        self.layout = QVBoxLayout()
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        main_widget = QWidget()
+        scroll_area.setWidget(main_widget)
+
+        self.layout = QVBoxLayout(main_widget)
         self.setStyleSheet("background-color: lightgreen;")
         self.add_input()
         self.add_buttons()
+
 
     def add_input(self):
         input_layout = QHBoxLayout()

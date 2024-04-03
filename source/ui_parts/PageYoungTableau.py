@@ -1,5 +1,5 @@
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QLabel
+from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QVBoxLayout
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib
@@ -36,12 +36,21 @@ class PageYoungTableaus(QWidget):
             self.add_equation(eq=t.to_tex())
 
     def add_equation(self, eq: str):
+        equation_widget = QWidget()
+        equation_layout = QVBoxLayout(equation_widget)
+
         figure = plt.figure()
         ax = figure.add_subplot(111)
-        ax.text(0.05, 0.5,
-                f"${eq}$",
+        ax.text(0.05, 0.5, f"${eq}$",
                 horizontalalignment='center', verticalalignment='center', fontsize=20)
         ax.axis('off')
         figure.patch.set_facecolor('none')
+
+        bbox = ax.get_window_extent().transformed(figure.dpi_scale_trans.inverted())
+        width = int(bbox.width * figure.dpi)
+        height = int(bbox.height * figure.dpi/3)
+
         canvas = FigureCanvas(figure)
+        canvas.setFixedSize(width, height)
         self.layout.addWidget(canvas)
+        self.layout.addWidget(equation_widget)
