@@ -1,3 +1,5 @@
 py==1.10.0
+PyQt5==5.15.10
+matplotlib==3.5.1
 #typing_extensions==4.9.0
 #more-itertools==8.10.0
