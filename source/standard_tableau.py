@@ -62,7 +62,7 @@ class standard_tableau(young_tableau):
     def to_tex(self) -> str:
         s = ""
         if self.check():
-            s = r"\begin{array}{"+ r"|c" * self.number_of_rows+ r"|} \hline"
+            s = r"\begin{array}{"+ r"|c" * max(self.number_of_columns)+ r"|} \hline"
             for i in range(self.number_of_rows):
                 s+= r" & ".join([f"{self.numbers_in_row[i][j]}" for j in range(self.number_of_columns[i])])
                 s+=r"\\ \hline "

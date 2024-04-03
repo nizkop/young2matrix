@@ -38,8 +38,10 @@ class PageYoungTableaus(QWidget):
     def add_equation(self, eq: str):
         figure = plt.figure()
         ax = figure.add_subplot(111)
-        ax.text(0.5, 0.5,
-                f"${eq}$", horizontalalignment='center', verticalalignment='center', fontsize=20)
+        ax.text(0.05, 0.5,
+                f"${eq}$",
+                horizontalalignment='center', verticalalignment='center', fontsize=20)
         ax.axis('off')
+        figure.patch.set_facecolor('none')
         canvas = FigureCanvas(figure)
         self.layout.addWidget(canvas)
