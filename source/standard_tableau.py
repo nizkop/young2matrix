@@ -1,5 +1,6 @@
 from typing import List
 
+
 from source.young_tableau import young_tableau
 
 
@@ -11,11 +12,7 @@ class standard_tableau(young_tableau):
         self.permutation_group: int = self.get_permutation_group()
 
     def print(self) -> None:
-        if self.check():
-            for i in range(self.number_of_rows):
-                for j in range(self.number_of_columns[i]):
-                    print(f"[{self.numbers_in_row[i][j]}]", end=" ")
-                print()
+        print(self.to_text())
 
     def check(self) -> bool:
         """ checking the rules of standard tableau (numbers ascending in rows and columns)
@@ -54,7 +51,22 @@ class standard_tableau(young_tableau):
 
 
     def to_text(self):
-        pass
+        s = ""
+        if self.check():
+            for i in range(self.number_of_rows):
+                for j in range(self.number_of_columns[i]):
+                    s+= f"[{self.numbers_in_row[i][j]}] "
+                s+="\n"
+        return s
+
+    def to_tex(self) -> str:
+        s = ""
+        if self.check():
+            s = r"\begin{array}{"+ r"|c" * self.number_of_rows+ r"|} \hline"
+            for i in range(self.number_of_rows):
+                s+= r" & ".join([f"{self.numbers_in_row[i][j]}" for j in range(self.number_of_columns[i])])
+                s+=r"\\ \hline "
+        return s+r"\end{array} "
 
     def get_permutation_group(self) -> int:
         """ calculate the number of boxes in the tableau """
@@ -69,4 +81,4 @@ if __name__ == '__main__':
     s = standard_tableau([[1,2],[3]])
     s.print()
 
-    print(s.get_permutation_group())
+    print(s.to_tex())
