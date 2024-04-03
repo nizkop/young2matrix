@@ -62,10 +62,12 @@ class standard_tableau(young_tableau):
     def to_tex(self) -> str:
         s = ""
         if self.check():
-            s = r"\begin{array}{"+ r"|c" * max(self.number_of_columns)+ r"|} \hline"
+            s = r"\begin{array}{"+ r"|c" * max(self.number_of_columns)+ r"|} \hline "
             for i in range(self.number_of_rows):
                 s+= r" & ".join([f"{self.numbers_in_row[i][j]}" for j in range(self.number_of_columns[i])])
-                s+=r"\\ \hline "
+                s+=r"\\ \cline{1"
+                s+= "-"+ str(len(self.numbers_in_row[i]))
+                s+=r"} "
         return s+r"\end{array} "
 
     def get_permutation_group(self) -> int:

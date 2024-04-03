@@ -27,6 +27,7 @@ class StartWindow(QWidget):
         scroll_area.setWidget(main_widget)
 
         self.layout = QVBoxLayout(main_widget)
+        self.layout.setContentsMargins(0, 0, 0, 0)
         self.setStyleSheet("background-color: lightgreen;")
         self.add_input()
         self.add_buttons()
@@ -44,9 +45,12 @@ class StartWindow(QWidget):
 
     def add_buttons(self):
         buttons_layout = QHBoxLayout()
+        buttons_layout.setContentsMargins(0, 0, 0, 0)
 
         for i, sign in enumerate( [page.get("sign", "") for page in self.pages if "sign" in page] ):
             button = QPushButton(sign)
+            button.setContentsMargins(0, 0, 0, 0)
+            button.setMinimumSize(100, 30)
             buttons_layout.addWidget(button)
             button.clicked.connect(lambda checked, page_number=i: self.open_page(page_number=page_number))
 
@@ -55,8 +59,8 @@ class StartWindow(QWidget):
         buttons_layout.addWidget(download_button)
 
         self.layout.addLayout(buttons_layout)
-
         self.setLayout(self.layout)
+
 
     def clearLayout(self, layout=None):
         if layout is None:
