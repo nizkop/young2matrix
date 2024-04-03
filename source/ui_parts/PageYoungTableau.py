@@ -37,7 +37,7 @@ class PageYoungTableaus(QWidget):
 
     def add_equation(self, eq: str):
         equation_widget = QWidget()
-        equation_layout = QVBoxLayout(equation_widget)
+        # equation_layout = QVBoxLayout(equation_widget)
 
         figure = plt.figure()
         ax = figure.add_subplot(111)

@@ -58,17 +58,27 @@ class StartWindow(QWidget):
 
         self.setLayout(self.layout)
 
-    def clearLayout(self):
-        """ clearing the current layout"""
-        while self.layout.count():
-            child = self.layout.takeAt(0)
-            if child.widget():
-                child.widget().deleteLater()
+    def clearLayout(self, layout=None):
+        if layout is None:
+            layout = self.layout
+        """Clears the current layout"""
+        while layout.count():
+            item = layout.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.setParent(None)
+                widget.deleteLater()
+            else:
+                # Wenn das Element kein Widget ist, entfernen Sie es rekursiv
+                sublayout = item.layout()
+                if sublayout:
+                    self.clearLayout(layout=sublayout)
+
+
     def back_to_start(self):
         self.clearLayout()
         self.add_input()
         self.add_buttons()
-
 
     def open_page(self, page_number:int):
         self.clearLayout()
