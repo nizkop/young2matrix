@@ -1,8 +1,7 @@
 from typing import List
-from itertools import permutations
 import itertools
 
-from source.getting_subsets import powerset, find_subsets
+from source.getting_subsets import find_subsets, powerset
 from source.overview_pdf import overview_pdf
 from source.chemical_standard_tableau import chemical_standard_tableau
 from source.standard_tableau import standard_tableau
@@ -33,14 +32,20 @@ class permutation_group(object):
         numbers = list(range(1, self.permutation_group + 1))
         subsets = [list(subset) for subset in find_subsets(numbers) if len(subset) > 0]
 
-        # combine subsets into tableaus:
-        for i in range(1,self.permutation_group+1):
-            for possible_tableau in list(itertools.combinations(subsets,i)):
+        for possible_tableau in list(powerset(subsets, self.permutation_group)):
+            if len(possible_tableau) > 0:
                 test_tableau = standard_tableau(possible_tableau)
-                if test_tableau.check():
-                    self.standard_tableaus.append(test_tableau)
-                # else:
-                #     print("wrong", possible_tableau)
+                if test_tableau.permutation_group == self.permutation_group and test_tableau.check():
+                        self.standard_tableaus.append(test_tableau)
+
+        # # combine subsets into tableaus:
+        # for i in range(1,self.permutation_group+1):
+        #     for possible_tableau in list(itertools.combinations(subsets,i)):
+        #         test_tableau = standard_tableau(possible_tableau)
+        #         if test_tableau.permutation_group == self.permutation_group and test_tableau.check():
+        #             self.standard_tableaus.append(test_tableau)
+        #         else:
+        #              print("wrong", possible_tableau)
 
 
 
@@ -55,7 +60,7 @@ class permutation_group(object):
 
 
 if __name__ == '__main__':
-    p = permutation_group(3)
+    p = permutation_group(4)
     p.get_all_standard_tableaus()
 
     for s in p.standard_tableaus:

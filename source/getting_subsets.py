@@ -1,11 +1,21 @@
 
+from itertools import chain, combinations, permutations
 
-from itertools import chain, combinations
 
-def powerset(iterable):
-    "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
+def powerset(iterable, group_number:int):
     s = list(iterable)
-    return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
+    all_combinations = chain.from_iterable(combinations(s, r) for r in range(len(s) + 1))
+    # remove dimensional-unfitting examples:
+    unique_combinations = []
+    for combo in all_combinations:
+        all_numbers = [element for sublist in combo for element in sublist]
+        if len(set(all_numbers)) == len(all_numbers) and len(all_numbers) == group_number:
+            unique_combinations.append(combo)
+    # differentiate between sorting:
+    return [list(permutation) for x in unique_combinations for permutation in permutations(x)]
+
+
+
 
 def find_subsets(array):
     subsets = []

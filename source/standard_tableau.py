@@ -7,8 +7,8 @@ class standard_tableau(young_tableau):
 
     def __init__(self, numbers_in_row:List[List[int]] = []):
         super().__init__(number_of_rows=len(numbers_in_row), number_of_columns=[len(i) for i in numbers_in_row])
-        self.permutation_group:int=0
         self.numbers_in_row:List[List[int]] = numbers_in_row
+        self.permutation_group: int = self.get_permutation_group()
         self.check()
 
     def print(self):
@@ -19,7 +19,8 @@ class standard_tableau(young_tableau):
 
     def check(self):
         # TODO: darf nicht nur 1 Spalte sein, etc. <-> weitere Regeln = ?
-        super().check()
+        if not super().check():
+            return False
         if not hasattr(self, 'numbers_in_row'):
             return # not initialized yet
         all_numbers = [element for sublist in self.numbers_in_row for element in sublist]
@@ -53,7 +54,17 @@ class standard_tableau(young_tableau):
     def to_text(self):
         pass
 
+    def get_permutation_group(self) -> int:
+        """ calculate the number of boxes in the tableau """
+        sum = 0
+        for i in range(self.number_of_rows):
+            for j in range(self.number_of_columns[i]):
+                sum += 1
+        return sum
+
 
 if __name__ == '__main__':
-    s = standard_tableau([[1,2,4],[3,5]])
+    s = standard_tableau([[1,2],[3]])
     s.print()
+
+    print(s.get_permutation_group())
