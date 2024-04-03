@@ -2,13 +2,15 @@ from typing import List
 
 
 class young_tableau(object):
-    def __init__(self, number_of_rows:int=0, number_of_columns:List[int]=[]):
+    def __init__(self, number_of_rows:int, number_of_columns:List[int]):
         # self.number_of_parts:int=0
         self.number_of_rows:int=number_of_rows
         self.number_of_columns:List[int]=number_of_columns
         self.check()
 
-    def check(self):
+    def check(self) -> bool:
+        """ checking if columns und rows fit to eachother
+        :return: boolean indicating if the tableau is set-up correctly """
         if len(self.number_of_columns) != self.number_of_rows:
             # raise Exception("young_tableau: non-fitting dimensions")
             return False
@@ -18,7 +20,7 @@ class young_tableau(object):
         return True
 
 
-    def print(self):
+    def print(self) -> None:
         if not self.check():
             return
         for i in range(self.number_of_rows):

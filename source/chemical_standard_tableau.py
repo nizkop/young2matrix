@@ -9,15 +9,14 @@ from source.standard_tableau import standard_tableau
 
 class chemical_standard_tableau(standard_tableau):
 
-    def __init__(self):
-        super().__init__()
-        self.permutation_group:int=0
+    def __init__(self,numbers_in_row:List[tuple]):
+        super().__init__(numbers_in_row=numbers_in_row)
         self.help: function_combination = function_combination()
         self.spatial_parts: List[spatial_part] = []
         self.spin_parts: List[spin_part] = []
 
-    def print(self):
-        pass
+    def print(self) -> None:
+        super().print()
 
     def to_text(self):
         pass

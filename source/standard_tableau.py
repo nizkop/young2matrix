@@ -5,24 +5,26 @@ from source.young_tableau import young_tableau
 
 class standard_tableau(young_tableau):
 
-    def __init__(self, numbers_in_row:List[List[int]] = []):
+    def __init__(self, numbers_in_row:List[tuple[int]]):
         super().__init__(number_of_rows=len(numbers_in_row), number_of_columns=[len(i) for i in numbers_in_row])
-        self.numbers_in_row:List[List[int]] = numbers_in_row
+        self.numbers_in_row:List[tuple[int]] = numbers_in_row
         self.permutation_group: int = self.get_permutation_group()
-        self.check()
 
-    def print(self):
-        for i in range(self.number_of_rows):
-            for j in range(self.number_of_columns[i]):
-                print(f"[{self.numbers_in_row[i][j]}]", end=" ")
-            print()
+    def print(self) -> None:
+        if self.check():
+            for i in range(self.number_of_rows):
+                for j in range(self.number_of_columns[i]):
+                    print(f"[{self.numbers_in_row[i][j]}]", end=" ")
+                print()
 
-    def check(self):
-        # TODO: darf nicht nur 1 Spalte sein, etc. <-> weitere Regeln = ?
+    def check(self) -> bool:
+        """ checking the rules of standard tableau (numbers ascending in rows and columns)
+         :return: boolean indicating whether this tableau is a standard tableau
+         """
         if not super().check():
             return False
         if not hasattr(self, 'numbers_in_row'):
-            return # not initialized yet
+            return False # not initialized yet
         all_numbers = [element for sublist in self.numbers_in_row for element in sublist]
         if len(set(all_numbers)) != len(all_numbers):
             # raise Exception("standard_tableau: no duplicate numbers allowed")
