@@ -15,7 +15,7 @@ class permutation_group(object):
 
     def print(self) -> None:
        print(f"permutation group: S_{self.permutation_group}")
-       for s in p.get_non_adjoint_tableaus():
+       for s in self.get_non_adjoint_tableaus():
            s.print()
            print()
 
