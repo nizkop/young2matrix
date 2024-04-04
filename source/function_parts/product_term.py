@@ -17,7 +17,8 @@ class Sign(Enum):
 class product_term(object):
     def __init__(self, sign:Sign, ordered_functions:tuple[int]):
         self.sign:Sign = sign
-        self.ordered_functions = ordered_functions # always in order a, b, c, ...; indizes variating
+        self.factor:int = 1
+        self.ordered_functions = ordered_functions # always in order a, b, c, ...; indices variate
         self.lowercase_letters = list(string.ascii_lowercase)
         # ensuring enough available function names in lowercase_letters:
         x = 2
@@ -27,6 +28,7 @@ class product_term(object):
 
     def to_text(self) -> str:
         s = f"{self.sign.value} "
+        s+= f"{self.factor} * " if self.factor > 1 else ""
         s+=" * ".join([ f"{self.lowercase_letters[i]}{self.ordered_functions[i]}" for i in range(len(self.ordered_functions))])
         return s
 
@@ -35,8 +37,11 @@ class product_term(object):
 
     def to_tex(self) -> str:
         s = fr"{self.sign.value} "
+        s+= fr"{self.factor} \cdot " if self.factor > 1 else ""
         s+=r" \cdot ".join([ fr"{self.lowercase_letters[i]}_{self.ordered_functions[i]}" for i in range(len(self.ordered_functions))])
         return s
+
+
 
 
 
