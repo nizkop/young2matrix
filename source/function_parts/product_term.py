@@ -1,22 +1,14 @@
 
 
 import string
-from enum import Enum
+from typing import Tuple
 
-class Sign(Enum):
-    PLUS = '+'
-    MINUS = '-'
-
-    def change(self):
-        if self == Sign.PLUS:
-            return Sign.MINUS
-        elif self == Sign.MINUS:
-            return Sign.PLUS
+from source.function_parts.sign import Sign
 
 
 class product_term(object):
-    def __init__(self, sign:Sign, ordered_functions:tuple[int]):
-        self.sign:Sign = sign
+    def __init__(self, sign: Sign, ordered_functions:Tuple[int,...]):
+        self.sign: Sign = sign
         self.factor:int = 1
         self.ordered_functions = ordered_functions # always in order a, b, c, ...; indices variate
         self.lowercase_letters = list(string.ascii_lowercase)
@@ -46,6 +38,6 @@ class product_term(object):
 
 
 if __name__ == '__main__':
-    p = product_term(Sign("-"), (1,2,3,4,5,6))
+    p = product_term(Sign("-"), (1, 2, 3, 4, 5, 6))
     p.print()
     print(p.to_tex())

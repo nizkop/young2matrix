@@ -1,7 +1,8 @@
 from itertools import permutations
 from typing import List
 
-from source.function_parts.product_term import product_term, Sign
+from source.function_parts.product_term import product_term
+from source.function_parts.sign import Sign
 
 
 class function(object):
@@ -9,6 +10,11 @@ class function(object):
     def __init__(self, basis: product_term):
         self.basis = basis
         self.parts: List[product_term] = [basis]
+
+    def print(self) -> None:
+        print(self.to_text())
+    def to_text(self) -> str:
+        return "  ".join([i.to_text() for i in self.parts])
 
     def anti_symmetrize(self, changeble_elements:List[int]):
         return self.permutate_basis(changeable_elements=changeble_elements, change_sign=True)

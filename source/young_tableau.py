@@ -8,6 +8,7 @@ class young_tableau(object):
         self.number_of_columns:List[int]=number_of_columns
         self.check()
 
+
     def check(self) -> bool:
         """ checking if columns und rows fit to eachother
         :return: boolean indicating if the tableau is set-up correctly """

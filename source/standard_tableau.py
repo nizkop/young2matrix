@@ -1,15 +1,18 @@
-from typing import List
+from typing import List, Union, Tuple
 
-
+from source.function_parts.function import function
+from source.function_parts.product_term import product_term
+from source.function_parts.sign import Sign
 from source.young_tableau import young_tableau
 
 
 class standard_tableau(young_tableau):
 
-    def __init__(self, numbers_in_row:List[tuple[int]]):
+    def __init__(self, numbers_in_row:List[Tuple[int,...]]):
         super().__init__(number_of_rows=len(numbers_in_row), number_of_columns=[len(i) for i in numbers_in_row])
         self.numbers_in_row:List[tuple[int]] = numbers_in_row
         self.permutation_group: int = self.get_permutation_group()
+        self.function: Union[function, None] = None
 
     def print(self) -> None:
         print(self.to_text())
@@ -78,9 +81,22 @@ class standard_tableau(young_tableau):
                 sum += 1
         return sum
 
+    def set_up_function(self):
+        if not self.check():
+            return
+        self.function = function(product_term( Sign("+"), tuple(i+1 for i in range(self.permutation_group))  ))
+        for row in self.numbers_in_row:
+            self.function.symmetrize(list(row))
+        for column in self.get_numbers_in_columns():
+            self.function.anti_symmetrize(column)
+
+
 
 if __name__ == '__main__':
-    s = standard_tableau([[1,2],[3]])
+    s = standard_tableau([[1,2]])
     s.print()
 
-    print(s.to_tex())
+    s.set_up_function()
+
+    print(s.function)
+    s.function.print()
