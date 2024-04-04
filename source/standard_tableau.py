@@ -50,7 +50,7 @@ class standard_tableau(young_tableau):
         #  return [[row[i] for row in self.numbers_in_row if i < len(row)] for i in range(max_length)]
 
 
-    def to_text(self):
+    def to_text(self) -> str:
         s = ""
         if self.check():
             for i in range(self.number_of_rows):

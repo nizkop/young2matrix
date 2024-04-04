@@ -1,5 +1,5 @@
 from typing import List
-
+from itertools import groupby
 
 class young_tableau(object):
     def __init__(self, number_of_rows:int, number_of_columns:List[int]):
@@ -23,13 +23,16 @@ class young_tableau(object):
     def print(self) -> None:
         if not self.check():
             return
+        print(self.get_shortend_symbol()["plain_text"])
+        print(self.to_text())
+
+    def to_text(self) -> str:
+        s=""
         for i in range(self.number_of_rows):
             for j in range(self.number_of_columns[i]):
-                print("[ ]", end=" ")
-            print()
-
-    def to_text(self):
-        pass
+                s+="[ ] "
+            s+="\n"
+        return s
 
     def get_all_options(self):
         pass
@@ -42,9 +45,15 @@ class young_tableau(object):
                 sum += 1
         return sum
 
+    def get_shortend_symbol(self) -> dict[str, str]:
+        parts = "".join([str(i) for i in self.number_of_columns]) # getting the relevant numbers
+        parts = ''.join([f"{char}^{parts.count(char)}" if parts.count(char) > 1 else char for char in set(parts)])#replace multiples with power
+        return {"plain_text": f"[{parts}]", "tex": rf"\left[{parts}\right]"}
+
 
 
 if __name__ == '__main__':
-    y = young_tableau(2, [2,1])
+    y = young_tableau(2, [2,2,1,1])
     y.print()
-    print(y.get_permutation_group())
+    # print(y.get_permutation_group())
+    print(y.get_shortend_symbol())

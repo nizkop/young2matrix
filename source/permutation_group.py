@@ -15,7 +15,7 @@ class permutation_group(object):
 
     def print(self) -> None:
        print(f"permutation group: S_{self.permutation_group}")
-       for s in self.get_non_adjoint_tableaus():
+       for s in self.standard_tableaus:
            s.print()
            print()
 
@@ -49,6 +49,19 @@ class permutation_group(object):
             self.get_all_standard_tableaus()
         return [t for t in self.standard_tableaus if max(t.number_of_columns) <= t.number_of_rows]
 
+    def group_tableaus_by_shortend_symbol(self, tableaus_to_sort:List[chemical_standard_tableau]=[]):
+        if len(tableaus_to_sort) == 0:
+            tableaus_to_sort = self.standard_tableaus
+        tableaus = []
+        for i in tableaus_to_sort:
+            abbrevation = i.get_shortend_symbol()
+            if len(tableaus) > 0 and tableaus[-1][-1].get_shortend_symbol()["plain_text"] == abbrevation["plain_text"]:
+                tableaus[-1].append(i)
+            else:
+                tableaus.append([i])
+        return tableaus
+
+
     def calculate_all_overlap_integrals(self):
         pass
 
@@ -62,5 +75,6 @@ class permutation_group(object):
 if __name__ == '__main__':
     p = permutation_group(4)
     p.get_all_standard_tableaus()
-
     p.print()
+
+    print(p.group_tableaus_by_shortend_symbol())

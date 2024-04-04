@@ -18,8 +18,8 @@ class chemical_standard_tableau(standard_tableau):
     def print(self) -> None:
         super().print()
 
-    def to_text(self):
-        super().to_tex()
+    def to_text(self) -> str:
+        return super().to_text()
 
     def solve(self):
         pass

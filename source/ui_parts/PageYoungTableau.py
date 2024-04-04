@@ -30,9 +30,9 @@ class PageYoungTableaus(QWidget):
         """ get all standard tableaus for the given group """
         p = permutation_group(self.permutation_group)
         p.get_all_standard_tableaus()
-        # self.parent.add_equation("e \cdot b")
-        for t in p.standard_tableaus:
-            self.add_equation(eq=t.to_tex())
+        for group in p.group_tableaus_by_shortend_symbol(tableaus_to_sort=p.get_non_adjoint_tableaus()):
+            equation = r"\quad , \quad ".join([t.to_tex() for t in group])
+            self.add_equation(eq=equation)
 
     def add_equation(self, eq: str):
         figure = plt.figure()

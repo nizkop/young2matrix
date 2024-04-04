@@ -83,7 +83,6 @@ class StartWindow(QWidget):
         self.add_buttons()
 
     def open_page(self, page_number:int):
-        self.clearLayout()
         # getting and checking the input information:
         input_value = self.input_box.text()
         if not input_value:
@@ -97,6 +96,7 @@ class StartWindow(QWidget):
         except:
             QMessageBox.warning(self, "Warnung", "Bitte geben Sie die Nummer für eine Permutationsgruppe ein.")
             return
+        self.clearLayout()
         self.pages[page_number]["class"](permutation_group=input_value, parent=self)
 
     def add_equation(self, eq:str):
