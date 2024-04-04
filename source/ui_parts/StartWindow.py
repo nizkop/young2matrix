@@ -33,7 +33,7 @@ class StartWindow(QWidget):
         self.add_buttons()
 
 
-    def add_input(self):
+    def add_input(self) -> None:
         input_layout = QHBoxLayout()
         input_label = QLabel("Permutationsgruppe:")
         input_layout.addWidget(input_label)
@@ -43,7 +43,7 @@ class StartWindow(QWidget):
 
         self.layout.addLayout(input_layout)
 
-    def add_buttons(self):
+    def add_buttons(self) -> None:
         buttons_layout = QHBoxLayout()
         buttons_layout.setContentsMargins(0, 0, 0, 0)
 
@@ -62,8 +62,10 @@ class StartWindow(QWidget):
         self.setLayout(self.layout)
 
 
-    def clearLayout(self, layout=None):
-        """ Clears the current layout and its sublayouts """
+    def clearLayout(self, layout=None) -> None:
+        """ Clearing the current layout and its sublayouts
+         :param layout: in function call None, but in recursion a sublayout can be referenced here
+         """
         if layout is None:
             layout = self.layout
         while layout.count():
@@ -77,12 +79,14 @@ class StartWindow(QWidget):
                 if sublayout:
                     self.clearLayout(layout=sublayout)
 
-    def back_to_start(self):
+    def back_to_start(self) -> None:
+        """ reload the start page """
         self.clearLayout()
         self.add_input()
         self.add_buttons()
 
     def open_page(self, page_number:int):
+        """ checking the input and (if the input is okay) loading another page """
         # getting and checking the input information:
         input_value = self.input_box.text()
         if not input_value:
