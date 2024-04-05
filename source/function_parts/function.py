@@ -16,6 +16,9 @@ class function(object):
     def to_text(self) -> str:
         return "  ".join([i.to_text() for i in self.parts])
 
+    def to_tex(self) -> str:
+        return "  ".join([i.to_tex() for i in self.parts])
+
     def anti_symmetrize(self, changeble_elements:List[int]):
         return self.permutate_basis(changeable_elements=changeble_elements, change_sign=True)
 

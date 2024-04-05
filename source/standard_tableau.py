@@ -10,7 +10,7 @@ class standard_tableau(young_tableau):
 
     def __init__(self, numbers_in_row:List[Tuple[int,...]]):
         super().__init__(number_of_rows=len(numbers_in_row), number_of_columns=[len(i) for i in numbers_in_row])
-        self.numbers_in_row:List[tuple[int]] = numbers_in_row
+        self.numbers_in_row:List[tuple[int,...]] = numbers_in_row
         self.permutation_group: int = self.get_permutation_group()
         self.function: Union[function, None] = None
 
@@ -59,32 +59,38 @@ class standard_tableau(young_tableau):
             for i in range(self.number_of_rows):
                 for j in range(self.number_of_columns[i]):
                     s+= f"[{self.numbers_in_row[i][j]}] "
-                s+="\n"
+                s+= "\n"
         return s
 
     def to_tex(self) -> str:
-        s = ""
+        s = r""
         if self.check():
             s = r"\begin{array}{"+ r"|c" * max(self.number_of_columns)+ r"|} \hline "
             for i in range(self.number_of_rows):
                 s+= r" & ".join([f"{self.numbers_in_row[i][j]}" for j in range(self.number_of_columns[i])])
-                s+=r"\\ \cline{1"
-                s+= "-"+ str(len(self.numbers_in_row[i]))
-                s+=r"} "
+                s+= r"\\ \cline{1"
+                s+= rf"-{len(self.numbers_in_row[i])}"
+                s+= r"} "
         return s+r"\end{array} "
 
     def get_permutation_group(self) -> int:
-        """ calculate the number of boxes in the tableau """
+        """ calculate the number of boxes in the tableau
+        :return sum: number of permutation group
+        """
         sum = 0
         for i in range(self.number_of_rows):
             for j in range(self.number_of_columns[i]):
                 sum += 1
         return sum
 
-    def set_up_function(self):
+    def set_up_function(self) -> None:
+        """ initialize function, apply young operator to tableau and multiply out the different terms
+        :return None: because result is written into self.function
+        """
         if not self.check():
             return
         self.function = function(product_term( Sign("+"), tuple(i+1 for i in range(self.permutation_group))  ))
+        # use young operator:
         for row in self.numbers_in_row:
             self.function.symmetrize(list(row))
         for column in self.get_numbers_in_columns():
@@ -93,7 +99,7 @@ class standard_tableau(young_tableau):
 
 
 if __name__ == '__main__':
-    s = standard_tableau([[1,2]])
+    s = standard_tableau([(1,2)])
     s.print()
 
     s.set_up_function()
