@@ -37,13 +37,13 @@ class chemical_standard_tableau(standard_tableau):
 
     def get_spin_choices(self):
         """
-        Gesamtspin S = { |s1 - s_2 - ... - s_i| , |s1 - s2 - ... - si| +1, ... , (s1 + ... + si) }
-        M_S = { -max(S), -max(S)+1, ..., 0, ..., max(S) }
+        finding all combinations of spin quantum numbers for this specific tableau
         """
         spins = calculate_spin_quantum_numbers(number_of_particles=self.permutation_group)
         for spin in spins:
             ms_values = calculate_ms_quantum_number(total_spin=spin)
-        return ms_values
+            for q in ms_values:
+                self.spin_parts.append( spin_part(total_spin=spin, ms=q) )
 
 
 if __name__ == '__main__':
@@ -51,6 +51,6 @@ if __name__ == '__main__':
     # s.print()
     s.set_up_function()
 
-    print(
-        s.get_spin_choices()
-    )
+    s.get_spin_choices()
+    for t in s.spin_parts:
+        t.print()
