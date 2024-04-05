@@ -1,6 +1,7 @@
 from typing import List
 
-from source.calculate_spin_quantum_numbers import calculate_spin_quantum_numbers
+from source.pure_chemical_functions.calculate_ms_quantum_number import calculate_ms_quantum_number
+from source.pure_chemical_functions.calculate_spin_quantum_numbers import calculate_spin_quantum_numbers
 from source.function_combination import function_combination
 from source.function_parts.spatial_part import spatial_part
 from source.function_parts.spin_part import spin_part
@@ -40,7 +41,9 @@ class chemical_standard_tableau(standard_tableau):
         M_S = { -max(S), -max(S)+1, ..., 0, ..., max(S) }
         """
         spins = calculate_spin_quantum_numbers(number_of_particles=self.permutation_group)
-        return spins
+        for spin in spins:
+            ms_values = calculate_ms_quantum_number(total_spin=spin)
+        return ms_values
 
 
 if __name__ == '__main__':
