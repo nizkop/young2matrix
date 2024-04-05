@@ -43,7 +43,7 @@ class PageYoungTableaus(basicWindow):
         """ get all standard tableaus for the given group """
         p = permutation_group(self.permutation_group)
         p.get_all_standard_tableaus()
-        for group in p.group_tableaus_by_shortend_symbol(tableaus_to_sort=p.get_non_adjoint_tableaus()):
+        for group in p.group_tableaus_by_shortend_symbol(tableaus_to_sort=p.standard_tableaus):
             equation = r"\quad , \quad ".join([t.to_tex() for t in group])
             self.add_equation(eq=equation)
 

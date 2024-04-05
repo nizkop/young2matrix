@@ -39,7 +39,7 @@ class PageExpandedTableaus(basicWindow):
         """ get all standard tableaus for the given group """
         p = permutation_group(self.permutation_group)
         p.get_all_standard_tableaus()
-        for group in p.group_tableaus_by_shortend_symbol(tableaus_to_sort=p.get_non_adjoint_tableaus()):
+        for group in p.group_tableaus_by_shortend_symbol(tableaus_to_sort=p.standard_tableaus):
             for t in group:
                 t.set_up_function()
                 equation = t.to_tex() + "\quad " + t.function.to_tex()

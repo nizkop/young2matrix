@@ -21,10 +21,10 @@ class StartWindow(QWidget):
             {"sign": "Φ", "class": PageYoungTableaus},#TODO
         ]
 
-        scroll_area = QScrollArea()
-        scroll_area.setWidgetResizable(True)
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
         main_widget = QWidget()
-        scroll_area.setWidget(main_widget)
+        self.scroll_area.setWidget(main_widget)
 
         self.layout = QVBoxLayout(main_widget)
         self.layout.setContentsMargins(0, 0, 0, 0)
