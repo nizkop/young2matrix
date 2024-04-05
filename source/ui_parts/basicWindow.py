@@ -37,10 +37,11 @@ class basicWindow(QWidget):
         ax.text(0.05, 0.5, rf"${eq}$", horizontalalignment='left', verticalalignment='center', fontsize=20)
         ax.axis('off')
         figure.patch.set_facecolor('none')
+        plt.tight_layout(pad=0.2)
 
         bbox = ax.get_window_extent().transformed(figure.dpi_scale_trans.inverted())
         width = int(bbox.width * figure.dpi)
-        height = int(bbox.height * figure.dpi / 3)
+        height = int(bbox.height * figure.dpi/3) # suited for tableau [(1,2,3)], for other equations to high
         canvas = FigureCanvas(figure)
         canvas.setFixedSize(width, height)
 

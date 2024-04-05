@@ -1,5 +1,6 @@
 from typing import List
 
+from source.calculate_spin_quantum_numbers import calculate_spin_quantum_numbers
 from source.function_combination import function_combination
 from source.function_parts.spatial_part import spatial_part
 from source.function_parts.spin_part import spin_part
@@ -34,8 +35,19 @@ class chemical_standard_tableau(standard_tableau):
         pass
 
     def get_spin_choices(self):
-        pass
+        """
+        Gesamtspin S = { |s1 - s_2 - ... - s_i| , |s1 - s2 - ... - si| +1, ... , (s1 + ... + si) }
+        M_S = { -max(S), -max(S)+1, ..., 0, ..., max(S) }
+        """
+        spins = calculate_spin_quantum_numbers(number_of_particles=self.permutation_group)
+        return spins
 
 
 if __name__ == '__main__':
-    pass
+    s = chemical_standard_tableau([(1,2)])
+    # s.print()
+    s.set_up_function()
+
+    print(
+        s.get_spin_choices()
+    )
