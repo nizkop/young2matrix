@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QScrollArea
+from PyQt5.QtWidgets import QWidget, QPushButton, QVBoxLayout, QHBoxLayout
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib
@@ -17,6 +17,9 @@ class basicWindow(QWidget):
             self.parent = parent
             self.layout = self.parent.layout
         self.permutation_group = permutation_group
+
+        self.buttons_layout = QHBoxLayout()
+        self.buttons_layout.setAlignment(Qt.AlignCenter)#TODO: this doesnt change anything!?
 
     # def back_to_start(self):
     #     self.clearLayout()
@@ -50,7 +53,11 @@ class basicWindow(QWidget):
     def add_buttons(self):
         self.back_button = QPushButton("zurück zum Start")
         self.back_button.clicked.connect(self.main.back_to_start)
-        self.layout.addWidget(self.back_button)
+        self.back_button.setMaximumWidth(200)
+        self.buttons_layout.addWidget(self.back_button)
+        self.layout.addLayout(self.buttons_layout)
+        self.layout.setAlignment(Qt.AlignHCenter)
+
 
     def show_previous_page(self):
         if self.parent:

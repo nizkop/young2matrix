@@ -1,5 +1,6 @@
 import sys
 
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLabel, QLineEdit, QHBoxLayout, \
     QMessageBox, QScrollArea
 from PyQt5.QtGui import QIcon
@@ -23,6 +24,8 @@ class StartWindow(QWidget):
 
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         main_widget = QWidget()
         self.scroll_area.setWidget(main_widget)
 

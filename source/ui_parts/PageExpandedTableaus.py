@@ -1,13 +1,9 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout
-from matplotlib import pyplot as plt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from PyQt5.QtWidgets import QPushButton, QLabel
 import matplotlib
-
-from source.ui_parts.basicWindow import basicWindow
-
 matplotlib.rcParams['text.usetex'] = True
 
+from source.ui_parts.basicWindow import basicWindow
 from source.permutation_group import permutation_group
 
 
@@ -26,14 +22,15 @@ class PageExpandedTableaus(basicWindow):
         self.get_content()
         self.add_buttons()
 
-
     def add_buttons(self):
         super().add_buttons()
 
-        self.back_button = QPushButton("zurück")
-        self.back_button.clicked.connect(self.parent.back_to_start)
-        self.layout.addWidget(self.back_button)
-
+        self.back_button_tableaus = QPushButton("zurück")
+        self.back_button_tableaus.clicked.connect(self.parent.back_to_start)
+        self.back_button_tableaus.setMaximumWidth(200)
+        self.buttons_layout.addWidget(self.back_button_tableaus)
+        self.layout.addLayout(self.buttons_layout)
+        self.layout.setAlignment(Qt.AlignHCenter)
 
     def get_content(self):
         """ get all standard tableaus for the given group """

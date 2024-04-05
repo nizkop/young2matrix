@@ -1,14 +1,10 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout
-from matplotlib import pyplot as plt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from PyQt5.QtWidgets import QPushButton, QLabel
 import matplotlib
+matplotlib.rcParams['text.usetex'] = True
 
 from source.ui_parts.PageExpandedTableaus import PageExpandedTableaus
 from source.ui_parts.basicWindow import basicWindow
-
-matplotlib.rcParams['text.usetex'] = True
-
 from source.permutation_group import permutation_group
 
 
@@ -24,7 +20,10 @@ class PageYoungTableaus(basicWindow):
 
         self.further_button = QPushButton("Tableaus ausmultiplizieren")
         self.further_button.clicked.connect(self.on_further_button_clicked)
-        self.layout.addWidget(self.further_button)
+        self.further_button.setMaximumWidth(200)
+        self.buttons_layout.addWidget(self.further_button)
+        self.layout.addLayout(self.buttons_layout)
+        self.layout.setAlignment(Qt.AlignHCenter)
 
     def back_to_start(self):
         self.clearLayout()
