@@ -1,5 +1,4 @@
 from typing import List
-from itertools import groupby
 
 class young_tableau(object):
     def __init__(self, number_of_rows:int, number_of_columns:List[int]):

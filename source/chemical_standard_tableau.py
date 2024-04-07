@@ -31,11 +31,11 @@ class chemical_standard_tableau(standard_tableau):
         total angular momentum L = { |l1-l2-...-li | , ..., (l1+...+li) }
         ML = { -L, ..., L} = ml1 + ... + mli
 
-        particle angular momentum l = 0 (s orbital), 1 (p orbital, 2 (d orbital), ...
+        angular momentum of a particle l = 0 (s orbital), 1 (p orbital, 2 (d orbital), ...
         ml = alignment of the individual orbital = { -l , ..., l }
         """
         print("we dont want to choose the orbitals yet")
-        pass
+        self.spatial_parts.append(spatial_part())
 
     def calulate_all_overlap_integrals(self):
         pass
