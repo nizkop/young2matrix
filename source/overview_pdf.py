@@ -1,7 +1,6 @@
-import numpy as np
-from pylatex import Document, Section, Math, Matrix
-from pylatex.base_classes import Environment
-from pylatex.utils import italic, NoEscape
+
+from pylatex import Document, Section, Math, Command, Package
+from pylatex.utils import NoEscape
 
 
 class overview_pdf(object):
@@ -10,6 +9,11 @@ class overview_pdf(object):
         self.file_type:str = "pdf"
 
         self.doc = Document()
+        self.doc.packages.append(Package('geometry',
+                 options=['a4paper', 'left=2cm', 'right=2cm', 'top=2cm', 'bottom=2cm']))
+        self.doc.preamble.append(Package("babel", options=r'ngerman'))
+        self.doc.preamble.append(Package("tocloft"))
+        self.doc.preamble.append(NoEscape(r"\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}   % activating dots in table of contents"))
 
     def save(self, title: str) -> None:
         """
@@ -17,10 +21,9 @@ class overview_pdf(object):
         :param title:
         :return:
         """
+        self.doc.append(Command('newpage'))  # Seite umbrechen
+        self.doc.append(Command('tableofcontents'))
         self.doc.generate_pdf(title, clean_tex=True)
-
-    # def add_information(self, additional_info: str)->None:
-    #     pass
 
     def add_information(self, additional_info: str) -> None:
         self.doc.append(additional_info)
@@ -29,7 +32,7 @@ class overview_pdf(object):
         with self.doc.create(Section(sec_title)):
             self.doc.append(content)
 
-    def add_latex_formula(self, formula_text: str, inline:bool = True) -> None:
+    def add_latex_formula(self, formula_text: str, inline:bool = False) -> None:
         """
         :param formula_text: latex-equation
         :param inline: whether the equation should be written in the same line as content before (False)

@@ -3,6 +3,7 @@ from typing import List
 from source.getting_subsets import get_powerset, permutations_of_subsets
 from source.overview_pdf import overview_pdf
 from source.chemical_standard_tableau import chemical_standard_tableau
+from source.texts.get_titles_for_permutation_parts import get_title_permutation_to_tableaus
 from source.young_tableau import young_tableau
 
 
@@ -22,14 +23,34 @@ class permutation_group(object):
     def find_tableaus(self):
         pass
 
-    def get_overview_pdf(self, title:str)->None:
-        pass
+
+    def get_young_tableau_equations(self) -> List[str]:
+        equations = []
+        self.get_all_standard_tableaus()
+        for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=p.standard_tableaus):
+            equation = group[0].get_shortend_symbol()["tex"]+ ":\quad"
+            equation += r"\quad , \quad ".join([t.to_tex() for t in group])
+            equations.append(equation)
+        return equations
+
+    def get_overview_pdf(self, title:str) -> None:
+        self.overview.add_section("Young-Tableaus",
+                                  content=get_title_permutation_to_tableaus(self.permutation_group))
+        for equation in self.get_young_tableau_equations():
+            self.overview.add_latex_formula(equation)
+        self.overview.save(title=title)
+
 
     def get_all_standard_tableaus(self) -> None:
         """
         creating all possible young (standard) tableaus from the number of the permutation group
         :return: None, because result is written into self.standard_tableaus
         """
+        # print("get_all_standard_tableaus", flush=True)
+        if len(self.standard_tableaus) > 0:
+            # duplicate calculations are adding redundant tableaus
+            # and re-calculation takes up more ressources
+            return
         # find subsets of all combinations:
         numbers = list(range(1, self.permutation_group + 1))
         subsets = [subset for subset in get_powerset(array=numbers) if len(subset) > 0]
@@ -73,8 +94,9 @@ class permutation_group(object):
 
 
 if __name__ == '__main__':
-    p = permutation_group(4)
+    p = permutation_group(2)
     p.get_all_standard_tableaus()
-    p.print()
+    # p.print()
 
-    print(p.group_tableaus_by_shortend_symbol())
+
+    p.get_overview_pdf("bla")

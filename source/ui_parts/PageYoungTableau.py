@@ -1,6 +1,9 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QPushButton, QLabel
 import matplotlib
+
+from source.texts.get_titles_for_permutation_parts import get_title_permutation_to_tableaus
+
 matplotlib.rcParams['text.usetex'] = True
 
 from source.ui_parts.PageExpandedTableaus import PageExpandedTableaus
@@ -27,7 +30,7 @@ class PageYoungTableaus(basicWindow):
 
     def back_to_start(self):
         self.clearLayout()
-        self.label = QLabel(f"Die möglichen (Standard-)Young-Tableaus zur Gruppe {self.permutation_group} lauten:")
+        self.label = QLabel(get_title_permutation_to_tableaus(self.permutation_group))
         self.layout.addWidget(self.label)
 
         self.get_content()
@@ -41,10 +44,12 @@ class PageYoungTableaus(basicWindow):
     def get_content(self):
         """ get all standard tableaus for the given group """
         p = permutation_group(self.permutation_group)
-        p.get_all_standard_tableaus()
-        for group in p.group_tableaus_by_shortend_symbol(tableaus_to_sort=p.standard_tableaus):
-            equation = group[0].get_shortend_symbol()["tex"]+ ":\quad"
-            equation += r"\quad , \quad ".join([t.to_tex() for t in group])
+        # p.get_all_standard_tableaus()
+        # for group in p.group_tableaus_by_shortend_symbol(tableaus_to_sort=p.standard_tableaus):
+        #     equation = group[0].get_shortend_symbol()["tex"]+ ":\quad"
+        #     equation += r"\quad , \quad ".join([t.to_tex() for t in group])
+        #     self.add_equation(eq=equation)
+        for equation in p.get_young_tableau_equations():
             self.add_equation(eq=equation)
 
     # def add_equation(self, eq: str):
