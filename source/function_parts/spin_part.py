@@ -15,8 +15,11 @@ class spin_part(integral_part):
     def to_text(self):
         return f"| {self.total_spin}  {'+' if self.ms >= 0 else '-'}{abs(self.ms)} >"
 
-    def find_all_choices(self):
-        pass
+    def to_tex(self):
+        return "\ket{ "+fr"{self.total_spin} \quad  {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "+ "}"
 
-    def get_spin_part(self):
+    # def find_all_choices(self):
+    #     pass
+
+    def get_spin_part(self):#TODO
         pass

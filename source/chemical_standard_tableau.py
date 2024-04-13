@@ -61,4 +61,5 @@ if __name__ == '__main__':
 
     s.get_spin_choices()
     for t in s.spin_parts:
-        t.print()
+        # t.print()
+        print(t.to_tex())

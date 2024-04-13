@@ -3,6 +3,7 @@ from typing import List
 from source.getting_subsets import get_powerset, permutations_of_subsets
 from source.overview_pdf import overview_pdf
 from source.chemical_standard_tableau import chemical_standard_tableau
+from source.texts.get_info_spin_possibilities import get_info_spin_possibilities
 from source.texts.get_titles_for_permutation_parts import get_title_permutation_to_tableaus
 from source.young_tableau import young_tableau
 
@@ -34,6 +35,7 @@ class permutation_group(object):
         return equations
 
     def get_overview_pdf(self) -> None:
+        """ creating a pdf with all calculated information about this particular permutation group """
         title = f"group_{self.permutation_group}"
 
         # page 1
@@ -46,7 +48,9 @@ class permutation_group(object):
         self.overview.newpage()
 
         # page 2
-        self.overview.add_section("Ausmultiplizierte Young-Tableaus",content="")
+        self.overview.add_section("Ausmultiplizierte Young-Tableaus",
+                                  content=r"$a, b, c, \hdots \quad $ = allgemeine Funktionen, "+
+                                          r"die beispielsweise p-Orbitale repräsentieren könnten")
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=p.standard_tableaus):
             self.overview.vspace()
             equation = group[0].get_shortend_symbol()["tex"] + ":"
@@ -57,6 +61,21 @@ class permutation_group(object):
                 equation = t.to_tex() + "\quad " + t.function.to_tex()
                 self.overview.add_latex_formula(equation)
                 self.overview.vspace()
+            self.overview.vspace()
+        self.overview.newpage()
+
+        # page 3
+        self.overview.add_section("Spin",content=get_info_spin_possibilities(self.permutation_group))
+        for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=p.standard_tableaus):
+            self.overview.vspace()
+            equation = group[0].get_shortend_symbol()["tex"] + ":"
+            self.overview.add_latex_formula(equation)
+            self.overview.vspace()
+            for t in group:
+                t.get_spin_choices()
+                for s in t.spin_parts:
+                    self.overview.add_latex_formula(s.to_tex())
+                    self.overview.vspace()
             self.overview.vspace()
         self.overview.newpage()
 
@@ -116,7 +135,7 @@ class permutation_group(object):
 
 
 if __name__ == '__main__':
-    p = permutation_group(2)
+    p = permutation_group(1)
     p.get_all_standard_tableaus()
     # p.print()
 

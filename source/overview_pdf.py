@@ -14,6 +14,7 @@ class overview_pdf(object):
         self.doc.preamble.append(Package("babel", options=r'ngerman'))
         self.doc.preamble.append(Package("tocloft"))
         self.doc.preamble.append(NoEscape(r"\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}   % activating dots in table of contents"))
+        self.doc.preamble.append(Package("physics"))
 
     def save(self, title: str) -> None:
         """
@@ -26,11 +27,14 @@ class overview_pdf(object):
         self.doc.generate_pdf(title, clean_tex=True)
 
     def add_information(self, additional_info: str) -> None:
-        self.doc.append(additional_info)
+        self.doc.append(NoEscape(additional_info))
 
     def add_section(self, sec_title:str, content:str):
         with self.doc.create(Section(sec_title)):
-            self.doc.append(content)
+            self.doc.append(NoEscape(content))
+
+    def get_latex_formula(self, formula_text:str, inline:bool = False) -> Math:
+        return Math(data=[NoEscape(rf"{formula_text}")], inline=inline)
 
     def add_latex_formula(self, formula_text: str, inline:bool = False) -> None:
         """
@@ -39,7 +43,7 @@ class overview_pdf(object):
                        or if it should get a line for itself (True)
         :return:
         """
-        self.doc.append(Math(data=[NoEscape(rf"{formula_text}")], inline=inline))
+        self.doc.append(self.get_latex_formula(formula_text=formula_text, inline=inline))
         # a = np.array([[100, 10, 20]]).T
         # M = np.matrix([[2, 3, 4],
         #                [0, 0, 1],
