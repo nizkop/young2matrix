@@ -1,6 +1,9 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QPushButton, QLabel
 import matplotlib
+
+from source.texts.get_titles_for_permutation_parts import get_title_permutation_to_tableaus
+
 matplotlib.rcParams['text.usetex'] = True
 
 from source.ui_parts.basicWindow import basicWindow
@@ -16,7 +19,7 @@ class PageExpandedTableaus(basicWindow):
         self.back_to_start()
 
     def back_to_start(self):
-        self.label = QLabel(f"Die möglichen (Standard-)Young-Tableaus zur Gruppe {self.permutation_group} lauten:")
+        self.label = QLabel(get_title_permutation_to_tableaus(self.permutation_group))
         self.layout.addWidget(self.label)
 
         self.get_content()

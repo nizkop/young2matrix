@@ -46,6 +46,12 @@ class overview_pdf(object):
         #                [0, 0, 2]])
         # self.doc.append(Math(data=[Matrix(M), Matrix(a), '=', Matrix(M * a)]))
 
+    def newpage(self):
+        self.doc.append(Command('newpage'))
+
+    def vspace(self):
+        self.doc.append(Command('vspace', '0.25cm'))
+
 
 if __name__ == '__main__':
     o = overview_pdf()

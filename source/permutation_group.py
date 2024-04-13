@@ -33,11 +33,33 @@ class permutation_group(object):
             equations.append(equation)
         return equations
 
-    def get_overview_pdf(self, title:str) -> None:
+    def get_overview_pdf(self) -> None:
+        title = f"group_{self.permutation_group}"
+
+        # page 1
         self.overview.add_section("Young-Tableaus",
                                   content=get_title_permutation_to_tableaus(self.permutation_group))
+        self.overview.vspace()
         for equation in self.get_young_tableau_equations():
             self.overview.add_latex_formula(equation)
+            self.overview.vspace()
+        self.overview.newpage()
+
+        # page 2
+        self.overview.add_section("Ausmultiplizierte Young-Tableaus",content="")
+        for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=p.standard_tableaus):
+            self.overview.vspace()
+            equation = group[0].get_shortend_symbol()["tex"] + ":"
+            self.overview.add_latex_formula(equation)
+            self.overview.vspace()
+            for t in group:
+                t.set_up_function()
+                equation = t.to_tex() + "\quad " + t.function.to_tex()
+                self.overview.add_latex_formula(equation)
+                self.overview.vspace()
+            self.overview.vspace()
+        self.overview.newpage()
+
         self.overview.save(title=title)
 
 
@@ -98,5 +120,4 @@ if __name__ == '__main__':
     p.get_all_standard_tableaus()
     # p.print()
 
-
-    p.get_overview_pdf("bla")
+    p.get_overview_pdf()
