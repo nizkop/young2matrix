@@ -89,6 +89,8 @@ class standard_tableau(young_tableau):
         """
         if not self.check():
             return
+        if self.function is not None:
+            return
         self.function = function(product_term( Sign("+"), tuple(i+1 for i in range(self.permutation_group))  ))
         # use young operator:
         for row in self.numbers_in_row:
@@ -99,10 +101,11 @@ class standard_tableau(young_tableau):
 
 
 if __name__ == '__main__':
-    s = standard_tableau([(1,2)])
+    s = standard_tableau([(1,2),(3,)])
     s.print()
 
     s.set_up_function()
+    s.print()
 
     print(s.function)
     s.function.print()

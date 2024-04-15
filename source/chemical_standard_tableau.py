@@ -47,19 +47,35 @@ class chemical_standard_tableau(standard_tableau):
         """
         finding all combinations of spin quantum numbers for this specific tableau
         """
+        if self.number_of_rows > 2:
+            # only 2 different spin functions = more antisymmetric than 2 impossible
+            return
         spins = calculate_spin_quantum_numbers(number_of_particles=self.permutation_group)
         for spin in spins:
-            ms_values = calculate_ms_quantum_number(total_spin=spin)
-            for q in ms_values:
-                self.spin_parts.append( spin_part(total_spin=spin, ms=q) )
+            # get total number of non-alpha spins:
+            anti = 0
+            for r in range(1, len(self.numbers_in_row), 2):
+                anti += len(self.numbers_in_row[r])
+            # only pick s, ms combination, if value of S is fitting (first line alpha, second beta, ...)_
+            if spin == anti * -0.5 + 0.5 * (self.permutation_group - anti):
+                ms_values = calculate_ms_quantum_number(total_spin=spin)
+                for q in ms_values:
+                    self.spin_parts.append( spin_part(total_spin=spin, ms=q) )
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
-    s = chemical_standard_tableau([(1,2)])
-    # s.print()
+    s = chemical_standard_tableau([(1,2,3,4)])
+    s.print()
     s.set_up_function()
 
     s.get_spin_choices()
     for t in s.spin_parts:
-        # t.print()
-        print(t.to_tex())
+        t.print()
+    #     print(t.to_tex())
