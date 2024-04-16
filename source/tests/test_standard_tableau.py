@@ -1,6 +1,6 @@
 from source.standard_tableau import standard_tableau
 
-# ! these tests are sentitive to the order of summands (= an error might not be a mistake)
+# ! these tests are sensitive to the order of summands (= an error might not be a mistake)
 trials = [
     # single operators:
     {"input": [(1, 2)], "expected": "+ a1 b2 + a2 b1", "error_message": "symmetrizing wrong"},

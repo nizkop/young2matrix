@@ -18,10 +18,13 @@ class product_term(object):
             self.lowercase_letters += [ x*i for i in self.lowercase_letters ]
             x+=1
 
+    def get_list_of_parts(self):
+        return [ fr"{self.lowercase_letters[i]}{self.ordered_functions[i]}" for i in range(len(self.ordered_functions))]
+
     def to_text(self) -> str:
         s = f"{self.sign.value} "
         s+= f"{self.factor} * " if self.factor > 1 else ""
-        s+=" * ".join([ f"{self.lowercase_letters[i]}{self.ordered_functions[i]}" for i in range(len(self.ordered_functions))])
+        s+=" * ".join(self.get_list_of_parts())
         return s
 
     def print(self) -> None:
@@ -30,7 +33,7 @@ class product_term(object):
     def to_tex(self) -> str:
         s = fr"{self.sign.value} "
         s+= fr"{self.factor} \cdot " if self.factor > 1 else ""
-        s+=r" \cdot ".join([ fr"{self.lowercase_letters[i]}_{self.ordered_functions[i]}" for i in range(len(self.ordered_functions))])
+        s+=r" \cdot ".join(self.get_list_of_parts())
         return s
 
 
@@ -38,6 +41,11 @@ class product_term(object):
 
 
 if __name__ == '__main__':
-    p = product_term(Sign("-"), (1, 2, 3, 4, 5, 6))
+    p = product_term(Sign("-"), (1, 2, 3, 4))
+    p.lowercase_letters = ["α", "β"]*3
     p.print()
     print(p.to_tex())
+
+
+
+

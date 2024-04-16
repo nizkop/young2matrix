@@ -54,13 +54,20 @@ class chemical_standard_tableau(standard_tableau):
         for spin in spins:
             # get total number of non-alpha spins:
             anti = 0
-            for r in range(1, len(self.numbers_in_row), 2):
-                anti += len(self.numbers_in_row[r])
+            alpha_beta = {"alpha": [], "beta": []}
+            for r in range(len(self.numbers_in_row)):
+                if r % 2 == 1:
+                    alpha_beta["beta"].append(self.numbers_in_row[r])
+                    anti += len(self.numbers_in_row[r])
+                else:
+                    alpha_beta["alpha"].append(self.numbers_in_row[r])
+
             # only pick s, ms combination, if value of S is fitting (first line alpha, second beta, ...)_
             if spin == anti * -0.5 + 0.5 * (self.permutation_group - anti):
                 ms_values = calculate_ms_quantum_number(total_spin=spin)
                 for q in ms_values:
-                    self.spin_parts.append( spin_part(total_spin=spin, ms=q) )
+                    self.spin_parts.append( spin_part(total_spin=spin, ms=q, choices_for_spin=alpha_beta) )
+
 
 
 
@@ -76,6 +83,7 @@ if __name__ == '__main__':
     s.set_up_function()
 
     s.get_spin_choices()
-    for t in s.spin_parts:
-        t.print()
+    # for t in s.spin_parts:
+    #     t.print()
     #     print(t.to_tex())
+    s.function.print()

@@ -63,8 +63,10 @@ class function(object):
     def aggregate_terms(self) -> None:
         """ checking the function term list for duplicates or parts cancelling each other """
         for i in range(len(self.parts)):
+            function_list_i = sorted(self.parts[i].get_list_of_parts())
             for j in range(i + 1, len(self.parts)):
-                if self.parts[i].ordered_functions == self.parts[j].ordered_functions:
+                function_list_j = sorted(self.parts[j].get_list_of_parts())
+                if self.parts[i].ordered_functions == self.parts[j].ordered_functions or function_list_i == function_list_j:
                     if self.parts[i].sign.value == self.parts[j].sign.value:
                         self.parts[i].factor += 1
                         del self.parts[j]
@@ -76,15 +78,20 @@ class function(object):
 
 
 
+
 if __name__ == '__main__':
-    f = function(product_term(Sign("-"), (1,2,3)))
-    f.anti_symmetrize([1,2])
-    f.anti_symmetrize([1, 2])
-    f.symmetrize([1,3])
+    f = function(product_term(Sign("+"), (1,2,3,)))
+    f.symmetrize([1,2])
+    f.anti_symmetrize([1, 3])
     for i in f.parts:
         i.print()
     print("after:")
     f.aggregate_terms()
 
+    for i in f.parts:
+        i.print()
+        i.lowercase_letters = ["α", "β", "β"]
+    f.aggregate_terms()
+    print()
     for i in f.parts:
         i.print()
