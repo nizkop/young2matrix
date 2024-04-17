@@ -1,7 +1,10 @@
 import copy
+import math
 
 from source.function_parts.function import function
 from source.function_parts.integral_part import integral_part
+from source.function_parts.product_term import product_term
+from source.function_parts.sign import Sign
 
 
 class spin_part(integral_part):
@@ -14,6 +17,7 @@ class spin_part(integral_part):
         self.test_choices_for_spin_input(choices_for_spin=choices_for_spin)
         self.choices_for_spin : dict = choices_for_spin
         self.set_up_choices()
+
 
     def test_choices_for_spin_input(self, choices_for_spin):
         try:
@@ -47,20 +51,28 @@ class spin_part(integral_part):
 
     def to_text(self):
         part_1 = f"| {self.total_spin}  {'+' if self.ms >= 0 else '-'}{abs(self.ms)} >"
-        part_2 = self.function.to_text()
+        part_2 = f"{self.function.to_text()}"
         return f"{part_1} = {part_2}"
 
     def to_tex(self):
         part_1 = r"\ket{ "+fr"{self.total_spin} \quad  {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "+ r"}"
-        part_2 = self.function.to_tex().replace('α',r"\alpha ").replace('β', r"\beta ")
-        return fr"{part_1} = {part_2}"
+        # part_2 = self.get_normalization_factor()["tex"] + r"\left( "+ self.function.to_tex().replace('α',r"\alpha ").replace('β', r"\beta ")+ r"\right) "
+        return fr"{part_1} = {self.function.to_tex()}"
 
     # def find_all_choices(self):
     #     pass
 
-    def get_spin_part(self):#TODO
-        pass
+    # def get_normalization_factor(self) -> dict:
+    #     if self.function.get_number_of_terms() == 1:
+    #         return {"no": 1, "text":"", "tex":""}
+    #     n = 1/math.sqrt(self.function.get_number_of_terms())
+    #     text = f"1/√({self.function.get_number_of_terms()}) "
+    #     tex = r"\frac{1}{\sqrt{"+fr"{self.function.get_number_of_terms()}"+"}} "
+    #     return {"no": n,"text":text,"tex":tex}
 
 
 if __name__ == '__main__':
-    s = spin_part(2,2,{"alpha":[1,2,3,4], "beta":[]})
+    f = function(product_term(Sign("+"), (1,2,3,4)))
+    s = spin_part(4, 2,2,{"alpha":[1,2,3,4], "beta":[]}, f)
+
+    s.print()

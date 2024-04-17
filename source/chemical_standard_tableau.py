@@ -35,7 +35,9 @@ class chemical_standard_tableau(standard_tableau):
         ml = alignment of the individual orbital = { -l , ..., l }
         """
         print("we dont want to choose the orbitals yet")
-        self.spatial_parts.append(spatial_part())
+        if self.function is None:#spatial part needs function as a general behavior pattern
+            self.set_up_function()
+        self.spatial_parts.append(spatial_part(behavior=self.function))
 
 
     def calulate_all_overlap_integrals(self):
@@ -72,6 +74,8 @@ class chemical_standard_tableau(standard_tableau):
                 ms_values = calculate_ms_quantum_number(total_spin=spin)
                 for q in ms_values:
                     self.spin_parts.append( spin_part(permutation_group=self.permutation_group, total_spin=spin, ms=q, choices_for_spin=alpha_beta,behavior=self.function) )
+        # normalizing:
+
 
 
 

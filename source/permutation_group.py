@@ -80,7 +80,6 @@ class permutation_group(object):
             self.overview.vspace()
         self.overview.newpage()
 
-
         self.overview.save(title=title)
 
 
@@ -137,7 +136,7 @@ class permutation_group(object):
 
 
 if __name__ == '__main__':
-    p = permutation_group(3)
+    p = permutation_group(2)
     p.get_all_standard_tableaus()
     # p.print()
 

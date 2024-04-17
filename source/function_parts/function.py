@@ -1,3 +1,4 @@
+import math
 from itertools import permutations
 from typing import List
 
@@ -14,10 +15,26 @@ class function(object):
     def print(self) -> None:
         print(self.to_text())
     def to_text(self) -> str:
-        return "  ".join([i.to_text() for i in self.parts])
+        intern = "  ".join([i.to_text() for i in self.parts])
+        return f"{self.get_normalization_factor()['text']} ( {intern} )"
 
     def to_tex(self) -> str:
-        return "  ".join([i.to_tex() for i in self.parts])
+        intern = "  ".join([i.to_tex() for i in self.parts])
+        return self.get_normalization_factor()["tex"] + r"\left( " + intern.replace('α',r"\alpha ").replace('β', r"\beta ") + r"\right) "
+
+    def get_number_of_terms(self):
+        no = 0
+        for i in self.parts:
+            no += i.factor
+        return no
+
+    def get_normalization_factor(self) -> dict:
+        if self.get_number_of_terms() == 1:
+            return {"no": 1, "text":"", "tex":""}
+        n = 1/math.sqrt(self.get_number_of_terms())
+        text = f"1/√({self.get_number_of_terms()}) "
+        tex = r"\frac{1}{\sqrt{"+fr"{self.get_number_of_terms()}"+"}} "
+        return {"no": n,"text":text,"tex":tex}
 
     def anti_symmetrize(self, changeble_elements:List[int]):
         return self.permutate_basis(changeable_elements=changeble_elements, change_sign=True)
