@@ -72,12 +72,14 @@ class permutation_group(object):
             self.overview.add_latex_formula(equation)
             self.overview.vspace()
             for t in group:
+                tableau = t.to_tex()
                 t.get_spin_choices()
                 for s in t.spin_parts:
-                    self.overview.add_latex_formula(s.to_tex())
+                    self.overview.add_latex_formula(tableau +r"\qquad "+ s.to_tex())
                     self.overview.vspace()
             self.overview.vspace()
         self.overview.newpage()
+
 
         self.overview.save(title=title)
 
@@ -135,7 +137,7 @@ class permutation_group(object):
 
 
 if __name__ == '__main__':
-    p = permutation_group(1)
+    p = permutation_group(3)
     p.get_all_standard_tableaus()
     # p.print()
 

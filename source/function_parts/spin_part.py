@@ -8,16 +8,23 @@ class spin_part(integral_part):
     def __init__(self, permutation_group:int, total_spin:float, ms:float, choices_for_spin:dict, behavior:function):
         self.permutation_group:int=permutation_group
         self.behavior = None
+        self.total_spin = total_spin
+        self.ms = ms
+        self.function = copy.deepcopy(behavior)
+        self.test_choices_for_spin_input(choices_for_spin=choices_for_spin)
+        self.choices_for_spin : dict = choices_for_spin
+        self.set_up_choices()
+
+    def test_choices_for_spin_input(self, choices_for_spin):
         try:
             choices_for_spin["alpha"]
             choices_for_spin["beta"]
         except:
             raise Exception("spin_part-error: choices_for_spin needs input for alpha and beta spins")
-        self.choices_for_spin : dict = choices_for_spin
-        self.total_spin = total_spin
-        self.ms = ms
-        self.function = copy.deepcopy(behavior)
-        self.set_up_choices()
+        # ms_total = len(choices_for_spin["alpha"]) * 1/2 + len(choices_for_spin["beta"])*(-1/2)
+        # if self.ms != ms_total:
+        #     raise Exception("spin_part-error: ms does not fit amount of alpha and beta spins")
+
 
     def set_up_choices(self):
         # "α", "β"

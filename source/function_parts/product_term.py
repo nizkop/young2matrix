@@ -19,7 +19,7 @@ class product_term(object):
             x+=1
 
     def get_list_of_parts(self):
-        return [ fr"{self.lowercase_letters[i]}{self.ordered_functions[i]}" for i in range(len(self.ordered_functions))]
+        return [ fr"{self.lowercase_letters[i]}_{self.ordered_functions[i]}" for i in range(len(self.ordered_functions))]
 
     def to_text(self) -> str:
         s = f"{self.sign.value} "
@@ -33,7 +33,7 @@ class product_term(object):
     def to_tex(self) -> str:
         s = fr"{self.sign.value} "
         s+= fr"{self.factor} \cdot " if self.factor > 1 else ""
-        s+=r" \cdot ".join(self.get_list_of_parts())
+        s+=r" \cdot ".join([ fr"{self.lowercase_letters[i]}_"+"{"+fr"{self.ordered_functions[i]}" +"}" for i in range(len(self.ordered_functions))])
         return s
 
 
