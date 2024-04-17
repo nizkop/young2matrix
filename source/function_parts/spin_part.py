@@ -1,9 +1,12 @@
+import copy
+
+from source.function_parts.function import function
 from source.function_parts.integral_part import integral_part
 
 
 class spin_part(integral_part):
-    def __init__(self, total_spin:float, ms:float, choices_for_spin:dict):
-        self.permutation_group:int=0
+    def __init__(self, permutation_group:int, total_spin:float, ms:float, choices_for_spin:dict, behavior:function):
+        self.permutation_group:int=permutation_group
         self.behavior = None
         try:
             choices_for_spin["alpha"]
@@ -13,15 +16,37 @@ class spin_part(integral_part):
         self.choices_for_spin : dict = choices_for_spin
         self.total_spin = total_spin
         self.ms = ms
+        self.function = copy.deepcopy(behavior)
+        self.set_up_choices()
+
+    def set_up_choices(self):
+        # "α", "β"
+        spin_ordered = []
+        for i in range(1,self.permutation_group+1):
+            if i in self.choices_for_spin["alpha"]:
+                spin_ordered.append('α')
+            elif i in self.choices_for_spin["beta"]:
+                spin_ordered.append('β')
+            else:
+                raise Exception("ungiven spin")
+        if len(spin_ordered) != self.permutation_group:
+            raise Exception("error in set_up_choices")
+        for p in self.function.parts:
+            p.lowercase_letters = spin_ordered
+        self.function.aggregate_terms()
 
     def print(self):
         print(self.to_text())
 
     def to_text(self):
-        return f"| {self.total_spin}  {'+' if self.ms >= 0 else '-'}{abs(self.ms)} >"
+        part_1 = f"| {self.total_spin}  {'+' if self.ms >= 0 else '-'}{abs(self.ms)} >"
+        part_2 = self.function.to_text()
+        return f"{part_1} = {part_2}"
 
     def to_tex(self):
-        return "\ket{ "+fr"{self.total_spin} \quad  {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "+ "}"
+        part_1 = r"\ket{ "+fr"{self.total_spin} \quad  {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "+ r"}"
+        part_2 = self.function.to_tex().replace('α',r"\alpha ").replace('β', r"\beta ")
+        return fr"{part_1} = {part_2}"
 
     # def find_all_choices(self):
     #     pass

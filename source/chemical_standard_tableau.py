@@ -37,6 +37,7 @@ class chemical_standard_tableau(standard_tableau):
         print("we dont want to choose the orbitals yet")
         self.spatial_parts.append(spatial_part())
 
+
     def calulate_all_overlap_integrals(self):
         pass
 
@@ -50,6 +51,8 @@ class chemical_standard_tableau(standard_tableau):
         if self.number_of_rows > 2:
             # only 2 different spin functions = more antisymmetric than 2 impossible
             return
+        if self.function is None:#spin need function as a general behavior pattern
+            self.set_up_function()
         spins = calculate_spin_quantum_numbers(number_of_particles=self.permutation_group)
         for spin in spins:
             # get total number of non-alpha spins:
@@ -57,16 +60,18 @@ class chemical_standard_tableau(standard_tableau):
             alpha_beta = {"alpha": [], "beta": []}
             for r in range(len(self.numbers_in_row)):
                 if r % 2 == 1:
-                    alpha_beta["beta"].append(self.numbers_in_row[r])
+                    for i in self.numbers_in_row[r]:
+                        alpha_beta["beta"].append(i)
                     anti += len(self.numbers_in_row[r])
                 else:
-                    alpha_beta["alpha"].append(self.numbers_in_row[r])
+                    for i in self.numbers_in_row[r]:
+                        alpha_beta["alpha"].append(i)
 
             # only pick s, ms combination, if value of S is fitting (first line alpha, second beta, ...)_
             if spin == anti * -0.5 + 0.5 * (self.permutation_group - anti):
                 ms_values = calculate_ms_quantum_number(total_spin=spin)
                 for q in ms_values:
-                    self.spin_parts.append( spin_part(total_spin=spin, ms=q, choices_for_spin=alpha_beta) )
+                    self.spin_parts.append( spin_part(permutation_group=self.permutation_group, total_spin=spin, ms=q, choices_for_spin=alpha_beta,behavior=self.function) )
 
 
 
@@ -78,12 +83,12 @@ class chemical_standard_tableau(standard_tableau):
 
 
 if __name__ == '__main__':
-    s = chemical_standard_tableau([(1,2,3,4)])
+    s = chemical_standard_tableau([(1,2,3)])
     s.print()
-    s.set_up_function()
+    # s.set_up_function()
 
     s.get_spin_choices()
-    # for t in s.spin_parts:
-    #     t.print()
-    #     print(t.to_tex())
-    s.function.print()
+    for t in s.spin_parts:
+        t.print()
+        print(t.to_tex())
+    # s.function.print()
