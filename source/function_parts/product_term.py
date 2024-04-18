@@ -4,7 +4,7 @@ import string
 from typing import Tuple
 
 from source.function_parts.sign import Sign
-from source.function_parts.ttext_kinds import text_kinds
+
 
 
 class product_term(object):
@@ -25,17 +25,8 @@ class product_term(object):
                 if count > 1
                 else str(key[0]) + r"_{"+str(key[1])+r"}"
                 for key, count in counter.items()]
-        # return [ fr"{self.lowercase_letters[i]}_{{self.ordered_functions[i]}}" for i in range(len(self.ordered_functions))]
 
     def to_text(self) -> str:
-        # sign = f"{self.sign.value} "
-        # if len(self.ordered_functions) == 0:
-        #     if self.factor == 0:
-        #         return "0"
-        #     else:
-        #         return sign+str(self.factor)
-        # factor= f"{self.factor} * " if self.factor > 1 else ""
-        # function_factors =" * ".join([i.replace("{","").replace("}","") for i in self.get_list_of_parts()])
         return self.to_tex().replace("{","").replace("}","").replace(r"\cdot","*")
 
     def print(self) -> None:
@@ -58,15 +49,11 @@ class product_term(object):
         function_factors =r" \cdot ".join(self.get_list_of_parts())
         return sign+factor+function_factors
 
-        # s = fr"{self.sign.value} "
-        # s+= fr"{self.factor} " if self.factor > 1 else ""
-        # if len(self.ordered_functions) > 0:
-        #     s+= r"\cdot " if self.factor > 1 else ""
-        #     s+=r" \cdot ".join([ fr"{self.lowercase_letters[i]}_"+"{"+fr"{self.ordered_functions[i]}" +"}" for i in range(len(self.ordered_functions))])
-        # return s
 
-
-    def multiply(self, other):
+    def multiply(self, other):# -> product_term
+        """ building a product of products = simple factor combination (for numbers and functions)
+        grouping happens later on, here duplicates of functions x_i may occur
+        """
         new_factor = self.factor * other.factor
         new_sign = Sign("+") if self.sign.value == other.sign.value else Sign("-")
 
@@ -75,7 +62,8 @@ class product_term(object):
         p.lowercase_letters = p.lowercase_letters[:len(p.ordered_functions)] * 2
         p.ordered_functions = tuple( list(p.ordered_functions) + list(self.ordered_functions) )
 
-        print(f"{self.to_text()}       *       {other.to_text()}     =     {p.to_text()}")
+        #print(f"{self.to_text()}       *       {other.to_text()}     =     {p.to_text()}")
+        return p
 
 
 

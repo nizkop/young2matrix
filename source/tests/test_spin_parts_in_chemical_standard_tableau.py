@@ -1,5 +1,4 @@
 from source.chemical_standard_tableau import chemical_standard_tableau
-from source.function_parts.spin_part import spin_part
 
 
 trials = [
