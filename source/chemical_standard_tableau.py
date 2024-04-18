@@ -13,7 +13,7 @@ class chemical_standard_tableau(standard_tableau):
 
     def __init__(self,numbers_in_row:List[tuple]):
         super().__init__(numbers_in_row=numbers_in_row)
-        self.help: function_combination = function_combination()
+        self.help: function_combination = None #function_combination()
         self.spatial_parts: List[spatial_part] = []
         self.spin_parts: List[spin_part] = []
 

@@ -1,6 +1,5 @@
-import math
+
 from fractions import Fraction
-from typing import Union
 import sympy as sp
 
 from source.function_parts.function import function
@@ -15,6 +14,7 @@ class function_combination(object):
         self.tableau_b : standard_tableau = tableau_b
 
     def calculate_overlap_integral(self) -> function:
+        # TODO: not correct yet
         if self.tableau_a.permutation_group != self.tableau_b.permutation_group:
             raise Exception("function_combination error: The tableaus dont fit.")
         empty_function = function(product_term(Sign("+"), ()),normalizable=False)
@@ -57,10 +57,10 @@ class function_combination(object):
 
 
 if __name__ == '__main__':
-    s = standard_tableau([(1, 2, 3), (4,)])
+    s = standard_tableau([(1, 2, ), (3, 4,)])
     s.set_up_function()
 
-    t = standard_tableau([(1, 2, 4), (3,)])
+    t = standard_tableau([(1, 3,), (2, 4,)])
     t.set_up_function()
 
     f = function_combination(s, t)

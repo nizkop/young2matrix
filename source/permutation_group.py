@@ -1,5 +1,6 @@
 from typing import List
 
+from source.function_combination import function_combination
 from source.getting_subsets import get_powerset, permutations_of_subsets
 from source.overview_pdf import overview_pdf
 from source.chemical_standard_tableau import chemical_standard_tableau
@@ -51,7 +52,7 @@ class permutation_group(object):
         self.overview.add_section("Ausmultiplizierte Young-Tableaus",
                                   content=r"$a, b, c, \hdots \quad $ = allgemeine Funktionen, "+
                                           r"die beispielsweise p-Orbitale repräsentieren könnten")
-        for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=p.standard_tableaus):
+        for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
             self.overview.vspace()
             equation = group[0].get_shortend_symbol()["tex"] + ":"
             self.overview.add_latex_formula(equation)
@@ -66,7 +67,7 @@ class permutation_group(object):
 
         # page 3
         self.overview.add_section("Spin",content=get_info_spin_possibilities(self.permutation_group))
-        for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=p.standard_tableaus):
+        for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
             self.overview.vspace()
             equation = group[0].get_shortend_symbol()["tex"] + ":"
             self.overview.add_latex_formula(equation)
@@ -126,7 +127,18 @@ class permutation_group(object):
 
 
     def calculate_all_overlap_integrals(self):
-        pass
+        # TODO: not correct yet
+        results = []
+        for i in self.standard_tableaus:
+            print(i.to_text(),end="|")
+            for j in self.standard_tableaus:
+                print(j.to_text())
+                f = function_combination(i,j)
+                g = f.calculate_overlap_integral()
+                results.append(g)
+                g.print()
+
+        return results
 
     def calculate_all_hamilton_integrals(self):
         pass
@@ -140,4 +152,4 @@ if __name__ == '__main__':
     p.get_all_standard_tableaus()
     # p.print()
 
-    p.get_overview_pdf()
+    p.calculate_all_overlap_integrals()
