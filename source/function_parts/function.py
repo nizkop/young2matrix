@@ -96,6 +96,8 @@ class function(object):
 
 
 
+
+
 if __name__ == '__main__':
     f = function(product_term(Sign("+"), (1,2,3,)))
     f.symmetrize([1,2])
