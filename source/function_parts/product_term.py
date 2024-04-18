@@ -65,6 +65,20 @@ class product_term(object):
         #print(f"{self.to_text()}       *       {other.to_text()}     =     {p.to_text()}")
         return p
 
+    def integrational_multiply(self, other):
+        """
+        orthonormed functions: <a|b> = <a|c> = ... = 0
+        :param other:
+        :return:
+        """
+        # print(f"< {self.to_text()} | {other.to_text()} >")
+        empty_part = product_term(Sign("+"), ())
+        if self.get_list_of_parts() != other.get_list_of_parts():
+            empty_part.factor = 0
+        else:
+            empty_part.factor = self.factor * other.factor * 1
+        # print("=", empty_part.to_text())
+        return empty_part
 
 
 
@@ -76,9 +90,9 @@ if __name__ == '__main__':
     # p.lowercase_letters = ["α", "β"]*3
     # p.print()
     # print(p.to_tex())
-    q = product_term(Sign("+"), ordered_functions=(1, 2))
+    q = product_term(Sign("+"), ordered_functions=(2,1))
 
-    p.multiply(q)
+    p.integrational_multiply(q)
 
     # p=product_term(Sign("+"), (1,2,))
     # p.lowercase_letters = p.lowercase_letters[:len(p.ordered_functions)] * 2

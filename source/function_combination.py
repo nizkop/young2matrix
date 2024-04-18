@@ -1,4 +1,7 @@
+import math
+from fractions import Fraction
 from typing import Union
+import sympy as sp
 
 from source.function_parts.function import function
 from source.function_parts.product_term import product_term
@@ -14,7 +17,7 @@ class function_combination(object):
     def calculate_overlap_integral(self) -> function:
         if self.tableau_a.permutation_group != self.tableau_b.permutation_group:
             raise Exception("function_combination error: The tableaus dont fit.")
-        empty_function = function(product_term(Sign("+"), ()))
+        empty_function = function(product_term(Sign("+"), ()),normalizable=False)
         # check if identical form
         if self.tableau_a.number_of_rows != self.tableau_b.number_of_rows or self.tableau_a.number_of_columns != self.tableau_b.number_of_columns:
             # basis function of young tableaux from different young diagrams are automatically diagonal
@@ -29,12 +32,17 @@ class function_combination(object):
             empty_function.parts = [empty_function.parts[0]]
 
         else:
-            norm = self.tableau_a.function.get_normalization_factor()["no"] * self.tableau_b.function.get_normalization_factor()["no"]
+            factor_of_non_cancelled_terms = 0
+            norm = self.tableau_a.function.get_normalization_factor()["1/sqrt"] * self.tableau_b.function.get_normalization_factor()["1/sqrt"]
             for i in self.tableau_a.function.parts:
                 for j in self.tableau_b.function.parts:
-                    p = i.multiply(j)
-                    empty_function.parts.append(p)
-
+                    p = i.integrational_multiply(j)
+                    if p.sign == Sign.PLUS:
+                        factor_of_non_cancelled_terms += p.factor
+                    else:
+                        factor_of_non_cancelled_terms -= p.factor
+                    # empty_function.parts.append(p)
+            empty_function.parts[0].factor = Fraction(factor_of_non_cancelled_terms, sp.sqrt(norm))
         empty_function.print()
         return empty_function
 

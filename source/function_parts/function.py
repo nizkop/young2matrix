@@ -1,6 +1,8 @@
 import math
+from fractions import Fraction
 from itertools import permutations
 from typing import List
+import sympy as sp
 
 from source.function_parts.product_term import product_term
 from source.function_parts.sign import Sign
@@ -8,9 +10,10 @@ from source.function_parts.sign import Sign
 
 class function(object):
 
-    def __init__(self, basis: product_term):
+    def __init__(self, basis: product_term, normalizable:bool=True):
         self.basis = basis
         self.parts: List[product_term] = [basis]
+        self.normalizable:bool=normalizable
 
     def print(self) -> None:
         print(self.to_text())
@@ -29,12 +32,12 @@ class function(object):
         return no
 
     def get_normalization_factor(self) -> dict:
-        if self.get_number_of_terms() == 1:
+        if self.get_number_of_terms() == 1 or not self.normalizable:
             return {"no": 1, "text":"", "tex":""}
         n = 1/math.sqrt(self.get_number_of_terms())
         text = f"1/√({self.get_number_of_terms()}) "
         tex = r"\frac{1}{\sqrt{"+fr"{self.get_number_of_terms()}"+"}} "
-        return {"no": n,"text":text,"tex":tex}
+        return {"text":text,"tex":tex, "1/sqrt": self.get_number_of_terms()}
 
     def anti_symmetrize(self, changeble_elements:List[int]):
         return self.permutate_basis(changeable_elements=changeble_elements, change_sign=True)
@@ -76,6 +79,7 @@ class function(object):
                 new_parts.append(product_term(ordered_functions=tuple(new), sign=sign))
         # renewing with new function parts after the loop:
         self.parts = new_parts
+
 
     def aggregate_terms(self) -> None:
         """ checking the function term list for duplicates or parts cancelling each other """
