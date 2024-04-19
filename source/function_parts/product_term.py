@@ -71,13 +71,31 @@ class product_term(object):
         :param other:
         :return:
         """
-        # print(f"< {self.to_text()} | {other.to_text()} >")
+        print(f"< {self.to_text()} | {other.to_text()} >")
+        empty_part = product_term(Sign("+"), ())
+        # for i in self.ordered_functions+other.ordered_functions:
+        #     if i in self.ordered_functions and i in other.ordered_functions:
+        #         index_1 = self.ordered_functions.index(i)
+        #         index_2 = other.ordered_functions.index(i)
+        #         if self.lowercase_letters[index_1] == other.lowercase_letters[index_2]:
+        #             # functions normalized
+        #             empty_part.factor = self.factor * other.factor * 1
+        #         else:
+        #             # functions orthogonal
+        #             empty_part.factor = 0
+        #             break
+        #     elif i in self.ordered_functions:
+        #         pass#only bra (should not happen)
+        #     elif i in other.ordered_functions:
+        #         pass# only ket
+        # return empty_part
+
         empty_part = product_term(Sign("+"), ())
         if self.get_list_of_parts() != other.get_list_of_parts():
             empty_part.factor = 0
         else:
             empty_part.factor = self.factor * other.factor * 1
-        # print("=", empty_part.to_text())
+        print("=", empty_part.to_text())
         return empty_part
 
 
@@ -90,7 +108,7 @@ if __name__ == '__main__':
     # p.lowercase_letters = ["α", "β"]*3
     # p.print()
     # print(p.to_tex())
-    q = product_term(Sign("+"), ordered_functions=(2,1))
+    q = product_term(Sign("+"), ordered_functions=(1,2))
 
     p.integrational_multiply(q)
 

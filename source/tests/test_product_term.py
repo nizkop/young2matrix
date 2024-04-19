@@ -37,3 +37,21 @@ for i in trials:
 
 
 
+
+
+trials = [
+    {"input1": product_term(Sign("+"), (1, 2)),"input2":product_term(Sign("+"), ordered_functions=(1,2)),
+     "expected": 1, "error_message": "S2: multiplying itself"},
+    {"input1": product_term(Sign("+"), (1, 2)), "input2": product_term(Sign("+"), ordered_functions=(2,1)),
+     "expected": 0, "error_message": "S2: multiplying antisymmetric"},
+    {"input1": product_term(Sign("+"), (1, 2, 3)), "input2": product_term(Sign("-"), ordered_functions=(3,2,1)),
+     "expected": 0, "error_message": "S3"},
+]
+
+general_error = "building overlap"
+for trial in trials:
+    calculated = trial["input1"].integrational_multiply(trial["input2"])
+
+    if calculated.factor != trial["expected"]:
+        raise Exception(f"{general_error}: {trial['error_message']}")
+
