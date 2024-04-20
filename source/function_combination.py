@@ -45,13 +45,13 @@ class function_combination(object):
                     if p.factor != 0:
                         left_eq += p.to_text()
                     if p.sign == Sign.PLUS:
-                        factor_of_non_cancelled_terms += p.factor
+                        factor_of_non_cancelled_terms += abs(p.factor)
                     else:
-                        factor_of_non_cancelled_terms -= p.factor
+                        factor_of_non_cancelled_terms -= abs(p.factor)
                     # if p.factor != 0:
                     #     empty_function.parts.append(p)
             empty_function.parts[0].factor = Fraction(factor_of_non_cancelled_terms, norm)
-            # print(total_eq, "\n\n= ", left_eq, "\nnumber of terms:", no_of_terms, "\n")
+        #     print(total_eq, "\n\n= ", left_eq, "\nnumber of terms:", no_of_terms, "\n")
         # empty_function.print()
         return empty_function
 

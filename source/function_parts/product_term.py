@@ -71,27 +71,8 @@ class product_term(object):
         :param other:
         :return:
         """
-
         eq_left = f"< {self.to_text()} | {other.to_text()} >"
-        empty_part = product_term(Sign("+"), ())
-        # for i in self.ordered_functions+other.ordered_functions:
-        #     if i in self.ordered_functions and i in other.ordered_functions:
-        #         index_1 = self.ordered_functions.index(i)
-        #         index_2 = other.ordered_functions.index(i)
-        #         if self.lowercase_letters[index_1] == other.lowercase_letters[index_2]:
-        #             # functions normalized
-        #             empty_part.factor = self.factor * other.factor * 1
-        #         else:
-        #             # functions orthogonal
-        #             empty_part.factor = 0
-        #             break
-        #     elif i in self.ordered_functions:
-        #         pass#only bra (should not happen)
-        #     elif i in other.ordered_functions:
-        #         pass# only ket
-        # return empty_part
-
-        empty_part = product_term(Sign("+"), ())
+        empty_part = product_term(Sign.PLUS if self.sign == other.sign else Sign.MINUS, ())
         if self.get_list_of_parts() != other.get_list_of_parts():
             empty_part.factor = 0
         else:
