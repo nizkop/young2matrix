@@ -42,9 +42,7 @@ class spin_part(integral_part):
                 raise Exception("ungiven spin")
         if len(spin_ordered) != self.permutation_group:
             raise Exception("error in set_up_choices")
-        for p in self.function.parts:
-            p.lowercase_letters = spin_ordered
-        self.function.aggregate_terms()
+        self.function.set_spin_functions(spin_ordered)
 
     def print(self):
         print(self.to_text())

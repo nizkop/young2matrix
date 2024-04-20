@@ -1,4 +1,6 @@
+import copy
 import math
+from math import gcd
 from fractions import Fraction
 from itertools import permutations
 from typing import List
@@ -28,16 +30,21 @@ class function(object):
     def get_number_of_terms(self):
         no = 0
         for i in self.parts:
-            no += i.factor
+            if i.factor != 0:
+                no += i.factor
         return no
 
     def get_normalization_factor(self) -> dict:
+        """
+        e.g. (2a + 2b) -> 1/sqrt(2) * (a + b) -> factor = 1/(2*sqrt(2))
+        :return:
+        """
         if self.get_number_of_terms() == 1 or not self.normalizable:
-            return {"no": 1, "text":"", "tex":""}
-        n = 1/math.sqrt(self.get_number_of_terms())
+            return {"text":"", "tex":"", "1/sqrt": 1}
+        # n = Fraction(1, math.sqrt(self.get_number_of_terms()**3))
         text = f"1/√({self.get_number_of_terms()}) "
         tex = r"\frac{1}{\sqrt{"+fr"{self.get_number_of_terms()}"+"}} "
-        return {"text":text,"tex":tex, "1/sqrt": self.get_number_of_terms()}
+        return {"text":text, "tex":tex, "1/sqrt": self.get_number_of_terms()}
 
     def anti_symmetrize(self, changeble_elements:List[int]):
         return self.permutate_basis(changeable_elements=changeble_elements, change_sign=True)
@@ -81,6 +88,20 @@ class function(object):
         self.parts = new_parts
 
 
+    def reduce_to_least_common_basis(self):
+        """ factor out and remove redundant factors in parts
+        """
+        factors = [i.factor for i in self.parts if i != 0]
+        common_div = factors[0]
+        for num in factors[1:]:
+            common_div = gcd(common_div, num)
+        if common_div != 0 and common_div != 1:
+            for p in self.parts:
+                if p.factor % common_div != 0:
+                    raise Exception("wrong rounding / factor finding")
+                p.factor //= common_div
+
+
     def aggregate_terms(self) -> None:
         """ checking the function term list for duplicates or parts cancelling each other """
         for i in range(len(self.parts)):
@@ -98,6 +119,14 @@ class function(object):
                         return self.aggregate_terms()
 
 
+    def set_spin_functions(self, spin_functions: List[str]) -> None:
+        for i in self.parts:
+            i.lowercase_letters = spin_functions
+        self.aggregate_terms()
+        self.reduce_to_least_common_basis()
+
+
+
 
 
 
@@ -108,13 +137,10 @@ if __name__ == '__main__':
     f.anti_symmetrize([1, 3])
     for i in f.parts:
         i.print()
-    print("after:")
-    f.aggregate_terms()
+    # print("after:")
+    f.set_spin_functions(["α", "β", "β"])
+    # print()
+    # for i in f.parts:
+    #     i.print()
 
-    for i in f.parts:
-        i.print()
-        i.lowercase_letters = ["α", "β", "β"]
-    f.aggregate_terms()
-    print()
-    for i in f.parts:
-        i.print()
+    f.print()

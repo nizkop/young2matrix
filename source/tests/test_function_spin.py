@@ -1,26 +1,49 @@
+from source.function_parts.sign import Sign
 from source.standard_tableau import standard_tableau
 
 general_error = "error in build spin functions"
 
 trials = [
-    {"input": [(1,2,3)], "spin_input": ["α", "α", "α"],
-            "expected": [['α1', 'α2', 'α3']], "error_message": "symmetrizing wrong (> 2)"},
-    {"input": [(1,2,3)], "spin_input": ["α", "α", "β"],
-            "expected": [['α1', 'α2', 'β3'], ['α3', 'α2', 'β1'],['α1', 'α3', 'β2']],
+    # weißbluth examples:
+    {"input": [(1,2,3)], "spin_input": ["α", "α", "α"], "expected_sqrt": 1,
+            "expected": [{"value": ['α1', 'α2', 'α3'], "sign": Sign.PLUS}], "error_message": "symmetrizing wrong (> 2)"},
+    {"input": [(1,2,3)], "spin_input": ["α", "α", "β"], "expected_sqrt": 3,
+            "expected": [{"value": ['α1', 'α2', 'β3'], "sign": Sign.PLUS}, {"value": ['α3', 'α2', 'β1'], "sign": Sign.PLUS}, {"value": ['α1', 'α3', 'β2'], "sign": Sign.PLUS}],
             "error_message": "symmetrizing wrong (> 2)"},
-    {"input": [(1, 2, 3)], "spin_input": ["β", "β", "α"],
-            "expected": [['β1', 'β2', 'α3'], ['α1', 'β2', 'β3'], ['β1', 'α2', 'β3']],
+    {"input": [(1, 2, 3)], "spin_input": ["β", "β", "α"], "expected_sqrt": 3,
+            "expected": [{"value": ['β1', 'β2', 'α3'], "sign": Sign.PLUS}, {"value": ['α1', 'β2', 'β3'], "sign": Sign.PLUS}, {"value": ['β1', 'α2', 'β3'], "sign": Sign.PLUS}],
             "error_message": "symmetrizing wrong (> 2)"},
-    {"input": [(1, 2, 3)], "spin_input": ["β", "β", "β"], "expected": [['β1', 'β2', 'β3']],
-            "error_message": "symmetrizing wrong (> 2)"},
-    {"input": [(1,2),(3,)], "spin_input": ["α", "β", "β"],
-            "expected": [['α1', 'β2', 'β3'], ['α3', 'β2', 'β1']], "error_message": "anti- & symmetrizing wrong"},
-    {"input": [(1, 2), (3,)], "spin_input": ["α", "α", "β"], "expected": [['α1', 'α2', 'β3'], ['α3', 'α2', 'β1']],
+    {"input": [(1, 2, 3)], "spin_input": ["β", "β", "β"],
+     "expected": [{"value": ['β1', 'β2', 'β3'], "sign": Sign.PLUS}],
+            "expected_sqrt": 1, "error_message": "symmetrizing wrong (> 2)"},
+    {"input": [(1,2),(3,)], "spin_input": ["α", "β", "β"],"expected_sqrt": 2,
+            "expected": [{"value": ['α1', 'β2', 'β3'], "sign": Sign.PLUS}, {"value": ['α3', 'β2', 'β1'], "sign": Sign.MINUS}], "error_message": "anti- & symmetrizing wrong"},
+    {"input": [(1, 2), (3,)], "spin_input": ["α", "α", "β"], "expected_sqrt": 2,
+            "expected": [{"value": ['α1', 'α2', 'β3'], "sign": Sign.PLUS}, {"value": ['α3', 'α2', 'β1'], "sign": Sign.MINUS}],
             "error_message": "anti- & symmetrizing wrong"},
-    {"input": [(1,3),(2,)],  "spin_input": ["α", "β", "α"],
-            "expected": [['α1', 'β2', 'α3'], ['β1','α2','α3']], "error_message": "anti- & symmetrizing wrong"},
-    {"input": [(1, 3), (2,)], "spin_input": ["α", "β", "β"], "expected": [['α1', 'β2', 'β3'], ['β1', 'α2', 'β3']],
-     "error_message": "anti- & symmetrizing wrong"},
+    {"input": [(1,3),(2,)], "spin_input": ["α", "β", "α"], "expected_sqrt": 2,
+            "expected": [{"value": ['α1', 'β2', 'α3'], "sign": Sign.PLUS}, {"value": ['β1','α2','α3'], "sign": Sign.MINUS}],
+            "error_message": "anti- & symmetrizing wrong"},
+    {"input": [(1, 3), (2,)], "spin_input": ["α", "β", "β"],
+     "expected": [{"value": ['α1', 'β2', 'β3'], "sign": Sign.PLUS},{"value":  ['β1', 'α2', 'β3'], "sign": Sign.MINUS}],
+     "expected_sqrt": 2, "error_message": "anti- & symmetrizing wrong"},
+
+
+    # own manual calculations:
+    {"input": [(1, 2), (3,4)], "spin_input": ["α", "α", "β", "β"], "expected_sqrt": 4,
+     "expected": [{"value": ['α1', 'α2', 'β3', 'β4'], "sign": Sign.PLUS},
+                  {"value": ['β1', 'α2', 'α3', 'β4'], "sign": Sign.MINUS},
+                  {"value": ['α1', 'β2', 'β3', 'α4'], "sign": Sign.MINUS},
+                  {"value": ['β1', 'β2', 'α3', 'α4'], "sign": Sign.PLUS},
+                  ],
+     "error_message": "S4 [2^2] anti- & symmetrizing wrong"},
+    {"input": [(1, 3), (2, 4)], "spin_input": ["α","β", "α", "β"], "expected_sqrt": 4,
+     "expected": [{"value": ['α1', 'β2', 'α3', 'β4'], "sign": Sign.PLUS},
+                  {"value": ['β1', 'α2', 'α3', 'β4'], "sign": Sign.MINUS},
+                  {"value": ['α1', 'β2', 'β3', 'α4'], "sign": Sign.MINUS},
+                  {"value": ['β1', 'α2', 'β3', 'α4'], "sign": Sign.PLUS},
+                  ],
+     "error_message": "S4 [2^2] anti- & symmetrizing wrong"},
     # {"input": [], "spin_input": ["α", "β", "β"], "expected": "+ ", "error_message": ""},
 ]
 
@@ -30,19 +53,27 @@ for i in trials:
     expected = i["expected"]
     s = standard_tableau(i["input"])
     s.set_up_function()
+    s.function.set_spin_functions(i["spin_input"])
 
-    for part in s.function.parts:
-        part.lowercase_letters = i["spin_input"]
-    s.function.aggregate_terms()
+    expected = ["".join(sorted(x)) for x in [x["value"] for x in i["expected"]]]
 
-    expected = ["".join(sorted(x)) for x in i["expected"]]
-    calculated = ["".join(sorted(x.get_list_of_parts())) for x in s.function.parts]
 
-    for calculated_part in calculated:
-        if calculated_part not in expected:
-            raise Exception(general_error+" - "+i["error_message"]+": "+ str(calculated_part) + " missing")
-    for expected_part in expected:
-        if expected_part not in calculated:
-            raise Exception(general_error + " - "+ i["error_message"]+": "+ str(expected_part)+ " to much")
+    for calculated in s.function.parts:
+        calculated_part = "".join(sorted(calculated.get_list_of_parts())).replace("{","").replace("}","").replace("_","")
+        try:
+            index = expected.index(calculated_part)
+            if i["expected"][index]["sign"] != calculated.sign:
+                raise Exception("wrong sign")
+        except ValueError: #... not in list
+             raise Exception(general_error + " - " + i["error_message"] + ": " + str(calculated_part) + " to much (unexpected result)")
+
+    if len(expected) != len(s.function.parts):
+        raise Exception(general_error+" - "+i["error_message"]+": "+ str(calculated_part) + " missing")
+
+    # comparison of the square roots (underneath the fraction bar):
+    if s.function.get_normalization_factor()["1/sqrt"] != i["expected_sqrt"]:
+        # print(i["expected_sqrt"], "soll, norm:", s.function.get_normalization_factor()["1/sqrt"], "einzelterme:", s.function.get_number_of_terms())
+        raise Exception(f"{general_error}: wrong normalization factor for \"{i['error_message']}\"")
+
 
 

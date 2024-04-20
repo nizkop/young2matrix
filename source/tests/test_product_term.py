@@ -79,6 +79,6 @@ for trial in trials:
     p2.lowercase_letters = trial["spin2"]
 
     calculated, eq = p1.integrational_multiply(p2)
-    print(eq, "=", calculated.to_text())
+    # print(eq, "=", calculated.to_text())
     if calculated.factor != trial["expected"]:
         raise Exception(f"{general_error}: {trial['error_message']}")

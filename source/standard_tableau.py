@@ -98,6 +98,9 @@ class standard_tableau(young_tableau):
         for column in self.get_numbers_in_columns():
             self.function.anti_symmetrize(column)
         self.function.aggregate_terms()
+        self.function.reduce_to_least_common_basis()
+
+
 
 
 

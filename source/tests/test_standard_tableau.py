@@ -1,7 +1,7 @@
 from source.function_parts.sign import Sign
 from source.standard_tableau import standard_tableau
 
-# ! these tests are sensitive to the order of summands (= an error might not be a mistake)
+
 trials = [
     ## examples from weißbluth:
     # single operators:
@@ -20,8 +20,8 @@ trials = [
     ## manually calculated: (1. sym, 2. anti)
     {"input": [(1,2),(3,4)],  "error_message": "S4 [2^2] 12-34",
      "expected": {"a1b2c3d4":Sign.PLUS, "a2b1c3d4": Sign.PLUS, "a1b2c4d3": Sign.PLUS, "a2b1c4d3": Sign.PLUS ,
-                  "a3b2c1d4": Sign.MINUS , "a2b3c1d4": Sign.MINUS , "a3b2c4d1": Sign.MINUS , "a2b3c4d1": Sign.MINUS ,
-                  "a1b4c3d2": Sign.MINUS , "a4b1c3d2": Sign.MINUS , "a1b4c2d3": Sign.MINUS, "a4b1c2d3": Sign.MINUS,
+                  "a3b2c1d4": Sign.MINUS, "a2b3c1d4": Sign.MINUS , "a3b2c4d1": Sign.MINUS , "a2b3c4d1": Sign.MINUS ,
+                  "a1b4c3d2": Sign.MINUS, "a4b1c3d2": Sign.MINUS , "a1b4c2d3": Sign.MINUS, "a4b1c2d3": Sign.MINUS,
                   "a3b4c1d2": Sign.PLUS, "a4b3c1d2": Sign.PLUS, "a3b4c2d1": Sign.PLUS, "a4b3c2d1": Sign.PLUS}
      },
     {"input": [(1, 3), (2, 4)], "error_message": "S4 [2^2] 13-24",
@@ -60,4 +60,5 @@ for i in trials:
                 raise Exception(i["error_message"] + f": wrong sign for {actual}, {i['error_message']}")
         except KeyError:
             Exception(i["error_message"] + f": {[actual]} not included in {expected.keys()}")
+
 

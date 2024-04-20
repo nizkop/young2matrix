@@ -53,8 +53,9 @@ class function_combination(object):
             try:
                 empty_function.parts[0].factor = Fraction(factor_of_non_cancelled_terms, norm)
             except:
-                empty_function.parts[0].factor = factor_of_non_cancelled_terms / norm
-        #     print(total_eq, "\n\n= ", left_eq, "\nnumber of terms:", no_of_terms, "\n")
+                # only exception where factor is not an int (because of the square root)
+                empty_function.parts[0].factor = sp.sqrt(Fraction(factor_of_non_cancelled_terms*factor_of_non_cancelled_terms, norm*norm))
+            # print(total_eq, "\n\n= ", left_eq, "\nnumber of terms:", no_of_terms, "\n")
         # empty_function.print()
         return empty_function
 
