@@ -33,7 +33,7 @@ class function_combination(object):
 
         else:
             factor_of_non_cancelled_terms = 0
-            norm = self.tableau_a.function.get_normalization_factor()["1/sqrt"] * self.tableau_b.function.get_normalization_factor()["1/sqrt"]
+            norm = sp.sqrt(self.tableau_a.function.get_normalization_factor()["1/sqrt"]) * sp.sqrt(self.tableau_b.function.get_normalization_factor()["1/sqrt"])
             total_eq = ""
             left_eq = ""
             no_of_terms = 0
@@ -48,11 +48,11 @@ class function_combination(object):
                         factor_of_non_cancelled_terms += p.factor
                     else:
                         factor_of_non_cancelled_terms -= p.factor
-                    if p.factor != 0:
-                        empty_function.parts.append(p)
-            # empty_function.parts[0].factor = Fraction(factor_of_non_cancelled_terms, sp.sqrt(norm))
-            print(total_eq, "\n\n= ", left_eq, "\nnumber of terms:", no_of_terms, "\n")
-        empty_function.print()
+                    # if p.factor != 0:
+                    #     empty_function.parts.append(p)
+            empty_function.parts[0].factor = Fraction(factor_of_non_cancelled_terms, norm)
+            # print(total_eq, "\n\n= ", left_eq, "\nnumber of terms:", no_of_terms, "\n")
+        # empty_function.print()
         return empty_function
 
 
