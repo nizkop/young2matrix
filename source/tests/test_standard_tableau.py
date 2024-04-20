@@ -3,7 +3,7 @@ from source.standard_tableau import standard_tableau
 
 
 trials = [
-    ## examples from weißbluth:
+    ## examples from weissbluth:
     # single operators:
     {"input": [(1, 2)], "expected": {"a1b2": Sign.PLUS, "a2b1": Sign.PLUS}, "error_message": "symmetrizing wrong"},
     {"input": [(1,),(2,)], "expected": {"a1b2": Sign.PLUS, "a2b1": Sign.MINUS}, "error_message": "anti-symmetrizing wrong"},

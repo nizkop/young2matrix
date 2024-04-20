@@ -41,7 +41,17 @@ class chemical_standard_tableau(standard_tableau):
 
 
     def calulate_all_overlap_integrals(self):
-        pass
+        results = []
+        for i in self.spatial_parts:
+            # print(i.to_text(),end="|")
+            for j in self.spatial_parts:
+                # print(j.to_text())
+                f = function_combination(i.behavior, j.behavior)
+                g = f.calculate_overlap_integral()
+                info = {"bra": i.to_tex(), "ket": j.to_tex(), "result": g}
+                results.append(info)
+        self.overlap = results
+        return
 
     def calculate_all_hamilton_integrals(self):
         pass
@@ -74,7 +84,7 @@ class chemical_standard_tableau(standard_tableau):
                 ms_values = calculate_ms_quantum_number(total_spin=spin)
                 for q in ms_values:
                     self.spin_parts.append( spin_part(permutation_group=self.permutation_group, total_spin=spin, ms=q, choices_for_spin=alpha_beta,behavior=self.function) )
-        # normalizing:
+
 
 
 

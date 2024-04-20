@@ -4,7 +4,7 @@ from source.standard_tableau import standard_tableau
 general_error = "error in build spin functions"
 
 trials = [
-    # weißbluth examples:
+    # weissbluth examples:
     {"input": [(1,2,3)], "spin_input": ["α", "α", "α"], "expected_sqrt": 1,
             "expected": [{"value": ['α1', 'α2', 'α3'], "sign": Sign.PLUS}], "error_message": "symmetrizing wrong (> 2)"},
     {"input": [(1,2,3)], "spin_input": ["α", "α", "β"], "expected_sqrt": 3,

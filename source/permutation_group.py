@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 from source.function_combination import function_combination
 from source.getting_subsets import get_powerset, permutations_of_subsets
@@ -15,6 +15,8 @@ class permutation_group(object):
         self.tableaus : List[young_tableau] = []
         self.standard_tableaus : List[chemical_standard_tableau] = []
         self.overview = overview_pdf()
+
+        self.overlap: Union[List[dict], None] = None
 
     def print(self) -> None:
        print(f"permutation group: S_{self.permutation_group}")
@@ -81,6 +83,14 @@ class permutation_group(object):
             self.overview.vspace()
         self.overview.newpage()
 
+        # page 4
+        self.overview.add_section("Spin", content="Überlappungsintegrale")
+        self.calculate_all_overlap_integrals()
+        for i in self.overlap:
+            equation = f"<{i['bra']}|{i['ket']}> = {i['result'].to_tex()}"
+            self.overview.add_latex_formula(equation)
+            self.overview.vspace()
+
         self.overview.save(title=title)
 
 
@@ -127,18 +137,18 @@ class permutation_group(object):
 
 
     def calculate_all_overlap_integrals(self):
-        # TODO: not correct yet
+        # TODO: check
         results = []
         for i in self.standard_tableaus:
-            print(i.to_text(),end="|")
+            # print(i.to_text(),end="|")
             for j in self.standard_tableaus:
-                print(j.to_text())
+                # print(j.to_text())
                 f = function_combination(i,j)
                 g = f.calculate_overlap_integral()
-                results.append(g)
-                g.print()
-
-        return results
+                info = {"bra": i.to_tex(), "ket": j.to_tex(), "result": g}
+                results.append(info)
+        self.overlap = results
+        return
 
     def calculate_all_hamilton_integrals(self):
         pass
@@ -149,7 +159,12 @@ class permutation_group(object):
 
 if __name__ == '__main__':
     p = permutation_group(2)
-    p.get_all_standard_tableaus()
+    # p.get_all_standard_tableaus()
     # p.print()
 
-    p.calculate_all_overlap_integrals()
+    # results = p.calculate_all_overlap_integrals()
+    # for i in results:
+    #     print(f"<{i['bra']}|{i['ket']}> = {i['result'].to_tex()}")
+
+
+    p.get_overview_pdf()

@@ -40,6 +40,7 @@ for trial in trials:
 
 
 ###  spin tableaus  ###
+
 trials = [
     # combination of tableaus each having only one choice of m_s:
     {"tableau1": [(1, 2,), (3, 4,)], "spin1": ["α", "α", "β", "β"],

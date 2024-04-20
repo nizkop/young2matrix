@@ -19,6 +19,7 @@ class function(object):
 
     def print(self) -> None:
         print(self.to_text())
+
     def to_text(self) -> str:
         intern = "  ".join([i.to_text() for i in self.parts])
         return f"{self.get_normalization_factor()['text']} ( {intern} )"
