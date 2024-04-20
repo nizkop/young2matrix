@@ -97,6 +97,7 @@ class standard_tableau(young_tableau):
             self.function.symmetrize(list(row))
         for column in self.get_numbers_in_columns():
             self.function.anti_symmetrize(column)
+        self.function.aggregate_terms()
 
 
 

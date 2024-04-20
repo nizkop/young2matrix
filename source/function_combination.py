@@ -34,15 +34,24 @@ class function_combination(object):
         else:
             factor_of_non_cancelled_terms = 0
             norm = self.tableau_a.function.get_normalization_factor()["1/sqrt"] * self.tableau_b.function.get_normalization_factor()["1/sqrt"]
+            total_eq = ""
+            left_eq = ""
+            no_of_terms = 0
             for i in self.tableau_a.function.parts:
                 for j in self.tableau_b.function.parts:
-                    p = i.integrational_multiply(j)
+                    no_of_terms += 1
+                    p, eq_braket = i.integrational_multiply(j)
+                    total_eq +=" + "+ eq_braket
+                    if p.factor != 0:
+                        left_eq += p.to_text()
                     if p.sign == Sign.PLUS:
                         factor_of_non_cancelled_terms += p.factor
                     else:
                         factor_of_non_cancelled_terms -= p.factor
-                    # empty_function.parts.append(p)
-            empty_function.parts[0].factor = Fraction(factor_of_non_cancelled_terms, sp.sqrt(norm))
+                    if p.factor != 0:
+                        empty_function.parts.append(p)
+            # empty_function.parts[0].factor = Fraction(factor_of_non_cancelled_terms, sp.sqrt(norm))
+            print(total_eq, "\n\n= ", left_eq, "\nnumber of terms:", no_of_terms, "\n")
         empty_function.print()
         return empty_function
 
@@ -59,6 +68,8 @@ class function_combination(object):
 if __name__ == '__main__':
     s = standard_tableau([(1, 2, ), (3, 4,)])
     s.set_up_function()
+    s.function.print()
+    print("\n")
 
     t = standard_tableau([(1, 3,), (2, 4,)])
     t.set_up_function()

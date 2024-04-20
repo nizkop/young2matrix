@@ -71,7 +71,8 @@ class product_term(object):
         :param other:
         :return:
         """
-        print(f"< {self.to_text()} | {other.to_text()} >")
+
+        eq_left = f"< {self.to_text()} | {other.to_text()} >"
         empty_part = product_term(Sign("+"), ())
         # for i in self.ordered_functions+other.ordered_functions:
         #     if i in self.ordered_functions and i in other.ordered_functions:
@@ -95,8 +96,8 @@ class product_term(object):
             empty_part.factor = 0
         else:
             empty_part.factor = self.factor * other.factor * 1
-        print("=", empty_part.to_text())
-        return empty_part
+        # eq_right = empty_part.to_text()
+        return empty_part, eq_left
 
 
 
