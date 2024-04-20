@@ -50,7 +50,10 @@ class function_combination(object):
                         factor_of_non_cancelled_terms -= abs(p.factor)
                     # if p.factor != 0:
                     #     empty_function.parts.append(p)
-            empty_function.parts[0].factor = Fraction(factor_of_non_cancelled_terms, norm)
+            try:
+                empty_function.parts[0].factor = Fraction(factor_of_non_cancelled_terms, norm)
+            except:
+                empty_function.parts[0].factor = factor_of_non_cancelled_terms / norm
         #     print(total_eq, "\n\n= ", left_eq, "\nnumber of terms:", no_of_terms, "\n")
         # empty_function.print()
         return empty_function

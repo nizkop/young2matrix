@@ -26,7 +26,7 @@ trials = [
         # {"input": , "expected": [], "error_message": ""},
 ]
 
-general_error = "error in getting sproduct term"
+general_error = "error in getting product term"
 for i in trials:
     calculated = i["input1"].multiply(i["input2"])
     if calculated.factor != i["expected"]["factor"]:
@@ -37,7 +37,7 @@ for i in trials:
 
 
 
-
+###  overlap spatial  ###
 
 trials = [
     {"input1": product_term(Sign("+"), (1, 2)),"input2":product_term(Sign("+"), ordered_functions=(1,2)),
@@ -50,8 +50,35 @@ trials = [
 
 general_error = "building overlap"
 for trial in trials:
-    calculated = trial["input1"].integrational_multiply(trial["input2"])
+    calculated, eq = trial["input1"].integrational_multiply(trial["input2"])
 
     if calculated.factor != trial["expected"]:
         raise Exception(f"{general_error}: {trial['error_message']}")
 
+###  overlap spin  ###
+trials = [
+    {"input1": product_term(Sign("+"), ordered_functions=(1, 2)), "spin1": ["α", "β"],
+     "input2": product_term(Sign("+"), ordered_functions=(1, 2)), "spin2": ["α", "β"],
+     "expected": 1, "error_message": "S2: multiplying itself"},
+    {"input1": product_term(Sign("+"), ordered_functions=(1, 2)), "spin1": ["α", "β"],
+     "input2": product_term(Sign("+"), ordered_functions=(1, 2)), "spin2": ["β", "α"],
+     "expected": 0, "error_message": "S2: multiplying itself with switched spins"},
+    {"input1": product_term(Sign("+"), (1, 2)),  "spin1": ["α", "β"],
+     "input2": product_term(Sign("+"), ordered_functions=(2, 1)),  "spin2": ["α", "β"],
+     "expected": 0, "error_message": "S2: multiplying antisymmetric"},
+    {"input1": product_term(Sign("+"), (1, 2)), "spin1": ["β", "α"],
+     "input2": product_term(Sign("+"), ordered_functions=(2, 1)), "spin2": ["α", "β"],
+     "expected": 1, "error_message": "S2: multiplying antisymmetric with switched spin"},
+]
+
+general_error = "building overlap for spin functions"
+for trial in trials:
+    p1 = trial["input1"]
+    p2 = trial["input2"]
+    p1.lowercase_letters = trial["spin1"]
+    p2.lowercase_letters = trial["spin2"]
+
+    calculated, eq = p1.integrational_multiply(p2)
+    print(eq, "=", calculated.to_text())
+    if calculated.factor != trial["expected"]:
+        raise Exception(f"{general_error}: {trial['error_message']}")

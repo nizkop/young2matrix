@@ -73,11 +73,12 @@ class product_term(object):
         """
         eq_left = f"< {self.to_text()} | {other.to_text()} >"
         empty_part = product_term(Sign.PLUS if self.sign == other.sign else Sign.MINUS, ())
-        if self.get_list_of_parts() != other.get_list_of_parts():
+        if sorted(self.get_list_of_parts()) != sorted(other.get_list_of_parts()):
             empty_part.factor = 0
         else:
             empty_part.factor = self.factor * other.factor * 1
         # eq_right = empty_part.to_text()
+        # print(eq_left , "=", empty_part.to_text())
         return empty_part, eq_left
 
 
@@ -87,7 +88,7 @@ class product_term(object):
 if __name__ == '__main__':
     p = product_term(Sign("+"), (2,1))
     p.factor = 2
-    # p.lowercase_letters = ["α", "β"]*3
+    p.lowercase_letters = ["α", "β"]*3
     # p.print()
     # print(p.to_tex())
     q = product_term(Sign("+"), ordered_functions=(1,2))
