@@ -1,7 +1,7 @@
 
 from collections import Counter
 import string
-from typing import Tuple
+from typing import Tuple, List
 
 from source.function_parts.sign import Sign
 
@@ -19,7 +19,7 @@ class product_term(object):
             self.lowercase_letters += [ x*i for i in self.lowercase_letters ]
             x+=1
 
-    def get_list_of_parts(self):
+    def get_list_of_parts(self) -> List[str]:
         counter = Counter(zip(self.lowercase_letters, self.ordered_functions))
         return [str(key[0]) + r"_{"+str(key[1])+r"}^{"+str(count)+"}"
                 if count > 1
