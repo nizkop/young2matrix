@@ -2,6 +2,8 @@ import copy
 from fractions import Fraction
 from typing import List
 
+from source.function_combination.calculate_overlap_integral_between_functions import \
+    calculate_overlap_integral_between_functions
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 from source.function_parts.ttext_kinds import text_kinds
 from source.pure_chemical_functions.calculate_ms_quantum_number import calculate_ms_quantum_number

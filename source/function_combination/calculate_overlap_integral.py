@@ -9,13 +9,14 @@ from source.function_parts.function import function
 from source.function_parts.product_term import product_term
 from source.function_parts.sign import Sign
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
+from source.function_parts.ttext_kinds import text_kinds
 
 
 def calculate_overlap_integral(tableau_a: chemical_standard_tableau, tableau_b: chemical_standard_tableau, kind :spin_vs_spatial_kind) -> List[dict]:
     if tableau_a.permutation_group != tableau_b.permutation_group:
         raise Exception("function_combination error: The tableaus dont fit.")
 
-    info = {"bra": tableau_a.function.to_tex(), "ket": tableau_b.function.to_tex()}
+    info = {"bra": tableau_a.function.to_tex(), "ket": tableau_b.function.to_tex(), "kind": kind}
     empty_function = function(product_term(Sign("+"), ()) ,normalizable=False)
 
     # check if identical form
@@ -45,8 +46,8 @@ def calculate_overlap_integral(tableau_a: chemical_standard_tableau, tableau_b: 
                spin_choice_2 = tableau_b.spin_parts[sp2]
                g = calculate_overlap_integral_between_functions(spin_choice.function,
                                                                      spin_choice_2.function)
-               info["bra"] = spin_choice.to_tex()
-               info["ket"] = spin_choice_2.to_tex()
+               info["bra"] = spin_choice.get_shortend_form(kind=text_kinds.TEX)
+               info["ket"] = spin_choice_2.get_shortend_form(kind=text_kinds.TEX)
                info["result"] = g
                results.append(info)
     else:
