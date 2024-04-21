@@ -24,11 +24,11 @@ for trial in trials:
     t2.set_up_function()
 
     f = function_combination(t1, t2)
-    product = f.calculate_overlap_integral()
+    product = f.calculate_overlap_integral_basisfunction()
     if len(product.parts) != 1:
         raise Exception(f"{general_error} - {trial['error_message']}: wrong number of output terms")
     f_reverse = function_combination(t2, t1)
-    product_revers = f_reverse.calculate_overlap_integral()
+    product_revers = f_reverse.calculate_overlap_integral_basisfunction()
     if product.parts[0].factor != product_revers.parts[0].factor or len(product.parts[0].ordered_functions) != 0 or len(product_revers.parts[0].ordered_functions) != 0:
         raise Exception(f"{general_error} - {trial['error_message']}: multiplication not commutative")
     if product.parts[0].factor != trial["expected"]:
@@ -94,7 +94,7 @@ for trial in trials:
 
     # calculating overlap:
     f = function_combination(t1, t2)
-    product = f.calculate_overlap_integral()
+    product = f.calculate_overlap_integral_basisfunction()
     if len(product.parts) != 1:
         raise Exception(f"{general_error} - {trial['error_message']}: wrong number of output terms")
     if product.parts[0].factor != trial["expected"] and round(trial["expected"]/product.parts[0].factor, 4) != 1:
@@ -103,7 +103,7 @@ for trial in trials:
         # print(trial['error_message'], product.parts[0].factor , "instead of", trial["expected"], "-> wrong by: ", wrong)
         raise Exception(f"{general_error} - {trial['error_message']}: {product.parts[0].factor} vs. {trial['expected']}")
     f_reverse = function_combination(t2, t1)
-    product_revers = f_reverse.calculate_overlap_integral()
+    product_revers = f_reverse.calculate_overlap_integral_basisfunction()
     if product.parts[0].factor != product_revers.parts[0].factor or len(product.parts[0].ordered_functions) != 0 or len(
             product_revers.parts[0].ordered_functions) != 0:
         raise Exception(f"{general_error} - {trial['error_message']}: multiplication not commutative")

@@ -10,7 +10,6 @@ from source.function_parts.sign import Sign
 class spin_part(integral_part):
     def __init__(self, permutation_group:int, total_spin:float, ms:float, choices_for_spin:dict, behavior:function):
         self.permutation_group:int=permutation_group
-        self.behavior = None
         self.total_spin = total_spin
         self.ms = ms
         self.function = copy.deepcopy(behavior)

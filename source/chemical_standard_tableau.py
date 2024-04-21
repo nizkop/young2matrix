@@ -1,5 +1,8 @@
+import copy
+from fractions import Fraction
 from typing import List
 
+from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 from source.pure_chemical_functions.calculate_ms_quantum_number import calculate_ms_quantum_number
 from source.pure_chemical_functions.calculate_spin_quantum_numbers import calculate_spin_quantum_numbers
 from source.function_combination import function_combination
@@ -16,6 +19,7 @@ class chemical_standard_tableau(standard_tableau):
         self.help: function_combination = None #function_combination()
         self.spatial_parts: List[spatial_part] = []
         self.spin_parts: List[spin_part] = []
+        self.overlap = []
 
     def print(self) -> None:
         super().print()
@@ -37,20 +41,35 @@ class chemical_standard_tableau(standard_tableau):
         print("we dont want to choose the orbitals yet")
         if self.function is None:#spatial part needs function as a general behavior pattern
             self.set_up_function()
-        self.spatial_parts.append(spatial_part(behavior=self.function))
+        if len(self.spatial_parts) == 0:
+            self.spatial_parts.append(spatial_part(behavior=self.function))
 
 
-    def calulate_all_overlap_integrals(self):
+    def calulate_all_overlap_integrals(self, kind: spin_vs_spatial_kind=spin_vs_spatial_kind.GENERAL):
+        if kind == spin_vs_spatial_kind.GENERAL:
+            self.calulate_all_overlap_integrals(kind=spin_vs_spatial_kind.SPATIAL)
+            self.calulate_all_overlap_integrals(kind=spin_vs_spatial_kind.SPIN)
+            return
+        self.get_spatial_choices()#just to be sure
+        self.get_spin_choices()#just to be sure
+
+        if kind == spin_vs_spatial_kind.SPIN:
+            tableau_functions = self.spin_parts
+            print("spin")
+        else:
+            print("spatial")
+            tableau_functions = self.spatial_parts
+        if len(tableau_functions) == 0:
+            print("calulate_all_overlap_integrals impossible because of no parts")
+            return
         results = []
-        for i in self.spatial_parts:
-            # print(i.to_text(),end="|")
-            for j in self.spatial_parts:
-                # print(j.to_text())
-                f = function_combination(i.behavior, j.behavior)
-                g = f.calculate_overlap_integral()
-                info = {"bra": i.to_tex(), "ket": j.to_tex(), "result": g}
+        for i in range(len(tableau_functions)):
+            for j in range(i, len(tableau_functions)):
+                f = function_combination(self,self)
+                g = f.calculate_overlap_integral_between_functions(tableau_functions[i].function, tableau_functions[j].function)
+                info = {"bra": tableau_functions[i].function.to_tex(), "ket": tableau_functions[j].function.to_tex(), "kind": kind, "result": g}
                 results.append(info)
-        self.overlap = results
+        self.overlap += results
         return
 
     def calculate_all_hamilton_integrals(self):
@@ -62,9 +81,12 @@ class chemical_standard_tableau(standard_tableau):
         """
         if self.number_of_rows > 2:
             # only 2 different spin functions = more antisymmetric than 2 impossible
+            print("number of rows to high")
             return
         if self.function is None:#spin need function as a general behavior pattern
             self.set_up_function()
+        if len(self.spin_parts) > 0:
+            return
         spins = calculate_spin_quantum_numbers(number_of_particles=self.permutation_group)
         for spin in spins:
             # get total number of non-alpha spins:
@@ -80,10 +102,27 @@ class chemical_standard_tableau(standard_tableau):
                         alpha_beta["alpha"].append(i)
 
             # only pick s, ms combination, if value of S is fitting (first line alpha, second beta, ...)_
-            if spin == anti * -0.5 + 0.5 * (self.permutation_group - anti):
+            if spin == anti * -Fraction(1,2) + Fraction(1,2) * (self.permutation_group - anti):
                 ms_values = calculate_ms_quantum_number(total_spin=spin)
-                for q in ms_values:
-                    self.spin_parts.append( spin_part(permutation_group=self.permutation_group, total_spin=spin, ms=q, choices_for_spin=alpha_beta,behavior=self.function) )
+                for ms in ms_values:
+                    if ms == spin: #anti * -Fraction(1,2) + Fraction(1,2) * (self.permutation_group - anti)
+                        self.spin_parts.append( spin_part(permutation_group=self.permutation_group, total_spin=spin, ms=ms, choices_for_spin=alpha_beta,behavior=self.function) )
+                    else:
+                        modified_alpha_beta = copy.deepcopy(alpha_beta)
+                        diff = spin - ms
+                        for number_wrong_spins_in_default in range(int(diff)):
+                            if len(modified_alpha_beta["alpha"]) == 0:
+                                # impossible to build fitting start order of spin functions
+                                continue
+                            if ms >= 0:
+                                modified_alpha_beta["beta"].append(max( modified_alpha_beta["alpha"]))
+                                modified_alpha_beta["alpha"].remove(max(modified_alpha_beta["alpha"]))
+                            else:
+                                modified_alpha_beta["beta"].append(min(modified_alpha_beta["alpha"]))
+                                modified_alpha_beta["alpha"].remove(min(modified_alpha_beta["alpha"]))
+                        self.spin_parts.append(spin_part(permutation_group=self.permutation_group, total_spin=spin, ms=ms,
+                                          choices_for_spin=modified_alpha_beta, behavior=self.function))
+
 
 
 
@@ -97,12 +136,11 @@ class chemical_standard_tableau(standard_tableau):
 
 
 if __name__ == '__main__':
-    s = chemical_standard_tableau([(1,2,3)])
-    s.print()
-    # s.set_up_function()
+    s = chemical_standard_tableau([(1,2,3,)])
+    s.set_up_function()
 
-    s.get_spin_choices()
-    for t in s.spin_parts:
-        t.print()
-        print(t.to_tex())
-    # s.function.print()
+    # s.get_spatial_choices()
+    # s.get_spin_choices()
+
+    s.calulate_all_overlap_integrals()
+    print(len(s.overlap), len(s.spin_parts), len(s.spatial_parts), len([x for x in s.overlap if x["kind"] == spin_vs_spatial_kind.SPIN]))

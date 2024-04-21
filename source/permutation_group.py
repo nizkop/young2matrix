@@ -1,6 +1,9 @@
 from typing import List, Union
 
 from source.function_combination import function_combination
+from source.function_parts.get_dirac_notation import get_dirac_notation
+from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
+from source.function_parts.ttext_kinds import text_kinds
 from source.getting_subsets import get_powerset, permutations_of_subsets
 from source.overview_pdf import overview_pdf
 from source.chemical_standard_tableau import chemical_standard_tableau
@@ -50,7 +53,7 @@ class permutation_group(object):
             self.overview.vspace()
         self.overview.newpage()
 
-        # page 2
+        # page 2 # TODO: ensure line break for long eq
         self.overview.add_section("Ausmultiplizierte Young-Tableaus",
                                   content=r"$a, b, c, \hdots \quad $ = allgemeine Funktionen, "+
                                           r"die beispielsweise p-Orbitale repräsentieren könnten")
@@ -84,12 +87,21 @@ class permutation_group(object):
         self.overview.newpage()
 
         # page 4
-        self.overview.add_section("Spin", content="Überlappungsintegrale")
+        self.overview.add_section("Überlappungsintegrale",
+                                  content="Raumfunktionen:\n Überlapp zw. versch. Tableaus ist 0, Überlapp zwischen gleichen Tableaus mit gleichem $m_S$-Wert ist 1")
         self.calculate_all_overlap_integrals()
         for i in self.overlap:
-            equation = f"<{i['bra']}|{i['ket']}> = {i['result'].to_tex()}"
-            self.overview.add_latex_formula(equation)
-            self.overview.vspace()
+            # if len(i['result'].parts) == 1 and i['result'].parts[0].factor != 0 and i['result'].parts[0].factor != 1:
+                equation_tex = get_dirac_notation(str(i['bra_tableau']), str(i['ket_tableau']), kind=text_kinds.TEX)
+                if i['kind'] == spin_vs_spatial_kind.SPIN:
+                    equation_tex += r"_{\sigma }"
+                    equation_tex += "=" + get_dirac_notation(str(i['bra']), str(i['ket']), kind=text_kinds.TEX)
+                elif i['kind'] == spin_vs_spatial_kind.SPATIAL:
+                    equation_tex += r"_{\Phi}"
+                # equation_tex += "=" + get_dirac_notation(str(i['bra']), str(i['ket']), kind=text_kinds.TEX)
+                equation_tex += f" = {i['result'].to_tex()}"
+                self.overview.add_latex_formula(equation_tex)
+                self.overview.vspace()
 
         self.overview.save(title=title)
 
@@ -139,14 +151,28 @@ class permutation_group(object):
     def calculate_all_overlap_integrals(self):
         # TODO: check
         results = []
-        for i in self.standard_tableaus:
+        for i in range(len(self.standard_tableaus)):
+            tableau_1 = self.standard_tableaus[i]
+            tableau_1.set_up_function()
+            tableau_1.get_spatial_choices()
+            tableau_1.get_spin_choices()
+            tableau_1.calulate_all_overlap_integrals()
+            for x in tableau_1.overlap:
+                x["bra_tableau"] = tableau_1.to_tex()
+                x["ket_tableau"] = tableau_1.to_tex()
+                results.append(x)
             # print(i.to_text(),end="|")
-            for j in self.standard_tableaus:
-                # print(j.to_text())
-                f = function_combination(i,j)
-                g = f.calculate_overlap_integral()
-                info = {"bra": i.to_tex(), "ket": j.to_tex(), "result": g}
-                results.append(info)
+            # for j in range(i+1, len(self.standard_tableaus)):
+            #     # should anyway be 0
+            #     tableau_2 = self.standard_tableaus[j]
+            #     tableau_2.get_spatial_choices()
+            #     tableau_2.get_spin_choices()
+            #     # print(j.to_text())
+            #     f = function_combination(tableau_1,tableau_2)
+            #     g = f.calculate_overlap_integral_basisfunction()
+            #     info = {"bra_tableau": tableau_1.to_tex(), "ket_tableau": tableau_2.to_tex(),"kind": spin_vs_spatial_kind.GENERAL,
+            #             "bra": tableau_1.function.to_tex(), "ket": tableau_2.function.to_tex(), "result": g}
+            #     results.append(info)
         self.overlap = results
         return
 
@@ -158,7 +184,7 @@ class permutation_group(object):
 
 
 if __name__ == '__main__':
-    p = permutation_group(2)
+    p = permutation_group(3)
     # p.get_all_standard_tableaus()
     # p.print()
 
