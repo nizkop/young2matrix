@@ -1,6 +1,5 @@
-from typing import List, Union
+from typing import List
 
-from source.function_combination import function_combination
 from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 from source.function_parts.ttext_kinds import text_kinds
@@ -197,7 +196,6 @@ class permutation_group(object):
                 tableau_2 = self.standard_tableaus[j]
                 tableau_2.get_spatial_choices()
                 tableau_2.get_spin_choices()
-                f = function_combination(tableau_1,tableau_2)
                 info = {"bra_tableau": tableau_1.to_tex(), "ket_tableau": tableau_2.to_tex(),
                         "kind": kind}
                 if kind == spin_vs_spatial_kind.SPIN:
@@ -206,20 +204,20 @@ class permutation_group(object):
                         spin_choice = tableau_1.spin_parts[sp]
                         for sp2 in range(sp, len(tableau_2.spin_parts)):
                             spin_choice_2 = tableau_2.spin_parts[sp2]
-                            g = f.calculate_overlap_integral_between_functions(spin_choice.function, spin_choice_2.function)
+                            g = calculate_overlap_integral_between_functions(spin_choice.function, spin_choice_2.function)
                             info["bra"] = spin_choice.to_tex()
                             info["ket"] = spin_choice_2.to_tex()
                             info["result"] = g
                             results.append(info)
                 else:
                     if kind == spin_vs_spatial_kind.GENERAL:
-                        g = f.calculate_overlap_integral_basisfunction()
+                        g = calculate_overlap_integral_basisfunction(tableau_1, tableau_2)
                         info["bra"] = tableau_1.function.to_tex()
                         info["ket"] = tableau_2.function.to_tex()
                     elif kind == spin_vs_spatial_kind.SPATIAL:
                         if len(tableau_1.spatial_parts) > 0 and len(tableau_2.spatial_parts) > 0:
                             # assumption that only 1 part per tableau
-                            g = f.calculate_overlap_integral_between_functions(tableau_1.spatial_parts[0].function, tableau_2.spatial_parts[0].function)
+                            g = calculate_overlap_integral_between_functions(tableau_1.spatial_parts[0].function, tableau_2.spatial_parts[0].function)
                             info["bra"] = tableau_1.spatial_parts[0].function
                             info["ket"] = tableau_2.spatial_parts[0].function
                         else:

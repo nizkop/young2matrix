@@ -1,0 +1,153 @@
+#
+# from fractions import Fraction
+# import sympy as sp
+#
+# from source.function_parts.function import function
+# from source.function_parts.product_term import product_term
+# from source.function_parts.sign import Sign
+# from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
+# from source.standard_tableau import standard_tableau
+#
+#
+# class function_combination(object):
+#
+#
+#
+#     # def calculate_overlap_integral(self, tableau_a: standard_tableau, tableau_b: standard_tableau, kind:spin_vs_spatial_kind) -> function:
+#     #     if tableau_a.permutation_group != tableau_b.permutation_group:
+#     #         raise Exception("function_combination error: The tableaus dont fit.")
+#     #
+#     #     results = []
+#     #     info = {"bra": tableau_a.function.to_tex(), "ket": tableau_b.function.to_tex()}
+#     #     empty_function = function(product_term(Sign("+"), ()),normalizable=False)
+#     #     # check if identical form
+#     #     if tableau_a.number_of_rows != tableau_b.number_of_rows or tableau_a.number_of_columns != tableau_b.number_of_columns:
+#     #         # basis function of young tableaux from different young diagrams are automatically diagonal
+#     #         empty_function.parts[0].factor = 0
+#     #         empty_function.parts = [empty_function.parts[0]]
+#     #         results.append(empty_function)
+#     #     # same young diagram (form):
+#     #
+#     #     # test if same standard tableau:
+#     #     elif tableau_a.numbers_in_row == tableau_b.numbers_in_row:
+#     #         empty_function.parts[0].factor = 1
+#     #         empty_function.parts[0].ordered_functions = ()
+#     #         empty_function.parts = [empty_function.parts[0]]
+#     #         results.append(empty_function)
+#     #
+#     #     else:
+#     #         help = function_combination()
+#     #         info = {"bra_tableau": tableau_a.to_tex(), "ket_tableau": tableau_b.to_tex(), "kind": kind}
+#     #         if kind == spin_vs_spatial_kind.SPIN:
+#     #             # multiple results
+#     #             for sp in range(len(tableau_a.spin_parts)):
+#     #                 spin_choice = tableau_a.spin_parts[sp]
+#     #                 for sp2 in range(sp, len(tableau_b.spin_parts)):
+#     #                     spin_choice_2 = tableau_b.spin_parts[sp2]
+#     #                     g = help.calculate_overlap_integral_between_functions(spin_choice.function,
+#     #                                                                           spin_choice_2.function)
+#     #                     info["bra"] = spin_choice.to_tex()
+#     #                     info["ket"] = spin_choice_2.to_tex()
+#     #                     info["result"] = g
+#     #                     results.append(info)
+#     #         else:
+#     #             if kind == spin_vs_spatial_kind.GENERAL:
+#     #                 g = help.calculate_overlap_integral_basisfunction(tableau_a, tableau_b)
+#     #                 info["bra"] = tableau_a.function.to_tex()
+#     #                 info["ket"] = tableau_b.function.to_tex()
+#     #             elif kind == spin_vs_spatial_kind.SPATIAL:
+#     #                 if len(tableau_a.spatial_parts) > 0 and len(tableau_b.spatial_parts) > 0:
+#     #                     # assumption that only 1 part per tableau
+#     #                     g = help.calculate_overlap_integral_between_functions(tableau_a.spatial_parts[0].function,
+#     #                                                                           tableau_b.spatial_parts[0].function)
+#     #                     info["bra"] = tableau_a.spatial_parts[0].function
+#     #                     info["ket"] = tableau_b.spatial_parts[0].function
+#     #                 else:
+#     #                     continue
+#     #             info["result"] = g
+#     #             results.append(info)
+#     #
+#     #     return results
+#
+#     # def calculate_overlap_integral(self) -> function:
+#     #     if self.tableau_a.permutation_group != self.tableau_b.permutation_group:
+#     #         raise Exception("function_combination error: The tableaus dont fit.")
+#     #     functions = []
+#     #     empty_function = function(product_term(Sign("+"), ()),normalizable=False)
+#     #     # check if identical form
+#     #     if self.tableau_a.number_of_rows != self.tableau_b.number_of_rows or self.tableau_a.number_of_columns != self.tableau_b.number_of_columns:
+#     #         # basis function of young tableaux from different young diagrams are automatically diagonal
+#     #         empty_function.parts[0].factor = 0
+#     #         empty_function.parts = [empty_function.parts[0]]
+#     #         functions = [empty_function]
+#     #     # same young diagram (form):
+#     #
+#     #     # test if same standard tableau:
+#     #     elif self.tableau_a.numbers_in_row == self.tableau_b.numbers_in_row:
+#     #         empty_function.parts[0].factor = 1
+#     #         empty_function.parts[0].ordered_functions = ()
+#     #         empty_function.parts = [empty_function.parts[0]]
+#     #         functions = [empty_function]
+#     #
+#     #     else:
+#     #         for f1 in self.tableau_a.spatial_parts:
+#     #             for f2 in self.tableau_b.spatial_parts:
+#     #                 empty_function = self.calculate_overlap_integral_between_functions(function_a=f1.behavior, function_b=f2.behavior)
+#     #     return functions
+#
+#
+#     def calculate_overlap_integral_between_functions(self, function_a:function, function_b:function) -> function:
+#         empty_function = function(product_term(Sign("+"), ()),normalizable=False)
+#
+#         if function_a == function_b:
+#             empty_function.parts[0].factor = 1
+#             empty_function.parts[0].ordered_functions = ()
+#             empty_function.parts = [empty_function.parts[0]]
+#         else:
+#             factor_of_non_cancelled_terms = 0
+#             norm = sp.sqrt(function_a.get_normalization_factor()["1/sqrt"]) * sp.sqrt(function_b.get_normalization_factor()["1/sqrt"])
+#             total_eq = ""
+#             left_eq = ""
+#             no_of_terms = 0
+#             for i in function_a.parts:
+#                 for j in function_b.parts:
+#                     no_of_terms += 1
+#                     p, eq_braket = i.integrational_multiply(j)
+#                     total_eq +=" + "+ eq_braket
+#                     if p.factor != 0:
+#                         left_eq += p.to_text()
+#                     if p.sign == Sign.PLUS:
+#                         factor_of_non_cancelled_terms += abs(p.factor)
+#                     else:
+#                         factor_of_non_cancelled_terms -= abs(p.factor)
+#                     # if p.factor != 0:
+#                     #     empty_function.parts.append(p)
+#             try:
+#                 empty_function.parts[0].factor = Fraction(factor_of_non_cancelled_terms, norm)
+#             except:
+#                 # only exception where factor is not an int (because of the square root)
+#                 empty_function.parts[0].factor = sp.sqrt(Fraction(factor_of_non_cancelled_terms*factor_of_non_cancelled_terms, norm*norm))
+#             # print(total_eq, "\n\n= ", left_eq, "\nnumber of terms:", no_of_terms, "\n")
+#         # empty_function.print()
+#         return empty_function
+#
+#
+#
+#
+#
+#     def calculate_hamilton_integral(self):
+#         pass
+#
+#
+#
+#
+# # if __name__ == '__main__':
+#     # s = chemical_standard_tableau([(1,4), (2,), (3,)])
+#     # s.set_up_function()
+#     #
+#     # t = chemical_standard_tableau([(1,3), (2,), (4,)])
+#     # t.set_up_function()
+#     #
+#     # f = function_combination(s, t)
+#     # print( f.calculate_overlap_integral_between_functions(t.spatial_parts[0].function, s.spatial_parts[0].function).to_text() )
+#     #

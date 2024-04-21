@@ -6,7 +6,6 @@ from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 from source.function_parts.ttext_kinds import text_kinds
 from source.pure_chemical_functions.calculate_ms_quantum_number import calculate_ms_quantum_number
 from source.pure_chemical_functions.calculate_spin_quantum_numbers import calculate_spin_quantum_numbers
-from source.function_combination import function_combination
 from source.function_parts.spatial_part import spatial_part
 from source.function_parts.spin_part import spin_part
 from source.standard_tableau import standard_tableau
@@ -17,7 +16,6 @@ class chemical_standard_tableau(standard_tableau):
 
     def __init__(self,numbers_in_row:List[tuple]):
         super().__init__(numbers_in_row=numbers_in_row)
-        self.help: function_combination = None #function_combination()
         self.spatial_parts: List[spatial_part] = []
         self.spin_parts: List[spin_part] = []
         self.overlap = []
@@ -42,9 +40,11 @@ class chemical_standard_tableau(standard_tableau):
         # print("we dont want to choose the orbitals yet")
         if self.function is None:#spatial part needs function as a general behavior pattern
             self.set_up_function()
-        if len(self.get_numbers_in_columns()) > 2:
+        if max([len(i) for i in self.numbers_in_row]) > 2:
             # no spin tableaus with more than 2 rows -> spatial tableaus have to be conjoint to the spin tableaus -> 2 columns max.
-            # print("number of columns to high")
+            # self.print()
+            # print("number of columns to high:", "number of columns:", self.number_of_columns, "number of rows:", self.number_of_rows,
+            #       "get number in columns:", self.get_numbers_in_columns(), "numbers in each row:", self.numbers_in_row)
             return
         if len(self.spatial_parts) == 0:
             self.spatial_parts.append(spatial_part(behavior=self.function))
@@ -72,8 +72,7 @@ class chemical_standard_tableau(standard_tableau):
             return
         for i in range(len(tableau_functions)):
             for j in range(i, len(tableau_functions)):
-                f = function_combination(self,self)
-                g = f.calculate_overlap_integral_between_functions(tableau_functions[i].function, tableau_functions[j].function)
+                g = calculate_overlap_integral_between_functions(tableau_functions[i].function, tableau_functions[j].function)
                 if kind == spin_vs_spatial_kind.SPIN:
                     info = {"bra": tableau_functions[i].get_shortend_form(text_kinds.TEX),
                             "ket": tableau_functions[j].get_shortend_form(text_kinds.TEX), "kind": kind, "result": g}
