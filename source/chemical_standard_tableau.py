@@ -3,6 +3,7 @@ from fractions import Fraction
 from typing import List
 
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
+from source.function_parts.ttext_kinds import text_kinds
 from source.pure_chemical_functions.calculate_ms_quantum_number import calculate_ms_quantum_number
 from source.pure_chemical_functions.calculate_spin_quantum_numbers import calculate_spin_quantum_numbers
 from source.function_combination import function_combination
@@ -38,38 +39,49 @@ class chemical_standard_tableau(standard_tableau):
         angular momentum of a particle l = 0 (s orbital), 1 (p orbital, 2 (d orbital), ...
         ml = alignment of the individual orbital = { -l , ..., l }
         """
-        print("we dont want to choose the orbitals yet")
+        # print("we dont want to choose the orbitals yet")
         if self.function is None:#spatial part needs function as a general behavior pattern
             self.set_up_function()
+        if len(self.get_numbers_in_columns()) > 2:
+            # no spin tableaus with more than 2 rows -> spatial tableaus have to be conjoint to the spin tableaus -> 2 columns max.
+            # print("number of columns to high")
+            return
         if len(self.spatial_parts) == 0:
             self.spatial_parts.append(spatial_part(behavior=self.function))
 
 
-    def calulate_all_overlap_integrals(self, kind: spin_vs_spatial_kind=spin_vs_spatial_kind.GENERAL):
+    def calulate_all_overlap_integrals(self, kind: spin_vs_spatial_kind=spin_vs_spatial_kind.GENERAL) -> None:
         if kind == spin_vs_spatial_kind.GENERAL:
             self.calulate_all_overlap_integrals(kind=spin_vs_spatial_kind.SPATIAL)
             self.calulate_all_overlap_integrals(kind=spin_vs_spatial_kind.SPIN)
             return
-        self.get_spatial_choices()#just to be sure
-        self.get_spin_choices()#just to be sure
-
         if kind == spin_vs_spatial_kind.SPIN:
+            if any(entry.get("kind") == spin_vs_spatial_kind.SPIN for entry in self.overlap):
+                return # stop repetition
+            self.get_spin_choices()  # just to be sure
             tableau_functions = self.spin_parts
-            print("spin")
         else:
-            print("spatial")
+            if any(entry.get("kind") == spin_vs_spatial_kind.SPATIAL for entry in self.overlap):
+                return # no repetition
+            self.get_spatial_choices()  # just to be sure
             tableau_functions = self.spatial_parts
         if len(tableau_functions) == 0:
-            print("calulate_all_overlap_integrals impossible because of no parts")
+            if (not (self.number_of_rows > 2 and kind == spin_vs_spatial_kind.SPIN) and
+                not (len(self.get_numbers_in_columns()) > 2 and kind == spin_vs_spatial_kind.SPATIAL)):
+                    raise Exception("calulate_all_overlap_integrals impossible because of no parts")
             return
-        results = []
         for i in range(len(tableau_functions)):
             for j in range(i, len(tableau_functions)):
                 f = function_combination(self,self)
                 g = f.calculate_overlap_integral_between_functions(tableau_functions[i].function, tableau_functions[j].function)
-                info = {"bra": tableau_functions[i].function.to_tex(), "ket": tableau_functions[j].function.to_tex(), "kind": kind, "result": g}
-                results.append(info)
-        self.overlap += results
+                if kind == spin_vs_spatial_kind.SPIN:
+                    info = {"bra": tableau_functions[i].get_shortend_form(text_kinds.TEX),
+                            "ket": tableau_functions[j].get_shortend_form(text_kinds.TEX), "kind": kind, "result": g}
+                else:
+                    info = {"bra": tableau_functions[i].function.to_tex(), "ket": tableau_functions[j].function.to_tex(),
+                            "kind": kind, "result": g}
+                if info not in self.overlap:
+                    self.overlap.append(info)
         return
 
     def calculate_all_hamilton_integrals(self):
@@ -81,7 +93,7 @@ class chemical_standard_tableau(standard_tableau):
         """
         if self.number_of_rows > 2:
             # only 2 different spin functions = more antisymmetric than 2 impossible
-            print("number of rows to high")
+            # print("number of rows to high")
             return
         if self.function is None:#spin need function as a general behavior pattern
             self.set_up_function()
@@ -136,11 +148,13 @@ class chemical_standard_tableau(standard_tableau):
 
 
 if __name__ == '__main__':
-    s = chemical_standard_tableau([(1,2,3,)])
+    s = chemical_standard_tableau([(1,4), (2,), (3,)])
     s.set_up_function()
 
     # s.get_spatial_choices()
     # s.get_spin_choices()
 
-    s.calulate_all_overlap_integrals()
-    print(len(s.overlap), len(s.spin_parts), len(s.spatial_parts), len([x for x in s.overlap if x["kind"] == spin_vs_spatial_kind.SPIN]))
+    s.calulate_all_overlap_integrals(kind=spin_vs_spatial_kind.SPATIAL)
+    # print(len(s.overlap), len(s.spin_parts), len(s.spatial_parts), len([x for x in s.overlap if x["kind"] == spin_vs_spatial_kind.SPIN]))
+    print([x["result"].to_text() for x in s.overlap])
+    print(len(s.spin_parts), len(s.spatial_parts))

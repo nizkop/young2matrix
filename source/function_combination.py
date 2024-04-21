@@ -61,31 +61,31 @@ class function_combination(object):
         # empty_function.print()
         return empty_function
 
-    def calculate_overlap_integral(self) -> function:
-        if self.tableau_a.permutation_group != self.tableau_b.permutation_group:
-            raise Exception("function_combination error: The tableaus dont fit.")
-        functions = []
-        empty_function = function(product_term(Sign("+"), ()),normalizable=False)
-        # check if identical form
-        if self.tableau_a.number_of_rows != self.tableau_b.number_of_rows or self.tableau_a.number_of_columns != self.tableau_b.number_of_columns:
-            # basis function of young tableaux from different young diagrams are automatically diagonal
-            empty_function.parts[0].factor = 0
-            empty_function.parts = [empty_function.parts[0]]
-            functions = [empty_function]
-        # same young diagram (form):
-
-        # test if same standard tableau:
-        elif self.tableau_a.numbers_in_row == self.tableau_b.numbers_in_row:
-            empty_function.parts[0].factor = 1
-            empty_function.parts[0].ordered_functions = ()
-            empty_function.parts = [empty_function.parts[0]]
-            functions = [empty_function]
-
-        else:
-            for f1 in self.tableau_a.spatial_parts:
-                for f2 in self.tableau_b.spatial_parts:
-                    empty_function = self.calculate_overlap_integral_between_functions(function_a=f1.behavior, function_b=f2.behavior)
-        return functions
+    # def calculate_overlap_integral(self) -> function:
+    #     if self.tableau_a.permutation_group != self.tableau_b.permutation_group:
+    #         raise Exception("function_combination error: The tableaus dont fit.")
+    #     functions = []
+    #     empty_function = function(product_term(Sign("+"), ()),normalizable=False)
+    #     # check if identical form
+    #     if self.tableau_a.number_of_rows != self.tableau_b.number_of_rows or self.tableau_a.number_of_columns != self.tableau_b.number_of_columns:
+    #         # basis function of young tableaux from different young diagrams are automatically diagonal
+    #         empty_function.parts[0].factor = 0
+    #         empty_function.parts = [empty_function.parts[0]]
+    #         functions = [empty_function]
+    #     # same young diagram (form):
+    #
+    #     # test if same standard tableau:
+    #     elif self.tableau_a.numbers_in_row == self.tableau_b.numbers_in_row:
+    #         empty_function.parts[0].factor = 1
+    #         empty_function.parts[0].ordered_functions = ()
+    #         empty_function.parts = [empty_function.parts[0]]
+    #         functions = [empty_function]
+    #
+    #     else:
+    #         for f1 in self.tableau_a.spatial_parts:
+    #             for f2 in self.tableau_b.spatial_parts:
+    #                 empty_function = self.calculate_overlap_integral_between_functions(function_a=f1.behavior, function_b=f2.behavior)
+    #     return functions
 
 
     def calculate_overlap_integral_between_functions(self, function_a:function, function_b:function) -> function:
@@ -133,14 +133,13 @@ class function_combination(object):
 
 
 
-if __name__ == '__main__':
-    s = standard_tableau([(1, 2, ), (3, 4,)])
-    s.set_up_function()
-    s.function.print()
-    print("\n")
-
-    t = standard_tableau([(1, 3,), (2, 4,)])
-    t.set_up_function()
-
-    f = function_combination(s, t)
-    f.calculate_overlap_integral_basisfunction()
+# if __name__ == '__main__':
+    # s = chemical_standard_tableau([(1,4), (2,), (3,)])
+    # s.set_up_function()
+    #
+    # t = chemical_standard_tableau([(1,3), (2,), (4,)])
+    # t.set_up_function()
+    #
+    # f = function_combination(s, t)
+    # print( f.calculate_overlap_integral_between_functions(t.spatial_parts[0].function, s.spatial_parts[0].function).to_text() )
+    #

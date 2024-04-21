@@ -5,6 +5,7 @@ from source.function_parts.function import function
 from source.function_parts.integral_part import integral_part
 from source.function_parts.product_term import product_term
 from source.function_parts.sign import Sign
+from source.function_parts.ttext_kinds import text_kinds
 
 
 class spin_part(integral_part):
@@ -47,9 +48,14 @@ class spin_part(integral_part):
         print(self.to_text())
 
     def to_text(self):
-        part_1 = f"| {self.total_spin}  {'+' if self.ms >= 0 else '-'}{abs(self.ms)} >"
+        part_1 = f"| {self.get_shortend_form()} >"
         part_2 = f"{self.function.to_text()}"
         return f"{part_1} = {part_2}"
+
+    def get_shortend_form(self, kind:text_kinds=text_kinds.TXT):
+        if kind == text_kinds.TEX:
+            return rf" {self.total_spin}\quad {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "
+        return  f" {self.total_spin}   {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "
 
     def to_tex(self):
         part_1 = r"\ket{ "+fr"{self.total_spin} \quad  {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "+ r"}"
