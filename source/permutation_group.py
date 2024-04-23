@@ -78,19 +78,24 @@ class permutation_group(object):
             equation = group[0].get_shortend_symbol()["tex"] + ":"
             self.overview.add_latex_formula(equation)
             self.overview.vspace()
+            group_empty = True
             for t in group:
                 tableau = t.to_tex()
                 t.get_spin_choices()
                 for s in t.spin_parts:
                     self.overview.add_latex_formula(tableau +r"\qquad "+ s.to_tex())
                     self.overview.vspace()
+                    group_empty = False
+            if group_empty:
+                    self.overview.add_information(r"\textit{(Da es nur zwei Spinfunktionen $\alpha, \beta$ gibt, sind mehr als zwei antisymmetrische Funktionen nicht möglich.)}")
+
             self.overview.vspace()
         self.overview.newpage()
 
         # chapter 4
-        self.overview.add_section("Überlappungsintegrale",
-                                  content=r"Raumfunktionen:\\"+
-                                          r" (nur nicht verschwindende Kombinationen gezeigt)\\"
+        self.overview.add_section("Überlappungsintegrale",content="")
+        self.overview.add_section(sec_title="Raumfunktionen", layer=1,
+                                  content=r" (nur nicht verschwindende Kombinationen gezeigt)\\"
                                           r"identische Tableaus ergeben (aufgrund der normierten Funktionen darin) automatisch 1 und werden daher hier nicht aufgelistet")
         self.calculate_all_overlap_integrals()
         for i in self.overlap:
@@ -105,7 +110,8 @@ class permutation_group(object):
                 self.overview.vspace()
 
         self.overview.newpage()
-        self.overview.add_information(r"Spinfunktionen:\\ (nur nicht verschwindende Kombinationen gezeigt) \\ "+
+        self.overview.add_section(sec_title=r"Spinfunktionen", layer=1,
+                                      content="(nur nicht verschwindende Kombinationen gezeigt) \\ "+
                                       r"Überlapp zw. versch. Tableaus ist 0 (wird hier ausgelassen), "+
                                       r"Überlapp zwischen gleichen Tableaus mit gleichem $m_S$-Wert ist 1 (wird hier ausgelassen)\\"+
                                       r"hier informale Darstellung der Tableaus mit Spinfunktionen nach dem Schema: "

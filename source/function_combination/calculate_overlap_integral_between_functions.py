@@ -45,7 +45,7 @@ def calculate_overlap_integral_between_functions(function_a:function, function_b
     if empty_function.parts[0].factor < 0:
         empty_function.parts[0].sign = Sign.MINUS
         empty_function.parts[0].factor = abs( empty_function.parts[0].factor )
-    empty_function.print()
+    # empty_function.print()
     return empty_function
 
 

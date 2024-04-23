@@ -1,6 +1,6 @@
 from typing import Union
 
-from pylatex import Document, Section, Math, Command, Package
+from pylatex import Document, Section, Math, Command, Package, Subsection
 from pylatex.utils import NoEscape
 
 
@@ -33,9 +33,17 @@ class overview_pdf(object):
     def add_information(self, additional_info: str) -> None:
         self.doc.append(NoEscape(additional_info))
 
-    def add_section(self, sec_title:str, content:str):
-        with self.doc.create(Section(sec_title)):
-            self.doc.append(NoEscape(content))
+    def add_section(self, sec_title:str,content:str, layer:int=0):
+        if layer == 0:
+            with self.doc.create(Section(sec_title)):
+                if len(content) > 0:
+                    self.doc.append(NoEscape(content))
+        elif layer == 1:
+            with self.doc.create(Subsection(sec_title)):
+                if len(content) > 0:
+                    self.doc.append(NoEscape(content))
+        else:
+            return
 
     def get_latex_formula(self, formula_text:str, inline:bool = False) -> Union[Math, NoEscape]:
         if not inline: # euqation might be longer
