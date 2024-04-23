@@ -76,7 +76,7 @@ class product_term(object):
         if sorted(self.get_list_of_parts()) != sorted(other.get_list_of_parts()):
             empty_part.factor = 0
         else:
-            empty_part.factor = self.factor * other.factor * 1
+            empty_part.factor = abs( self.factor * other.factor * 1 )
         # eq_right = empty_part.to_text()
         # print(eq_left , "=", empty_part.to_text())
         return empty_part, eq_left

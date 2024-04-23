@@ -42,7 +42,10 @@ def calculate_overlap_integral_between_functions(function_a:function, function_b
             empty_function.parts[0].factor = sp.sqrt \
                 (Fraction(factor_of_non_cancelled_terms * factor_of_non_cancelled_terms, norm *norm))
         # print(total_eq, "\n\n= ", left_eq, "\nnumber of terms:", no_of_terms, "\n")
-    # empty_function.print()
+    if empty_function.parts[0].factor < 0:
+        empty_function.parts[0].sign = Sign.MINUS
+        empty_function.parts[0].factor = abs( empty_function.parts[0].factor )
+    empty_function.print()
     return empty_function
 
 

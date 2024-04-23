@@ -1,8 +1,6 @@
 from typing import List
 
 from source.function_combination.calculate_overlap_integral import calculate_overlap_integral
-from source.function_combination.calculate_overlap_integral_between_functions import \
-    calculate_overlap_integral_between_functions
 from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 from source.function_parts.ttext_kinds import text_kinds
@@ -172,7 +170,7 @@ class permutation_group(object):
         return tableaus
 
 
-    def calculate_all_overlap_integrals(self):
+    def calculate_all_overlap_integrals(self) -> None:
         if len(self.overlap) > 0:
             return
         results = []
@@ -198,10 +196,6 @@ class permutation_group(object):
         for result in results:
             if result not in self.overlap:
                 self.overlap.append(result)
-
-        x = [i for i in self.overlap
-            if i['kind'] == spin_vs_spatial_kind.SPIN and len(i['result'].parts) == 1 and i['result'].parts[0].factor != 0 and i['result'].parts[0].factor != 1 ]
-        print(len(x), "verschiedene Spin-Überlappintegrale")
         return
 
     def calculate_all_hamilton_integrals(self):
@@ -212,7 +206,7 @@ class permutation_group(object):
 
 
 if __name__ == '__main__':
-    p = permutation_group(2)
+    p = permutation_group(4)
     p.get_all_standard_tableaus()
     # p.print()
 

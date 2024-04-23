@@ -69,7 +69,6 @@ def calculate_overlap_integral(tableau_a: chemical_standard_tableau, tableau_b: 
 
         info["result"] = g
         results.append(info)
-
     return results
 
 

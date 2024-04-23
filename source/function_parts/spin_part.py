@@ -1,5 +1,4 @@
 import copy
-import math
 
 from source.function_parts.function import function
 from source.function_parts.integral_part import integral_part

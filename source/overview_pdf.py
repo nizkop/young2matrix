@@ -1,3 +1,4 @@
+from typing import Union
 
 from pylatex import Document, Section, Math, Command, Package
 from pylatex.utils import NoEscape
@@ -8,13 +9,16 @@ class overview_pdf(object):
         self.permutation_group:int=0
         self.file_type:str = "pdf"
 
-        self.doc = Document()
+        self.doc = Document(documentclass='article', document_options=['fleqn']) # left alignment for equations
         self.doc.packages.append(Package('geometry',
                  options=['a4paper', 'left=2cm', 'right=2cm', 'top=2cm', 'bottom=2cm']))
         self.doc.preamble.append(Package("babel", options=r'ngerman'))
         self.doc.preamble.append(Package("tocloft"))
         self.doc.preamble.append(NoEscape(r"\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}   % activating dots in table of contents"))
         self.doc.preamble.append(Package("physics"))
+        self.doc.preamble.append(Package("breqn"))# for dmath command
+
+        self.doc.append(Command('noindent'))
 
     def save(self, title: str) -> None:
         """
@@ -33,7 +37,9 @@ class overview_pdf(object):
         with self.doc.create(Section(sec_title)):
             self.doc.append(NoEscape(content))
 
-    def get_latex_formula(self, formula_text:str, inline:bool = False) -> Math:
+    def get_latex_formula(self, formula_text:str, inline:bool = False) -> Union[Math, NoEscape]:
+        if not inline: # euqation might be longer
+            return NoEscape(r"\begin{dmath*}"+rf"{formula_text}"+r"\end{dmath*}")
         return Math(data=[NoEscape(rf"{formula_text}")], inline=inline)
 
     def add_latex_formula(self, formula_text: str, inline:bool = False) -> None:
