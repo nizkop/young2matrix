@@ -1,7 +1,8 @@
-from typing import List
+from fractions import Fraction
+from typing import List, Union
 
 
-def calculate_spin_quantum_numbers(number_of_particles:int, single_particle_spin:float=1/2) -> List[float]:
+def calculate_spin_quantum_numbers(number_of_particles:int, single_particle_spin:Union[int,Fraction]=Fraction(1,2)) -> List[float]:
     """
     calculates total spin: S = { |s1 - s_2 - ... - s_i| , |s1 - s2 - ... - si| +1, ... , (s1 + ... + si) }
     :param single_particle_spin: spin choices as absolute value (plus & minus), default set to electrons (float with at most 1 decimal place)

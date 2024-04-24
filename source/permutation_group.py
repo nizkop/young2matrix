@@ -3,7 +3,7 @@ from typing import List
 from source.function_combination.calculate_overlap_integral import calculate_overlap_integral
 from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
-from source.function_parts.ttext_kinds import text_kinds
+from source.function_parts.text_kinds import text_kinds
 from source.getting_subsets import get_powerset, permutations_of_subsets
 from source.overview_pdf import overview_pdf
 from source.chemical_standard_tableau import chemical_standard_tableau
@@ -34,7 +34,7 @@ class permutation_group(object):
     def get_young_tableau_equations(self) -> List[str]:
         equations = []
         self.get_all_standard_tableaus()
-        for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=p.standard_tableaus):
+        for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
             equation = group[0].get_shortend_symbol()["tex"]+ ":\quad"
             equation += r"\quad , \quad ".join([t.to_tex() for t in group])
             equations.append(equation)
@@ -54,7 +54,7 @@ class permutation_group(object):
             self.overview.vspace()
         self.overview.newpage()
 
-        # chapter 2 # TODO: ensure line break for long eq
+        # chapter 2
         self.overview.add_section("Ausmultiplizierte Young-Tableaus",
                                   content=r"$a, b, c, \hdots \quad $ = allgemeine Funktionen, "+
                                           r"die beispielsweise p-Orbitale repräsentieren könnten")
@@ -163,7 +163,7 @@ class permutation_group(object):
             self.get_all_standard_tableaus()
         return [t for t in self.standard_tableaus if max(t.number_of_columns) <= t.number_of_rows]
 
-    def group_tableaus_by_shortend_symbol(self, tableaus_to_sort:List[chemical_standard_tableau]=[]):
+    def group_tableaus_by_shortend_symbol(self, tableaus_to_sort:List[chemical_standard_tableau]=[]) -> List[List[chemical_standard_tableau]]:
         if len(tableaus_to_sort) == 0:
             tableaus_to_sort = self.standard_tableaus
         tableaus = []

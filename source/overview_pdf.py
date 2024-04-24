@@ -1,5 +1,4 @@
 from typing import Union
-
 from pylatex import Document, Section, Math, Command, Package, Subsection
 from pylatex.utils import NoEscape
 
@@ -20,7 +19,7 @@ class overview_pdf(object):
 
         self.doc.append(Command('noindent'))
 
-    def save(self, title: str) -> None:
+    def save(self, title:str) -> None:
         """
         '.pdf' is added automatically
         :param title:
@@ -30,10 +29,10 @@ class overview_pdf(object):
         self.doc.append(Command('tableofcontents'))
         self.doc.generate_pdf(title, clean_tex=True)
 
-    def add_information(self, additional_info: str) -> None:
+    def add_information(self, additional_info:str) -> None:
         self.doc.append(NoEscape(additional_info))
 
-    def add_section(self, sec_title:str,content:str, layer:int=0):
+    def add_section(self, sec_title:str, content:str, layer:int=0) -> None:
         if layer == 0:
             with self.doc.create(Section(sec_title)):
                 if len(content) > 0:
@@ -50,7 +49,7 @@ class overview_pdf(object):
             return NoEscape(r"\begin{dmath*}"+rf"{formula_text}"+r"\end{dmath*}")
         return Math(data=[NoEscape(rf"{formula_text}")], inline=inline)
 
-    def add_latex_formula(self, formula_text: str, inline:bool = False) -> None:
+    def add_latex_formula(self, formula_text:str, inline:bool = False) -> None:
         """
         :param formula_text: latex-equation
         :param inline: whether the equation should be written in the same line as content before (False)
@@ -64,10 +63,10 @@ class overview_pdf(object):
         #                [0, 0, 2]])
         # self.doc.append(Math(data=[Matrix(M), Matrix(a), '=', Matrix(M * a)]))
 
-    def newpage(self):
+    def newpage(self) -> None:
         self.doc.append(Command('newpage'))
 
-    def vspace(self):
+    def vspace(self) -> None:
         self.doc.append(Command('vspace', '0.25cm'))
 
 

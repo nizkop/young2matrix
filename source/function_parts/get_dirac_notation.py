@@ -1,4 +1,4 @@
-from source.function_parts.ttext_kinds import text_kinds
+from source.function_parts.text_kinds import text_kinds
 
 
 def get_dirac_notation(bra: str, ket: str, kind: text_kinds):

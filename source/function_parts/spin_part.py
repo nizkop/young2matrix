@@ -4,7 +4,7 @@ from source.function_parts.function import function
 from source.function_parts.integral_part import integral_part
 from source.function_parts.product_term import product_term
 from source.function_parts.sign import Sign
-from source.function_parts.ttext_kinds import text_kinds
+from source.function_parts.text_kinds import text_kinds
 
 
 class spin_part(integral_part):

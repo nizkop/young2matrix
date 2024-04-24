@@ -63,7 +63,7 @@ class basicWindow(QWidget):
     def show_previous_page(self):
         if self.parent:
             self.parent.back_to_start()
-        self.mein.back_to_start()
+        self.main.back_to_start()
 
 
     def clearLayout(self, layout=None) -> None:

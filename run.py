@@ -5,7 +5,7 @@ from source.ui_parts.StartWindow import StartWindow
 sys.path.append('/source')
 from source.permutation_group import permutation_group
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout
+from PyQt5.QtWidgets import QApplication
 
 
 
