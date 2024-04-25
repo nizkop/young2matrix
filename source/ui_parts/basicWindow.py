@@ -29,8 +29,8 @@ class basicWindow(QWidget):
         """
         :param eq: latex-formatted equation, e.g.r"\frac{1}{2} \cdot \pi"
         """
-        equation_widget = QWidget()
-        equation_layout = QVBoxLayout(equation_widget)
+        # equation_widget = QWidget()
+        # equation_layout = QVBoxLayout(equation_widget)
 
         figure = plt.figure()
         ax = figure.add_subplot(111)
@@ -45,10 +45,10 @@ class basicWindow(QWidget):
         canvas = FigureCanvas(figure)
         canvas.setFixedSize(width, height)
 
-        equation_layout.addWidget(canvas, alignment=Qt.AlignLeft)
-        equation_widget.setLayout(equation_layout)
-
-        self.layout.addWidget(equation_widget)
+        self.layout.addWidget(canvas, alignment=Qt.AlignLeft)
+        # equation_widget.setLayout(equation_layout)
+        #
+        # self.layout.addWidget(equation_widget)
         plt.close(figure)
 
     def add_buttons(self):
