@@ -1,7 +1,7 @@
 
 from matplotlib import pyplot as plt
 
-from tst import get_latex_canvas, add_formula
+from get_latex_canvas import get_latex_canvas, add_formula
 
 # plt.rcParams['text.usetex'] = True
 # plt.rcParams['text.latex.preamble'] = r'''
@@ -89,53 +89,12 @@ class MainApplication(QMainWindow):
         :param formula: latex-formatted equation, e.g. r"\frac{1}{2} \cdot \pi"
         """
         print("add_equation", flush=True)
-        # plt.rcParams['text.usetex'] = True
-        # plt.rcParams['text.latex.preamble'] = r'''
-        # \usepackage{mathtools}
-        # \usepackage{tocloft}
-        # \usepackage{physics}
-        # \usepackage{breqn}
-        # '''
-        #
-        # figure = plt.figure()
-        # ax = figure.add_subplot(111)
-        # ax.text(0.05, 0.5, rf"\[{formula}\]", horizontalalignment='left', verticalalignment='center', fontsize=20)
-        # ax.axis('off')
-        # figure.patch.set_facecolor('none')
-        # plt.tight_layout(pad=0.2)
-        #
-        # # bbox = ax.get_window_extent().transformed(figure.dpi_scale_trans.inverted())
-        # # width = int(bbox.width * figure.dpi)
-        # # height = int(bbox.height * figure.dpi/3)
-        # canvas = FigureCanvas(figure)
-        # # canvas.setFixedSize(width, height)
-
         canvas = get_latex_canvas(formula)
-        add_formula(formula, self.scroll_layout)
-        # scene = QGraphicsScene()
-        # scene.addWidget(canvas)
-        # graphics_view = QGraphicsView()
-        # graphics_view.setScene(scene)
-        # self.scroll_layout.addWidget(graphics_view)
-        # self.scroll_layout.addWidget(widget, alignment=Qt.AlignLeft)
-
-        # self.scroll_layout.addWidget(canvas, alignment=Qt.AlignLeft)
+        self.scroll_layout.addWidget(canvas)
         self.non_basics.append(canvas)
 
         plt.close()
 
-        # try:
-        #     figure.tight_layout(pad=0.2)
-        #     figure.canvas.draw()
-        # except:
-        #     print("problematic equation", [formula], flush=True)
-        #     self.scroll_layout.addWidget(canvas, alignment=Qt.AlignLeft)
-        #     # latex_text = ax.texts[0].get_text()
-        #     # with open('rendered_text.tex', 'w') as f:
-        #     #     f.write(latex_text)
-        #     # plt.show()
-        #     eq = r"nicht \quad darstellbar"
-        #     return self.add_equation(eq)
 
     def change_page(self, index: int):
         print("change page",flush=True)

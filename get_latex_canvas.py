@@ -1,7 +1,7 @@
-import numpy as np
 import matplotlib.pyplot as plt
-from PyQt5.QtWidgets import QVBoxLayout, QGraphicsScene, QGraphicsView
-# from matplotlib_inline.backend_inline import FigureCanvas
+from PyQt5.QtWidgets import QVBoxLayout
+
+# NOT: from matplotlib_inline.backend_inline import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 plt.rcParams['text.usetex'] = True
@@ -13,15 +13,6 @@ plt.rcParams['text.latex.preamble'] = r'''
 \usepackage{breqn}
 '''
 
-# plt.imshow(np.random.randn(100, 100))
-# plt.title('This is a test')
-# plt.xlabel(r'$x\cdot \bra{E}$')
-# plt.ylabel(r'$\text{y}$')
-# plt.savefig('test.pdf')
-
-
-# test 2
-
 
 def get_latex_canvas(eq:str):
     eq = eq.replace("_",r"\_")
@@ -31,7 +22,7 @@ def get_latex_canvas(eq:str):
     ax.text(0.05, 0.5, rf"\[{eq}\]", horizontalalignment='left', verticalalignment='center', fontsize=20)
     ax.axis('off')
     figure.patch.set_facecolor('none')
-    # plt.tight_layout(pad=0.2)
+    plt.tight_layout(pad=0.2)
 
     canvas = FigureCanvas(figure)
     plt.show()
@@ -52,4 +43,5 @@ def add_formula(formula, scroll_layout: QVBoxLayout):
         # scroll_layout.addWidget(graphics_view)
 
 
-get_latex_canvas(r"\bra{E}\ket{x} = \frac{1}{2} = \begin{array}{|c|} 1 \\ \hline \end{array}")
+if __name__ == '__main__':
+    get_latex_canvas(r"\bra{E}\ket{x} = \frac{1}{2} = \begin{array}{|c|} 1 \\ \hline \end{array}")

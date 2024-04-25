@@ -87,24 +87,38 @@ class ApplicationWindows(MainApplication):
 
     def load_spin_page(self):
         self.permutation_group.get_all_standard_tableaus()
-        print("groups:", len(self.permutation_group.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.permutation_group.standard_tableaus)))
         for group in self.permutation_group.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.permutation_group.standard_tableaus):
             equation = group[0].get_shortend_symbol()["tex"] + ":"
             self.add_equation(equation)
             group_empty = True
-            print("t:", len(group))
             for t in group:
                 tableau = t.to_tex()
                 t.get_spin_choices()
                 for s in t.spin_parts:
                     self.add_equation(tableau +r"\qquad "+ s.to_tex())
                     group_empty = False
-            # if group_empty:
-            #         add_information(r"\textit{(Da es nur zwei Spinfunktionen $\alpha, \beta$ gibt, sind mehr als zwei antisymmetrische Funktionen nicht möglich.)}")
+            if group_empty:
+                label = QLabel("(Da es nur zwei Spinfunktionen α, β gibt, sind mehr als zwei antisymmetrische Funktionen nicht möglich.)")
+                self.scroll_layout.addWidget(label)
+
 
 
     def load_spatial_page(self):
-        pass
+        self.permutation_group.get_all_standard_tableaus()
+        for group in self.permutation_group.group_tableaus_by_shortend_symbol(
+                tableaus_to_sort=self.permutation_group.standard_tableaus):
+            equation = group[0].get_shortend_symbol()["tex"] + ":"
+            self.add_equation(equation)
+            group_empty = True
+            for t in group:
+                tableau = t.to_tex()
+                t.get_spatial_choices()
+                for s in t.spatial_parts:
+                    self.add_equation(tableau + r"\qquad " + s.to_tex())
+                    group_empty = False
+            if group_empty:
+                label = QLabel("(Da die Raum-Tableaus adjoint zu den Spin-Tableaus sein müssen (und dort nur maximal 2 Funktionen antisymmetrisch sein können), sind nicht mehr als zwei Spalten möglich.)")
+                self.scroll_layout.addWidget(label)
 
 
     def load_main_page(self):
