@@ -1,8 +1,12 @@
 import sys
+import matplotlib
+from matplotlib import pyplot as plt
+matplotlib.rcParams['text.usetex'] = True
+
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QLabel, \
     QScrollArea
-from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 class MainApplication(QMainWindow):
@@ -10,7 +14,7 @@ class MainApplication(QMainWindow):
         super().__init__()
         self.non_basics = []
         self.setWindowTitle("young2matrix")
-        self.setGeometry(100, 100, 400, 300)
+        self.setGeometry(100, 100, 800, 600)
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
@@ -28,9 +32,10 @@ class MainApplication(QMainWindow):
 
         self.current_page = 0
         self.pages = [
-            ("Startseite",[]),
-            ("Seite 1", [r"\sum_{i=1}^{n} i^2", r"E = m \cdot c ^2"]),
-            ("Seite 2", [r"e^{i\pi} + 1 = 0"])
+            {"name": "Startseite", "sign": "zurück zum Start", "index": 0},
+            {"name": "Tableaus", "sign": "[1][2]", "index": 1},
+            {"name": "Spin","sign": "σ", "index": 3},
+            {"name": "Raumfunktionen","sign": "Φ", "index": 3},
         ]
 
         self.label = QLabel()
@@ -42,18 +47,17 @@ class MainApplication(QMainWindow):
 
     def create_widgets(self):
         print("create widgets", flush=True)
-
-
         self.update_page() #content above buttons
 
         button_layout = QHBoxLayout()  # horizontal layout (for buttons)
 
-        for i, (text, _) in enumerate(self.pages):
-            button = QPushButton(text)
-            button.setStyleSheet("background-color: lightgreen;")
-            button.clicked.connect(lambda _, i=i: self.open_page(i))
-            button_layout.addWidget(button)
-            self.non_basics.append(button)
+        for page_info in self.pages: # for i, (text, _) in enumerate(self.pages):
+            if page_info["index"] != self.current_page:
+                button = QPushButton(page_info["sign"])
+                button.setStyleSheet("background-color: lightgreen;")
+                button.clicked.connect(lambda _, index=page_info["index"]: self.open_page(index))
+                button_layout.addWidget(button)
+                self.non_basics.append(button)
 
         self.scroll_layout.addLayout(button_layout)
         self.non_basics.append(button_layout)
@@ -68,7 +72,7 @@ class MainApplication(QMainWindow):
 
     def update_page(self):
         print("update_page", flush=True)
-        _, formulas = self.pages[self.current_page]
+        formulas = [r"E = m \cdot c^ 2", r"\frac{1}{2}", "\\begin{array}{c}{1}\\end{array}"]# test equations
 
         for formula in formulas:
             self.add_equation(formula)
@@ -79,11 +83,12 @@ class MainApplication(QMainWindow):
         """
         print("add_equation", flush=True)
 
-        figure = Figure()
+        figure = plt.figure()
         ax = figure.add_subplot(111)
-        ax.text(0.05, 0.5, rf"${formula}$", horizontalalignment='left', verticalalignment='center', fontsize=20)
+        ax.text(0.05, 0.5, rf"\[{formula}\]", horizontalalignment='left', verticalalignment='center', fontsize=20)
         ax.axis('off')
         figure.patch.set_facecolor('none')
+        plt.tight_layout(pad=0.2)
 
         bbox = ax.get_window_extent().transformed(figure.dpi_scale_trans.inverted())
         width = int(bbox.width * figure.dpi)
@@ -93,10 +98,23 @@ class MainApplication(QMainWindow):
 
         self.scroll_layout.addWidget(canvas, alignment=Qt.AlignLeft)
         self.non_basics.append(canvas)
-        figure.tight_layout(pad=0.2)
-        figure.canvas.draw()
 
-    def change_page(self, index):
+        plt.close(figure)
+
+        # try:
+        #     figure.tight_layout(pad=0.2)
+        #     figure.canvas.draw()
+        # except:
+        #     print("problematic equation", [formula], flush=True)
+        #     self.scroll_layout.addWidget(canvas, alignment=Qt.AlignLeft)
+        #     # latex_text = ax.texts[0].get_text()
+        #     # with open('rendered_text.tex', 'w') as f:
+        #     #     f.write(latex_text)
+        #     # plt.show()
+        #     eq = r"nicht \quad darstellbar"
+        #     return self.add_equation(eq)
+
+    def change_page(self, index: int):
         print("change page",flush=True)
         self.current_page = index
         self.clearLayout()
@@ -104,10 +122,8 @@ class MainApplication(QMainWindow):
         # self.update_page()
 
 
-    def clearLayout(self, layout=None) -> None:
-        """ Clearing the current layout and its sublayouts
-         :param layout: in function call None, but in recursion a sublayout can be referenced here
-         """
+    def clearLayout(self) -> None:
+        """ Clearing the current layout and its sublayouts """
         print("clear layout",flush=True)
         for i in range(len(self.non_basics)-1,-1,-1):
             item = self.non_basics[i]
@@ -128,8 +144,8 @@ class MainApplication(QMainWindow):
 
 
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = MainApplication()
-    window.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
+#     window = MainApplication()
+#     window.show()
+#     sys.exit(app.exec_())
