@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QLabel, QScrollArea
-from PyQt5.QtGui import QPixmap, QPainter, QPalette, QColor
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QLabel, \
+    QScrollArea
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
@@ -9,7 +9,7 @@ class MainApplication(QMainWindow):
     def __init__(self):
         super().__init__()
         self.non_basics = []
-        self.setWindowTitle("Hauptstartseite")
+        self.setWindowTitle("young2matrix")
         self.setGeometry(100, 100, 400, 300)
 
         self.central_widget = QWidget()
@@ -28,6 +28,7 @@ class MainApplication(QMainWindow):
 
         self.current_page = 0
         self.pages = [
+            ("Startseite",[]),
             ("Seite 1", [r"\sum_{i=1}^{n} i^2", r"E = m \cdot c ^2"]),
             ("Seite 2", [r"e^{i\pi} + 1 = 0"])
         ]
@@ -39,23 +40,31 @@ class MainApplication(QMainWindow):
         self.create_widgets()
 
 
-
     def create_widgets(self):
         print("create widgets", flush=True)
 
+
         self.update_page() #content above buttons
 
-        button_layout = QHBoxLayout()  # Horizontal Layout für die Schaltflächen
+        button_layout = QHBoxLayout()  # horizontal layout (for buttons)
 
         for i, (text, _) in enumerate(self.pages):
             button = QPushButton(text)
             button.setStyleSheet("background-color: lightgreen;")
-            button.clicked.connect(lambda _, i=i: self.change_page(i))
+            button.clicked.connect(lambda _, i=i: self.open_page(i))
             button_layout.addWidget(button)
             self.non_basics.append(button)
 
         self.scroll_layout.addLayout(button_layout)
         self.non_basics.append(button_layout)
+
+    def open_page(self, page_number:int):
+        """
+        to be implemented in sub-class
+        :param i:
+        :return:
+        """
+        return self.change_page(page_number)
 
     def update_page(self):
         print("update_page", flush=True)
