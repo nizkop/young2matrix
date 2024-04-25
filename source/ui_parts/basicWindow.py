@@ -1,11 +1,10 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout
 from matplotlib import pyplot as plt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-import matplotlib
+from matplotlib_inline.backend_inline import FigureCanvas
 
 
-matplotlib.rcParams['text.usetex'] = True
+plt.rcParams['text.usetex'] = True
 
 
 class basicWindow(QWidget):

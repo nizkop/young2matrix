@@ -13,12 +13,13 @@ class ApplicationWindows(MainApplication):
     def __init__(self):
         super().__init__()
 
-        self.pages = [
-            {"name": "Startseite", "sign": "zurück zum Start", "index": 0},
-            {"name": "Tableaus", "sign": "[1][2]", "index": 1},
-            {"name": "Spin","sign": "σ", "index": 3},
-            {"name": "Raumfunktionen","sign": "Φ", "index": 3},
-        ]
+        # self.pages = [
+        #     {"name": "Startseite", "sign": "zurück zum Start", "index": 0, "function": self.load_main_page},
+        #     {"name": "Tableaus", "sign": "[1][2]", "index": 1, "function": self.load_tableau_page},
+        #     {"name": "Spin","sign": "σ", "index": 3, "function": self.load_spin_page},
+        #     {"name": "Raumfunktionen", "sign": "Φ", "index": 3, "function": self.load_spatial_page},
+        #     {"name": "Download", "sign": "⬇️", "index": 4, "function": self.test_page}
+        # ]
         self.permutation_group: Union[None, permutation_group] = None
         self.permutation_group_no: Union[None, int] = None
 
@@ -55,23 +56,25 @@ class ApplicationWindows(MainApplication):
     def update_page(self):
         """ adding content to layout """
         print("update page Windows:", self.current_page)
-        if self.current_page == 1:
-            return self.load_tableau_page()
-        elif self.current_page == 3:
-            return self.test_page()
-        self.current_page = 0
-        self.load_mainpage()
+        # if self.current_page == 1:
+        #     return self.load_tableau_page()
+        # elif self.current_page == 3:
+        #     return self.test_page()
+        # self.current_page = 0
+        # self.load_main_page()
 
         # else:
-        #     try:
-        #         target_page = next((page_dict for page_dict in self.pages if page_dict.get("index") == self.current_page), None)
-        #     except KeyError:
-        #         self.current_page = 0
-        #         return self.update_page()
+        try:
+            page_info = next((page_dict for page_dict in self.pages if page_dict.get("index") == self.current_page), None)
+            page_info["function"]()
+        except KeyError:
+            self.current_page = 0
+            return self.load_main_page()
 
     def test_page(self):
         # working equations:
-        eqs = [r"E = m \cdot c^ 2", r"\frac{1}{2}", "\\begin{array}{c}{1}\\end{array}", r"\begin{array}{|c|}{2}\end{array}"]  # "\\text{a}"]
+        eqs = [r"E = m \cdot c^ 2", r"\frac{1}{2}", "\\begin{array}{c}{1}\\end{array}", r"\begin{array}{|c|}{2}\end{array}",
+               "\\bra{1}"]  # "\\text{a}"]
         for eq in eqs:
             self.add_equation(formula=eq)
 
@@ -82,8 +85,29 @@ class ApplicationWindows(MainApplication):
         for equation in self.permutation_group.get_young_tableau_equations():
             self.add_equation(formula=equation)
 
+    def load_spin_page(self):
+        self.permutation_group.get_all_standard_tableaus()
+        print("groups:", len(self.permutation_group.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.permutation_group.standard_tableaus)))
+        for group in self.permutation_group.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.permutation_group.standard_tableaus):
+            equation = group[0].get_shortend_symbol()["tex"] + ":"
+            self.add_equation(equation)
+            group_empty = True
+            print("t:", len(group))
+            for t in group:
+                tableau = t.to_tex()
+                t.get_spin_choices()
+                for s in t.spin_parts:
+                    self.add_equation(tableau +r"\qquad "+ s.to_tex())
+                    group_empty = False
+            # if group_empty:
+            #         add_information(r"\textit{(Da es nur zwei Spinfunktionen $\alpha, \beta$ gibt, sind mehr als zwei antisymmetrische Funktionen nicht möglich.)}")
 
-    def load_mainpage(self):
+
+    def load_spatial_page(self):
+        pass
+
+
+    def load_main_page(self):
         permutation_group_input = QHBoxLayout()
         permutation_group_label = QLabel("Permutationsgruppe:")
         permutation_group_input.addWidget(permutation_group_label)

@@ -1,13 +1,18 @@
-import sys
-import matplotlib
+
 from matplotlib import pyplot as plt
-matplotlib.rcParams['text.usetex'] = True
 
+from tst import get_latex_canvas, add_formula
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QLabel, \
+# plt.rcParams['text.usetex'] = True
+# plt.rcParams['text.latex.preamble'] = r'''
+# \usepackage{mathtools}
+# \usepackage{tocloft}
+# \usepackage{physics}
+# \usepackage{breqn}
+# '''
+
+from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QLabel, \
     QScrollArea
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 class MainApplication(QMainWindow):
     def __init__(self):
@@ -32,10 +37,12 @@ class MainApplication(QMainWindow):
 
         self.current_page = 0
         self.pages = [
-            {"name": "Startseite", "sign": "zurück zum Start", "index": 0},
-            {"name": "Tableaus", "sign": "[1][2]", "index": 1},
-            {"name": "Spin","sign": "σ", "index": 3},
-            {"name": "Raumfunktionen","sign": "Φ", "index": 3},
+            {"name": "Startseite", "sign": "zurück zum Start", "index": 0, "function": self.load_main_page},
+            {"name": "Tableaus", "sign": "[1][2]", "index": 1, "function": self.load_tableau_page},
+            {"name": "Spin","sign": "σ", "index": 3, "function": self.load_spin_page},
+            {"name": "Raumfunktionen", "sign": "Φ", "index": 3, "function": self.load_spatial_page},
+            {"name": "Download", "sign": "⤓"# "⬇️" ↓ ⬇  ⤓
+                , "index": 4, "function": self.test_page}
         ]
 
         self.label = QLabel()
@@ -72,7 +79,7 @@ class MainApplication(QMainWindow):
 
     def update_page(self):
         print("update_page", flush=True)
-        formulas = [r"E = m \cdot c^ 2", r"\frac{1}{2}", "\\begin{array}{c}{1}\\end{array}"]# test equations
+        formulas = [r"E = m \cdot c^ 2", r"\frac{1}{2}", "\\begin{array}{c}{1}\\end{array}", r"\bra{1}"]# test equations
 
         for formula in formulas:
             self.add_equation(formula)
@@ -82,24 +89,40 @@ class MainApplication(QMainWindow):
         :param formula: latex-formatted equation, e.g. r"\frac{1}{2} \cdot \pi"
         """
         print("add_equation", flush=True)
+        # plt.rcParams['text.usetex'] = True
+        # plt.rcParams['text.latex.preamble'] = r'''
+        # \usepackage{mathtools}
+        # \usepackage{tocloft}
+        # \usepackage{physics}
+        # \usepackage{breqn}
+        # '''
+        #
+        # figure = plt.figure()
+        # ax = figure.add_subplot(111)
+        # ax.text(0.05, 0.5, rf"\[{formula}\]", horizontalalignment='left', verticalalignment='center', fontsize=20)
+        # ax.axis('off')
+        # figure.patch.set_facecolor('none')
+        # plt.tight_layout(pad=0.2)
+        #
+        # # bbox = ax.get_window_extent().transformed(figure.dpi_scale_trans.inverted())
+        # # width = int(bbox.width * figure.dpi)
+        # # height = int(bbox.height * figure.dpi/3)
+        # canvas = FigureCanvas(figure)
+        # # canvas.setFixedSize(width, height)
 
-        figure = plt.figure()
-        ax = figure.add_subplot(111)
-        ax.text(0.05, 0.5, rf"\[{formula}\]", horizontalalignment='left', verticalalignment='center', fontsize=20)
-        ax.axis('off')
-        figure.patch.set_facecolor('none')
-        plt.tight_layout(pad=0.2)
+        canvas = get_latex_canvas(formula)
+        add_formula(formula, self.scroll_layout)
+        # scene = QGraphicsScene()
+        # scene.addWidget(canvas)
+        # graphics_view = QGraphicsView()
+        # graphics_view.setScene(scene)
+        # self.scroll_layout.addWidget(graphics_view)
+        # self.scroll_layout.addWidget(widget, alignment=Qt.AlignLeft)
 
-        bbox = ax.get_window_extent().transformed(figure.dpi_scale_trans.inverted())
-        width = int(bbox.width * figure.dpi)
-        height = int(bbox.height * figure.dpi/3)
-        canvas = FigureCanvas(figure)
-        canvas.setFixedSize(width, height)
-
-        self.scroll_layout.addWidget(canvas, alignment=Qt.AlignLeft)
+        # self.scroll_layout.addWidget(canvas, alignment=Qt.AlignLeft)
         self.non_basics.append(canvas)
 
-        plt.close(figure)
+        plt.close()
 
         # try:
         #     figure.tight_layout(pad=0.2)
