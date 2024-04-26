@@ -217,6 +217,11 @@ class ApplicationWindows(MainApplication):
                 self.add_equation(equation_tex)
 
 
+    def load_hamilton_sp(self):
+        # TODO: split into spin and spatial, implement :-)
+        pass
+
+
 
 
 

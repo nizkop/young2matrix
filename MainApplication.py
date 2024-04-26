@@ -14,6 +14,9 @@ from get_latex_canvas import get_latex_canvas, add_formula
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QLabel, \
     QScrollArea
 
+from source.ui_parts.settings.idea_config import update_language, get_language
+
+
 class MainApplication(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -38,6 +41,7 @@ class MainApplication(QMainWindow):
 
         self.current_page = 0
         self.pages = [
+            # TODO english names for pages ?
             {"name": "Startseite", "sign": "zurück zum Start", "index": 0, "function": self.load_main_page,
                     "parent": None, "buttons": [1, 3, 4, 5]},
             {"name": "Tableaus", "sign": "[1][2]", "index": 1, "function": self.load_tableau_page, "parent": 0,
@@ -53,6 +57,10 @@ class MainApplication(QMainWindow):
                     "buttons": [0, 3, 7]},
             {"name": "Überlapp Raum", "sign": "<|> (Φ)", "index": 7, "function": self.load_overlap_spatial, "parent": 4,
                     "buttons": [0, 3, 6]},
+            {"name": "Hamilton Spin", "sign": "H" , "index": 8, "function": self.load_hamilton_sp,
+                    "parent": 6, "buttons": [0, 6, 3]},
+            {"name": "Hamilton Raum", "sign": "H" , "index": 8, "function": self.load_hamilton_sp,
+                    "parent": 7, "buttons": [0, 7, 4]}
 
         ]
 
@@ -60,11 +68,30 @@ class MainApplication(QMainWindow):
         self.label.setStyleSheet("background-color: transparent;")
         self.scroll_layout.addWidget(self.label)# inserts a bit of vertical space (thereby not in create_widget)
 
+        self.create_language_buttons()
+
         self.create_widgets()
 
 
+    def create_language_buttons(self):
+        """ """
+        button_layout = QHBoxLayout()
+        if get_language() == "en":
+            choice = "de"
+        else:
+            choice = "en"
+        button = QPushButton(choice)# TODO: format etc.
+        button.setStyleSheet(f"background-color: {self.color};")
+        button.clicked.connect(lambda _, choice=choice:self.set_language(choice))
+        button_layout.addWidget(button)
+        self.scroll_layout.addLayout(button_layout)
+
+    def set_language(self, language: str):
+        update_language(language)
+        self.change_page(self.current_page)
+
     def create_widgets(self):
-        print("create widgets", flush=True)
+        # print("create widgets", flush=True)
         self.update_page() #content above buttons
 
         current_page_info = next((page_dict for page_dict in self.pages if page_dict.get("index") == self.current_page),
@@ -122,7 +149,7 @@ class MainApplication(QMainWindow):
 
     def clearLayout(self) -> None:
         """ Clearing the current layout and its sublayouts """
-        print("clear layout",flush=True)
+        # print("clear layout",flush=True)
         for i in range(len(self.non_basics)-1,-1,-1):
             item = self.non_basics[i]
             item.deleteLater()
