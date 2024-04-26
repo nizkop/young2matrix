@@ -5,7 +5,7 @@ from typing import Union
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QWidget, QLabel,QLineEdit, QMessageBox, QSizePolicy
 
 
-from MainApplication import MainApplication
+
 from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 from source.function_parts.text_kinds import text_kinds
@@ -14,6 +14,7 @@ from source.texts.general_texts import general_texts
 from source.texts.get_title_spatial import get_title_spatial
 from source.texts.get_title_spin import get_title_spin
 from source.texts.get_title_youngtableaus import get_title_multiplied_youngtableaus
+from source.ui_parts.MainApplication import MainApplication
 
 
 class ApplicationWindows(MainApplication):

@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-from ApplicationWindows import ApplicationWindows
+from source.ui_parts.ApplicationWindows import ApplicationWindows
 
 
 

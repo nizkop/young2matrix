@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
 import matplotlib.pyplot as plt
 
-from get_latex_canvas import add_formula
+from source.ui_parts.get_latex_canvas import add_formula
 
 plt.rcParams['text.usetex'] = True
 plt.rcParams['text.latex.preamble'] = r'''

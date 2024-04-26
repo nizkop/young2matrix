@@ -1,7 +1,7 @@
 
 from matplotlib import pyplot as plt
 
-from get_latex_canvas import get_latex_canvas, add_formula
+
 
 # plt.rcParams['text.usetex'] = True
 # plt.rcParams['text.latex.preamble'] = r'''
@@ -14,6 +14,7 @@ from get_latex_canvas import get_latex_canvas, add_formula
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QLabel, \
     QScrollArea
 
+from source.ui_parts.get_latex_canvas import get_latex_canvas
 from source.ui_parts.settings.idea_config import update_language, get_language
 
 
