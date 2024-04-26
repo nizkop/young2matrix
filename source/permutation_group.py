@@ -7,7 +7,11 @@ from source.function_parts.text_kinds import text_kinds
 from source.getting_subsets import get_powerset, permutations_of_subsets
 from source.overview_pdf import overview_pdf
 from source.chemical_standard_tableau import chemical_standard_tableau
+from source.texts.general_texts import general_texts
 from source.texts.get_info_spin_possibilities import get_info_spin_possibilities
+from source.texts.get_title_spatial import get_title_spatial
+from source.texts.get_title_spin import get_title_spin
+from source.texts.get_title_youngtableaus import get_title_multiplied_youngtableaus
 from source.texts.get_titles_for_permutation_parts import get_title_permutation_to_tableaus
 from source.young_tableau import young_tableau
 
@@ -42,7 +46,7 @@ class permutation_group(object):
 
     def get_overview_pdf(self) -> None:
         """ creating a pdf with all calculated information about this particular permutation group """
-        title = f"group_{self.permutation_group}"
+        title_pdf = f"group_{self.permutation_group}"
         self.get_all_standard_tableaus() #at least needed for chapter 4
 
         # chapter 1
@@ -55,9 +59,8 @@ class permutation_group(object):
         self.overview.newpage()
 
         # chapter 2
-        self.overview.add_section("Ausmultiplizierte Young-Tableaus",
-                                  content=r"$a, b, c, \hdots \quad $ = allgemeine Funktionen, "+
-                                          r"die beispielsweise p-Orbitale repräsentieren könnten")
+        header, content = get_title_multiplied_youngtableaus(kind=text_kinds.TEX)
+        self.overview.add_section(header, content=content)
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
             self.overview.vspace()
             equation = group[0].get_shortend_symbol()["tex"] + ":"
@@ -72,7 +75,7 @@ class permutation_group(object):
         self.overview.newpage()
 
         # chapter 3
-        self.overview.add_section("Spin",content=get_info_spin_possibilities(self.permutation_group))
+        self.overview.add_section("Spin",content=get_info_spin_possibilities(self.permutation_group, kind=text_kinds.TEX))
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
             self.overview.vspace()
             equation = group[0].get_shortend_symbol()["tex"] + ":"
@@ -87,16 +90,15 @@ class permutation_group(object):
                     self.overview.vspace()
                     group_empty = False
             if group_empty:
-                    self.overview.add_information(r"\textit{(Da es nur zwei Spinfunktionen $\alpha, \beta$ gibt, sind mehr als zwei antisymmetrische Funktionen nicht möglich.)}")
+                    self.overview.add_information(general_texts["spin_2rows_tex"])
 
             self.overview.vspace()
         self.overview.newpage()
 
         # chapter 4
         self.overview.add_section("Überlappungsintegrale",content="")
-        self.overview.add_section(sec_title="Raumfunktionen", layer=1,
-                                  content=r" (nur nicht verschwindende Kombinationen gezeigt)\\"
-                                          r"identische Tableaus ergeben (aufgrund der normierten Funktionen darin) automatisch 1 und werden daher hier nicht aufgelistet")
+        title, content = get_title_spatial(kind=text_kinds.TEX)
+        self.overview.add_section(sec_title=title, layer=1, content=content)
         self.calculate_all_overlap_integrals()
         for i in self.overlap:
             if i['kind'] == spin_vs_spatial_kind.SPATIAL and len(i['result'].parts) == 1 and i['result'].parts[0].factor != 0 and i['result'].parts[0].factor != 1:
@@ -110,16 +112,9 @@ class permutation_group(object):
                 self.overview.vspace()
 
         self.overview.newpage()
-        self.overview.add_section(sec_title=r"Spinfunktionen", layer=1,
-                                      content="(nur nicht verschwindende Kombinationen gezeigt) \\ "+
-                                      r"Überlapp zw. versch. Tableaus ist 0 (wird hier ausgelassen), "+
-                                      r"Überlapp zwischen gleichen Tableaus mit gleichem $m_S$-Wert ist 1 (wird hier ausgelassen)\\"+
-                                      r"hier informale Darstellung der Tableaus mit Spinfunktionen nach dem Schema: "
-                                      )
-        self.overview.add_latex_formula(r"\bra{\,\text{Tableau 1}\,}\ket{\,\text{Tableau 2}\,} "+
-                                        r"= \bra{\, \underbrace{S \quad m_S}_{\text{von Tableau 1}} \,}"+
-                                        r" \ket{\, \underbrace{S \quad m_S}_{\text{von Tableau 2}} \,} "+
-                                        r"= \underbrace{...}_{\text{Überlapp der Tableaus 1 und 2}}")
+        title, content, equation = get_title_spin(kind=text_kinds.TEX)
+        self.overview.add_section(sec_title=title, layer=1,content=content)
+        self.overview.add_latex_formula(equation)
         self.overview.vspace(), self.overview.vspace(), self.overview.vspace()
         for i in self.overlap:
             if i['kind'] == spin_vs_spatial_kind.SPIN and len(i['result'].parts) == 1 and i['result'].parts[0].factor != 0 and i['result'].parts[0].factor != 1:
@@ -131,7 +126,7 @@ class permutation_group(object):
                 self.overview.add_latex_formula(equation_tex)
                 self.overview.vspace()
 
-        self.overview.save(title=title)
+        self.overview.save(title=title_pdf)
 
 
     def get_all_standard_tableaus(self) -> None:

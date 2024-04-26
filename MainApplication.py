@@ -19,6 +19,7 @@ class MainApplication(QMainWindow):
         super().__init__()
         self.non_basics = []
         self.setWindowTitle("young2matrix")
+        self.color = "lightgreen"
         self.setGeometry(100, 100, 800, 600)
 
         self.central_widget = QWidget()
@@ -33,16 +34,26 @@ class MainApplication(QMainWindow):
         self.scroll_area.setWidget(self.scroll_widget)
         self.layout.addWidget(self.scroll_area)
 
-        self.setStyleSheet("background-color: lightgreen;")
+        self.setStyleSheet(f"background-color: {self.color};")
 
         self.current_page = 0
         self.pages = [
-            {"name": "Startseite", "sign": "zurück zum Start", "index": 0, "function": self.load_main_page},
-            {"name": "Tableaus", "sign": "[1][2]", "index": 1, "function": self.load_tableau_page},
-            {"name": "Spin","sign": "σ", "index": 3, "function": self.load_spin_page},
-            {"name": "Raumfunktionen", "sign": "Φ", "index": 3, "function": self.load_spatial_page},
+            {"name": "Startseite", "sign": "zurück zum Start", "index": 0, "function": self.load_main_page,
+                    "parent": None, "buttons": [1, 3, 4, 5]},
+            {"name": "Tableaus", "sign": "[1][2]", "index": 1, "function": self.load_tableau_page, "parent": 0,
+                    "buttons": [0, 2, 3, 4]},
+            {"name": "Ausmultiplizierte Tableaus", "sign": "ausmultiplizieren", "index": 2, "buttons": [0, 1, 3, 4],
+                    "function": self.load_tableau_page_multiplied, "parent": 1},
+            {"name": "Spin","sign": "σ", "index": 3, "function": self.load_spin_page, "parent": 0, "buttons": [0, 1, 4, 6]},
+            {"name": "Raumfunktionen", "sign": "Φ", "index": 4, "function": self.load_spatial_page, "parent": 0,
+                    "buttons": [0,1,3,7]},
             {"name": "Download", "sign": "⤓"# "⬇️" ↓ ⬇  ⤓
-                , "index": 4, "function": self.test_page}
+                    , "index": 5, "function": self.load_download, "parent": 0, "buttons": [0]},
+            {"name": "Überlapp Spin", "sign": "<|> (σ)", "index": 6, "function": self.load_overlap_spin, "parent": 3,
+                    "buttons": [0, 3, 7]},
+            {"name": "Überlapp Raum", "sign": "<|> (Φ)", "index": 7, "function": self.load_overlap_spatial, "parent": 4,
+                    "buttons": [0, 3, 6]},
+
         ]
 
         self.label = QLabel()
@@ -56,12 +67,17 @@ class MainApplication(QMainWindow):
         print("create widgets", flush=True)
         self.update_page() #content above buttons
 
-        button_layout = QHBoxLayout()  # horizontal layout (for buttons)
+        current_page_info = next((page_dict for page_dict in self.pages if page_dict.get("index") == self.current_page),
+                                 None)
 
-        for page_info in self.pages: # for i, (text, _) in enumerate(self.pages):
-            if page_info["index"] != self.current_page:
-                button = QPushButton(page_info["sign"])
-                button.setStyleSheet("background-color: lightgreen;")
+        button_layout = QHBoxLayout()  # horizontal layout (for buttons)
+        for page_info in self.pages:
+            if page_info["index"] != self.current_page and page_info["index"] in current_page_info["buttons"]:
+                sign = f"zurück zu: {page_info['sign']}" \
+                    if page_info["index"] == current_page_info["parent"] and self.current_page != 0 and current_page_info["parent"] != 0 \
+                    else page_info["sign"]
+                button = QPushButton(sign)
+                button.setStyleSheet(f"background-color: {self.color};")
                 button.clicked.connect(lambda _, index=page_info["index"]: self.open_page(index))
                 button_layout.addWidget(button)
                 self.non_basics.append(button)
@@ -78,7 +94,7 @@ class MainApplication(QMainWindow):
         return self.change_page(page_number)
 
     def update_page(self):
-        print("update_page", flush=True)
+        # print("update_page", flush=True)
         formulas = [r"E = m \cdot c^ 2", r"\frac{1}{2}", "\\begin{array}{c}{1}\\end{array}", r"\bra{1}"]# test equations
 
         for formula in formulas:
@@ -88,7 +104,7 @@ class MainApplication(QMainWindow):
         """
         :param formula: latex-formatted equation, e.g. r"\frac{1}{2} \cdot \pi"
         """
-        print("add_equation", flush=True)
+        # print("add_equation", flush=True)
         canvas = get_latex_canvas(formula)
         self.scroll_layout.addWidget(canvas)
         self.non_basics.append(canvas)
@@ -97,9 +113,9 @@ class MainApplication(QMainWindow):
 
 
     def change_page(self, index: int):
-        print("change page",flush=True)
-        self.current_page = index
+        # print("change page",flush=True)
         self.clearLayout()
+        self.current_page = index
         self.create_widgets()
         # self.update_page()
 

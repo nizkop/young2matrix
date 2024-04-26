@@ -25,7 +25,7 @@ def get_latex_canvas(eq:str):
     plt.tight_layout(pad=0.2)
 
     canvas = FigureCanvas(figure)
-    plt.show()
+    # plt.show()
     plt.close(figure)
     return canvas
 
