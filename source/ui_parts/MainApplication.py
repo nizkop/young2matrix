@@ -76,20 +76,24 @@ class MainApplication(QMainWindow):
 
     def create_language_buttons(self):
         """ """
-        button_layout = QHBoxLayout()
         if get_language() == "en":
             choice = "de"
         else:
             choice = "en"
-        button = QPushButton(choice)# TODO: format etc.
-        button.setStyleSheet(f"background-color: {self.color};")
-        button.clicked.connect(lambda _, choice=choice:self.set_language(choice))
-        button_layout.addWidget(button)
-        self.scroll_layout.addLayout(button_layout)
+        self.language_button = QPushButton(choice)
+        self.language_button.setStyleSheet(f"background-color: {self.color};")
+        self.language_button.clicked.connect(lambda: self.set_language(choice))
+        self.language_button.setFixedSize(30, 30)
+        self.language_button.move(5, 5)
+        self.scroll_layout.addWidget(self.language_button)
+
 
     def set_language(self, language: str):
         update_language(language)
-        self.change_page(self.current_page)
+        self.language_button.deleteLater()
+        self.create_language_buttons()
+        self.open_page(self.current_page)
+        # self.change_page(self.current_page)
 
     def create_widgets(self):
         # print("create widgets", flush=True)
@@ -150,7 +154,7 @@ class MainApplication(QMainWindow):
 
     def clearLayout(self) -> None:
         """ Clearing the current layout and its sublayouts """
-        # print("clear layout",flush=True)
+        print("clear layout",flush=True)
         for i in range(len(self.non_basics)-1,-1,-1):
             item = self.non_basics[i]
             item.deleteLater()

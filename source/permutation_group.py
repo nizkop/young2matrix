@@ -7,7 +7,7 @@ from source.function_parts.text_kinds import text_kinds
 from source.getting_subsets import get_powerset, permutations_of_subsets
 from source.overview_pdf import overview_pdf
 from source.chemical_standard_tableau import chemical_standard_tableau
-from source.texts.general_texts import general_texts
+from source.texts.general_texts import get_general_text
 from source.texts.get_info_spin_possibilities import get_info_spin_possibilities
 from source.texts.get_title_spatial import get_title_spatial
 from source.texts.get_title_spin import get_title_spin
@@ -90,7 +90,7 @@ class permutation_group(object):
                     self.overview.vspace()
                     group_empty = False
             if group_empty:
-                    self.overview.add_information(general_texts["spin_2rows_tex"])
+                    self.overview.add_information(get_general_text("spin_2rows_tex"))
 
             self.overview.vspace()
         self.overview.newpage()

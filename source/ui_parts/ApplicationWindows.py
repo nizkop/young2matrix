@@ -10,7 +10,7 @@ from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 from source.function_parts.text_kinds import text_kinds
 from source.permutation_group import permutation_group
-from source.texts.general_texts import general_texts
+from source.texts.general_texts import get_general_text
 from source.texts.get_title_spatial import get_title_spatial
 from source.texts.get_title_spin import get_title_spin
 from source.texts.get_title_youngtableaus import get_title_multiplied_youngtableaus
@@ -42,15 +42,15 @@ class ApplicationWindows(MainApplication):
         if self.current_page == 0:
             input_value = self.input_box.text()
             if not input_value:
-                QMessageBox.warning(self, "Warnung", general_texts["warning_no_group"])
+                QMessageBox.warning(self, "Warnung", get_general_text("warning_no_group"))
                 return self.change_page(0)
             try:
                 input_value = int(input_value)
                 if input_value <= 0:
-                    QMessageBox.warning(self, "Warnung", general_texts["warning_wrong_number"])
+                    QMessageBox.warning(self, "Warnung", get_general_text("warning_wrong_number"))
                     return self.change_page(0)
             except:
-                QMessageBox.warning(self, "Warnung", general_texts["warning_wrong_type"])
+                QMessageBox.warning(self, "Warnung", get_general_text("warning_wrong_type"))
                 return self.change_page(0)
             self.set_basic_permutation_attributes(input_value=input_value)
         self.change_page(page_number)
@@ -109,7 +109,7 @@ class ApplicationWindows(MainApplication):
                     self.add_equation(tableau +r"\qquad "+ s.to_tex())
                     group_empty = False
             if group_empty:
-                label = QLabel(general_texts["spin_2rows"])
+                label = QLabel(get_general_text("spin_2rows"))
                 self.scroll_layout.addWidget(label)
                 self.non_basics.append(label)
 
@@ -129,7 +129,7 @@ class ApplicationWindows(MainApplication):
                     self.add_equation(tableau + r"\qquad " + s.to_tex())
                     group_empty = False
             if group_empty:
-                label = QLabel(general_texts["spatial_2columns"])
+                label = QLabel(get_general_text("spatial_2columns"))
                 self.scroll_layout.addWidget(label)
                 self.non_basics.append(label)
 
@@ -147,8 +147,9 @@ class ApplicationWindows(MainApplication):
 
 
     def load_main_page(self):
+        print("load_main_page")
         permutation_group_input = QHBoxLayout()
-        permutation_group_label = QLabel(general_texts["input_command"])
+        permutation_group_label = QLabel(get_general_text("input_command"))
         permutation_group_input.addWidget(permutation_group_label)
         self.input_box = QLineEdit()
         permutation_group_input.addWidget(self.input_box)
@@ -170,11 +171,11 @@ class ApplicationWindows(MainApplication):
         """ initializes download and goes back to main page """
         try:
             self.permutation_group.get_overview_pdf()
-            label = QLabel(general_texts["successful_download"])
+            label = QLabel(get_general_text("successful_download"))
             self.scroll_layout.addWidget(label)
             self.non_basics.append(label)
         except:
-            label = QLabel(general_texts["failed_download"])
+            label = QLabel(get_general_text("failed_download"))
             self.scroll_layout.addWidget(label)
             self.non_basics.append(label)
 
