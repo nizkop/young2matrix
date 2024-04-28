@@ -18,10 +18,12 @@ class hamilton_integral(object):
         self.check_integral()
 
 
-    def check_integral(self):
-        functions = self.get_occurence_of_functions()
+    def check_integral(self) -> None:
+        """
+        multiplying the different functions within the integral and checking, whether there are more than 2 electron switches;
+        this function resets the bra and ket attributes
+        """
         indizes = self.get_occurence_of_indizes()
-        print(indizes)
         self.bra.ordered_functions = []
         self.bra.lowercase_letters = []
         self.ket.ordered_functions = []
@@ -31,7 +33,6 @@ class hamilton_integral(object):
             if len(v) == 1: # identical in bra and ket -> ca be multiplied out -> overlaps to 1
                 pass
             elif len(v) == 2: # switched electrons -> h is effective
-                print(k, v)
                 self.bra.ordered_functions.append(k)
                 self.ket.ordered_functions.append(k)
                 self.bra.lowercase_letters.append(v[0]) # assuming first the bra is read into indizes, THEN the ket
@@ -54,7 +55,7 @@ class hamilton_integral(object):
                     functions[list.lowercase_letters[i]] = [list.ordered_functions[i]]
         return functions
 
-    def get_occurence_of_indizes(self):
+    def get_occurence_of_indizes(self) -> dict:
         indizes = {}
         lists = [self.bra, self.ket]
         for list in lists:
@@ -67,9 +68,9 @@ class hamilton_integral(object):
         return indizes
 
 
+    def to_text(self) -> str:
+        return f" {self.sign.value} {self.factor} * <{self.bra.to_text().replace('+','')} |H| {self.ket.to_text().replace('+','')} >".replace(' '*2,' ')
 
 
-    def to_text(self):
-        return f" {self.sign.value} {self.factor} * <{self.bra.to_text().replace('+','')} |H| {self.ket.to_text().replace('+','')} >"
-
-
+    def get_shortened_symbol(self) -> str:
+        return "".join(set(self.bra.lowercase_letters+self.ket.lowercase_letters))
