@@ -3,7 +3,7 @@ from source.function_combination.calculate_overlap_integral_between_functions im
 from source.function_parts.function import function
 from source.function_parts.product_term import product_term
 from source.function_parts.sign import Sign
-
+from collections import Counter
 
 class hamilton_integral(object):
 
@@ -33,22 +33,22 @@ class hamilton_integral(object):
         this function resets the bra and ket attributes
         """
         indizes = self.get_occurence_of_indizes()
-        functions = self.get_occurence_of_functions()
         self.bra.ordered_functions = []
         self.bra.lowercase_letters = []
         self.ket.ordered_functions = []
         self.ket.lowercase_letters = []
-        print(indizes)
-        print(functions)
 
-        # checking if uneven number of switched functions: TODO change to checking pairs
-        amount_of_remaining_functions = 0
-        for x in [len(v) for v in indizes.values()]:
-            if x == 2:
-                amount_of_remaining_functions+= 1
-        if amount_of_remaining_functions % 2 == 1:
-            self.factor = 0
-            return
+        # checking if uneven number of switched functions:
+        sets = {}
+        for v in indizes.values():
+            key = str("".join(sorted(v)))
+            try:
+                sets[key] += 1
+            except KeyError:
+                sets[key] = 1
+        for set_key, set_value in sets.items():
+            if len(set_key) == 2 and set_value != 2: # always a pair needed
+                return
 
         for k,v in indizes.items():
             if len(v) == 1: # identical in bra and ket -> ca be multiplied out -> overlaps to 1
@@ -64,8 +64,6 @@ class hamilton_integral(object):
                 self.ket.lowercase_letters.append(v[-1]) # ordering because of above assumption
             else: # electron in > 2 orbitals!?
                 pass
-        print(self.bra.lowercase_letters, self.ket.lowercase_letters)
-        print()
 
 
 
@@ -109,5 +107,8 @@ class hamilton_integral(object):
 if __name__ == '__main__':
     p1 = product_term("+", (4,3,2,1))
     p2 = product_term("+", (4, 2, 1, 3))
+    hamilton_integral(p1, p2)
 
+    p1 = product_term("+", (4,3,2,1))
+    p2 = product_term("+", (4, 3,1,2))
     hamilton_integral(p1, p2)
