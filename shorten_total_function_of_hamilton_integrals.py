@@ -38,4 +38,4 @@ def shorten_total_function_of_hamilton_integrals(h_list: List[hamilton_integral]
         h.bra.factor = 1
         h.ket.factor = 1
 
-    return new_h_list
+    return [x for x in new_h_list if x.factor != 0 ]

@@ -25,7 +25,6 @@ trials = [
 general_error = "testing single product integration including hamilton operator"
 for trial in trials:
 
-
     f1 = function(product_term(Sign("+"), trial["input1"]))
     f2 = function(product_term(Sign("+"), trial["input2"]))
 
@@ -78,9 +77,11 @@ for trial in trials:
 
 trials = [
     # {"input1": [(1, 2,), (3, 4,)], "input2": [(1, 2,), (3, 4,)], "expected": 1, "error_message": "S4 [2^2] overlap itself"},
-    # {"input1": [(1, 2,), (3, )], "input2": [(1, 3,), (2,)], "expected": None, "error_message": "S4 [2^2]"  },
+    # {"input1": [(1, 2,), (3, )], "input2": [(1, 3,), (2,)], "expected": [], "error_message": "S4 [2^2]"  },
 
-    {"input1": [(1, 2), (3, 4)], "input2": [(1, 3), (2, 4)], "expected_bra": None, "error_message": ""}
+    {"input1": [(1, 2), (3, 4)], "input2": [(1, 3), (2, 4)],
+     "expected": ["- 1/4 D", "- 1/4 (ab)", "- 1/4 (ac)", "+ 1/2 (ad)", "+ 1/2 (bc)", "- 1/4 (bd)", "- 1/4 (cd)"],
+     "error_message": ""}
 
 ]
 
@@ -105,5 +106,18 @@ for trial in trials:
     product = shorten_total_function_of_hamilton_integrals(product)
     print(get_total_function_from_hamilton_integral_list(product))
 
+    for x in product:
+        checked = False
+        for y in trial["expected"]:
+            if ''.join(sorted(x.get_shortened_symbol())) in y:
+                if f"{x.sign.value} {x.factor}" not in y:
+                    print(f"{x.sign.value} {x.factor}","vs.", y)
+                checked = True
+                break
+        if not checked:
+            print(f"({x.get_shortened_symbol()}) not expected")
+            # raise Exception(f"{x.get_shortened_symbol()} not expected")
 
+
+    # TODO: actual testing
 

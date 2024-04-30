@@ -8,6 +8,7 @@ from source.function_parts.sign import Sign
 class hamilton_integral(object):
 
     def __init__(self, bra:product_term, ket:product_term):
+        # print("bra", bra.ordered_functions, bra.lowercase_letters, "ket:", ket.ordered_functions, ket.lowercase_letters)
         self.factor: int = bra.factor * ket.factor
         self.sign :Sign = Sign.PLUS if bra.sign == ket.sign else Sign.MINUS
 
@@ -23,7 +24,7 @@ class hamilton_integral(object):
     def __hash__(self):
         return hash(self.get_shortened_symbol())
     def __eq__(self, other):
-        return isinstance(other, type(self)) and self.get_shortened_symbol() == other.get_shortened_symbol()
+        return isinstance(other, type(self)) and ''.join(sorted(self.get_shortened_symbol())) == ''.join(sorted(other.get_shortened_symbol()))
 
 
     def check_integral(self) -> None:
@@ -32,15 +33,27 @@ class hamilton_integral(object):
         this function resets the bra and ket attributes
         """
         indizes = self.get_occurence_of_indizes()
+        functions = self.get_occurence_of_functions()
         self.bra.ordered_functions = []
         self.bra.lowercase_letters = []
         self.ket.ordered_functions = []
         self.ket.lowercase_letters = []
+        print(indizes)
+        print(functions)
+
+        # checking if uneven number of switched functions: TODO change to checking pairs
+        amount_of_remaining_functions = 0
+        for x in [len(v) for v in indizes.values()]:
+            if x == 2:
+                amount_of_remaining_functions+= 1
+        if amount_of_remaining_functions % 2 == 1:
+            self.factor = 0
+            return
 
         for k,v in indizes.items():
             if len(v) == 1: # identical in bra and ket -> ca be multiplied out -> overlaps to 1
                 f = function(product_term(sign = Sign("+"), ordered_functions=(k, )))
-                f.parts[0].lowercase_letters = v[0]
+                f.parts[0].lowercase_letters = v[0] #not remaining after overlap calculation
                 o = calculate_overlap_integral_between_functions(function, function)
                 self.factor *= o.parts[0].factor
                 # ordered_functions have been reset to [] before
@@ -51,6 +64,8 @@ class hamilton_integral(object):
                 self.ket.lowercase_letters.append(v[-1]) # ordering because of above assumption
             else: # electron in > 2 orbitals!?
                 pass
+        print(self.bra.lowercase_letters, self.ket.lowercase_letters)
+        print()
 
 
 
@@ -88,3 +103,11 @@ class hamilton_integral(object):
 
     def get_shortened_symbol(self) -> str:
         return "".join(set(self.bra.lowercase_letters+self.ket.lowercase_letters))
+
+
+#
+if __name__ == '__main__':
+    p1 = product_term("+", (4,3,2,1))
+    p2 = product_term("+", (4, 2, 1, 3))
+
+    hamilton_integral(p1, p2)
