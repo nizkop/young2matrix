@@ -1,3 +1,6 @@
+from source.function_combination.calculate_overlap_integral_between_functions import \
+    calculate_overlap_integral_between_functions
+from source.function_parts.function import function
 from source.function_parts.product_term import product_term
 from source.function_parts.sign import Sign
 
@@ -17,6 +20,11 @@ class hamilton_integral(object):
 
         self.check_integral()
 
+    def __hash__(self):
+        return hash(self.get_shortened_symbol())
+    def __eq__(self, other):
+        return isinstance(other, type(self)) and self.get_shortened_symbol() == other.get_shortened_symbol()
+
 
     def check_integral(self) -> None:
         """
@@ -31,7 +39,11 @@ class hamilton_integral(object):
 
         for k,v in indizes.items():
             if len(v) == 1: # identical in bra and ket -> ca be multiplied out -> overlaps to 1
-                pass
+                f = function(product_term(sign = Sign("+"), ordered_functions=(k, )))
+                f.parts[0].lowercase_letters = v[0]
+                o = calculate_overlap_integral_between_functions(function, function)
+                self.factor *= o.parts[0].factor
+                # ordered_functions have been reset to [] before
             elif len(v) == 2: # switched electrons -> h is effective
                 self.bra.ordered_functions.append(k)
                 self.ket.ordered_functions.append(k)
@@ -69,6 +81,8 @@ class hamilton_integral(object):
 
 
     def to_text(self) -> str:
+        if self.bra.factor == 1 and self.ket.factor == 1 and len(self.bra.ordered_functions) == 0 and len(self.ket.ordered_functions) == 0:
+            return f" {self.sign.value} {self.factor}"  # integral reverted to overlap (which is only a number, not an integral anymore)
         return f" {self.sign.value} {self.factor} * <{self.bra.to_text().replace('+','')} |H| {self.ket.to_text().replace('+','')} >".replace(' '*2,' ')
 
 

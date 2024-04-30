@@ -1,3 +1,5 @@
+from get_total_function_from_hamilton_integral_list import get_total_function_from_hamilton_integral_list
+from shorten_total_function_of_hamilton_integrals import shorten_total_function_of_hamilton_integrals
 from source.chemical_standard_tableau import chemical_standard_tableau
 from source.function_combination.calculate_hamilton_integral import calculate_hamilton_integral
 from source.function_combination.calculate_hamilton_integral_between_functions import \
@@ -14,6 +16,7 @@ trials = [
     {"input1": (1,2,), "input2": (1,2,), "expected_bra": [], "expected_ket": []},
     {"input1": (2,1), "input2": (1, 2,), "expected_bra": ["a2", "b1"], "expected_ket": ["a1", "b2"]},
     {"input1": (1,2,3), "input2": (3,2,1), "expected_bra": ["a1", "c3"], "expected_ket": ["c1", "a3"]},# proposal example
+    {"input1": (1, 2, 3), "input2": (1, 2, 3), "expected_bra": [], "expected_ket": []},
 
 ]
 
@@ -38,6 +41,8 @@ for trial in trials:
         calculated_ket = r.ket.get_list_of_parts()
 
         if len(calculated_bra) != len(trial["expected_bra"]) or len(calculated_ket) != len(trial["expected_ket"]):
+            # print(trial["input1"], trial["input2"])
+            print(calculated_bra, "!=", trial["expected_bra"], "or", calculated_ket ,"!=", trial["expected_ket"] )
             raise Exception(f"{general_error}: dimensions dont fit")
 
         for b in calculated_bra:
@@ -91,6 +96,10 @@ for trial in trials:
     t1.function.print(), t2.function.print()
 
     product = calculate_hamilton_integral(t1, t2, kind=spin_vs_spatial_kind.SPATIAL)
-    for p in product:
-        for x in p:
-            print(x.get_shortened_symbol())
+
+    product = shorten_total_function_of_hamilton_integrals(product)
+
+    print(get_total_function_from_hamilton_integral_list(product))
+
+
+
