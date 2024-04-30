@@ -18,6 +18,7 @@ trials = [
     {"input1": (1,2,3), "input2": (3,2,1), "expected_bra": ["a1", "c3"], "expected_ket": ["c1", "a3"]},# proposal example
     {"input1": (1, 2, 3), "input2": (1, 2, 3), "expected_bra": [], "expected_ket": []},
 
+
 ]
 
 
@@ -77,7 +78,9 @@ for trial in trials:
 
 trials = [
     # {"input1": [(1, 2,), (3, 4,)], "input2": [(1, 2,), (3, 4,)], "expected": 1, "error_message": "S4 [2^2] overlap itself"},
-    {"input1": [(1, 2,), (3, )], "input2": [(1, 3,), (2,)], "expected": None, "error_message": "S4 [2^2]"  },
+    # {"input1": [(1, 2,), (3, )], "input2": [(1, 3,), (2,)], "expected": None, "error_message": "S4 [2^2]"  },
+
+    {"input1": [(1, 2), (3, 4)], "input2": [(1, 3), (2, 4)], "expected_bra": None, "error_message": ""}
 
 ]
 
@@ -97,8 +100,9 @@ for trial in trials:
 
     product = calculate_hamilton_integral(t1, t2, kind=spin_vs_spatial_kind.SPATIAL)
 
+    print()
+    print(get_total_function_from_hamilton_integral_list(product))
     product = shorten_total_function_of_hamilton_integrals(product)
-
     print(get_total_function_from_hamilton_integral_list(product))
 
 
