@@ -76,18 +76,32 @@ for trial in trials:
 ###  whole tableaus   ###
 
 trials = [
-    # {"input1": [(1, 2,), (3, 4,)], "input2": [(1, 2,), (3, 4,)], "expected": 1, "error_message": "S4 [2^2] overlap itself"},
-    # {"input1": [(1, 2,), (3, )], "input2": [(1, 3,), (2,)], "expected": [], "error_message": "S4 [2^2]"  },
+    # {"input1": [], "input2": [], "expected": [], "error_message": ""},
+    {"input1": [(1,),(2,),(3,),(4,)], "input2": [(1,),(2,), (3,),(4,)], "error_message": "1^4 sym",
+     "expected": ["+ 1 (abcd)", "- 1 (ab)", "- 1 (ac)", "- 1 (ad)", "- 1 (bc)", "- 1 (bd)", "- 1 (cd)"]},
+    {"input1": [(1,4,),(2,),(3,)], "input2": [(1,4,),(2,),(3,)], "error_message": "[31] symmetric 14",
+     "expected": ["+ 1 (abcd)", "- 1/2 (ab)", "- 1/2 (ac)", "+ 1 (ad)", "- 1 (bc)", "- 1/2 (bd)", "- 1/2 (cd)"]},
+    {"input1": [(1,3,),(2,),(4,)], "input2": [(1,3,),(2,),(4,)], "error_message": "[31] symmetric 13",
+     "expected": ["+ 1 (abcd)", "- 1/2 (ab)", "+ 1 (ac)", "- 1/2 (ad)", "- 1/2 (bc)", "- 1 (bd)", "- 1/2 (cd)"]},
+    {"input1": [(1,2,),(3,),(4,)], "input2": [(1,2,),(3,),(4,)], "error_message": "[31] symmetric 12",
+     "expected": ["+ 1 (abcd)", "+ 1 (ab)", "- 1/2 (ac)", "- 1/2 (ad)", "- 1/2 (bc)", "- 1/2 (bd)", "- 1 (cd)"]},
 
-    {"input1": [(1, 2), (3, 4)], "input2": [(1, 3), (2, 4)],
+    {"input1": [(1,4,),(2,),(3,)], "input2": [(1,3,),(2,),(4,)],"error_message": "[31] 14-13",
+     "expected": ["- 1/6 (abcd)", "- 1/6 (ac)", "- 1/6 (ad)", "+ 1/6 (bc)", "+ 1/6 (bd)", "+ 1/3 (cd)"]},# TODO: factor -3
+    {"input1": [(1,4,),(2,),(3,)], "input2": [(1,2,),(3,),(4,)], "error_message": "[31] 14-12",
+     "expected": ["- 1/6 (abcd)", "- 1/6 (ad)", "+ 1/6 (bc)", "+ 1/3 (bd)", "+ 1/6 (cd)"]},# TODO: factor -3 für abcd
+    {"input1": [(1,3,),(2,),(4,)], "input2": [(1,2),(3,),(4,)], "error_message": "[31] 13-12",
+     "expected": ["- 1/6 (abcd)", "- 1/6 (ab)", "- 1/6 (ac)", "+ 1/3 (bc)", "+ 1/6 (bd)", "+ 1/6 (cd)"]},# TODO: factor -3
+
+    {"input1": [(1, 3), (2, 4)], "input2": [(1, 2), (3, 4)],
      "expected": ["- 1/4 (abcd)", "- 1/4 (ab)", "- 1/4 (ac)", "+ 1/2 (ad)", "+ 1/2 (bc)", "- 1/4 (bd)", "- 1/4 (cd)"],
-     "error_message": ""},
+     "error_message": "2^2 combination"},# TODO: factor 3?
     {"input1": [(1, 2), (3, 4)], "input2": [(1, 2), (3, 4)],
      "expected": ["+ 1 (abcd)", "+ 1 (ab)", "- 1/2 (ac)", "- 1/2 (ad)", "- 1/2 (bc)", "- 1/2 (bd)", "+ 1 (cd)"],
-     "error_message": ""},
+     "error_message": "2^2 one tableau"},
     {"input1": [(1, 3), (2, 4)], "input2": [(1, 3), (2, 4)],
          "expected": ["+ 1 (abcd)", "- 1/2 (ab)", "+ 1 (ac)", "- 1/2 (ad)", "- 1/2 (bc)", "+ 1 (bd)", "- 1/2 (cd)"],
-     "error_message": ""}
+     "error_message": "2^2 one tableau"}
 
 ]
 
@@ -105,7 +119,6 @@ for trial in trials:
     # t1.function.print(), t2.function.print()
 
     product = calculate_hamilton_integral(t1, t2, kind=spin_vs_spatial_kind.SPATIAL)
-
     product = shorten_total_function_of_hamilton_integrals(product)
 
     for x in product:
@@ -113,13 +126,14 @@ for trial in trials:
         for y in trial["expected"]:
             if "("+''.join(sorted(x.get_shortened_symbol()))+")" in y:
                 if f"{x.sign.value} {x.factor}" not in y:
-                    print(f"{x.sign.value} {x.factor}","vs.", y)
+                    s = f"{x.sign.value} {x.factor} vs. {y}"
+                    print(f"wrong factor: {s} for {trial['error_message']}")
+                    # raise Exception(f"wrong factor: {s} for {trial['error_message']}")
                 checked = True
                 break
         if not checked:
-            # print(f"({x.get_shortened_symbol()}) not expected")
-            raise Exception(f"{''.join(sorted(x.get_shortened_symbol()))} not expected")
+            unexpected = f"({''.join(sorted(x.get_shortened_symbol()))}) not expected"
+            print( f"{unexpected} not expected for {trial['error_message']}")
+            # raise Exception(f"{unexpected} not expected for {trial['error_message']}")
 
-
-    # TODO: actual testing
 

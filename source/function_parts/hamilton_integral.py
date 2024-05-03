@@ -72,13 +72,13 @@ class hamilton_integral(object):
 
         # collecting the non-vanishing parts:
         for k,v in indizes.items():
-            if len(v) == 1: # identical in bra and ket -> ca be multiplied out -> overlaps to 1
-                f = function(product_term(sign = Sign("+"), ordered_functions=(k, )))
-                f.parts[0].lowercase_letters = v[0] #not remaining after overlap calculation
-                o = calculate_overlap_integral_between_functions(function, function)
-                self.factor *= o.parts[0].factor
-                # ordered_functions have been reset to [] before
-            elif len(v) == 2: # switched electrons -> h is effective
+            # if len(v) == 1: # identical in bra and ket -> ca be multiplied out -> overlaps to 1
+            #     f = function(product_term(sign = Sign("+"), ordered_functions=(k, )))
+            #     f.parts[0].lowercase_letters = v[0] #not remaining after overlap calculation
+            #     o = calculate_overlap_integral_between_functions(f, f)
+            #     self.factor *= o.parts[0].factor
+            #     # ordered_functions have been reset to [] before
+            if len(v) == 2: # switched electrons -> h is effective
                 self.bra.ordered_functions.append(k)
                 self.ket.ordered_functions.append(k)
                 self.bra.lowercase_letters.append(v[0]) # assuming first the bra is read into indizes, THEN the ket
@@ -123,7 +123,6 @@ class hamilton_integral(object):
         if self.bra.factor == 1 and self.ket.factor == 1 and len(self.bra.ordered_functions) == 0 and len(self.ket.ordered_functions) == 0:
             return f" {self.sign.value} {self.factor}"  # integral reverted to overlap (which is only a number, not an integral anymore)
         return f" {self.sign.value} {self.factor} * <{self.bra.to_text().replace('+','')} |H| {self.ket.to_text().replace('+','')} >".replace(' '*2,' ')
-
 
     def get_shortened_symbol(self) -> str:
         return "".join(set(self.bra.lowercase_letters+self.ket.lowercase_letters))
