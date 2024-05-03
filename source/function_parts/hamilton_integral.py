@@ -21,6 +21,7 @@ class hamilton_integral(object):
         self.ket:product_term = ket
 
         self.check_integral()
+        # print("\t\t==\t", self.get_shortened_symbol(), end="\n")
 
     def __hash__(self):
         return hash(''.join(sorted(self.get_shortened_symbol())))
@@ -85,7 +86,9 @@ class hamilton_integral(object):
             else: # electron in > 2 orbitals
                 pass
 
-        # print("\t\t==\t", self.to_text(), end="\n")
+        # self.factor *= 2 # only half the matrix is calculated (including the diagonale, thereby this needs to be duplicated, the diagonale not!)
+
+        # print("\t\t==\t", self.get_shortened_symbol(), end="\n")
         # print("normal:", self.get_shortened_symbol())
 
 
@@ -138,9 +141,8 @@ if __name__ == '__main__':
     # h = hamilton_integral(p1, p2)
     # print(h.to_text())
 
-    p1 = product_term(Sign("-"), (1,2,3,4))
-    p2 = product_term(Sign("+"), (1,2,3,4))
+    p1 = product_term(Sign("-"), (1,2,4,3))#a1b2d3c4
+    p2 = product_term(Sign("+"), (1,3,4,2))#a1d2b3c4
     h = hamilton_integral(p1, p2)
-    print(h.to_text(), h.get_shortened_symbol(), h.factor, h.sign)
-
+    # print(h.to_text(), h.get_shortened_symbol(), h.factor, h.sign)# < - a_1 * b_2 * c_4 * d_3 |H| + a_1 * b_3 * c_4 * d_2>
 

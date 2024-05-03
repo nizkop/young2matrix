@@ -11,7 +11,7 @@ def calculate_hamilton_integral_between_functions(function_a:function, function_
         non_vanishing_integrals = []
         for i in range(len(function_a.parts)):
             part_a = function_a.parts[i]
-            for j in range(i, len(function_b.parts)):
+            for j in range(0, len(function_b.parts)):
                 part_b = function_b.parts[j]
                 h = hamilton_integral(copy.deepcopy(part_a), copy.deepcopy(part_b))
                 non_vanishing_integrals.append(h)

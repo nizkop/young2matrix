@@ -9,7 +9,7 @@ from source.function_parts.sign import Sign
 
 def shorten_total_function_of_hamilton_integrals(h_list: List[hamilton_integral]):
     new_h_list = []
-    print("shorten_total_function_of_hamilton_integrals:", len(h_list) , "mit:", [f"{h.sign} {h.factor}" for h in h_list if "".join(sorted(h.get_shortened_symbol())) == "bd"])
+    # print("shorten_total_function_of_hamilton_integrals:", len(h_list) , "mit:", [f"{h.sign} {h.factor}" for h in h_list if "".join(sorted(h.get_shortened_symbol())) == "bd"])#sollte len 8 sein!
 
     # set all to + sign:
     for h in h_list:

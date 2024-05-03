@@ -13,7 +13,7 @@ def calculate_hamilton_integral(tableau_a: chemical_standard_tableau, tableau_b:
     if kind == spin_vs_spatial_kind.SPATIAL:
         for i in range(len(tableau_a.spatial_parts)):
             bra = tableau_a.spatial_parts[i]
-            for j in range(i, len(tableau_b.spatial_parts)):
+            for j in range(0, len(tableau_b.spatial_parts)):
                 ket = tableau_b.spatial_parts[j]
                 for h in calculate_hamilton_integral_between_functions(bra.function, ket.function):
                     norm = bra.function.get_normalization_factor()['fraction'] * ket.function.get_normalization_factor()['fraction']

@@ -28,7 +28,7 @@ for trial in trials:
     f1 = function(product_term(Sign("+"), trial["input1"]))
     f2 = function(product_term(Sign("+"), trial["input2"]))
 
-    f1.print(), f2.print()
+    # f1.print(), f2.print()
 
     results = calculate_hamilton_integral_between_functions(f1, f2)
 
@@ -36,7 +36,7 @@ for trial in trials:
         raise Exception("thie test is only able to test one product")
 
     for r in results:
-        print(r.to_text())
+        # print(r.to_text())
         calculated_bra = r.bra.get_list_of_parts()
         calculated_ket = r.ket.get_list_of_parts()
 
@@ -79,11 +79,14 @@ trials = [
     # {"input1": [(1, 2,), (3, 4,)], "input2": [(1, 2,), (3, 4,)], "expected": 1, "error_message": "S4 [2^2] overlap itself"},
     # {"input1": [(1, 2,), (3, )], "input2": [(1, 3,), (2,)], "expected": [], "error_message": "S4 [2^2]"  },
 
-    # {"input1": [(1, 2), (3, 4)], "input2": [(1, 3), (2, 4)],
-    #  "expected": ["- 1/4 D", "- 1/4 (ab)", "- 1/4 (ac)", "+ 1/2 (ad)", "+ 1/2 (bc)", "- 1/4 (bd)", "- 1/4 (cd)"],
-    #  "error_message": ""},
+    {"input1": [(1, 2), (3, 4)], "input2": [(1, 3), (2, 4)],
+     "expected": ["- 1/4 (abcd)", "- 1/4 (ab)", "- 1/4 (ac)", "+ 1/2 (ad)", "+ 1/2 (bc)", "- 1/4 (bd)", "- 1/4 (cd)"],
+     "error_message": ""},
     {"input1": [(1, 2), (3, 4)], "input2": [(1, 2), (3, 4)],
      "expected": ["+ 1 (abcd)", "+ 1 (ab)", "- 1/2 (ac)", "- 1/2 (ad)", "- 1/2 (bc)", "- 1/2 (bd)", "+ 1 (cd)"],
+     "error_message": ""},
+    {"input1": [(1, 3), (2, 4)], "input2": [(1, 3), (2, 4)],
+         "expected": ["+ 1 (abcd)", "- 1/2 (ab)", "+ 1 (ac)", "- 1/2 (ad)", "- 1/2 (bc)", "+ 1 (bd)", "- 1/2 (cd)"],
      "error_message": ""}
 
 ]
@@ -98,16 +101,12 @@ for trial in trials:
     t2.set_up_function()
     t2.get_spatial_choices()
 
-    t1.print(), t2.print()
-
-    t1.function.print(), t2.function.print()
+    # t1.print(), t2.print()
+    # t1.function.print(), t2.function.print()
 
     product = calculate_hamilton_integral(t1, t2, kind=spin_vs_spatial_kind.SPATIAL)
 
-    # print()
-    # print(get_total_function_from_hamilton_integral_list(product))
     product = shorten_total_function_of_hamilton_integrals(product)
-    # print(get_total_function_from_hamilton_integral_list(product))
 
     for x in product:
         checked = False
@@ -118,8 +117,8 @@ for trial in trials:
                 checked = True
                 break
         if not checked:
-            print(f"({x.get_shortened_symbol()}) not expected")
-            # raise Exception(f"{x.get_shortened_symbol()} not expected")
+            # print(f"({x.get_shortened_symbol()}) not expected")
+            raise Exception(f"{''.join(sorted(x.get_shortened_symbol()))} not expected")
 
 
     # TODO: actual testing
