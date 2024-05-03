@@ -13,10 +13,10 @@ from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 
 ### hamilton with functions ###
 trials = [
-    {"input1": (1,2,), "input2": (1,2,), "expected_bra": [], "expected_ket": []},
+    {"input1": (1,2,), "input2": (1,2,), "expected_bra": ["a1", "b2"], "expected_ket": ["a1", "b2"]},
     {"input1": (2,1), "input2": (1, 2,), "expected_bra": ["a2", "b1"], "expected_ket": ["a1", "b2"]},
     {"input1": (1,2,3), "input2": (3,2,1), "expected_bra": ["a1", "c3"], "expected_ket": ["c1", "a3"]},# proposal example
-    {"input1": (1, 2, 3), "input2": (1, 2, 3), "expected_bra": [], "expected_ket": []},
+    {"input1": (1, 2, 3), "input2": (1, 2, 3), "expected_bra": ["a1", "b2", "c3"], "expected_ket": ["a1", "b2", "c3"]},
 
 
 ]
@@ -79,8 +79,11 @@ trials = [
     # {"input1": [(1, 2,), (3, 4,)], "input2": [(1, 2,), (3, 4,)], "expected": 1, "error_message": "S4 [2^2] overlap itself"},
     # {"input1": [(1, 2,), (3, )], "input2": [(1, 3,), (2,)], "expected": [], "error_message": "S4 [2^2]"  },
 
-    {"input1": [(1, 2), (3, 4)], "input2": [(1, 3), (2, 4)],
-     "expected": ["- 1/4 D", "- 1/4 (ab)", "- 1/4 (ac)", "+ 1/2 (ad)", "+ 1/2 (bc)", "- 1/4 (bd)", "- 1/4 (cd)"],
+    # {"input1": [(1, 2), (3, 4)], "input2": [(1, 3), (2, 4)],
+    #  "expected": ["- 1/4 D", "- 1/4 (ab)", "- 1/4 (ac)", "+ 1/2 (ad)", "+ 1/2 (bc)", "- 1/4 (bd)", "- 1/4 (cd)"],
+    #  "error_message": ""},
+    {"input1": [(1, 2), (3, 4)], "input2": [(1, 2), (3, 4)],
+     "expected": ["+ 1 (abcd)", "+ 1 (ab)", "- 1/2 (ac)", "- 1/2 (ad)", "- 1/2 (bc)", "- 1/2 (bd)", "+ 1 (cd)"],
      "error_message": ""}
 
 ]
@@ -101,15 +104,15 @@ for trial in trials:
 
     product = calculate_hamilton_integral(t1, t2, kind=spin_vs_spatial_kind.SPATIAL)
 
-    print()
-    print(get_total_function_from_hamilton_integral_list(product))
+    # print()
+    # print(get_total_function_from_hamilton_integral_list(product))
     product = shorten_total_function_of_hamilton_integrals(product)
-    print(get_total_function_from_hamilton_integral_list(product))
+    # print(get_total_function_from_hamilton_integral_list(product))
 
     for x in product:
         checked = False
         for y in trial["expected"]:
-            if ''.join(sorted(x.get_shortened_symbol())) in y:
+            if "("+''.join(sorted(x.get_shortened_symbol()))+")" in y:
                 if f"{x.sign.value} {x.factor}" not in y:
                     print(f"{x.sign.value} {x.factor}","vs.", y)
                 checked = True

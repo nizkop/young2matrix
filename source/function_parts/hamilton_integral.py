@@ -9,8 +9,9 @@ class hamilton_integral(object):
 
     def __init__(self, bra:product_term, ket:product_term):
         # print("bra", bra.ordered_functions, bra.lowercase_letters, "ket:", ket.ordered_functions, ket.lowercase_letters)
+        # print("calculating... \t <", bra.to_text(), "|H|", ket.to_text(), end=">\t")
         self.factor: int = bra.factor * ket.factor
-        self.sign :Sign = Sign.PLUS if bra.sign == ket.sign else Sign.MINUS
+        self.sign:Sign = Sign.PLUS if bra.sign == ket.sign else Sign.MINUS
 
         bra.factor = 1
         ket.factor = 1
@@ -22,7 +23,7 @@ class hamilton_integral(object):
         self.check_integral()
 
     def __hash__(self):
-        return hash(self.get_shortened_symbol())
+        return hash(''.join(sorted(self.get_shortened_symbol())))
     def __eq__(self, other):
         return isinstance(other, type(self)) and ''.join(sorted(self.get_shortened_symbol())) == ''.join(sorted(other.get_shortened_symbol()))
 
@@ -32,11 +33,20 @@ class hamilton_integral(object):
         multiplying the different functions within the integral and checking, whether there are more than 2 electron switches;
         this function resets the bra and ket attributes
         """
+        # print(self.to_text(), end=" ")
+        if sorted(self.bra.get_list_of_parts()) == sorted(self.ket.get_list_of_parts()): # identical -> diagonal element
+            # print(self.get_shortened_symbol(), self.bra.get_list_of_parts(), self.ket.get_list_of_parts())
+            self.bra.lowercase_letters = self.bra.lowercase_letters[:len(self.bra.ordered_functions)]
+            self.ket.lowercase_letters = self.ket.lowercase_letters[:len(self.ket.ordered_functions)]
+            # print("\ndiagonal",self.factor)
+            return
+
         indizes = self.get_occurence_of_indizes()
         self.bra.ordered_functions = []
         self.bra.lowercase_letters = []
         self.ket.ordered_functions = []
         self.ket.lowercase_letters = []
+
 
         # checking if uneven number of switched functions:
         sets = {}
@@ -48,8 +58,18 @@ class hamilton_integral(object):
                 sets[key] = 1
         for set_key, set_value in sets.items():
             if len(set_key) == 2 and set_value != 2: # always a pair needed
+                # print("\t\t==\t", self.to_text(), end="\n")
+                self.factor = 0
+                # print("faktor 0", self.get_shortened_symbol())
                 return
+        # mehr als 1 Tausch-Paar:
+        number_of_pairs = len([x for x in sets.values() if x == 2])
+        if number_of_pairs > 1:
+             # not more than 1 switching electron pair allowed
+            self.factor = 0
+            return
 
+        # collecting the non-vanishing parts:
         for k,v in indizes.items():
             if len(v) == 1: # identical in bra and ket -> ca be multiplied out -> overlaps to 1
                 f = function(product_term(sign = Sign("+"), ordered_functions=(k, )))
@@ -62,8 +82,11 @@ class hamilton_integral(object):
                 self.ket.ordered_functions.append(k)
                 self.bra.lowercase_letters.append(v[0]) # assuming first the bra is read into indizes, THEN the ket
                 self.ket.lowercase_letters.append(v[-1]) # ordering because of above assumption
-            else: # electron in > 2 orbitals!?
+            else: # electron in > 2 orbitals
                 pass
+
+        # print("\t\t==\t", self.to_text(), end="\n")
+        # print("normal:", self.get_shortened_symbol())
 
 
 
@@ -105,10 +128,19 @@ class hamilton_integral(object):
 
 #
 if __name__ == '__main__':
-    p1 = product_term("+", (4,3,2,1))
-    p2 = product_term("+", (4, 2, 1, 3))
-    hamilton_integral(p1, p2)
+    # p1 = product_term(Sign("-"), (4,3,2,1))
+    # p2 = product_term(Sign("-"), (4, 2, 1, 3))
+    # h = hamilton_integral(p1, p2)
+    # # print(h.to_text())
+    #
+    # p1 = product_term(Sign("-"), (4,3,2,1))
+    # p2 = product_term(Sign("-"), (4, 3,1,2))
+    # h = hamilton_integral(p1, p2)
+    # print(h.to_text())
 
-    p1 = product_term("+", (4,3,2,1))
-    p2 = product_term("+", (4, 3,1,2))
-    hamilton_integral(p1, p2)
+    p1 = product_term(Sign("-"), (1,2,3,4))
+    p2 = product_term(Sign("+"), (1,2,3,4))
+    h = hamilton_integral(p1, p2)
+    print(h.to_text(), h.get_shortened_symbol(), h.factor, h.sign)
+
+

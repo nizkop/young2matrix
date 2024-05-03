@@ -9,13 +9,10 @@ from source.function_parts.sign import Sign
 
 def shorten_total_function_of_hamilton_integrals(h_list: List[hamilton_integral]):
     new_h_list = []
-    # find norm:
-    factor= get_normalization_factor_as_fraction(1, norm=sp.sqrt(len(h_list)) )
-
+    print("shorten_total_function_of_hamilton_integrals:", len(h_list) , "mit:", [f"{h.sign} {h.factor}" for h in h_list if "".join(sorted(h.get_shortened_symbol())) == "bd"])
 
     # set all to + sign:
     for h in h_list:
-        h.factor *= factor # normalize
         if h.sign == Sign.MINUS:
             h.sign = Sign.PLUS
             h.bra.sign = Sign.MINUS if h.bra.sign == Sign.PLUS else Sign.PLUS # switch sign

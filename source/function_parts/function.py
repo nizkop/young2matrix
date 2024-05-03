@@ -6,6 +6,7 @@ from itertools import permutations
 from typing import List
 import sympy as sp
 
+from source.function_parts.get_normalization_factor_as_fraction import get_normalization_factor_as_fraction
 from source.function_parts.product_term import product_term
 from source.function_parts.sign import Sign
 
@@ -41,11 +42,11 @@ class function(object):
         :return:
         """
         if self.get_number_of_terms() == 1 or not self.normalizable:
-            return {"text":"", "tex":"", "1/sqrt": 1}
-        # n = Fraction(1, math.sqrt(self.get_number_of_terms()**3))
+            return {"text":"", "tex":"", "1/sqrt": 1, "fraction": 1}
         text = f"1/√({self.get_number_of_terms()}) "
         tex = r"\frac{1}{\sqrt{"+fr"{self.get_number_of_terms()}"+"}} "
-        return {"text":text, "tex":tex, "1/sqrt": self.get_number_of_terms()}
+        n = get_normalization_factor_as_fraction(1, norm=sp.sqrt(self.get_number_of_terms()) )
+        return {"text":text, "tex":tex, "1/sqrt": self.get_number_of_terms(), "fraction": n}
 
     def anti_symmetrize(self, changeble_elements:List[int]):
         return self.permutate_basis(changeable_elements=changeble_elements, change_sign=True)
