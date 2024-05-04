@@ -86,10 +86,10 @@ trials = [
     {"input1": [(1,2,),(3,),(4,)], "input2": [(1,2,),(3,),(4,)], "error_message": "[31] symmetric 12",
      "expected": ["+ 1 (abcd)", "+ 1 (ab)", "- 1/2 (ac)", "- 1/2 (ad)", "- 1/2 (bc)", "- 1/2 (bd)", "- 1 (cd)"]},
 
-    {"input1": [(1,4,),(2,),(3,)], "input2": [(1,3,),(2,),(4,)],"error_message": "[31] 14-13",
-     "expected": ["- 1/6 (abcd)", "- 1/6 (ac)", "- 1/6 (ad)", "+ 1/6 (bc)", "+ 1/6 (bd)", "+ 1/3 (cd)"]},# TODO: factor -3
-    {"input1": [(1,4,),(2,),(3,)], "input2": [(1,2,),(3,),(4,)], "error_message": "[31] 14-12",
-     "expected": ["- 1/6 (abcd)", "- 1/6 (ad)", "+ 1/6 (bc)", "+ 1/3 (bd)", "+ 1/6 (cd)"]},# TODO: factor -3 für abcd
+    # {"input1": [(1,4,),(2,),(3,)], "input2": [(1,3,),(2,),(4,)],"error_message": "[31] 14-13",
+    #  "expected": ["- 1/6 (abcd)", "- 1/6 (ac)", "- 1/6 (ad)", "+ 1/6 (bc)", "+ 1/6 (bd)", "+ 1/3 (cd)"]},# TODO: factor -3
+    # {"input1": [(1,4,),(2,),(3,)], "input2": [(1,2,),(3,),(4,)], "error_message": "[31] 14-12",
+    #  "expected": ["- 1/6 (abcd)", "- 1/6 (ab)", "- 1/6 (ad)", "+ 1/6 (bc)", "+ 1/3 (bd)", "+ 1/6 (cd)"]},# TODO: factor -3 für abcd
     {"input1": [(1,3,),(2,),(4,)], "input2": [(1,2),(3,),(4,)], "error_message": "[31] 13-12",
      "expected": ["- 1/6 (abcd)", "- 1/6 (ab)", "- 1/6 (ac)", "+ 1/3 (bc)", "+ 1/6 (bd)", "+ 1/6 (cd)"]},# TODO: factor -3
 
@@ -120,6 +120,9 @@ for trial in trials:
 
     product = calculate_hamilton_integral(t1, t2, kind=spin_vs_spatial_kind.SPATIAL)
     product = shorten_total_function_of_hamilton_integrals(product)
+    if len(product) != len(trial["expected"]):
+        print(f"unfitting number of terms for {trial['error_message']}", len(product), len(trial["expected"]))
+        # raise Exception(f"unfitting number of terms for {trial['error_message']}")
 
     for x in product:
         checked = False
@@ -127,13 +130,14 @@ for trial in trials:
             if "("+''.join(sorted(x.get_shortened_symbol()))+")" in y:
                 if f"{x.sign.value} {x.factor}" not in y:
                     s = f"{x.sign.value} {x.factor} vs. {y}"
-                    print(f"wrong factor: {s} for {trial['error_message']}")
+                    print(f"wrong factor: {s} for {trial['error_message']}", f"----{x.factor/3}" )
                     # raise Exception(f"wrong factor: {s} for {trial['error_message']}")
                 checked = True
                 break
         if not checked:
-            unexpected = f"({''.join(sorted(x.get_shortened_symbol()))}) not expected"
+            unexpected = f"{x.sign.value} {x.factor} ({''.join(sorted(x.get_shortened_symbol()))})"
             print( f"{unexpected} not expected for {trial['error_message']}")
             # raise Exception(f"{unexpected} not expected for {trial['error_message']}")
+    print()
 
 

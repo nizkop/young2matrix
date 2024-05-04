@@ -33,20 +33,19 @@ class product_term(object):
         print(self.to_text())
 
     def to_tex(self) -> str:
-        sign = f"{self.sign.value} "
+        sign = f"{self.sign.value} " if self.sign == Sign.MINUS else ""
         if len(self.ordered_functions) == 0:
             if self.factor == 0:
                 return "0"
             else:
                 return sign+str(self.factor)
-        sign = f"{self.sign.value} "
         if len(self.ordered_functions) == 0:
             if self.factor == 0:
                 return "0"
             else:
                 return sign+str(self.factor)
-        factor= fr"{self.factor} \cdot " if self.factor > 1 else ""
-        function_factors =r" \cdot ".join(self.get_list_of_parts())
+        factor = fr"{self.factor} \cdot " if self.factor > 1 else ""
+        function_factors = r" \cdot ".join(self.get_list_of_parts())
         return sign+factor+function_factors
 
 

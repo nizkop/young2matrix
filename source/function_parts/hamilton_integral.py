@@ -120,15 +120,22 @@ class hamilton_integral(object):
 
 
     def to_text(self) -> str:
-        if self.bra.factor == 1 and self.ket.factor == 1 and len(self.bra.ordered_functions) == 0 and len(self.ket.ordered_functions) == 0:
-            return f" {self.sign.value} {self.factor}"  # integral reverted to overlap (which is only a number, not an integral anymore)
-        return f" {self.sign.value} {self.factor} * <{self.bra.to_text().replace('+','')} |H| {self.ket.to_text().replace('+','')} >".replace(' '*2,' ')
+        # if self.bra.factor == 1 and self.ket.factor == 1 and len(self.bra.ordered_functions) == 0 and len(self.ket.ordered_functions) == 0:
+        #     return f" {self.sign.value} {self.factor}"  # integral reverted to overlap (which is only a number, not an integral anymore)
+        return f" {self.sign.value} {self.factor} * <{self.bra.to_text()} |H| {self.ket.to_text()} >".replace(' '*2,' ')
+
+    def to_tex(self) -> str:
+        eq = fr"{self.sign.value} {self.factor} \cdot " + r"\bra{ "
+        eq += self.bra.to_tex()
+        eq+= r" } \hat{H} \ket{ " + self.ket.to_tex()
+        return eq + r"}"
+
 
     def get_shortened_symbol(self) -> str:
         return "".join(set(self.bra.lowercase_letters+self.ket.lowercase_letters))
 
 
-#
+
 if __name__ == '__main__':
     # p1 = product_term(Sign("-"), (4,3,2,1))
     # p2 = product_term(Sign("-"), (4, 2, 1, 3))
@@ -143,5 +150,5 @@ if __name__ == '__main__':
     p1 = product_term(Sign("-"), (1,2,4,3))#a1b2d3c4
     p2 = product_term(Sign("+"), (1,3,4,2))#a1d2b3c4
     h = hamilton_integral(p1, p2)
-    # print(h.to_text(), h.get_shortened_symbol(), h.factor, h.sign)# < - a_1 * b_2 * c_4 * d_3 |H| + a_1 * b_3 * c_4 * d_2>
+    print(h.to_tex(), h.get_shortened_symbol(), h.factor, h.sign)# < - a_1 * b_2 * c_4 * d_3 |H| + a_1 * b_3 * c_4 * d_2>
 

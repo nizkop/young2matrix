@@ -1,7 +1,9 @@
 from typing import List
 
+from source.function_combination.calculate_hamilton_integral import calculate_hamilton_integral
 from source.function_combination.calculate_overlap_integral import calculate_overlap_integral
 from source.function_parts.get_dirac_notation import get_dirac_notation
+from source.function_parts.hamilton_integral import hamilton_integral
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 from source.function_parts.text_kinds import text_kinds
 from source.getting_subsets import get_powerset, permutations_of_subsets
@@ -24,6 +26,7 @@ class permutation_group(object):
         self.overview = overview_pdf()
 
         self.overlap: List[dict] = []
+        self.hamiltonians: List[hamilton_integral] = []
 
     def print(self) -> None:
        print(f"permutation group: S_{self.permutation_group}")
@@ -126,6 +129,15 @@ class permutation_group(object):
                 self.overview.add_latex_formula(equation_tex)
                 self.overview.vspace()
 
+        # chapter 5
+        self.overview.add_section("Hamiltonmatrixelemente", content="")
+        self.calculate_all_hamilton_integrals()
+        for i in self.hamiltonians:# TODO: correct
+            for j in i:
+                equation_tex = j.to_tex() + "+"
+            self.overview.add_latex_formula(equation_tex)
+            self.overview.vspace()
+
         self.overview.save(title=title_pdf)
 
 
@@ -200,7 +212,27 @@ class permutation_group(object):
         return
 
     def calculate_all_hamilton_integrals(self):
-        pass
+        # TODO: think about correct combination and how to form a complete equation later on
+        if len(self.hamiltonians) > 0:
+            return
+        results = []
+        for i in range(len(self.standard_tableaus)):
+            tableau_1 = self.standard_tableaus[i]
+            tableau_1.set_up_function()
+            tableau_1.get_spatial_choices()
+            tableau_1.get_spin_choices()
+            tableau_1.calulate_all_overlap_integrals()
+            # mixed tableaus:
+            for j in range(i+1, len(self.standard_tableaus)):
+                tableau_2 = self.standard_tableaus[j]
+                tableau_2.get_spatial_choices()
+                # TODO spin : here alpha and beta signs (not latex-commands) are added so far
+                results += [calculate_hamilton_integral(tableau_1, tableau_2, kind=spin_vs_spatial_kind.SPATIAL)]
+
+        for result in results:
+            if result not in self.hamiltonians:# TODO: is this even a smart check here?
+                self.hamiltonians.append(result)
+        return
 
     def setup_matrix(self) -> str:
         pass

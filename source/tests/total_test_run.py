@@ -16,3 +16,6 @@ import test_spin_parts_in_chemical_standard_tableau
 
 print("\ntesting the combination of functions...", flush=True)
 import test_function_combination
+
+print("\ntesting the hamilton integral building...",flush=True)
+import test_hamilton_integral_calculation

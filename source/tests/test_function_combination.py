@@ -60,7 +60,8 @@ for trial in trials:
     product_revers = calculate_overlap_integral(t2, t1, kind=spin_vs_spatial_kind.SPATIAL)[0]["result"]
     if product.parts[0].factor != product_revers.parts[0].factor or len(product.parts[0].ordered_functions) != 0 or len(product_revers.parts[0].ordered_functions) != 0:
         raise Exception(f"{general_error} - {trial['error_message']}: multiplication not commutative")
-    if product.parts[0].factor != trial["expected"]:
+    factor = - product.parts[0].factor  if product.parts[0].sign == Sign.MINUS else +product.parts[0].factor
+    if factor != trial["expected"]:
         wrong = trial["expected"] / product.parts[0].factor
         print(trial['error_message'], "wrong by: ", wrong)
         raise Exception(f"{general_error} - {trial['error_message']}: {product.parts[0].factor} vs. {trial['expected']}")
