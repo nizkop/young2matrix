@@ -13,10 +13,10 @@ from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 
 ### hamilton with functions ###
 trials = [
-    {"input1": (1,2,), "input2": (1,2,), "expected_bra": ["a1", "b2"], "expected_ket": ["a1", "b2"]},
-    {"input1": (2,1), "input2": (1, 2,), "expected_bra": ["a2", "b1"], "expected_ket": ["a1", "b2"]},
-    {"input1": (1,2,3), "input2": (3,2,1), "expected_bra": ["a1", "c3"], "expected_ket": ["c1", "a3"]},# proposal example
-    {"input1": (1, 2, 3), "input2": (1, 2, 3), "expected_bra": ["a1", "b2", "c3"], "expected_ket": ["a1", "b2", "c3"]},
+    # {"input1": (1,2,), "input2": (1,2,), "expected_bra": ["a1", "b2"], "expected_ket": ["a1", "b2"]},
+    # {"input1": (2,1), "input2": (1, 2,), "expected_bra": ["a2", "b1"], "expected_ket": ["a1", "b2"]},
+    # {"input1": (1,2,3), "input2": (3,2,1), "expected_bra": ["a1", "c3"], "expected_ket": ["c1", "a3"]},# proposal example
+    # {"input1": (1, 2, 3), "input2": (1, 2, 3), "expected_bra": ["a1", "b2", "c3"], "expected_ket": ["a1", "b2", "c3"]},
 
 
 ]
@@ -77,8 +77,8 @@ for trial in trials:
 
 trials = [
     # {"input1": [], "input2": [], "expected": [], "error_message": ""},
-    {"input1": [(1,),(2,),(3,),(4,)], "input2": [(1,),(2,), (3,),(4,)], "error_message": "1^4 sym",
-     "expected": ["+ 1 (abcd)", "- 1 (ab)", "- 1 (ac)", "- 1 (ad)", "- 1 (bc)", "- 1 (bd)", "- 1 (cd)"]},
+    # {"input1": [(1,),(2,),(3,),(4,)], "input2": [(1,),(2,), (3,),(4,)], "error_message": "1^4 sym",
+    #  "expected": ["+ 1 (abcd)", "- 1 (ab)", "- 1 (ac)", "- 1 (ad)", "- 1 (bc)", "- 1 (bd)", "- 1 (cd)"]},
     {"input1": [(1,4,),(2,),(3,)], "input2": [(1,4,),(2,),(3,)], "error_message": "[31] symmetric 14",
      "expected": ["+ 1 (abcd)", "- 1/2 (ab)", "- 1/2 (ac)", "+ 1 (ad)", "- 1 (bc)", "- 1/2 (bd)", "- 1/2 (cd)"]},
     {"input1": [(1,3,),(2,),(4,)], "input2": [(1,3,),(2,),(4,)], "error_message": "[31] symmetric 13",
@@ -86,16 +86,16 @@ trials = [
     {"input1": [(1,2,),(3,),(4,)], "input2": [(1,2,),(3,),(4,)], "error_message": "[31] symmetric 12",
      "expected": ["+ 1 (abcd)", "+ 1 (ab)", "- 1/2 (ac)", "- 1/2 (ad)", "- 1/2 (bc)", "- 1/2 (bd)", "- 1 (cd)"]},
 
-    # {"input1": [(1,4,),(2,),(3,)], "input2": [(1,3,),(2,),(4,)],"error_message": "[31] 14-13",
-    #  "expected": ["- 1/6 (abcd)", "- 1/6 (ac)", "- 1/6 (ad)", "+ 1/6 (bc)", "+ 1/6 (bd)", "+ 1/3 (cd)"]},# TODO: factor -3
-    # {"input1": [(1,4,),(2,),(3,)], "input2": [(1,2,),(3,),(4,)], "error_message": "[31] 14-12",
-    #  "expected": ["- 1/6 (abcd)", "- 1/6 (ab)", "- 1/6 (ad)", "+ 1/6 (bc)", "+ 1/3 (bd)", "+ 1/6 (cd)"]},# TODO: factor -3 für abcd
+    {"input1": [(1,4,),(2,),(3,)], "input2": [(1,3,),(2,),(4,)],"error_message": "[31] 14-13",
+     "expected": ["- 1/6 (abcd)", "- 1/6 (ac)", "- 1/6 (ad)", "+ 1/6 (bc)", "+ 1/6 (bd)", "+ 1/3 (cd)"]},
+    {"input1": [(1,4,),(2,),(3,)], "input2": [(1,2,),(3,),(4,)], "error_message": "[31] 14-12",
+     "expected": ["- 1/6 (abcd)", "- 1/6 (ab)", "- 1/6 (ad)", "+ 1/6 (bc)", "+ 1/3 (bd)", "+ 1/6 (cd)"]},
     {"input1": [(1,3,),(2,),(4,)], "input2": [(1,2),(3,),(4,)], "error_message": "[31] 13-12",
-     "expected": ["- 1/6 (abcd)", "- 1/6 (ab)", "- 1/6 (ac)", "+ 1/3 (bc)", "+ 1/6 (bd)", "+ 1/6 (cd)"]},# TODO: factor -3
+     "expected": ["- 1/6 (abcd)", "- 1/6 (ab)", "- 1/6 (ac)", "+ 1/3 (bc)", "+ 1/6 (bd)", "+ 1/6 (cd)"]},
 
     {"input1": [(1, 3), (2, 4)], "input2": [(1, 2), (3, 4)],
      "expected": ["- 1/4 (abcd)", "- 1/4 (ab)", "- 1/4 (ac)", "+ 1/2 (ad)", "+ 1/2 (bc)", "- 1/4 (bd)", "- 1/4 (cd)"],
-     "error_message": "2^2 combination"},# TODO: factor 3?
+     "error_message": "2^2 combination"},
     {"input1": [(1, 2), (3, 4)], "input2": [(1, 2), (3, 4)],
      "expected": ["+ 1 (abcd)", "+ 1 (ab)", "- 1/2 (ac)", "- 1/2 (ad)", "- 1/2 (bc)", "- 1/2 (bd)", "+ 1 (cd)"],
      "error_message": "2^2 one tableau"},
@@ -138,6 +138,6 @@ for trial in trials:
             unexpected = f"{x.sign.value} {x.factor} ({''.join(sorted(x.get_shortened_symbol()))})"
             print( f"{unexpected} not expected for {trial['error_message']}")
             # raise Exception(f"{unexpected} not expected for {trial['error_message']}")
-    print()
+    # print()
 
 

@@ -21,7 +21,7 @@ class hamilton_integral(object):
         self.ket:product_term = ket
 
         self.check_integral()
-        # print("\t\t==\t", self.get_shortened_symbol(), end="\n")
+        # print("\t\t==\t", self.sign.value, self.get_shortened_symbol(), end="\n")
 
     def __hash__(self):
         return hash(''.join(sorted(self.get_shortened_symbol())))
