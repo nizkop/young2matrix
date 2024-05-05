@@ -46,7 +46,8 @@ class product_term(object):
                 return sign+str(self.factor)
         factor = fr"{self.factor} \cdot " if self.factor > 1 else ""
         function_factors = r" \cdot ".join(self.get_list_of_parts())
-        return sign+factor+function_factors
+        eq = sign+factor+function_factors
+        return eq.replace("α",r"\alpha").replace("β",r"\beta")
 
 
     def multiply(self, other):# -> product_term

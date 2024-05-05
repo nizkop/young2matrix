@@ -103,14 +103,14 @@ class permutation_group(object):
         title, content = get_title_spatial(kind=text_kinds.TEX)
         self.overview.add_section(sec_title=title, layer=1, content=content)
         self.calculate_all_overlap_integrals()
-        for i in self.overlap:
-            if i['kind'] == spin_vs_spatial_kind.SPATIAL and len(i['result'].parts) == 1 and i['result'].parts[0].factor != 0 and i['result'].parts[0].factor != 1:
-                equation_tex = get_dirac_notation(str(i['bra_tableau']), str(i['ket_tableau']), kind=text_kinds.TEX)
-                if i['kind'] == spin_vs_spatial_kind.SPIN:
+        for info in self.overlap:
+            if info['kind'] == spin_vs_spatial_kind.SPATIAL and len(info['result'].parts) == 1 and info['result'].parts[0].factor != 0 and info['result'].parts[0].factor != 1:
+                equation_tex = get_dirac_notation(str(info['bra_tableau']), str(info['ket_tableau']), kind=text_kinds.TEX)
+                if info['kind'] == spin_vs_spatial_kind.SPIN:
                     equation_tex += r"_{\sigma }"
-                    equation_tex += "=" + get_dirac_notation(str(i['bra']), str(i['ket']), kind=text_kinds.TEX)
+                    equation_tex += "=" + get_dirac_notation(str(info['bra']), str(info['ket']), kind=text_kinds.TEX)
                 equation_tex += r"_{\Phi}"
-                equation_tex += f" = {i['result'].to_tex()}"
+                equation_tex += f" = {info['result'].to_tex()}"
                 self.overview.add_latex_formula(equation_tex)
                 self.overview.vspace()
 
@@ -119,23 +119,29 @@ class permutation_group(object):
         self.overview.add_section(sec_title=title, layer=1,content=content)
         self.overview.add_latex_formula(equation)
         self.overview.vspace(), self.overview.vspace(), self.overview.vspace()
-        for i in self.overlap:
-            if i['kind'] == spin_vs_spatial_kind.SPIN and len(i['result'].parts) == 1 and i['result'].parts[0].factor != 0 and i['result'].parts[0].factor != 1:
-                equation_tex = get_dirac_notation(str(i['bra_tableau']), str(i['ket_tableau']), kind=text_kinds.TEX)
+        for info in self.overlap:
+            if info['kind'] == spin_vs_spatial_kind.SPIN and len(info['result'].parts) == 1 and info['result'].parts[0].factor != 0 and info['result'].parts[0].factor != 1:
+                equation_tex = get_dirac_notation(str(info['bra_tableau']), str(info['ket_tableau']), kind=text_kinds.TEX)
                 equation_tex += r"_{\sigma }"
-                equation_tex += "=" + get_dirac_notation(str(i['bra']), str(i['ket']), kind=text_kinds.TEX)
+                equation_tex += "=" + get_dirac_notation(str(info['bra']), str(info['ket']), kind=text_kinds.TEX)
                 equation_tex += r"_{\Phi}"
-                equation_tex += f" = {i['result'].to_tex()}"
+                equation_tex += f" = {info['result'].to_tex()}"
                 self.overview.add_latex_formula(equation_tex)
                 self.overview.vspace()
 
         # chapter 5
-        self.overview.add_section("Hamiltonmatrixelemente", content="")
+        self.overview.add_section("Hamiltonmatrixelemente",
+                                  content="$\hat{H}$ ist unabhängig vom Spin, daher werden die Hamiltonintegrale der Spin-Tableaus zu den Überlappungsintegralen (s. Kapitel 4.2) und werden hier nicht erneut aufgeführt")
         self.calculate_all_hamilton_integrals()
-        for i in self.hamiltonians:# TODO: correct
-            if len(i["hamilton_integral_sum"]) > 0:
-                equation_tex = r"\bra{"+ i["bra_tableau"] + r"}\hat{H}\ket{"+ i["ket_tableau"] + r"} = "
-                for addend in i["hamilton_integral_sum"]:
+        for info in self.hamiltonians:# TODO: correct
+            if len(info["hamilton_integral_sum"]) > 0:
+                equation_tex = r"\bra{"+ info["bra_tableau"] + r"}\hat{H}\ket{"+ info["ket_tableau"] + r"}"
+                # if info["kind"] == spin_vs_spatial_kind.SPIN.value:
+                #     equation_tex+=r"_{\sigma }"
+                if info["kind"] == spin_vs_spatial_kind.SPATIAL.value:
+                    equation_tex+=r"_{\Phi}"
+                equation_tex += " = "
+                for addend in info["hamilton_integral_sum"]:
                     equation_tex += addend.to_tex()
 
             self.overview.add_latex_formula(equation_tex)
@@ -215,25 +221,28 @@ class permutation_group(object):
         return
 
     def calculate_all_hamilton_integrals(self):
-        # Tablueaus need to be set up already !
-        # TODO: think about correct combination and how to form a complete equation later on
-        if len(self.hamiltonians) > 0:
+        for t in self.standard_tableaus:
+            t.set_up_function()
+            t.get_spatial_choices()
+            t.get_spin_choices()
+
+        self.calculate_all_hamilton_integrals_kind(spin_vs_spatial_kind.SPATIAL)
+        # self.calculate_all_hamilton_integrals_kind(spin_vs_spatial_kind.SPIN)# TODO spin : reverts to overlap, because H is independend of spin!!!
+
+    def calculate_all_hamilton_integrals_kind(self, kind: spin_vs_spatial_kind):
+        # Tableaus need to be set up already !
+        if len([x for x in self.hamiltonians if x["kind"] == kind.value]) > 0:
             return
         results = []
         for i in range(len(self.standard_tableaus)):
             tableau_1 = self.standard_tableaus[i]
-            # tableau_1.set_up_function()
-            # tableau_1.get_spatial_choices()
-            # tableau_1.get_spin_choices()
             for j in range(i, len(self.standard_tableaus)):
                 info = {}
                 tableau_2 = self.standard_tableaus[j]
-                # tableau_2.get_spatial_choices()
-                # TODO spin : here alpha and beta signs (not latex-commands) are added so far
                 info["bra_tableau"] = tableau_1.to_tex()
                 info["ket_tableau"] = tableau_2.to_tex()
-                info["hamilton_integral_sum"] = calculate_hamilton_integral(tableau_1, tableau_2, kind=spin_vs_spatial_kind.SPATIAL)
-                # results.append(info)
+                info["kind"] = kind.value
+                info["hamilton_integral_sum"] = calculate_hamilton_integral(tableau_1, tableau_2, kind=kind)
 
                 if len(info["hamilton_integral_sum"]) > 0:
                     results.append(info)
