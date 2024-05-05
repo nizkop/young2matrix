@@ -33,7 +33,7 @@ class product_term(object):
         print(self.to_text())
 
     def to_tex(self) -> str:
-        sign = f"{self.sign.value} " if self.sign == Sign.MINUS else ""
+        sign = f"{self.sign.value} "
         if len(self.ordered_functions) == 0:
             if self.factor == 0:
                 return "0"

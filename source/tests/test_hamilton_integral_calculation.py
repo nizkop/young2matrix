@@ -1,5 +1,3 @@
-from get_total_function_from_hamilton_integral_list import get_total_function_from_hamilton_integral_list
-from shorten_total_function_of_hamilton_integrals import shorten_total_function_of_hamilton_integrals
 from source.chemical_standard_tableau import chemical_standard_tableau
 from source.function_combination.calculate_hamilton_integral import calculate_hamilton_integral
 from source.function_combination.calculate_hamilton_integral_between_functions import \
@@ -13,11 +11,10 @@ from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 
 ### hamilton with functions ###
 trials = [
-    # {"input1": (1,2,), "input2": (1,2,), "expected_bra": ["a1", "b2"], "expected_ket": ["a1", "b2"]},
-    # {"input1": (2,1), "input2": (1, 2,), "expected_bra": ["a2", "b1"], "expected_ket": ["a1", "b2"]},
-    # {"input1": (1,2,3), "input2": (3,2,1), "expected_bra": ["a1", "c3"], "expected_ket": ["c1", "a3"]},# proposal example
-    # {"input1": (1, 2, 3), "input2": (1, 2, 3), "expected_bra": ["a1", "b2", "c3"], "expected_ket": ["a1", "b2", "c3"]},
-
+    {"input1": (1,2,), "input2": (1,2,), "expected_bra": ["a1", "b2"], "expected_ket": ["a1", "b2"]},
+    {"input1": (2,1), "input2": (1, 2,), "expected_bra": ["a2", "b1"], "expected_ket": ["a1", "b2"]},
+    {"input1": (1,2,3), "input2": (3,2,1), "expected_bra": ["a1", "c3"], "expected_ket": ["c1", "a3"]},# proposal example
+    {"input1": (1, 2, 3), "input2": (1, 2, 3), "expected_bra": ["a1", "b2", "c3"], "expected_ket": ["a1", "b2", "c3"]},
 
 ]
 
@@ -27,8 +24,6 @@ for trial in trials:
 
     f1 = function(product_term(Sign("+"), trial["input1"]))
     f2 = function(product_term(Sign("+"), trial["input2"]))
-
-    # f1.print(), f2.print()
 
     results = calculate_hamilton_integral_between_functions(f1, f2)
 
@@ -65,20 +60,13 @@ for trial in trials:
 
 
 
-
-
-
-
-
-
-
-
 ###  whole tableaus   ###
 
 trials = [
     # {"input1": [], "input2": [], "expected": [], "error_message": ""},
-    # {"input1": [(1,),(2,),(3,),(4,)], "input2": [(1,),(2,), (3,),(4,)], "error_message": "1^4 sym",
-    #  "expected": ["+ 1 (abcd)", "- 1 (ab)", "- 1 (ac)", "- 1 (ad)", "- 1 (bc)", "- 1 (bd)", "- 1 (cd)"]},
+    {"input1": [(1,),(2,),(3,),(4,)], "input2": [(1,),(2,), (3,),(4,)], "error_message": "1^4 sym",
+     "expected": ["+ 1 (abcd)", "- 1/2 (ab)", "- 1/2 (ac)", "- 1/2 (ad)", "- 1/2(bc)", "- 1/2 (bd)", "- 1/2 (cd)"]},# difference from prior (manual) calculation (= no -- combinations, all integrals added)
+
     {"input1": [(1,4,),(2,),(3,)], "input2": [(1,4,),(2,),(3,)], "error_message": "[31] symmetric 14",
      "expected": ["+ 1 (abcd)", "- 1/2 (ab)", "- 1/2 (ac)", "+ 1 (ad)", "- 1 (bc)", "- 1/2 (bd)", "- 1/2 (cd)"]},
     {"input1": [(1,3,),(2,),(4,)], "input2": [(1,3,),(2,),(4,)], "error_message": "[31] symmetric 13",
@@ -106,7 +94,7 @@ trials = [
 ]
 
 
-general_error = "error in overlap calculation (tableaus)"
+general_error = "error in hamilton integral calculation (tableaus)"
 for trial in trials:
     t1 = chemical_standard_tableau(trial["input1"])
     t1.set_up_function()
@@ -115,14 +103,11 @@ for trial in trials:
     t2.set_up_function()
     t2.get_spatial_choices()
 
-    # t1.print(), t2.print()
-    # t1.function.print(), t2.function.print()
-
     product = calculate_hamilton_integral(t1, t2, kind=spin_vs_spatial_kind.SPATIAL)
-    product = shorten_total_function_of_hamilton_integrals(product)
+
     if len(product) != len(trial["expected"]):
-        print(f"unfitting number of terms for {trial['error_message']}", len(product), len(trial["expected"]))
-        # raise Exception(f"unfitting number of terms for {trial['error_message']}")
+        # print(f"unfitting number of terms for {trial['error_message']}", len(product), len(trial["expected"]))
+        raise Exception(f"{general_error}: unfitting number of terms for {trial['error_message']}")
 
     for x in product:
         checked = False
@@ -130,14 +115,13 @@ for trial in trials:
             if "("+''.join(sorted(x.get_shortened_symbol()))+")" in y:
                 if f"{x.sign.value} {x.factor}" not in y:
                     s = f"{x.sign.value} {x.factor} vs. {y}"
-                    print(f"wrong factor: {s} for {trial['error_message']}", f"----{x.factor/3}" )
-                    # raise Exception(f"wrong factor: {s} for {trial['error_message']}")
+                    # print(f"wrong factor: {s} for {trial['error_message']}")
+                    raise Exception(f"{general_error} - wrong factor: {s} for {trial['error_message']}")
                 checked = True
                 break
         if not checked:
             unexpected = f"{x.sign.value} {x.factor} ({''.join(sorted(x.get_shortened_symbol()))})"
-            print( f"{unexpected} not expected for {trial['error_message']}")
-            # raise Exception(f"{unexpected} not expected for {trial['error_message']}")
-    # print()
+            # print( f"{unexpected} not expected for {trial['error_message']}")
+            raise Exception(f"{general_error}: {unexpected} not expected for {trial['error_message']}")
 
 

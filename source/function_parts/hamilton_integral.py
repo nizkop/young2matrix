@@ -1,14 +1,11 @@
-from source.function_combination.calculate_overlap_integral_between_functions import \
-    calculate_overlap_integral_between_functions
-from source.function_parts.function import function
+
 from source.function_parts.product_term import product_term
 from source.function_parts.sign import Sign
-from collections import Counter
+
 
 class hamilton_integral(object):
 
     def __init__(self, bra:product_term, ket:product_term):
-        # print("bra", bra.ordered_functions, bra.lowercase_letters, "ket:", ket.ordered_functions, ket.lowercase_letters)
         # print("calculating... \t <", bra.to_text(), "|H|", ket.to_text(), end=">\t")
         self.factor: int = bra.factor * ket.factor
         self.sign:Sign = Sign.PLUS if bra.sign == ket.sign else Sign.MINUS
@@ -34,12 +31,9 @@ class hamilton_integral(object):
         multiplying the different functions within the integral and checking, whether there are more than 2 electron switches;
         this function resets the bra and ket attributes
         """
-        # print(self.to_text(), end=" ")
         if sorted(self.bra.get_list_of_parts()) == sorted(self.ket.get_list_of_parts()): # identical -> diagonal element
-            # print(self.get_shortened_symbol(), self.bra.get_list_of_parts(), self.ket.get_list_of_parts())
             self.bra.lowercase_letters = self.bra.lowercase_letters[:len(self.bra.ordered_functions)]
             self.ket.lowercase_letters = self.ket.lowercase_letters[:len(self.ket.ordered_functions)]
-            # print("\ndiagonal",self.factor)
             return
 
         indizes = self.get_occurence_of_indizes()
@@ -59,9 +53,7 @@ class hamilton_integral(object):
                 sets[key] = 1
         for set_key, set_value in sets.items():
             if len(set_key) == 2 and set_value != 2: # always a pair needed
-                # print("\t\t==\t", self.to_text(), end="\n")
                 self.factor = 0
-                # print("faktor 0", self.get_shortened_symbol())
                 return
         # mehr als 1 Tausch-Paar:
         number_of_pairs = len([x for x in sets.values() if x == 2])
@@ -72,24 +64,13 @@ class hamilton_integral(object):
 
         # collecting the non-vanishing parts:
         for k,v in indizes.items():
-            # if len(v) == 1: # identical in bra and ket -> ca be multiplied out -> overlaps to 1
-            #     f = function(product_term(sign = Sign("+"), ordered_functions=(k, )))
-            #     f.parts[0].lowercase_letters = v[0] #not remaining after overlap calculation
-            #     o = calculate_overlap_integral_between_functions(f, f)
-            #     self.factor *= o.parts[0].factor
-            #     # ordered_functions have been reset to [] before
             if len(v) == 2: # switched electrons -> h is effective
                 self.bra.ordered_functions.append(k)
                 self.ket.ordered_functions.append(k)
                 self.bra.lowercase_letters.append(v[0]) # assuming first the bra is read into indizes, THEN the ket
                 self.ket.lowercase_letters.append(v[-1]) # ordering because of above assumption
-            else: # electron in > 2 orbitals
+            else: # electron in > 2 orbitals (case "electron in only 1 orbital" is sorted out before already)
                 pass
-
-        # self.factor *= 2 # only half the matrix is calculated (including the diagonale, thereby this needs to be duplicated, the diagonale not!)
-
-        # print("\t\t==\t", self.get_shortened_symbol(), end="\n")
-        # print("normal:", self.get_shortened_symbol())
 
 
 
@@ -120,14 +101,14 @@ class hamilton_integral(object):
 
 
     def to_text(self) -> str:
-        # if self.bra.factor == 1 and self.ket.factor == 1 and len(self.bra.ordered_functions) == 0 and len(self.ket.ordered_functions) == 0:
-        #     return f" {self.sign.value} {self.factor}"  # integral reverted to overlap (which is only a number, not an integral anymore)
-        return f" {self.sign.value} {self.factor} * <{self.bra.to_text()} |H| {self.ket.to_text()} >".replace(' '*2,' ')
+        if self.bra.factor == 1 and self.ket.factor == 1 and len(self.bra.ordered_functions) == 0 and len(self.ket.ordered_functions) == 0:
+            return f" {self.sign.value} {self.factor}"  # integral reverted to overlap (which is only a number, not an integral anymore)
+        return f" {self.sign.value} {self.factor} * <{self.bra.to_text().replace('+ ','')} |H| {self.ket.to_text().replace('+ ','')} >".replace(' '*2,' ')
 
     def to_tex(self) -> str:
         eq = fr"{self.sign.value} {self.factor} \cdot " + r"\bra{ "
-        eq += self.bra.to_tex()
-        eq+= r" } \hat{H} \ket{ " + self.ket.to_tex()
+        eq += self.bra.to_tex().replace("+ ","")
+        eq+= r" } \hat{H} \ket{ " + self.ket.to_tex().replace("+ ","")
         return eq + r"}"
 
 

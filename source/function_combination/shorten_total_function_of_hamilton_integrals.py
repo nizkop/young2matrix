@@ -1,16 +1,21 @@
-from collections import Counter
 from typing import List
-import sympy as sp
 
-from source.function_parts.get_normalization_factor_as_fraction import get_normalization_factor_as_fraction
 from source.function_parts.hamilton_integral import hamilton_integral
 from source.function_parts.sign import Sign
-from tst import SignedCounter
+from source.function_combination.SignedCounter import SignedCounter
 
 
 def shorten_total_function_of_hamilton_integrals(h_list: List[hamilton_integral]):
+    """
+    evaluate calculated (hamilton) integrals in a sum:
+    - where do integrals cancel each other due to opposite signed factors?
+    - where are integrals not really existing anymore due to a factor of 0?
+    - where do they belong together, because their integral has the same value?
+    - what is their total factor (multiplying the numbers of bra and ket to a total factor)?
+    :param h_list: list of calculated hamilton integrals, that are addends for one tableau
+    :return: cleaned-up list of hamilton integrals bulding a sum for a tableau combination
+    """
     new_h_list = []
-    # print("shorten_total_function_of_hamilton_integrals:", len(h_list) , "mit:", [f"{h.sign.value} {h.factor} ({h.bra.factor}, {h.ket.factor})" for h in h_list if "".join(sorted(h.get_shortened_symbol())) == "abcd"])#sollte len 8 sein!
 
     # set all to + sign:
     for h in h_list:
@@ -19,18 +24,12 @@ def shorten_total_function_of_hamilton_integrals(h_list: List[hamilton_integral]
             #h.bra.sign = Sign.MINUS if h.bra.sign == Sign.PLUS else Sign.PLUS # switch sign
             h.factor = -h.factor
 
-    # print("shorten_total_function_of_hamilton_integrals:", len(h_list) , "mit:", [f"{h.sign.value} {h.factor} ({h.bra.factor}, {h.ket.factor})" for h in h_list if "".join(sorted(h.get_shortened_symbol())) == "abcd"])#sollte len 8 sein!
-
     # counting the occurrences and put them together in case they describe the same integral:
     signed_counts = SignedCounter()
     signed_counts.update(h_list)
-    # print([f"{h.sign.value}{h.get_shortened_symbol()} {count}" for h, count in signed_counts.items()])
     for h, count in signed_counts.items():
         h.factor = count # factors are summed up in SignedCounter
         new_h_list.append(h)
-    # print("after count:", len(h_list), "mit:",
-    #       [f"{h.sign.value} {h.factor}" for h in new_h_list if
-    #        "".join(sorted(h.get_shortened_symbol())) == "abcd"])  # sollte len 8 sein!
 
     # update signs & factors:
     for h in h_list:
@@ -48,7 +47,5 @@ def shorten_total_function_of_hamilton_integrals(h_list: List[hamilton_integral]
         # reset factors, that where pulled out of the integral:
         h.bra.factor = 1
         h.ket.factor = 1
-
-
 
     return [x for x in new_h_list if x.factor != 0 ]
