@@ -35,9 +35,6 @@ class permutation_group(object):
            s.print()
            print()
 
-    def find_tableaus(self):
-        pass
-
 
     def get_young_tableau_equations(self) -> List[str]:
         equations = []
@@ -50,7 +47,9 @@ class permutation_group(object):
 
 
     def get_chapter_youngtableaus(self):
-        # chapter 1
+        """
+        chapter 1 of overview giving pdf
+        """
         self.overview.add_section("Young-Tableaus",
                                   content=get_title_permutation_to_tableaus(self.permutation_group))
         self.overview.vspace()
@@ -60,7 +59,9 @@ class permutation_group(object):
         self.overview.newpage()
 
     def get_chapter_multiplied(self):
-        # chapter 2
+        """
+        chapter 2 of overview giving pdf
+        """
         header, content = get_title_multiplied_youngtableaus(kind=text_kinds.TEX)
         self.overview.add_section(header, content=content)
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
@@ -77,7 +78,9 @@ class permutation_group(object):
         self.overview.newpage()
 
     def get_chapter_spinfunctions(self):
-        # chapter 3
+        """
+        chapter 3 of overview giving pdf
+        """
         self.overview.add_section("Spin",content=get_info_spin_possibilities(self.permutation_group, kind=text_kinds.TEX))
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
             self.overview.vspace()
@@ -99,7 +102,9 @@ class permutation_group(object):
         self.overview.newpage()
 
     def get_chapter_overlapintegrals(self):
-        # chapter 4
+        """
+        chapter 4 of overview giving pdf
+        """
         self.overview.add_section("Überlappungsintegrale", content="")
         title, content = get_title_spatial(kind=text_kinds.TEX)
         self.overview.add_section(sec_title=title, layer=1, content=content)
@@ -135,7 +140,9 @@ class permutation_group(object):
                 self.overview.vspace()
 
     def get_chapter_hamiltonintegrals(self):
-        # chapter 5
+        """
+        chapter 5 of overview giving pdf
+        """
         self.overview.add_section("Hamiltonmatrixelemente",
                                   content=get_general_text("h_info_spin"))
         self.calculate_all_hamilton_integrals()

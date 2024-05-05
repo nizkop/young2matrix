@@ -17,6 +17,9 @@ from source.ui_parts.DownloadThread import DownloadThread
 
 
 class ApplicationWindows(MainApplication):
+    """
+    class needed to fill ui pages of main application with actual content
+    """
 
     def __init__(self):
         super().__init__()
@@ -25,7 +28,7 @@ class ApplicationWindows(MainApplication):
         self.permutation_group_no: Union[None, int] = None
 
 
-    def open_page(self, page_number:int):
+    def open_page(self, page_number:int) -> None:
         """ checking the input and (if the input is okay) loading another page """
         print("open_page:", page_number)
         # getting and checking the input information:
@@ -48,7 +51,7 @@ class ApplicationWindows(MainApplication):
         self.change_page(page_number)
 
 
-    def set_basic_permutation_attributes(self, input_value:int):
+    def set_basic_permutation_attributes(self, input_value:int) -> None:
         if (self.permutation_group_no is not None and self.permutation_group is not None and
                 self.permutation_group_no == input_value and self.permutation_group.permutation_group == input_value):
             return
@@ -56,7 +59,7 @@ class ApplicationWindows(MainApplication):
         self.permutation_group = permutation_group(self.permutation_group_no)
 
 
-    def update_page(self):
+    def update_page(self) -> None:
         """ adding content to layout """
         print("update page Windows:", self.current_page)
         try:
@@ -69,7 +72,7 @@ class ApplicationWindows(MainApplication):
             self.current_page = 0
             return self.load_main_page()
 
-    def test_page(self):
+    def test_page(self) -> None:
         # working equations:
         eqs = [r"E = m \cdot c^ 2", r"\frac{1}{2}", "\\begin{array}{c}{1}\\end{array}", r"\begin{array}{|c|}{2}\end{array}",
                "\\bra{1}"]  # "\\text{a}"]
@@ -77,13 +80,13 @@ class ApplicationWindows(MainApplication):
             self.add_equation(formula=eq)
 
 
-    def load_tableau_page(self):
+    def load_tableau_page(self) -> None:
         # page_info = next((page_dict for page_dict in self.pages if page_dict.get("index") == self.current_page), None)
         self.permutation_group.get_all_standard_tableaus()
         for equation in self.permutation_group.get_young_tableau_equations():
             self.add_equation(formula=equation)
 
-    def load_spin_page(self):
+    def load_spin_page(self) -> None:
         self.permutation_group.get_all_standard_tableaus()
         for group in self.permutation_group.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.permutation_group.standard_tableaus):
             equation = group[0].get_shortend_symbol()["tex"] + ":"
@@ -102,7 +105,7 @@ class ApplicationWindows(MainApplication):
 
 
 
-    def load_spatial_page(self):
+    def load_spatial_page(self) -> None:
         self.permutation_group.get_all_standard_tableaus()
         for group in self.permutation_group.group_tableaus_by_shortend_symbol(
                 tableaus_to_sort=self.permutation_group.standard_tableaus):
@@ -120,7 +123,7 @@ class ApplicationWindows(MainApplication):
                 self.scroll_layout.addWidget(label)
                 self.non_basics.append(label)
 
-    def load_tableau_page_multiplied(self):
+    def load_tableau_page_multiplied(self) -> None:
         label = QLabel(":\n".join(get_title_multiplied_youngtableaus(kind=text_kinds.TXT)))
         self.scroll_layout.addWidget(label)
         self.non_basics.append(label)
@@ -133,7 +136,7 @@ class ApplicationWindows(MainApplication):
                 self.add_equation(equation)
 
 
-    def load_main_page(self):
+    def load_main_page(self) -> None:
         print("load_main_page")
         permutation_group_input = QHBoxLayout()
         permutation_group_label = QLabel(get_general_text("input_command"))
@@ -154,7 +157,7 @@ class ApplicationWindows(MainApplication):
         self.non_basics.append(self.input_box)
 
 
-    def load_download(self):
+    def load_download(self) -> None:
         """ initializes download and goes back to main page """
         self.progress_bar = QProgressBar()
         self.progress_bar.setRange(0, 100)
@@ -164,15 +167,20 @@ class ApplicationWindows(MainApplication):
         self.download_thread = DownloadThread(self.permutation_group)
         self.download_thread.update_progress.connect(self.update_progress_bar)
         self.download_thread.start()
+        self.progress_bar = None #reset
 
-
-
-    def update_progress_bar(self, value, message):
+    def update_progress_bar(self, value:int, message:str) -> None:
+        """
+        triggered function (by the download page) that updates the process to show the current status of the download
+        :param value: amount of already finished parts of the whole download process (in percent)
+        :param message: current process
+        :return:
+        """
         self.progress_bar.setValue(value)
         self.progress_bar.setFormat(f"{value}%: {message}...")
 
 
-    def load_overlap_spin(self):
+    def load_overlap_spin(self) -> None:
         title, content, equation = get_title_spin(kind=text_kinds.TXT)
         label = QLabel(title + "\n" + content)
         self.scroll_layout.addWidget(label)
@@ -188,7 +196,7 @@ class ApplicationWindows(MainApplication):
                 equation_tex += f" = {i['result'].to_tex()}"
                 self.add_equation(equation_tex)
 
-    def load_overlap_spatial(self):
+    def load_overlap_spatial(self) -> None:
         title, content = get_title_spatial(kind=text_kinds.TXT)
         label = QLabel(title+"\n"+content)
         self.scroll_layout.addWidget(label)
@@ -206,7 +214,7 @@ class ApplicationWindows(MainApplication):
                 self.add_equation(equation_tex)
 
 
-    def load_hamilton_spatial(self):
+    def load_hamilton_spatial(self) -> None:
         label = QLabel("Hamiltonmatrixelemente für die Raumorbitale"+"\n")
         self.scroll_layout.addWidget(label)
         self.non_basics.append(label)
@@ -224,7 +232,7 @@ class ApplicationWindows(MainApplication):
 
 
 
-    def load_hamilton_spin(self):
+    def load_hamilton_spin(self) -> None:
         label = QLabel(get_general_text("h_info_spin")+"\n\n")
         label.setStyleSheet("color: red; font-weight: bold;")
         self.scroll_layout.addWidget(label)

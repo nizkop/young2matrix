@@ -12,7 +12,7 @@ from matplotlib import pyplot as plt
 # '''
 
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QLabel, \
-    QScrollArea
+    QScrollArea, QStatusBar
 
 from source.ui_parts.get_latex_canvas import get_latex_canvas
 from source.ui_parts.ui_pages import ui_pages
@@ -39,19 +39,23 @@ class MainApplication(QMainWindow):
         self.scroll_area.setWidget(self.scroll_widget)
         self.layout.addWidget(self.scroll_area)
 
+        self.statusBar = QStatusBar()#information about button functions
+        self.setStatusBar(self.statusBar)#(shown at the bottom of the screen)
+
         self.setStyleSheet(f"background-color: {self.color};")
 
         self.current_page = 0
         self.pages = [
             # TODO english names for pages ?
-            {"name": "Startseite", "sign": "Start", "index": ui_pages.START, "function": self.load_main_page,
-                    "parent": None, "buttons": [ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS, ui_pages.DOWNLOAD]},
+            {"name": "Startseite", "sign": "start" if get_language()=="en" else "Start",
+                    "index": ui_pages.START, "function": self.load_main_page, "parent": None,
+                    "buttons": [ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS, ui_pages.DOWNLOAD]},
             {"name": "Tableaus", "sign": "[1][2]", "index": ui_pages.TABLEAUS, "function": self.load_tableau_page, "parent": ui_pages.START,
                     "buttons": [ui_pages.START, ui_pages.MULTIPLIED_OUT_TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS]},
             {"name": "Ausmultiplizierte Tableaus", "sign": "ausmultiplizieren", "index": ui_pages.MULTIPLIED_OUT_TABLEAUS,
                     "buttons": [ui_pages.START, ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS],
                     "function": self.load_tableau_page_multiplied, "parent": ui_pages.TABLEAUS},
-            {"name": "Spin","sign": "σ", "index": ui_pages.SPIN, "function": self.load_spin_page, "parent": ui_pages.START,
+            {"name": "Spinfunktionen","sign": "σ", "index": ui_pages.SPIN, "function": self.load_spin_page, "parent": ui_pages.START,
                     "buttons": [ui_pages.START, ui_pages.TABLEAUS, ui_pages.SPATIAL_FUNCTIONS, ui_pages.OVERLAP_SPIN, ui_pages.HAMILTON_SPIN]},
             {"name": "Raumfunktionen", "sign": "Φ", "index": ui_pages.SPATIAL_FUNCTIONS,
                     "function": self.load_spatial_page, "parent": ui_pages.START,
@@ -84,8 +88,11 @@ class MainApplication(QMainWindow):
         """ """
         if get_language() == "en":
             choice = "de"
+            info ="change language to German"
         else:
             choice = "en"
+            info = "Sprache zu English ändern"
+
         self.language_button = QPushButton(choice)
         self.language_button.setStyleSheet(f"background-color: {self.color};")
         self.language_button.clicked.connect(lambda: self.set_language(choice))
@@ -93,6 +100,9 @@ class MainApplication(QMainWindow):
         self.language_button.move(5, 5)
         self.scroll_layout.addWidget(self.language_button)
 
+        self.language_button.setToolTip(info)
+        self.language_button.enterEvent = lambda event, button= self.language_button: self.statusBar.showMessage( self.language_button.toolTip())
+        self.language_button.leaveEvent = lambda event: self.statusBar.clearMessage()
 
     def set_language(self, language: str):
         update_language(language)
@@ -117,6 +127,10 @@ class MainApplication(QMainWindow):
                 button = QPushButton(sign)
                 button.setStyleSheet(f"background-color: {self.color};")
                 button.clicked.connect(lambda _, index=page_info["index"].value: self.open_page(index))
+                button.setToolTip(page_info["name"])
+                button.enterEvent = lambda event, button=button: self.statusBar.showMessage(button.toolTip())
+                button.leaveEvent = lambda event: self.statusBar.clearMessage()
+
                 button_layout.addWidget(button)
                 self.non_basics.append(button)
 
