@@ -133,8 +133,11 @@ class permutation_group(object):
         self.overview.add_section("Hamiltonmatrixelemente", content="")
         self.calculate_all_hamilton_integrals()
         for i in self.hamiltonians:# TODO: correct
-            for j in i:
-                equation_tex = j.to_tex() + "+"
+            if len(i["hamilton_integral_sum"]) > 0:
+                equation_tex = r"\bra{"+ i["bra_tableau"] + r"}\hat{H}\ket{"+ i["ket_tableau"] + r"} = "
+                for addend in i["hamilton_integral_sum"]:
+                    equation_tex += addend.to_tex()
+
             self.overview.add_latex_formula(equation_tex)
             self.overview.vspace()
 
@@ -168,7 +171,7 @@ class permutation_group(object):
         """
         if len(self.standard_tableaus) == 0:
             self.get_all_standard_tableaus()
-        return [t for t in self.standard_tableaus if max(t.number_of_columns) <= t.number_of_rows]
+        return [t for t in self.standard_tableaus if max(t.numbers_in_columns) <= t.number_of_rows]
 
     def group_tableaus_by_shortend_symbol(self, tableaus_to_sort:List[chemical_standard_tableau]=[]) -> List[List[chemical_standard_tableau]]:
         if len(tableaus_to_sort) == 0:
@@ -212,26 +215,34 @@ class permutation_group(object):
         return
 
     def calculate_all_hamilton_integrals(self):
+        # Tablueaus need to be set up already !
         # TODO: think about correct combination and how to form a complete equation later on
         if len(self.hamiltonians) > 0:
             return
         results = []
         for i in range(len(self.standard_tableaus)):
             tableau_1 = self.standard_tableaus[i]
-            tableau_1.set_up_function()
-            tableau_1.get_spatial_choices()
-            tableau_1.get_spin_choices()
-            tableau_1.calulate_all_overlap_integrals()
-            # mixed tableaus:
-            for j in range(i+1, len(self.standard_tableaus)):
+            # tableau_1.set_up_function()
+            # tableau_1.get_spatial_choices()
+            # tableau_1.get_spin_choices()
+            for j in range(i, len(self.standard_tableaus)):
+                info = {}
                 tableau_2 = self.standard_tableaus[j]
-                tableau_2.get_spatial_choices()
+                # tableau_2.get_spatial_choices()
                 # TODO spin : here alpha and beta signs (not latex-commands) are added so far
-                results += [calculate_hamilton_integral(tableau_1, tableau_2, kind=spin_vs_spatial_kind.SPATIAL)]
+                info["bra_tableau"] = tableau_1.to_tex()
+                info["ket_tableau"] = tableau_2.to_tex()
+                info["hamilton_integral_sum"] = calculate_hamilton_integral(tableau_1, tableau_2, kind=spin_vs_spatial_kind.SPATIAL)
+                # results.append(info)
 
+                if len(info["hamilton_integral_sum"]) > 0:
+                    results.append(info)
+
+        added = []
         for result in results:
-            if result not in self.hamiltonians:# TODO: is this even a smart check here?
+            if sorted([result["bra_tableau"], result["ket_tableau"]]) not in added:
                 self.hamiltonians.append(result)
+                added.append(sorted([result["bra_tableau"], result["ket_tableau"]]))
         return
 
     def setup_matrix(self) -> str:

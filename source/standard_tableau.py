@@ -52,12 +52,15 @@ class standard_tableau(young_tableau):
         return spalten
         #  return [[row[i] for row in self.numbers_in_row if i < len(row)] for i in range(max_length)]
 
+    def get_number_of_columns(self):
+        return max([len(x) for x in self.numbers_in_row])
+
 
     def to_text(self) -> str:
         s = ""
         if self.check():
             for i in range(self.number_of_rows):
-                for j in range(self.number_of_columns[i]):
+                for j in range(self.numbers_in_columns[i]):
                     s+= f"[{self.numbers_in_row[i][j]}] "
                 s+= "\n"
         return s
@@ -65,9 +68,9 @@ class standard_tableau(young_tableau):
     def to_tex(self) -> str:
         s = r""
         if self.check():
-            s = r"\begin{array}{"+ r"|c" * max(self.number_of_columns)+ r"|} \hline "
+            s = r"\begin{array}{" + r"|c" * max(self.numbers_in_columns) + r"|} \hline "
             for i in range(self.number_of_rows):
-                s+= r" & ".join([f"{self.numbers_in_row[i][j]}" for j in range(self.number_of_columns[i])])
+                s+= r" & ".join([f"{self.numbers_in_row[i][j]}" for j in range(self.numbers_in_columns[i])])
                 s+= r"\\ \cline{1"
                 s+= rf"-{len(self.numbers_in_row[i])}"
                 s+= r"} "
@@ -79,7 +82,7 @@ class standard_tableau(young_tableau):
         """
         sum = 0
         for i in range(self.number_of_rows):
-            for j in range(self.number_of_columns[i]):
+            for j in range(self.numbers_in_columns[i]):
                 sum += 1
         return sum
 
@@ -105,11 +108,10 @@ class standard_tableau(young_tableau):
 
 
 if __name__ == '__main__':
-    s = standard_tableau([(1,2),(3,)])
+    s = standard_tableau([(1,2,3),(4,)])
     s.print()
 
     s.set_up_function()
     s.print()
 
-    print(s.function)
-    s.function.print()
+    print("columns:", s.get_number_of_columns(), "rows:", s.number_of_rows)

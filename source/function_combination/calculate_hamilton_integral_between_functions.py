@@ -1,8 +1,6 @@
 import copy
 from typing import List
 
-from source.function_combination.calculate_overlap_integral_between_functions import \
-    calculate_overlap_integral_between_functions
 from source.function_parts.function import function
 from source.function_parts.hamilton_integral import hamilton_integral
 
@@ -16,8 +14,6 @@ def calculate_hamilton_integral_between_functions(function_a:function, function_
                 h = hamilton_integral(copy.deepcopy(part_a), copy.deepcopy(part_b))
                 non_vanishing_integrals.append(h)
 
-        # print("calculate_hamilton_integral_between_functions", len(non_vanishing_integrals), "->", len([result for result in non_vanishing_integrals if result.factor != 0]),
-        #       "mit:", len([h for h in non_vanishing_integrals if "".join(sorted(h.get_shortened_symbol())) == "abcd"]))
         return [result for result in non_vanishing_integrals if result.factor != 0]
 
 

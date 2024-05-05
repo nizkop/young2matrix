@@ -102,7 +102,7 @@ class hamilton_integral(object):
 
     def to_text(self) -> str:
         if self.bra.factor == 1 and self.ket.factor == 1 and len(self.bra.ordered_functions) == 0 and len(self.ket.ordered_functions) == 0:
-            return f" {self.sign.value} {self.factor}"  # integral reverted to overlap (which is only a number, not an integral anymore)
+            return f" {self.sign.value} {self.factor}"  # integral reverted to a number, not an integral anymore
         return f" {self.sign.value} {self.factor} * <{self.bra.to_text().replace('+ ','')} |H| {self.ket.to_text().replace('+ ','')} >".replace(' '*2,' ')
 
     def to_tex(self) -> str:

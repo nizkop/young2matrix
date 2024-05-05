@@ -20,7 +20,7 @@ def calculate_overlap_integral(tableau_a: chemical_standard_tableau, tableau_b: 
     empty_function = function(product_term(Sign("+"), ()) ,normalizable=False)
 
     # check if identical form
-    if tableau_a.number_of_rows != tableau_b.number_of_rows or tableau_a.number_of_columns != tableau_b.number_of_columns:
+    if tableau_a.number_of_rows != tableau_b.number_of_rows or tableau_a.numbers_in_columns != tableau_b.numbers_in_columns:
         # basis function of young tableaux from different young diagrams are automatically diagonal
         empty_function.parts[0].factor = 0
         empty_function.parts = [empty_function.parts[0]]
