@@ -1,10 +1,8 @@
 
 import sys
-import time
 from typing import Union
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QWidget, QLabel,QLineEdit, QMessageBox, QSizePolicy
-
-
+from PyQt5.QtWidgets import QApplication, QHBoxLayout, QWidget, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
+    QProgressBar
 
 from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
@@ -15,6 +13,7 @@ from source.texts.get_title_spatial import get_title_spatial
 from source.texts.get_title_spin import get_title_spin
 from source.texts.get_title_youngtableaus import get_title_multiplied_youngtableaus
 from source.ui_parts.MainApplication import MainApplication
+from source.ui_parts.DownloadThread import DownloadThread
 
 
 class ApplicationWindows(MainApplication):
@@ -22,13 +21,6 @@ class ApplicationWindows(MainApplication):
     def __init__(self):
         super().__init__()
 
-        # self.pages = [
-        #     {"name": "Startseite", "sign": "zurück zum Start", "index": 0, "function": self.load_main_page},
-        #     {"name": "Tableaus", "sign": "[1][2]", "index": 1, "function": self.load_tableau_page},
-        #     {"name": "Spin","sign": "σ", "index": 3, "function": self.load_spin_page},
-        #     {"name": "Raumfunktionen", "sign": "Φ", "index": 3, "function": self.load_spatial_page},
-        #     {"name": "Download", "sign": "⬇️", "index": 4, "function": self.test_page}
-        # ]
         self.permutation_group: Union[None, permutation_group] = None
         self.permutation_group_no: Union[None, int] = None
 
@@ -67,14 +59,6 @@ class ApplicationWindows(MainApplication):
     def update_page(self):
         """ adding content to layout """
         print("update page Windows:", self.current_page)
-        # if self.current_page == 1:
-        #     return self.load_tableau_page()
-        # elif self.current_page == 3:
-        #     return self.test_page()
-        # self.current_page = 0
-        # self.load_main_page()
-
-        # else:
         try:
             page_info = next((page_dict for page_dict in self.pages
                               if page_dict.get("index").value == self.current_page), None)
@@ -172,20 +156,20 @@ class ApplicationWindows(MainApplication):
 
     def load_download(self):
         """ initializes download and goes back to main page """
-        try:
-            self.permutation_group.get_overview_pdf()
-            label = QLabel(get_general_text("successful_download"))
-            self.scroll_layout.addWidget(label)
-            self.non_basics.append(label)
-        except:
-            label = QLabel(get_general_text("failed_download"))
-            self.scroll_layout.addWidget(label)
-            self.non_basics.append(label)
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setRange(0, 100)
+        self.scroll_layout.addWidget(self.progress_bar)
+        self.non_basics.append(self.progress_bar)
 
-        time.sleep(5)
-        # reset
-        self.permutation_group_no = None
-        self.open_page(0)
+        self.download_thread = DownloadThread(self.permutation_group)
+        self.download_thread.update_progress.connect(self.update_progress_bar)
+        self.download_thread.start()
+
+
+
+    def update_progress_bar(self, value, message):
+        self.progress_bar.setValue(value)
+        self.progress_bar.setFormat(f"{value}%: {message}...")
 
 
     def load_overlap_spin(self):
@@ -236,13 +220,13 @@ class ApplicationWindows(MainApplication):
                 equation_tex += " = "
                 for addend in info["hamilton_integral_sum"]:
                     equation_tex += addend.to_tex()
-            self.add_equation(equation_tex)
+                self.add_equation(equation_tex)
 
 
 
     def load_hamilton_spin(self):
         label = QLabel(get_general_text("h_info_spin")+"\n\n")
-        label.setStyleSheet("color: red; font-weight: bold;")  # Schriftfarbe: rot, fettgedruckt
+        label.setStyleSheet("color: red; font-weight: bold;")
         self.scroll_layout.addWidget(label)
 
         self.load_overlap_spin()

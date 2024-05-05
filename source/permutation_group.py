@@ -24,6 +24,7 @@ class permutation_group(object):
         self.tableaus : List[young_tableau] = []
         self.standard_tableaus : List[chemical_standard_tableau] = []
         self.overview = overview_pdf()
+        self.title_pdf = f"group_{self.permutation_group}"
 
         self.overlap: List[dict] = []
         self.hamiltonians: List[hamilton_integral] = []
@@ -47,11 +48,8 @@ class permutation_group(object):
             equations.append(equation)
         return equations
 
-    def get_overview_pdf(self) -> None:
-        """ creating a pdf with all calculated information about this particular permutation group """
-        title_pdf = f"group_{self.permutation_group}"
-        self.get_all_standard_tableaus() #at least needed for chapter 4
 
+    def get_chapter_youngtableaus(self):
         # chapter 1
         self.overview.add_section("Young-Tableaus",
                                   content=get_title_permutation_to_tableaus(self.permutation_group))
@@ -61,6 +59,7 @@ class permutation_group(object):
             self.overview.vspace()
         self.overview.newpage()
 
+    def get_chapter_multiplied(self):
         # chapter 2
         header, content = get_title_multiplied_youngtableaus(kind=text_kinds.TEX)
         self.overview.add_section(header, content=content)
@@ -77,6 +76,7 @@ class permutation_group(object):
             self.overview.vspace()
         self.overview.newpage()
 
+    def get_chapter_spinfunctions(self):
         # chapter 3
         self.overview.add_section("Spin",content=get_info_spin_possibilities(self.permutation_group, kind=text_kinds.TEX))
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
@@ -98,14 +98,17 @@ class permutation_group(object):
             self.overview.vspace()
         self.overview.newpage()
 
+    def get_chapter_overlapintegrals(self):
         # chapter 4
-        self.overview.add_section("Überlappungsintegrale",content="")
+        self.overview.add_section("Überlappungsintegrale", content="")
         title, content = get_title_spatial(kind=text_kinds.TEX)
         self.overview.add_section(sec_title=title, layer=1, content=content)
         self.calculate_all_overlap_integrals()
         for info in self.overlap:
-            if info['kind'] == spin_vs_spatial_kind.SPATIAL and len(info['result'].parts) == 1 and info['result'].parts[0].factor != 0 and info['result'].parts[0].factor != 1:
-                equation_tex = get_dirac_notation(str(info['bra_tableau']), str(info['ket_tableau']), kind=text_kinds.TEX)
+            if info['kind'] == spin_vs_spatial_kind.SPATIAL and len(info['result'].parts) == 1 and info['result'].parts[
+                0].factor != 0 and info['result'].parts[0].factor != 1:
+                equation_tex = get_dirac_notation(str(info['bra_tableau']), str(info['ket_tableau']),
+                                                  kind=text_kinds.TEX)
                 if info['kind'] == spin_vs_spatial_kind.SPIN:
                     equation_tex += r"_{\sigma }"
                     equation_tex += "=" + get_dirac_notation(str(info['bra']), str(info['ket']), kind=text_kinds.TEX)
@@ -116,12 +119,14 @@ class permutation_group(object):
 
         self.overview.newpage()
         title, content, equation = get_title_spin(kind=text_kinds.TEX)
-        self.overview.add_section(sec_title=title, layer=1,content=content)
+        self.overview.add_section(sec_title=title, layer=1, content=content)
         self.overview.add_latex_formula(equation)
         self.overview.vspace(), self.overview.vspace(), self.overview.vspace()
         for info in self.overlap:
-            if info['kind'] == spin_vs_spatial_kind.SPIN and len(info['result'].parts) == 1 and info['result'].parts[0].factor != 0 and info['result'].parts[0].factor != 1:
-                equation_tex = get_dirac_notation(str(info['bra_tableau']), str(info['ket_tableau']), kind=text_kinds.TEX)
+            if info['kind'] == spin_vs_spatial_kind.SPIN and len(info['result'].parts) == 1 and info['result'].parts[
+                0].factor != 0 and info['result'].parts[0].factor != 1:
+                equation_tex = get_dirac_notation(str(info['bra_tableau']), str(info['ket_tableau']),
+                                                  kind=text_kinds.TEX)
                 equation_tex += r"_{\sigma }"
                 equation_tex += "=" + get_dirac_notation(str(info['bra']), str(info['ket']), kind=text_kinds.TEX)
                 equation_tex += r"_{\Phi}"
@@ -129,15 +134,16 @@ class permutation_group(object):
                 self.overview.add_latex_formula(equation_tex)
                 self.overview.vspace()
 
+    def get_chapter_hamiltonintegrals(self):
         # chapter 5
         self.overview.add_section("Hamiltonmatrixelemente",
                                   content=get_general_text("h_info_spin"))
         self.calculate_all_hamilton_integrals()
         for info in self.hamiltonians:
             if len(info["hamilton_integral_sum"]) > 0:
-                equation_tex = r"\bra{"+ info["bra_tableau"] + r"}\hat{H}\ket{"+ info["ket_tableau"] + r"}"
+                equation_tex = r"\bra{" + info["bra_tableau"] + r"}\hat{H}\ket{" + info["ket_tableau"] + r"}"
                 if info["kind"] == spin_vs_spatial_kind.SPATIAL.value:
-                    equation_tex+=r"_{\Phi}"
+                    equation_tex += r"_{\Phi}"
                 equation_tex += " = "
                 for addend in info["hamilton_integral_sum"]:
                     equation_tex += addend.to_tex()
@@ -145,7 +151,17 @@ class permutation_group(object):
             self.overview.add_latex_formula(equation_tex)
             self.overview.vspace()
 
-        self.overview.save(title=title_pdf)
+    def get_overview_pdf(self) -> None:
+        """ creating a pdf with all calculated information about this particular permutation group """
+        self.get_all_standard_tableaus()  # at least needed for chapter 4
+
+        self.get_chapter_youngtableaus()
+        self.get_chapter_multiplied()
+        self.get_chapter_spinfunctions()
+        self.get_chapter_overlapintegrals()
+        self.get_chapter_hamiltonintegrals()
+
+        self.overview.save(title=self.title_pdf)
 
 
     def get_all_standard_tableaus(self) -> None:
