@@ -19,7 +19,8 @@ def get_general_text(key:str):
             "warning_wrong_number": "Please give the permutation group as positive number.",
             "warning_wrong_type": "Please fill in an integer for setting the permutations group.",
             "successful_download": "The download was successful.",
-            "failed_download": "Sadly, we encountered an unknown error while downloading the pdf."
+            "failed_download": "Sadly, we encountered an unknown error while downloading the pdf.",
+            "h_info_spin": "",#TODO
         }
     else: # default
         general_texts ={
@@ -35,7 +36,8 @@ def get_general_text(key:str):
             "warning_wrong_number": "Bitte geben Sie eine Permutationsgruppe als positive Zahl.",
             "warning_wrong_type": "Bitte geben Sie die Nummer für eine Permutationsgruppe ein.",
             "successful_download": "Der Download war erfolgreich.",
-            "failed_download": "Leider gab es ein unbekanntes Problem beim Downloaden."
+            "failed_download": "Leider gab es ein unbekanntes Problem beim Downloaden.",
+            "h_info_spin": "Achtung: Der Hamiltonoperator ist unabhängig vom Spin, daher werden die Hamiltonintegrale der Spin-Tableaus zu den Überlappungsintegralen (s. Kapitel 4.2) und werden hier nicht erneut aufgeführt."
         }
 
     return general_texts[key]

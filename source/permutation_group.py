@@ -131,13 +131,11 @@ class permutation_group(object):
 
         # chapter 5
         self.overview.add_section("Hamiltonmatrixelemente",
-                                  content="$\hat{H}$ ist unabhängig vom Spin, daher werden die Hamiltonintegrale der Spin-Tableaus zu den Überlappungsintegralen (s. Kapitel 4.2) und werden hier nicht erneut aufgeführt")
+                                  content=get_general_text("h_info_spin"))
         self.calculate_all_hamilton_integrals()
-        for info in self.hamiltonians:# TODO: correct
+        for info in self.hamiltonians:
             if len(info["hamilton_integral_sum"]) > 0:
                 equation_tex = r"\bra{"+ info["bra_tableau"] + r"}\hat{H}\ket{"+ info["ket_tableau"] + r"}"
-                # if info["kind"] == spin_vs_spatial_kind.SPIN.value:
-                #     equation_tex+=r"_{\sigma }"
                 if info["kind"] == spin_vs_spatial_kind.SPATIAL.value:
                     equation_tex+=r"_{\Phi}"
                 equation_tex += " = "

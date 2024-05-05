@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPus
     QScrollArea
 
 from source.ui_parts.get_latex_canvas import get_latex_canvas
+from source.ui_parts.ui_pages import ui_pages
 from source.ui_parts.settings.idea_config import update_language, get_language
 
 
@@ -43,25 +44,30 @@ class MainApplication(QMainWindow):
         self.current_page = 0
         self.pages = [
             # TODO english names for pages ?
-            {"name": "Startseite", "sign": "zurück zum Start", "index": 0, "function": self.load_main_page,
-                    "parent": None, "buttons": [1, 3, 4, 5]},
-            {"name": "Tableaus", "sign": "[1][2]", "index": 1, "function": self.load_tableau_page, "parent": 0,
-                    "buttons": [0, 2, 3, 4]},
-            {"name": "Ausmultiplizierte Tableaus", "sign": "ausmultiplizieren", "index": 2, "buttons": [0, 1, 3, 4],
-                    "function": self.load_tableau_page_multiplied, "parent": 1},
-            {"name": "Spin","sign": "σ", "index": 3, "function": self.load_spin_page, "parent": 0, "buttons": [0, 1, 4, 6]},
-            {"name": "Raumfunktionen", "sign": "Φ", "index": 4, "function": self.load_spatial_page, "parent": 0,
-                    "buttons": [0,1,3,7]},
-            {"name": "Download", "sign": "⤓"# "⬇️" ↓ ⬇  ⤓
-                    , "index": 5, "function": self.load_download, "parent": 0, "buttons": [0]},
-            {"name": "Überlapp Spin", "sign": "<|> (σ)", "index": 6, "function": self.load_overlap_spin, "parent": 3,
-                    "buttons": [0, 3, 7]},
-            {"name": "Überlapp Raum", "sign": "<|> (Φ)", "index": 7, "function": self.load_overlap_spatial, "parent": 4,
-                    "buttons": [0, 3, 6]},
-            {"name": "Hamilton Spin", "sign": "H" , "index": 8, "function": self.load_hamilton_sp,
-                    "parent": 6, "buttons": [0, 6, 3]},
-            {"name": "Hamilton Raum", "sign": "H" , "index": 8, "function": self.load_hamilton_sp,
-                    "parent": 7, "buttons": [0, 7, 4]}
+            {"name": "Startseite", "sign": "Start", "index": ui_pages.START, "function": self.load_main_page,
+                    "parent": None, "buttons": [ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS, ui_pages.DOWNLOAD]},
+            {"name": "Tableaus", "sign": "[1][2]", "index": ui_pages.TABLEAUS, "function": self.load_tableau_page, "parent": ui_pages.START,
+                    "buttons": [ui_pages.START, ui_pages.MULTIPLIED_OUT_TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS]},
+            {"name": "Ausmultiplizierte Tableaus", "sign": "ausmultiplizieren", "index": ui_pages.MULTIPLIED_OUT_TABLEAUS,
+                    "buttons": [ui_pages.START, ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS],
+                    "function": self.load_tableau_page_multiplied, "parent": ui_pages.TABLEAUS},
+            {"name": "Spin","sign": "σ", "index": ui_pages.SPIN, "function": self.load_spin_page, "parent": ui_pages.START,
+                    "buttons": [ui_pages.START, ui_pages.TABLEAUS, ui_pages.SPATIAL_FUNCTIONS, ui_pages.OVERLAP_SPIN, ui_pages.HAMILTON_SPIN]},
+            {"name": "Raumfunktionen", "sign": "Φ", "index": ui_pages.SPATIAL_FUNCTIONS,
+                    "function": self.load_spatial_page, "parent": ui_pages.START,
+                    "buttons": [ui_pages.START, ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.OVERLAP_SPATIAL, ui_pages.HAMILTON_SPATIAL]},
+            {"name": "Download", "sign": "⤓"  # "⬇️" ↓ ⬇  ⤓
+                    , "index": ui_pages.DOWNLOAD, "function": self.load_download, "parent": ui_pages.START, "buttons": [ui_pages.START]},
+            {"name": "Überlapp Spin", "sign": "<|> (σ)", "index": ui_pages.OVERLAP_SPIN,
+                    "function": self.load_overlap_spin, "parent": ui_pages.SPIN,
+                    "buttons": [ui_pages.START, ui_pages.SPIN, ui_pages.OVERLAP_SPATIAL, ui_pages.HAMILTON_SPIN]},
+            {"name": "Überlapp Raum", "sign": "<|> (Φ)", "index": ui_pages.OVERLAP_SPATIAL,
+                    "function": self.load_overlap_spatial, "parent": ui_pages.SPATIAL_FUNCTIONS,
+                    "buttons": [ui_pages.START, ui_pages.SPIN, ui_pages.OVERLAP_SPIN, ui_pages.HAMILTON_SPATIAL]},
+            {"name": "Hamilton Spin", "sign": "H (σ)" , "index": ui_pages.HAMILTON_SPIN, "function": self.load_hamilton_spin,
+                    "parent": ui_pages.OVERLAP_SPIN, "buttons": [ui_pages.START, ui_pages.OVERLAP_SPIN, ui_pages.SPIN]},
+            {"name": "Hamilton Raum", "sign": "H (Φ)" , "index": ui_pages.HAMILTON_SPATIAL, "function": self.load_hamilton_spatial,
+                    "parent": ui_pages.OVERLAP_SPATIAL, "buttons": [ui_pages.START, ui_pages.OVERLAP_SPIN, ui_pages.SPATIAL_FUNCTIONS]}
 
         ]
 
@@ -99,18 +105,18 @@ class MainApplication(QMainWindow):
         # print("create widgets", flush=True)
         self.update_page() #content above buttons
 
-        current_page_info = next((page_dict for page_dict in self.pages if page_dict.get("index") == self.current_page),
-                                 None)
+        current_page_info = next((page_dict for page_dict in self.pages
+                                  if page_dict.get("index").value == self.current_page), None)
 
         button_layout = QHBoxLayout()  # horizontal layout (for buttons)
         for page_info in self.pages:
-            if page_info["index"] != self.current_page and page_info["index"] in current_page_info["buttons"]:
+            if page_info["index"].value != self.current_page and page_info["index"] in current_page_info["buttons"]:
                 sign = f"zurück zu: {page_info['sign']}" \
-                    if page_info["index"] == current_page_info["parent"] and self.current_page != 0 and current_page_info["parent"] != 0 \
-                    else page_info["sign"]
+                    if page_info["index"] == current_page_info["parent"] else page_info["sign"]
+
                 button = QPushButton(sign)
                 button.setStyleSheet(f"background-color: {self.color};")
-                button.clicked.connect(lambda _, index=page_info["index"]: self.open_page(index))
+                button.clicked.connect(lambda _, index=page_info["index"].value: self.open_page(index))
                 button_layout.addWidget(button)
                 self.non_basics.append(button)
 

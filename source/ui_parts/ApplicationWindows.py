@@ -76,9 +76,12 @@ class ApplicationWindows(MainApplication):
 
         # else:
         try:
-            page_info = next((page_dict for page_dict in self.pages if page_dict.get("index") == self.current_page), None)
+            page_info = next((page_dict for page_dict in self.pages
+                              if page_dict.get("index").value == self.current_page), None)
+            if page_info["function"] is None:
+                print(page_info)
             page_info["function"]()
-        except KeyError:
+        except KeyError or TypeError:# todo catch all errors
             self.current_page = 0
             return self.load_main_page()
 
@@ -219,9 +222,31 @@ class ApplicationWindows(MainApplication):
                 self.add_equation(equation_tex)
 
 
-    def load_hamilton_sp(self):
-        # TODO: split into spin and spatial, implement :-)
-        pass
+    def load_hamilton_spatial(self):
+        label = QLabel("Hamiltonmatrixelemente für die Raumorbitale"+"\n")
+        self.scroll_layout.addWidget(label)
+        self.non_basics.append(label)
+
+        self.permutation_group.calculate_all_hamilton_integrals()
+        for info in self.permutation_group.hamiltonians:
+            if len(info["hamilton_integral_sum"]) > 0:
+                equation_tex = r"\bra{"+ info["bra_tableau"] + r"}\hat{H}\ket{"+ info["ket_tableau"] + r"}"
+                if info["kind"] == spin_vs_spatial_kind.SPATIAL.value:
+                    equation_tex+=r"_{\Phi}"
+                equation_tex += " = "
+                for addend in info["hamilton_integral_sum"]:
+                    equation_tex += addend.to_tex()
+            self.add_equation(equation_tex)
+
+
+
+    def load_hamilton_spin(self):
+        label = QLabel(get_general_text("h_info_spin")+"\n\n")
+        label.setStyleSheet("color: red; font-weight: bold;")  # Schriftfarbe: rot, fettgedruckt
+        self.scroll_layout.addWidget(label)
+
+        self.load_overlap_spin()
+
 
 
 
