@@ -85,7 +85,7 @@ class MainApplication(QMainWindow):
             info = "Sprache zu Englisch ändern"
 
         self.language_button = QPushButton(choice)
-        self.language_button.setStyleSheet(f"background-color: {self.color};")
+        self.language_button.setStyleSheet(f"background-color: {self.color}; color: black")
         self.language_button.clicked.connect(lambda: self.set_language(choice))
         self.language_button.setFixedSize(30, 30)
         self.language_button.move(5, 5)
@@ -127,7 +127,7 @@ class MainApplication(QMainWindow):
                     sign = page_info["sign"]
 
                 button = QPushButton(sign)
-                button.setStyleSheet(f"background-color: {self.color};")
+                button.setStyleSheet(f"background-color: {self.color}; color: black")
                 button.clicked.connect(lambda _, index=page_info["index"].value: self.open_page(index))
                 button.setToolTip(page_info["name"])
                 button.enterEvent = lambda event, button=button: self.statusBar.showMessage(button.toolTip())
