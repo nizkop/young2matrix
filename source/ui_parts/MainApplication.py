@@ -30,6 +30,7 @@ class MainApplication(QMainWindow):
 
         self.statusBar = QStatusBar()#information about button functions
         self.setStatusBar(self.statusBar)#(shown at the bottom of the screen)
+        self.statusBar.setStyleSheet("color: black;")
 
         self.setStyleSheet(f"background-color: {self.color};")
 
