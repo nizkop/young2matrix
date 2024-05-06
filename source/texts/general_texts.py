@@ -21,6 +21,9 @@ def get_general_text(key:str) -> str:
                                 "more than two columns are impossible.)",
 
             # solely UI:
+            "yes": "Yes",
+            "no": "No",
+            "check_big_data": "This is a high number for a permutation group, that gets even bigger by all the needed combinations. Are you sure you want to continue?",
             "input_command": "permutation group:",
             "warning_no_group": "Please fill in a permutation group.",
             "warning_wrong_number": "Please give the permutation group as positive number.",
@@ -38,6 +41,9 @@ def get_general_text(key:str) -> str:
                          "sind nicht mehr als zwei Spalten möglich.)",
 
             # solely UI:
+            "yes": "Ja",
+            "no": "Nein",
+            "check_big_data": "Diese Eingabe ist eine relativ große Permutationsgruppe, die durch Kombination der enthaltenen Terme ncoh deutlich größer wird. Wollen Sie wirklich fortfahren?",
             "input_command": "Permutationsgruppe:",
             "warning_no_group": "Bitte geben Sie eine Permutationsgruppe ein.",
             "warning_wrong_number": "Bitte geben Sie eine Permutationsgruppe als positive Zahl.",

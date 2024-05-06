@@ -2,7 +2,7 @@
 import sys
 from typing import Union
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QWidget, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
-    QProgressBar, QPushButton, QWidgetItem, QLayoutItem
+    QProgressBar, QPushButton, QWidgetItem, QLayoutItem, QVBoxLayout
 
 from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
@@ -14,6 +14,7 @@ from source.texts.get_title_spin import get_title_spin
 from source.texts.get_title_youngtableaus import get_title_multiplied_youngtableaus
 from source.ui_parts.MainApplication import MainApplication
 from source.ui_parts.DownloadThread import DownloadThread
+from source.ui_parts.settings.idea_config import get_language
 
 
 class ApplicationWindows(MainApplication):
@@ -34,18 +35,38 @@ class ApplicationWindows(MainApplication):
         # getting and checking the input information:
         if page_number == 0:
             return self.change_page(page_number)
+        warning_text = None
         if self.current_page == 0:
             input_value = self.input_box.text()
             if not input_value:
-                QMessageBox.warning(self, "Warnung", get_general_text("warning_no_group"))
-                return self.change_page(0)
+                warning_text = get_general_text("warning_no_group")
             try:
                 input_value = int(input_value)
                 if input_value <= 0:
-                    QMessageBox.warning(self, "Warnung", get_general_text("warning_wrong_number"))
-                    return self.change_page(0)
+                    warning_text = get_general_text("warning_wrong_number")
+                elif input_value >= 10:
+                    # double check before calculating too much (because high numbers might fry the computer)
+                    warning_box = QMessageBox()
+                    warning_box.setText(get_general_text("check_big_data"))
+                    warning_box.setStyleSheet(f"color: black; background-color: {self.color}; font-weight: bold;")
+                    yes_button = QPushButton(get_general_text("yes"))
+                    no_button = QPushButton(get_general_text("no"))
+                    warning_box.addButton(yes_button, QMessageBox.YesRole)
+                    warning_box.addButton(no_button, QMessageBox.NoRole)
+                    reply = warning_box.exec_()
+                    if reply == QMessageBox.No:
+                        return self.change_page(0)
             except:
-                QMessageBox.warning(self, "Warnung", get_general_text("warning_wrong_type"))
+                warning_text = get_general_text("warning_wrong_type")
+            if warning_text:
+                warning_box = QMessageBox()
+                if get_language() == "de":
+                    warning_box.setWindowTitle("Warnung")
+                else:
+                    warning_box.setWindowTitle("warning")
+                warning_box.setText(warning_text)
+                warning_box.setStyleSheet(f"color: black; background-color: {self.color}; font-weight: bold;")
+                warning_box.exec_()
                 return self.change_page(0)
             self.set_basic_permutation_attributes(input_value=input_value)
         self.change_page(page_number)
@@ -65,8 +86,6 @@ class ApplicationWindows(MainApplication):
         try:
             page_info = next((page_dict for page_dict in self.pages
                               if page_dict.get("index").value == self.current_page), None)
-            # if page_info["function"] is None:
-            #     print(page_info)
             page_info["function"]()
         except KeyError or TypeError:# todo catch all errors
             self.current_page = 0
@@ -164,17 +183,44 @@ class ApplicationWindows(MainApplication):
 
     def load_download(self) -> None:
         """ initializes download and goes back to main page """
+        spacer = QWidget()
+        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         self.progress_bar = QProgressBar()
         self.progress_bar.setRange(0, 100)
         self.progress_bar.setStyleSheet("color: black;")
+        self.scroll_layout.addWidget(spacer)
         self.scroll_layout.addWidget(self.progress_bar)
+        self.scroll_layout.addWidget(spacer)
         self.non_basics.append(self.progress_bar)
+        self.non_basics.append(spacer)
 
         self.download_thread = DownloadThread(self.permutation_group, self.scroll_layout)
         self.download_thread.update_progress.connect(self.update_progress_bar)
         self.download_thread.start()
-        # todo: vertikal zentrieren?
+
+
+    def load_download(self) -> None:
+        """ initializes download and goes back to main page """
+        spacer = QWidget()#<- for vertical centering
+        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
+        self.progress_bar = QProgressBar()#<- bar to show the progress
+        self.progress_bar.setRange(0, 100)
+        self.progress_bar.setStyleSheet("color: black;")
+
+        download_layout = QVBoxLayout()
+        download_layout.addWidget(spacer)
+        download_layout.addWidget(self.progress_bar)
+        download_layout.addWidget(spacer)
+        # add new layout:
+        self.scroll_layout.addLayout(download_layout)
+        self.non_basics.append(self.progress_bar)
+
+        # start download thread:
+        self.download_thread = DownloadThread(self.permutation_group, self.scroll_layout)
+        self.download_thread.update_progress.connect(self.update_progress_bar)
+        self.download_thread.start()
 
 
     def update_progress_bar(self, value:int, message:str) -> None:
