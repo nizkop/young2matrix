@@ -146,6 +146,7 @@ class ApplicationWindows(MainApplication):
         permutation_group_label.setStyleSheet("color: black;")
         permutation_group_input.addWidget(permutation_group_label)
         self.input_box = QLineEdit()
+        self.input_box.setStyleSheet("color: black;")
         permutation_group_input.addWidget(self.input_box)
 
         # spacer to center input line
@@ -165,7 +166,7 @@ class ApplicationWindows(MainApplication):
         """ initializes download and goes back to main page """
         self.progress_bar = QProgressBar()
         self.progress_bar.setRange(0, 100)
-        self.scroll_layout.addLayout(self.progress_bar)
+        self.scroll_layout.addWidget(self.progress_bar)
         self.non_basics.append(self.progress_bar)
 
         self.download_thread = DownloadThread(self.permutation_group)
