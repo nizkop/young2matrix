@@ -167,6 +167,7 @@ class ApplicationWindows(MainApplication):
 
         self.progress_bar = QProgressBar()
         self.progress_bar.setRange(0, 100)
+        self.progress_bar.setStyleSheet("color: black;")
         self.scroll_layout.addWidget(self.progress_bar)
         self.non_basics.append(self.progress_bar)
 
@@ -185,7 +186,6 @@ class ApplicationWindows(MainApplication):
         """
         self.progress_bar.setValue(value)
         self.progress_bar.setFormat(f"{value}%: {message}...")
-
 
     def load_overlap_spin(self) -> None:
         title, content, equation = get_title_spin(kind=text_kinds.TXT)

@@ -1,8 +1,8 @@
 import time
 from typing import List
 
-from PyQt5 import QApplication, QHBoxLayout, QWidget, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
-    QProgressBar, QPushButton, QWidgetItem, QLayoutItem, QThread, pyqtSignal, QVBoxLayout
+from PyQt5.QtCore import pyqtSignal, QThread
+from PyQt5.QtWidgets import QVBoxLayout, QPushButton, QLayoutItem, QWidgetItem
 
 from source.permutation_group import permutation_group
 from source.texts.general_texts import get_general_text
@@ -41,8 +41,6 @@ class DownloadThread(QThread):
         for button in self.get_buttons_from_layout():
             button.setEnabled(activated)
 
-    def get_text_in_black_html(self, s:str):
-        return f'<font color="black">{s}</font>'
     def run(self) -> None:
         """
         splitting the download into sub-processes and assigning each a percent value (to describe the progress)
@@ -57,8 +55,7 @@ class DownloadThread(QThread):
             self.permutation_group.get_chapter_youngtableaus()
             time.sleep(1)
 
-            self.update_progress.emit(40,self.get_text_in_black_html("multiplying out the tableaus") if get_language()=="en"
-            else self.get_text_in_black_html("Ausmultiplizieren der Tableaus"))
+            self.update_progress.emit(40,"multiplying out the tableaus" if get_language()=="en" else "Ausmultiplizieren der Tableaus")
             self.permutation_group.get_chapter_multiplied()
             time.sleep(1)
 
@@ -80,9 +77,9 @@ class DownloadThread(QThread):
             # todo: matrix?
         except:
             self.enable_all_buttons(True)
-            self.update_progress.emit(-1,self.get_text_in_black_html(get_general_text("failed_download")))
+            self.update_progress.emit(-1, get_general_text("failed_download"))
         finally:
             self.enable_all_buttons(True)
-            self.update_progress.emit(100,self.get_text_in_black_html(get_general_text("successful_download")))
+            self.update_progress.emit(100,get_general_text("successful_download"))
 
 
