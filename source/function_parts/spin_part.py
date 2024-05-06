@@ -64,7 +64,7 @@ class spin_part(integral_part):
     # def find_all_choices(self):
     #     pass
 
-    # def get_normalization_factor(self) -> dict:
+    # def get_normalization_factor(self) -> Dict:
     #     if self.function.get_number_of_terms() == 1:
     #         return {"no": 1, "text":"", "tex":""}
     #     n = 1/math.sqrt(self.function.get_number_of_terms())

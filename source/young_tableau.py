@@ -1,4 +1,5 @@
-from typing import List
+from typing import List, Dict
+
 
 class young_tableau(object):
     def __init__(self, number_of_rows:int, number_of_columns:List[int]):
@@ -42,7 +43,7 @@ class young_tableau(object):
                 sum += 1
         return sum
 
-    def get_shortend_symbol(self) -> dict[str, str]:
+    def get_shortend_symbol(self) -> Dict[str, str]:
         parts = "".join([str(i) for i in self.numbers_in_columns]) # getting the relevant numbers
         parts = ''.join([f"{char}^{parts.count(char)}" if parts.count(char) > 1 else char for char in set(parts)])#replace multiples with power
         return {"plain_text": f"[{parts}]", "tex": rf"\left[{parts}\right]"}

@@ -1,3 +1,4 @@
+from typing import Dict
 
 from source.function_parts.product_term import product_term
 from source.function_parts.sign import Sign
@@ -87,7 +88,7 @@ class hamilton_integral(object):
                     functions[list.lowercase_letters[i]] = [list.ordered_functions[i]]
         return functions
 
-    def get_occurence_of_indizes(self) -> dict:
+    def get_occurence_of_indizes(self) -> Dict:
         indizes = {}
         lists = [self.bra, self.ket]
         for list in lists:

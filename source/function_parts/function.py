@@ -3,7 +3,7 @@ import math
 from math import gcd
 from fractions import Fraction
 from itertools import permutations
-from typing import List
+from typing import List, Dict
 import sympy as sp
 
 from source.function_parts.get_normalization_factor_as_fraction import get_normalization_factor_as_fraction
@@ -36,7 +36,7 @@ class function(object):
                 no += i.factor
         return no
 
-    def get_normalization_factor(self) -> dict:
+    def get_normalization_factor(self) -> Dict:
         """
         e.g. (2a + 2b) -> 1/sqrt(2) * (a + b) -> factor = 1/(2*sqrt(2))
         :return:
