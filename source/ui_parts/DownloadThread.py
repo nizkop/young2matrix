@@ -1,7 +1,10 @@
 import time
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QWidget, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
-    QProgressBar, QPushButton, QWidgetItem, QLayoutItem, QThread, pyqtSignal
+from typing import List
 
+from PyQt5 import QApplication, QHBoxLayout, QWidget, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
+    QProgressBar, QPushButton, QWidgetItem, QLayoutItem, QThread, pyqtSignal, QVBoxLayout
+
+from source.permutation_group import permutation_group
 from source.texts.general_texts import get_general_text
 from source.ui_parts.settings.idea_config import get_language
 
@@ -9,12 +12,12 @@ from source.ui_parts.settings.idea_config import get_language
 class DownloadThread(QThread):
     """ needed to show download progress during the process """
     update_progress = pyqtSignal(int,str)  # signal
-    def __init__(self, permutation_group, layout):
+    def __init__(self, permutation_group:permutation_group, layout: QVBoxLayout):
         super().__init__()
         self.permutation_group = permutation_group
         self.scroll_layout = layout
 
-    def get_buttons_from_layout(self, layout=None):
+    def get_buttons_from_layout(self, layout=None) -> List[QPushButton]:
         if layout == None:
             layout = self.scroll_layout
         buttons = []
@@ -30,16 +33,22 @@ class DownloadThread(QThread):
                     buttons.extend(self.get_buttons_from_layout(inner_layout))
         return buttons
 
-    def enable_other_buttons(self, activated:bool):
+    def enable_all_buttons(self, activated:bool) -> None:
+        """
+        de/activating all buttons in the current layout (while a process is running)
+        :param activated: boolean indicating whether buttons are activated or deactivated
+        """
         for button in self.get_buttons_from_layout():
             button.setEnabled(activated)
 
+    def get_text_in_black_html(self, s:str):
+        return f'<font color="black">{s}</font>'
     def run(self) -> None:
         """
         splitting the download into sub-processes and assigning each a percent value (to describe the progress)
         """
         try:
-            self.enable_other_buttons(False)
+            self.enable_all_buttons(activated=False)
             self.update_progress.emit(10, "finding all tableaus")
             self.permutation_group.get_all_standard_tableaus()  # at least needed for chapter 4
             time.sleep(1)
@@ -48,7 +57,8 @@ class DownloadThread(QThread):
             self.permutation_group.get_chapter_youngtableaus()
             time.sleep(1)
 
-            self.update_progress.emit(40,"multiplying out the tableaus" if get_language()=="en" else "Ausmultiplizieren der Tableaus")
+            self.update_progress.emit(40,self.get_text_in_black_html("multiplying out the tableaus") if get_language()=="en"
+            else self.get_text_in_black_html("Ausmultiplizieren der Tableaus"))
             self.permutation_group.get_chapter_multiplied()
             time.sleep(1)
 
@@ -69,10 +79,10 @@ class DownloadThread(QThread):
             time.sleep(1)
             # todo: matrix?
         except:
-            self.enable_other_buttons(True)
-            self.update_progress.emit(-1,get_general_text("failed_download"))
+            self.enable_all_buttons(True)
+            self.update_progress.emit(-1,self.get_text_in_black_html(get_general_text("failed_download")))
         finally:
-            self.enable_other_buttons(True)
-            self.update_progress.emit(100,get_general_text("successful_download"))
+            self.enable_all_buttons(True)
+            self.update_progress.emit(100,self.get_text_in_black_html(get_general_text("successful_download")))
 
 

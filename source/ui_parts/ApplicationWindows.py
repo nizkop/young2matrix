@@ -173,7 +173,7 @@ class ApplicationWindows(MainApplication):
         self.download_thread = DownloadThread(self.permutation_group, self.scroll_layout)
         self.download_thread.update_progress.connect(self.update_progress_bar)
         self.download_thread.start()
-        # todo: vertikal zentrieren
+        # todo: vertikal zentrieren?
 
 
     def update_progress_bar(self, value:int, message:str) -> None:
