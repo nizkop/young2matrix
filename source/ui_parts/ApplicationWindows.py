@@ -2,7 +2,7 @@
 import sys
 from typing import Union
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QWidget, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
-    QProgressBar, QVBoxLayout
+    QProgressBar
 
 from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
@@ -100,6 +100,7 @@ class ApplicationWindows(MainApplication):
                     group_empty = False
             if group_empty:
                 label = QLabel(get_general_text("spin_2rows"))
+                label.setStyleSheet("color: black;")
                 self.scroll_layout.addWidget(label)
                 self.non_basics.append(label)
 
@@ -120,11 +121,13 @@ class ApplicationWindows(MainApplication):
                     group_empty = False
             if group_empty:
                 label = QLabel(get_general_text("spatial_2columns"))
+                label.setStyleSheet("color: black;")
                 self.scroll_layout.addWidget(label)
                 self.non_basics.append(label)
 
     def load_tableau_page_multiplied(self) -> None:
         label = QLabel(":\n".join(get_title_multiplied_youngtableaus(kind=text_kinds.TXT)))
+        label.setStyleSheet("color: black;")
         self.scroll_layout.addWidget(label)
         self.non_basics.append(label)
         for group in self.permutation_group.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.permutation_group.standard_tableaus):
@@ -140,6 +143,7 @@ class ApplicationWindows(MainApplication):
         print("load_main_page")
         permutation_group_input = QHBoxLayout()
         permutation_group_label = QLabel(get_general_text("input_command"))
+        permutation_group_label.setStyleSheet("color: black;")
         permutation_group_input.addWidget(permutation_group_label)
         self.input_box = QLineEdit()
         permutation_group_input.addWidget(self.input_box)
@@ -184,6 +188,7 @@ class ApplicationWindows(MainApplication):
     def load_overlap_spin(self) -> None:
         title, content, equation = get_title_spin(kind=text_kinds.TXT)
         label = QLabel(title + "\n" + content)
+        label.setStyleSheet("color: black;")
         self.scroll_layout.addWidget(label)
         self.non_basics.append(label)
         self.add_equation(equation)
@@ -200,6 +205,7 @@ class ApplicationWindows(MainApplication):
     def load_overlap_spatial(self) -> None:
         title, content = get_title_spatial(kind=text_kinds.TXT)
         label = QLabel(title+"\n"+content)
+        label.setStyleSheet("color: black;")
         self.scroll_layout.addWidget(label)
         self.non_basics.append(label)
         self.permutation_group.calculate_all_overlap_integrals()
@@ -217,6 +223,7 @@ class ApplicationWindows(MainApplication):
 
     def load_hamilton_spatial(self) -> None:
         label = QLabel("Hamiltonmatrixelemente für die Raumorbitale"+"\n")
+        label.setStyleSheet("color: black;")
         self.scroll_layout.addWidget(label)
         self.non_basics.append(label)
 

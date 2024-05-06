@@ -66,6 +66,7 @@ class MainApplication(QMainWindow):
             self.pages[p]["name"] = get_page_name(self.pages[p]["index"])
 
         self.label = QLabel()
+        self.label.setStyleSheet("color: black;")
         self.label.setStyleSheet("background-color: transparent;")
         self.scroll_layout.addWidget(self.label)# inserts a bit of vertical space (thereby not in create_widget)
 
