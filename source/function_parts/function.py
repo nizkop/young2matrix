@@ -3,7 +3,7 @@ import math
 from math import gcd
 from fractions import Fraction
 from itertools import permutations
-from typing import List, Dict
+from typing import List, Dict, Union
 import sympy as sp
 
 from source.function_parts.get_normalization_factor_as_fraction import get_normalization_factor_as_fraction
@@ -29,7 +29,10 @@ class function(object):
         intern = "  ".join([i.to_tex() for i in self.parts])
         return self.get_normalization_factor()["tex"] + r"\left( " + intern.replace('α',r"\alpha ").replace('β', r"\beta ") + r"\right) "
 
-    def get_number_of_terms(self):
+    def get_number_of_terms(self) -> Union[int, Fraction]:
+        """ finding the total number of included parts
+        :return: number of function factors
+        """
         no = 0
         for i in self.parts:
             if i.factor != 0:
@@ -38,8 +41,9 @@ class function(object):
 
     def get_normalization_factor(self) -> Dict:
         """
+        finding the normalization factor by determining the number of basis terms
         e.g. (2a + 2b) -> 1/sqrt(2) * (a + b) -> factor = 1/(2*sqrt(2))
-        :return:
+        :return: normalization factor in its different forms (text, squared denominator, fraction, ...)
         """
         if self.get_number_of_terms() == 1 or not self.normalizable:
             return {"text":"", "tex":"", "1/sqrt": 1, "fraction": 1}
@@ -48,15 +52,22 @@ class function(object):
         n = get_normalization_factor_as_fraction(1, norm=sp.sqrt(self.get_number_of_terms()) )
         return {"text":text, "tex":tex, "1/sqrt": self.get_number_of_terms(), "fraction": n}
 
-    def anti_symmetrize(self, changeble_elements:List[int]):
-        return self.permutate_basis(changeable_elements=changeble_elements, change_sign=True)
+    def anti_symmetrize(self, changeable_elements:List[int]) -> None:
+        """ build anti-symmetric function
+        :param changeable_elements: list of affected function parts by the exchange according to the tableau
+        :return: None """
+        return self.permutate_basis(changeable_elements=changeable_elements, change_sign=True)
 
-    def symmetrize(self, changeble_elements:List[int]):
-        return self.permutate_basis(changeable_elements=changeble_elements, change_sign=False)
+    def symmetrize(self, changeable_elements:List[int]) -> None:
+        """ build symmetric function
+        :param changeable_elements: list of affected function parts by the exchange according to the tableau
+        :return: None """
+        return self.permutate_basis(changeable_elements=changeable_elements, change_sign=False)
 
     def permutate_basis(self, changeable_elements:List[int], change_sign:bool) -> None:
         """ helper function for (anti-/)symmetrizing;
         updates the product terms in self.parts according to the switched elements in changeable_elements
+        :param changeable_elements: list of affected function parts by the exchange according to the tableau
         :param change_sign: boolean indicating whether a sign is changeable (anti-symmetric) or not (symmetric)
         """
         new_parts = []
@@ -90,7 +101,7 @@ class function(object):
         self.parts = new_parts
 
 
-    def reduce_to_least_common_basis(self):
+    def reduce_to_least_common_basis(self) -> None:
         """ factor out and remove redundant factors in parts
         """
         factors = [i.factor for i in self.parts if i != 0]
@@ -122,6 +133,10 @@ class function(object):
 
 
     def set_spin_functions(self, spin_functions: List[str]) -> None:
+        """
+        change general functions a,b,c,... into spin functions
+        :param spin_functions: chosen to-be-used spin functions
+        """
         for i in self.parts:
             i.lowercase_letters = spin_functions
         self.aggregate_terms()

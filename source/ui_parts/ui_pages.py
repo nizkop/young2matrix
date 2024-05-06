@@ -4,6 +4,7 @@ from source.ui_parts.settings.idea_config import get_language
 
 
 class ui_pages(Enum):
+    """ correlation between pages names/content and their indizes """
     START = 0
     TABLEAUS = 1
     MULTIPLIED_OUT_TABLEAUS = 2
@@ -22,7 +23,7 @@ def get_page_name(page:ui_pages) -> str:
     get the explanation of a button leading to a given page;
     regarding the current language
     :param page: screen the button leads to
-    :return:
+    :return: name/label of the page
     """
     if page == ui_pages.START:
         return "Startseite" if get_language() == "de" else "start"

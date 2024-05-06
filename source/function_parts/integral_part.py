@@ -1,5 +1,6 @@
 
 class integral_part(object):
+    """ general class for integrals of different kind (only used as a parent, not on its own) """
 
     def print(self):
         pass

@@ -40,7 +40,9 @@ class standard_tableau(young_tableau):
         return True
 
     def get_numbers_in_columns(self) -> List[List[int]]:
-        """ reverting the list of numbers in a row into a list of numbers in a column """
+        """ reverting the list of numbers in a row into a list of numbers in a column
+        :return: list of numbers per column
+        """
         max_length = max(len(row) for row in self.numbers_in_row)
         spalten = []
         for i in range(max_length):

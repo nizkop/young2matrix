@@ -11,7 +11,7 @@ class young_tableau(object):
 
     def check(self) -> bool:
         """ checking if columns und rows fit to eachother
-        :return: boolean indicating if the tableau is set-up correctly """
+        :return: boolean indicating whether the tableau is set-up correctly """
         if len(self.numbers_in_columns) != self.number_of_rows:
             # raise Exception("young_tableau: non-fitting dimensions")
             return False
@@ -36,7 +36,9 @@ class young_tableau(object):
         return s
 
     def get_permutation_group(self) -> int:
-        """ calculate the number of boxes in the tableau """
+        """ calculate the number of boxes in the tableau
+        :return: number of elements in the group
+        """
         sum = 0
         for i in range(self.number_of_rows):
             for j in range(self.numbers_in_columns[i]):
@@ -44,6 +46,11 @@ class young_tableau(object):
         return sum
 
     def get_shortend_symbol(self) -> Dict[str, str]:
+        """
+        short version of representing a young tableau by listing the number of boxes in a row
+        (combining identical values by setting an exponent)
+        :return: shortend information, split into the different visualization choices (text/latex)
+        """
         parts = "".join([str(i) for i in self.numbers_in_columns]) # getting the relevant numbers
         parts = ''.join([f"{char}^{parts.count(char)}" if parts.count(char) > 1 else char for char in set(parts)])#replace multiples with power
         return {"plain_text": f"[{parts}]", "tex": rf"\left[{parts}\right]"}

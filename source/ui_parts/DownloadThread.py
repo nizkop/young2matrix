@@ -18,6 +18,11 @@ class DownloadThread(QThread):
         self.scroll_layout = layout
 
     def get_buttons_from_layout(self, layout=None) -> List[QPushButton]:
+        """
+        searching for buttons in the given/current layout
+        :param layout: layout / sublayout (needed to search recursively through all sub layouts)
+        :return: list of all buttons
+        """
         if layout == None:
             layout = self.scroll_layout
         buttons = []

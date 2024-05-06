@@ -7,6 +7,12 @@ from source.standard_tableau import standard_tableau
 
 
 def calculate_overlap_integral_basisfunction(tableau_a: standard_tableau, tableau_b: standard_tableau) -> function:
+    """
+    calculating the overlap between the basis function = general behavior, not spin/spatial integrals
+    :param tableau_a: bra terms
+    :param tableau_b: ket terms
+    :return: overlap
+    """
     if tableau_a.permutation_group != tableau_b.permutation_group:
         raise Exception("function_combination error: The tableaus dont fit.")
 

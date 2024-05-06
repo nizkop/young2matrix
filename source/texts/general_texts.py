@@ -2,7 +2,14 @@ from source.ui_parts.settings.idea_config import get_language
 
 
 
-def get_general_text(key:str):
+def get_general_text(key:str) -> str:
+    """
+    getting text phrases;
+    function combines multiple text parts, that can be addressed via a key;
+    allowes for change in language
+    :param key: indication, which text is needed
+    :return: fully expressed text in choosen language
+    """
 
     if get_language() == "en":
         general_texts = {

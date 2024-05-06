@@ -14,7 +14,12 @@ plt.rcParams['text.latex.preamble'] = r'''
 '''
 
 
-def get_latex_canvas(eq:str):
+def get_latex_canvas(eq:str) -> FigureCanvas:
+    """
+    building a suitable object for the ui from a string to display an equation
+    :param eq: latex formatted equation including latex commands such as \cdot, \bra, \frac
+    :return: figure of the equation
+    """
     eq = eq.replace("_",r"\_")
 
     figure = plt.figure()

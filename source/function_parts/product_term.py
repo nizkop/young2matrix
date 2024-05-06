@@ -20,6 +20,10 @@ class product_term(object):
             x+=1
 
     def get_list_of_parts(self) -> List[str]:
+        """ combine functions into a list: functions a,b,c are paired with their indizes 1,2,3,...
+        items in the lists are factors and need to be multiplicated with eachother later on
+        :return: list of functions (as factors of eachother)
+        """
         counter = Counter(zip(self.lowercase_letters, self.ordered_functions))
         return [str(key[0]) + r"_{"+str(key[1])+r"}^{"+str(count)+"}"
                 if count > 1
@@ -50,9 +54,12 @@ class product_term(object):
         return eq.replace("α",r"\alpha").replace("β",r"\beta")
 
 
-    def multiply(self, other):# -> product_term
+    def multiply(self, other#: product_term
+        ):# -> product_term
         """ building a product of products = simple factor combination (for numbers and functions)
         grouping happens later on, here duplicates of functions x_i may occur
+        :param other: other product term, being multiplied with this object
+        :return: new product_term object, that is the product of the given terms
         """
         new_factor = self.factor * other.factor
         new_sign = Sign("+") if self.sign.value == other.sign.value else Sign("-")
@@ -65,11 +72,13 @@ class product_term(object):
         #print(f"{self.to_text()}       *       {other.to_text()}     =     {p.to_text()}")
         return p
 
-    def integrational_multiply(self, other):
+    def integrational_multiply(self, other#: product_term
+        ) -> Tuple:
         """
+        building a bra and ket equation form two product_term objects;
         orthonormed functions: <a|b> = <a|c> = ... = 0
-        :param other:
-        :return:
+        :param other: other product term, building the ket
+        :return: integral information (overlap) = what was combined (1.) and the result (2.)
         """
         eq_left = f"< {self.to_text()} | {other.to_text()} >"
         empty_part = product_term(Sign.PLUS if self.sign == other.sign else Sign.MINUS, ())

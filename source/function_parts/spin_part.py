@@ -18,7 +18,10 @@ class spin_part(integral_part):
         self.set_up_choices()
 
 
-    def test_choices_for_spin_input(self, choices_for_spin):
+    def test_choices_for_spin_input(self, choices_for_spin) -> None:
+        """
+        testing if the integral function includes the spin functions (alpha, beta), not general functions a, b, c, ...
+        """
         try:
             choices_for_spin["alpha"]
             choices_for_spin["beta"]
@@ -29,8 +32,10 @@ class spin_part(integral_part):
         #     raise Exception("spin_part-error: ms does not fit amount of alpha and beta spins")
 
 
-    def set_up_choices(self):
-        # "α", "β"
+    def set_up_choices(self) -> None:
+        """
+        changing the general functions a,b,c,... to spin functions α or β
+        """
         spin_ordered = []
         for i in range(1,self.permutation_group+1):
             if i in self.choices_for_spin["alpha"]:
@@ -51,15 +56,20 @@ class spin_part(integral_part):
         part_2 = f"{self.function.to_text()}"
         return f"{part_1} = {part_2}"
 
-    def get_shortend_form(self, kind:text_kinds=text_kinds.TXT):
-        if kind == text_kinds.TEX:
-            return rf" {self.total_spin}\quad {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "
-        return  f" {self.total_spin}   {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "
-
     def to_tex(self):
         part_1 = r"\ket{ "+fr"{self.total_spin} \quad  {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "+ r"}"
         # part_2 = self.get_normalization_factor()["tex"] + r"\left( "+ self.function.to_tex().replace('α',r"\alpha ").replace('β', r"\beta ")+ r"\right) "
         return fr"{part_1} = {self.function.to_tex()}"
+
+    def get_shortend_form(self, kind:text_kinds=text_kinds.TXT) -> str:
+        """ getting the short representation of a spin tableau, given by spin total quantum number S and single-particle quantum number ms
+        :return: short version according to | S Ms >
+        """
+        if kind == text_kinds.TEX:
+            return rf" {self.total_spin}\quad {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "
+        return f" {self.total_spin}   {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "
+
+
 
     # def find_all_choices(self):
     #     pass

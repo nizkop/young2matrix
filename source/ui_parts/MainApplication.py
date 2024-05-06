@@ -9,6 +9,7 @@ from source.ui_parts.settings.idea_config import update_language, get_language
 
 
 class MainApplication(QMainWindow):
+    """ basic setup for application (only a parent class, because it would become to large to keep track) """
     def __init__(self):
         super().__init__()
         self.non_basics = []

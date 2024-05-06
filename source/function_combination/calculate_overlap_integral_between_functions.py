@@ -9,6 +9,12 @@ from source.function_parts.sign import Sign
 
 
 def calculate_overlap_integral_between_functions(function_a:function, function_b:function) -> function:
+    """
+    calculating overlap between all parts of a function a and a function b
+    :param function_a: bra terms
+    :param function_b: ket terms
+    :return: overlap
+    """
     empty_function = function(product_term(Sign("+"), ()) ,normalizable=False)
 
     if function_a == function_b:

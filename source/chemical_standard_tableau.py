@@ -31,7 +31,7 @@ class chemical_standard_tableau(standard_tableau):
     def solve(self):
         pass
 
-    def get_spatial_choices(self):
+    def get_spatial_choices(self) -> None:
         """
         total angular momentum L = { |l1-l2-...-li | , ..., (l1+...+li) }
         ML = { -L, ..., L} = ml1 + ... + mli
@@ -53,6 +53,10 @@ class chemical_standard_tableau(standard_tableau):
 
 
     def calulate_all_overlap_integrals(self, kind: spin_vs_spatial_kind=spin_vs_spatial_kind.GENERAL) -> None:
+        """
+        determine overlap of all integral combinations and saving the results in self.overlap
+        :param kind: choice of spin or spatial function type
+        """
         if kind == spin_vs_spatial_kind.GENERAL:
             self.calulate_all_overlap_integrals(kind=spin_vs_spatial_kind.SPATIAL)
             self.calulate_all_overlap_integrals(kind=spin_vs_spatial_kind.SPIN)
@@ -84,9 +88,6 @@ class chemical_standard_tableau(standard_tableau):
                 if info not in self.overlap:
                     self.overlap.append(info)
         return
-
-    def calculate_all_hamilton_integrals(self):
-        pass
 
     def get_spin_choices(self):
         """

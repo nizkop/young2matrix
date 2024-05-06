@@ -22,7 +22,7 @@ class overview_pdf(object):
     def save(self, title:str) -> None:
         """
         '.pdf' is added automatically
-        :param title:
+        :param title: name of the to-be-generated pdf file
         :return:
         """
         self.doc.append(Command('newpage'))  # Seite umbrechen
@@ -30,9 +30,16 @@ class overview_pdf(object):
         self.doc.generate_pdf(title, clean_tex=True)
 
     def add_information(self, additional_info:str) -> None:
+        """ adding text to the current chapter of the pdf """
         self.doc.append(NoEscape(additional_info))
 
     def add_section(self, sec_title:str, content:str, layer:int=0) -> None:
+        """ adding a new section/chapter to the pdf
+        :param sec_title: name of the new chapter
+        :param content: text in the new chapter
+        :param layer: chapter hierarchy number (0 = highest layer)
+                      -> indicating whether the chapter is a subchapter to prior chapters, or not
+        """
         if layer == 0:
             with self.doc.create(Section(sec_title)):
                 if len(content) > 0:
@@ -45,6 +52,12 @@ class overview_pdf(object):
             return
 
     def get_latex_formula(self, formula_text:str, inline:bool = False) -> Union[Math, NoEscape]:
+        """
+        adding a latex formatted equation to the pdf
+        :param: latex equation including latex commands
+        :inline: boolean indicating whether the latex formula is short and does not need a separate line or not
+        :return: pdf/latex math object, that will be rendered into the pdf
+        """
         if not inline: # euqation might be longer
             return NoEscape(r"\begin{dmath*}"+rf"{formula_text}"+r"\end{dmath*}")
         return Math(data=[NoEscape(rf"{formula_text}")], inline=inline)
@@ -64,9 +77,11 @@ class overview_pdf(object):
         # self.doc.append(Math(data=[Matrix(M), Matrix(a), '=', Matrix(M * a)]))
 
     def newpage(self) -> None:
+        """ adding a page break """
         self.doc.append(Command('newpage'))
 
     def vspace(self) -> None:
+        """ adding vertical space after the current line """
         self.doc.append(Command('vspace', '0.25cm'))
 
 

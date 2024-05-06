@@ -114,6 +114,10 @@ class hamilton_integral(object):
 
 
     def get_shortened_symbol(self) -> str:
+        """
+        combining the functions of the mathematical expression into an order, representing all information,
+        e.g. a2 * b1 -> ba
+        """
         return "".join(set(self.bra.lowercase_letters+self.ket.lowercase_letters))
 
 

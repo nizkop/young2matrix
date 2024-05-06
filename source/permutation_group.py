@@ -27,7 +27,7 @@ class permutation_group(object):
         self.title_pdf = f"group_{self.permutation_group}"
 
         self.overlap: List[dict] = []
-        self.hamiltonians: List[hamilton_integral] = []
+        self.hamilton_integrals: List[hamilton_integral] = []
 
     def print(self) -> None:
        print(f"permutation group: S_{self.permutation_group}")
@@ -37,6 +37,11 @@ class permutation_group(object):
 
 
     def get_young_tableau_equations(self) -> List[str]:
+        """
+        forming all tableaus into a latex equation,
+        grouped by their outer shape and including the shortend/shape information (e.g. [1^2])
+        :return: list of tex-formatted equations
+        """
         equations = []
         self.get_all_standard_tableaus()
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
@@ -146,7 +151,7 @@ class permutation_group(object):
         self.overview.add_section("Hamiltonmatrixelemente",
                                   content=get_general_text("h_info_spin"))
         self.calculate_all_hamilton_integrals()
-        for info in self.hamiltonians:
+        for info in self.hamilton_integrals:
             if len(info["hamilton_integral_sum"]) > 0:
                 equation_tex = r"\bra{" + info["bra_tableau"] + r"}\hat{H}\ket{" + info["ket_tableau"] + r"}"
                 if info["kind"] == spin_vs_spatial_kind.SPATIAL.value:
@@ -195,12 +200,17 @@ class permutation_group(object):
     def get_non_adjoint_tableaus(self) -> List[chemical_standard_tableau]:
         """ choosing one orientation of tableaus (here: vertical alignment favored)
         e.g.: [1,2] adjoint to [1][2]
+        :return: list of all tableaus, that are non adjoint to others
         """
         if len(self.standard_tableaus) == 0:
             self.get_all_standard_tableaus()
         return [t for t in self.standard_tableaus if max(t.numbers_in_columns) <= t.number_of_rows]
 
     def group_tableaus_by_shortend_symbol(self, tableaus_to_sort:List[chemical_standard_tableau]=[]) -> List[List[chemical_standard_tableau]]:
+        """
+        sorting all tableaus by their outer shape (= same young tableau, different/same standard tableau)
+        :return: 2d-list of grouped tableaus
+        """
         if len(tableaus_to_sort) == 0:
             tableaus_to_sort = self.standard_tableaus
         tableaus = []
@@ -241,18 +251,28 @@ class permutation_group(object):
                 self.overlap.append(result)
         return
 
-    def calculate_all_hamilton_integrals(self):
+    def calculate_all_hamilton_integrals(self) -> None:
+        """
+        calculating the hamilton integrals between all tableaus of the group
+
+        spin calculation is left out, because it reverts to overlap (because H is independent of spin)
+        """
         for t in self.standard_tableaus:
             t.set_up_function()
             t.get_spatial_choices()
             t.get_spin_choices()
 
-        self.calculate_all_hamilton_integrals_kind(spin_vs_spatial_kind.SPATIAL)
-        # self.calculate_all_hamilton_integrals_kind(spin_vs_spatial_kind.SPIN)# TODO spin : reverts to overlap, because H is independend of spin!!!
+        self.calculate_all_hamilton_integrals_kind(spin_vs_spatial_kind.SPATIAL)#only spatial
 
-    def calculate_all_hamilton_integrals_kind(self, kind: spin_vs_spatial_kind):
+    def calculate_all_hamilton_integrals_kind(self) -> None:
+        """
+        finding all combinations for hamilton integrals
+        -> also between identical tableaus,
+        only hamilton integrals between different young tableaus (!= standard) are set to 0);
+        saving results in self.hamilton_integrals
+        """
         # Tableaus need to be set up already !
-        if len([x for x in self.hamiltonians if x["kind"] == kind.value]) > 0:
+        if len(self.hamilton_integrals) > 0:
             return
         results = []
         for i in range(len(self.standard_tableaus)):
@@ -262,16 +282,14 @@ class permutation_group(object):
                 tableau_2 = self.standard_tableaus[j]
                 info["bra_tableau"] = tableau_1.to_tex()
                 info["ket_tableau"] = tableau_2.to_tex()
-                info["kind"] = kind.value
-                info["hamilton_integral_sum"] = calculate_hamilton_integral(tableau_1, tableau_2, kind=kind)
-
+                info["kind"] = spin_vs_spatial_kind.SPATIAL.value
+                info["hamilton_integral_sum"] = calculate_hamilton_integral(tableau_1, tableau_2, kind=spin_vs_spatial_kind.SPATIAL)
                 if len(info["hamilton_integral_sum"]) > 0:
                     results.append(info)
-
         added = []
         for result in results:
             if sorted([result["bra_tableau"], result["ket_tableau"]]) not in added:
-                self.hamiltonians.append(result)
+                self.hamilton_integrals.append(result)
                 added.append(sorted([result["bra_tableau"], result["ket_tableau"]]))
         return
 

@@ -230,7 +230,7 @@ class ApplicationWindows(MainApplication):
         self.non_basics.append(label)
 
         self.permutation_group.calculate_all_hamilton_integrals()
-        for info in self.permutation_group.hamiltonians:
+        for info in self.permutation_group.hamilton_integrals:
             if len(info["hamilton_integral_sum"]) > 0:
                 equation_tex = r"\bra{"+ info["bra_tableau"] + r"}\hat{H}\ket{"+ info["ket_tableau"] + r"}"
                 if info["kind"] == spin_vs_spatial_kind.SPATIAL.value:

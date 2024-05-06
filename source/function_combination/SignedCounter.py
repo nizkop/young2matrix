@@ -1,6 +1,7 @@
 from collections import defaultdict
 
 class SignedCounter:
+    """ counting elements while regarding their arithmetic sign """
     def __init__(self):
         self.counter = defaultdict(int)
 
