@@ -2,7 +2,7 @@
 import sys
 from typing import Union
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QWidget, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
-    QProgressBar
+    QProgressBar, QPushButton, QWidgetItem, QLayoutItem
 
 from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
@@ -65,8 +65,8 @@ class ApplicationWindows(MainApplication):
         try:
             page_info = next((page_dict for page_dict in self.pages
                               if page_dict.get("index").value == self.current_page), None)
-            if page_info["function"] is None:
-                print(page_info)
+            # if page_info["function"] is None:
+            #     print(page_info)
             page_info["function"]()
         except KeyError or TypeError:# todo catch all errors
             self.current_page = 0
@@ -164,15 +164,16 @@ class ApplicationWindows(MainApplication):
 
     def load_download(self) -> None:
         """ initializes download and goes back to main page """
+
         self.progress_bar = QProgressBar()
         self.progress_bar.setRange(0, 100)
         self.scroll_layout.addWidget(self.progress_bar)
         self.non_basics.append(self.progress_bar)
 
-        self.download_thread = DownloadThread(self.permutation_group)
+        self.download_thread = DownloadThread(self.permutation_group, self.scroll_layout)
         self.download_thread.update_progress.connect(self.update_progress_bar)
         self.download_thread.start()
-        # todo: block zurück-Button bis Download fertig; vertikal zentrieren
+        # todo: vertikal zentrieren
 
 
     def update_progress_bar(self, value:int, message:str) -> None:

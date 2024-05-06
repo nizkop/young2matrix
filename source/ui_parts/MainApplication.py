@@ -36,7 +36,6 @@ class MainApplication(QMainWindow):
 
         self.current_page = 0
         self.pages = [
-            # TODO english names for pages ?
             {"sign": "start" if get_language()=="en" else "Start",
                     "index": ui_pages.START, "function": self.load_main_page, "parent": None,
                     "buttons": [ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS, ui_pages.DOWNLOAD]},
@@ -136,6 +135,7 @@ class MainApplication(QMainWindow):
 
                 button_layout.addWidget(button)
                 self.non_basics.append(button)
+                print("button added to self.non_basics")
 
         self.scroll_layout.addLayout(button_layout)
         self.non_basics.append(button_layout)
@@ -180,7 +180,7 @@ class MainApplication(QMainWindow):
 
     def clearLayout(self) -> None:
         """ Clearing the current layout and its sublayouts """
-        # print("clear layout",flush=True)
+        print("clear layout",flush=True)
         for i in range(len(self.non_basics)-1,-1,-1):
             item = self.non_basics[i]
             item.deleteLater()

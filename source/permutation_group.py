@@ -280,7 +280,7 @@ class permutation_group(object):
 
 
 if __name__ == '__main__':
-    p = permutation_group(4)
+    p = permutation_group(3)
     p.get_all_standard_tableaus()
     # p.print()
 

@@ -1,7 +1,7 @@
+sympy==1.9
 PyQt5==5.15.10
 matplotlib==3.5.1
 pylatex==1.4.1
-sympy==1.9
 #typing_extensions==4.9.0
 #more-itertools==8.10.0
 # string, itertools

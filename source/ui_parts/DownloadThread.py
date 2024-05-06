@@ -1,5 +1,6 @@
-from PyQt5.QtCore import QThread, pyqtSignal
 import time
+from PyQt5.QtWidgets import QApplication, QHBoxLayout, QWidget, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
+    QProgressBar, QPushButton, QWidgetItem, QLayoutItem, QThread, pyqtSignal
 
 from source.texts.general_texts import get_general_text
 from source.ui_parts.settings.idea_config import get_language
@@ -8,15 +9,37 @@ from source.ui_parts.settings.idea_config import get_language
 class DownloadThread(QThread):
     """ needed to show download progress during the process """
     update_progress = pyqtSignal(int,str)  # signal
-    def __init__(self, permutation_group):
+    def __init__(self, permutation_group, layout):
         super().__init__()
         self.permutation_group = permutation_group
+        self.scroll_layout = layout
+
+    def get_buttons_from_layout(self, layout=None):
+        if layout == None:
+            layout = self.scroll_layout
+        buttons = []
+        for i in range(layout.count()):
+            item = layout.itemAt(i)
+            if isinstance(item, QWidgetItem):
+                widget = item.widget()
+                if isinstance(widget, QPushButton):
+                    buttons.append(widget)
+            elif isinstance(item, QLayoutItem):
+                inner_layout = item.layout()
+                if inner_layout:
+                    buttons.extend(self.get_buttons_from_layout(inner_layout))
+        return buttons
+
+    def enable_other_buttons(self, activated:bool):
+        for button in self.get_buttons_from_layout():
+            button.setEnabled(activated)
 
     def run(self) -> None:
         """
         splitting the download into sub-processes and assigning each a percent value (to describe the progress)
         """
         try:
+            self.enable_other_buttons(False)
             self.update_progress.emit(10, "finding all tableaus")
             self.permutation_group.get_all_standard_tableaus()  # at least needed for chapter 4
             time.sleep(1)
@@ -46,8 +69,10 @@ class DownloadThread(QThread):
             time.sleep(1)
             # todo: matrix?
         except:
+            self.enable_other_buttons(True)
             self.update_progress.emit(-1,get_general_text("failed_download"))
         finally:
+            self.enable_other_buttons(True)
             self.update_progress.emit(100,get_general_text("successful_download"))
 
 
