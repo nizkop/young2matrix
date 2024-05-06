@@ -2,7 +2,7 @@
 import sys
 from typing import Union
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QWidget, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
-    QProgressBar
+    QProgressBar, QVBoxLayout
 
 from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
@@ -161,13 +161,14 @@ class ApplicationWindows(MainApplication):
         """ initializes download and goes back to main page """
         self.progress_bar = QProgressBar()
         self.progress_bar.setRange(0, 100)
-        self.scroll_layout.addWidget(self.progress_bar)
+        self.scroll_layout.addLayout(self.progress_bar)
         self.non_basics.append(self.progress_bar)
 
         self.download_thread = DownloadThread(self.permutation_group)
         self.download_thread.update_progress.connect(self.update_progress_bar)
         self.download_thread.start()
-        self.progress_bar = None #reset
+        # todo: block zurück-Button bis Download fertig; vertikal zentrieren
+
 
     def update_progress_bar(self, value:int, message:str) -> None:
         """
@@ -236,6 +237,7 @@ class ApplicationWindows(MainApplication):
         label = QLabel(get_general_text("h_info_spin")+"\n\n")
         label.setStyleSheet("color: red; font-weight: bold;")
         self.scroll_layout.addWidget(label)
+        self.non_basics.append(label)
 
         self.load_overlap_spin()
 
