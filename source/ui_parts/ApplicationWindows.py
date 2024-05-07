@@ -158,7 +158,6 @@ class ApplicationWindows(MainApplication):
 
     def load_main_page(self) -> None:
         permutation_group_input = QVBoxLayout()
-        # permutation_group_input.addStretch(1)#input not completely at the too (but language button)
         permutation_group_input.setAlignment(Qt.AlignCenter)
         spacer_top = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         permutation_group_input.addItem(spacer_top)
