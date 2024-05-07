@@ -1,5 +1,6 @@
 from typing import Union, Dict, List
 
+from PyQt5.QtCore import Qt
 from matplotlib import pyplot as plt
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QLabel, \
     QScrollArea, QStatusBar
@@ -14,7 +15,7 @@ class MainApplication(QMainWindow):
     """ basic setup for application (only a parent class, because it would become to large to keep track) """
     def __init__(self):
         super().__init__()
-        self.non_basics = []
+
         self.setWindowTitle("young2matrix")
         self.color = "lightgreen"
         self.setGeometry(100, 100, 800, 600)
@@ -30,6 +31,7 @@ class MainApplication(QMainWindow):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setWidget(self.scroll_widget)
         self.layout.addWidget(self.scroll_area)
+        self.language_button = None
 
         self.statusBar = QStatusBar()#information about button functions
         self.setStatusBar(self.statusBar)#(shown at the bottom of the screen)
@@ -93,17 +95,22 @@ class MainApplication(QMainWindow):
     def create_language_buttons(self) -> None:
         """ adding a button, that may change the language settings, to the top of the screen """
         choice = "de" if get_language() == "en" else "en"
+        if self.language_button is None:
+            self.language_button = QPushButton(choice)
+            self.language_button.setFixedSize(30, 30)
+            self.language_button.move(5, 5)
+        else:
+            self.language_button.setText(choice)
 
-        self.language_button = QPushButton(choice)
         self.language_button.setStyleSheet(f"background-color: {self.color}; color: black; font-weight: bold;")
         self.language_button.clicked.connect(lambda: self.set_language(choice))
-        self.language_button.setFixedSize(30, 30)
-        self.language_button.move(5, 5)
-        self.scroll_layout.addWidget(self.language_button)
 
         self.language_button.setToolTip(get_general_text("language_change"))
         self.language_button.enterEvent = lambda event, button= self.language_button: self.change_status_message( self.language_button.toolTip())
         self.language_button.leaveEvent = lambda event: self.change_status_message()
+
+        self.language_button.setParent(self)
+
 
     def set_language(self, language: str) -> None:
         """ updating the language (as it was changed by the user)
@@ -112,10 +119,8 @@ class MainApplication(QMainWindow):
         update_language(language)
         for p in range(len(self.pages)):# update pages names
             self.pages[p]["name"] = get_page_name(self.pages[p]["index"])
-        self.language_button.deleteLater()
         self.create_language_buttons()
         self.open_page(self.current_page)
-
 
     def create_widgets(self) -> None:
         """
@@ -144,10 +149,8 @@ class MainApplication(QMainWindow):
                 button.leaveEvent = lambda event: self.change_status_message()
 
                 button_layout.addWidget(button)
-                self.non_basics.append(button)
 
         self.scroll_layout.addLayout(button_layout)
-        self.non_basics.append(button_layout)
 
     def open_page(self, page_number:int) -> None:
         """
@@ -172,7 +175,6 @@ class MainApplication(QMainWindow):
         # print("add_equation", flush=True)
         canvas = get_latex_canvas(formula)
         self.scroll_layout.addWidget(canvas)
-        self.non_basics.append(canvas)
 
         plt.close()
 
@@ -189,19 +191,7 @@ class MainApplication(QMainWindow):
 
     def clear_screen(self) -> None:
         """ Clearing the current layout and its sublayouts """
-        # # print("clear layout",flush=True)
-        # for i in range(len(self.non_basics)-1,-1,-1):
-        #     item = self.non_basics[i]
-        #     if item is not None:
-        #         if isinstance(item, QHBoxLayout) or isinstance(item, QVBoxLayout):
-        #             # remove content first:
-        #             self.clear_layout(item)
-        #         try:
-        #             item.deleteLater()
-        #             del self.non_basics[i]
-        #         except:
-        #             pass # already deleted
-        self.clear_layout()# whatever is left (like spacers)
+        self.clear_layout()
 
         self.label = QLabel()
         self.label.setStyleSheet("color: black;")

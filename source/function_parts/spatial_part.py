@@ -14,13 +14,13 @@ class spatial_part(integral_part):
 
     # def print(self):
     #     pass
-    #
-    # def to_tex(self) -> str:
-    #     return self.function.to_tex()
-    #
-    # def to_text(self) -> str:
-    #     return self.function.to_text()
-    #
+
+    def to_tex(self) -> str:
+        return self.function.to_tex()
+
+    def to_text(self) -> str:
+        return self.function.to_text()
+
     # def find_all_choices(self):
     #     pass
     #

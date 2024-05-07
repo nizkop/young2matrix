@@ -262,7 +262,7 @@ class permutation_group(object):
             t.get_spatial_choices()
             t.get_spin_choices()
 
-        self.calculate_all_hamilton_integrals_kind(spin_vs_spatial_kind.SPATIAL)#only spatial
+        self.calculate_all_hamilton_integrals_kind()#only spatial
 
     def calculate_all_hamilton_integrals_kind(self) -> None:
         """
