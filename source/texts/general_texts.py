@@ -21,6 +21,11 @@ def get_general_text(key:str) -> str:
                                 "more than two columns are impossible.)",
 
             # solely UI:
+            "download_start_info1": "You have started the download for permutation group ",
+            "download_start_info2": ".\n\nPlease be patient.",
+            "language_change": "change language to German",
+            "input_line_command": "Please enter a permutation group number.",
+            "warning": "warning",
             "yes": "Yes",
             "no": "No",
             "check_big_data": "This is a high number for a permutation group, that gets even bigger by all the needed combinations. Are you sure you want to continue?",
@@ -41,6 +46,11 @@ def get_general_text(key:str) -> str:
                          "sind nicht mehr als zwei Spalten möglich.)",
 
             # solely UI:
+            "download_start_info1": "Sie haben den Download für die Permutationsgruppe ",
+            "download_start_info2": " gestartet.\n\nBitte haben Sie einen Moment Geduld.",
+            "language_change": "Sprache zu Englisch ändern",
+            "input_line_command": "Bitte geben Sie eine Permutationsgruppennummer ein.",
+            "warning": "Warnung",
             "yes": "Ja",
             "no": "Nein",
             "check_big_data": "Diese Eingabe ist eine relativ große Permutationsgruppe, die durch Kombination der enthaltenen Terme ncoh deutlich größer wird. Wollen Sie wirklich fortfahren?",

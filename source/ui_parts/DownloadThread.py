@@ -12,10 +12,11 @@ from source.ui_parts.settings.idea_config import get_language
 class DownloadThread(QThread):
     """ needed to show download progress during the process """
     update_progress = pyqtSignal(int,str)  # signal
-    def __init__(self, permutation_group:permutation_group, layout: QVBoxLayout):
+    def __init__(self, permutation_group:permutation_group, layout: QVBoxLayout, background_color:str):
         super().__init__()
         self.permutation_group = permutation_group
         self.scroll_layout = layout
+        self.background_color = background_color
 
     def get_buttons_from_layout(self, layout=None) -> List[QPushButton]:
         """
@@ -43,14 +44,20 @@ class DownloadThread(QThread):
         de/activating all buttons in the current layout (while a process is running)
         :param activated: boolean indicating whether buttons are activated or deactivated
         """
+        # print("enable_all_buttons", activated, flush=True)
         for button in self.get_buttons_from_layout():
             button.setEnabled(activated)
+            if activated:
+                button.setStyleSheet(f"background-color: {self.background_color}; color: black;") # reset
+            else:
+                button.setStyleSheet(f"background-color: #6fa287; color: gray;")
 
     def run(self) -> None:
         """
         splitting the download into sub-processes and assigning each a percent value (to describe the progress)
         """
         try:
+            time.sleep(1)
             self.enable_all_buttons(activated=False)
             self.update_progress.emit(10, "finding all tableaus")
             self.permutation_group.get_all_standard_tableaus()  # at least needed for chapter 4

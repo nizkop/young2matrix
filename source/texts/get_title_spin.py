@@ -24,7 +24,7 @@ def get_title_spin(kind: text_kinds) -> Tuple[str, str, str]:
         if kind == text_kinds.TEX:
             content += r"Überlapp zwischen gleichen Tableaus mit gleichem $m_S$-Wert ist 1 (wird hier ausgelassen)\\"
         else:
-            content += r"Überlapp zwischen gleichen Tableaus mit gleichem mS-Wert ist 1 (wird hier ausgelassen)\n"
+            content += r"Überlapp zwischen gleichen Tableaus mit gleichem mS-Wert ist 1 (wird hier ausgelassen)"+"\n"
         content += r"hier informale Darstellung der Tableaus mit Spinfunktionen nach dem Schema: "
 
 

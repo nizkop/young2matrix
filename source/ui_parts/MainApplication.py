@@ -1,8 +1,10 @@
+from typing import Union, Dict, List
 
 from matplotlib import pyplot as plt
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QLabel, \
     QScrollArea, QStatusBar
 
+from source.texts.general_texts import get_general_text
 from source.ui_parts.get_latex_canvas import get_latex_canvas
 from source.ui_parts.ui_pages import ui_pages, get_page_name
 from source.ui_parts.settings.idea_config import update_language, get_language
@@ -33,10 +35,10 @@ class MainApplication(QMainWindow):
         self.setStatusBar(self.statusBar)#(shown at the bottom of the screen)
         self.statusBar.setStyleSheet("color: black;")
 
-        self.setStyleSheet(f"background-color: {self.color};")
+        self.setStyleSheet(f"background-color: {self.color}; font-size: 15pt;")
 
-        self.current_page = 0
-        self.pages = [
+        self.current_page:int = 0
+        self.pages: List[Dict] = [
             {"sign": "start" if get_language()=="en" else "Start",
                     "index": ui_pages.START, "function": self.load_main_page, "parent": None,
                     "buttons": [ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS, ui_pages.DOWNLOAD]},
@@ -66,35 +68,42 @@ class MainApplication(QMainWindow):
         for p in range(len(self.pages)):
             self.pages[p]["name"] = get_page_name(self.pages[p]["index"])
 
-        self.label = QLabel()
-        self.label.setStyleSheet("color: black;")
-        self.label.setStyleSheet("background-color: transparent;")
-        self.scroll_layout.addWidget(self.label)# inserts a bit of vertical space (thereby not in create_widget)
-
-        self.create_language_buttons()
-
+        self.clear_screen()
+        # self.label = QLabel()
+        # self.label.setStyleSheet("color: black;")
+        # self.label.setStyleSheet("background-color: transparent;")
+        # self.scroll_layout.addWidget(self.label)# inserts a bit of vertical space (thereby not in create_widget)
+        #
+        # self.create_language_buttons()
         self.create_widgets()
+
+    def change_status_message(self, message:Union[str,None]=None) -> None:
+        """
+        giving/deleting an information at the bottom of the screen (when the mouse hovers above an item)
+        :param message: information (status bar is reset to an empty space in case the message is None)
+        """
+        if message is None or len(message) == 0:
+            self.statusBar.clearMessage()
+            self.statusBar.setStyleSheet(f"background-color: {self.color}; color: black;")
+        else:
+            self.statusBar.showMessage(message)
+            self.statusBar.setStyleSheet(f"background-color: darkgreen; color: white;")
 
 
     def create_language_buttons(self) -> None:
         """ adding a button, that may change the language settings, to the top of the screen """
-        if get_language() == "en":
-            choice = "de"
-            info ="change language to German"
-        else:
-            choice = "en"
-            info = "Sprache zu Englisch ändern"
+        choice = "de" if get_language() == "en" else "en"
 
         self.language_button = QPushButton(choice)
-        self.language_button.setStyleSheet(f"background-color: {self.color}; color: black")
+        self.language_button.setStyleSheet(f"background-color: {self.color}; color: black; font-weight: bold;")
         self.language_button.clicked.connect(lambda: self.set_language(choice))
         self.language_button.setFixedSize(30, 30)
         self.language_button.move(5, 5)
         self.scroll_layout.addWidget(self.language_button)
 
-        self.language_button.setToolTip(info)
-        self.language_button.enterEvent = lambda event, button= self.language_button: self.statusBar.showMessage( self.language_button.toolTip())
-        self.language_button.leaveEvent = lambda event: self.statusBar.clearMessage()
+        self.language_button.setToolTip(get_general_text("language_change"))
+        self.language_button.enterEvent = lambda event, button= self.language_button: self.change_status_message( self.language_button.toolTip())
+        self.language_button.leaveEvent = lambda event: self.change_status_message()
 
     def set_language(self, language: str) -> None:
         """ updating the language (as it was changed by the user)
@@ -128,15 +137,14 @@ class MainApplication(QMainWindow):
                     sign = page_info["sign"]
 
                 button = QPushButton(sign)
-                button.setStyleSheet(f"background-color: {self.color}; color: black")
+                button.setStyleSheet(f"background-color: {self.color}; color: black; font-weight: bold;")
                 button.clicked.connect(lambda _, index=page_info["index"].value: self.open_page(index))
                 button.setToolTip(page_info["name"])
-                button.enterEvent = lambda event, button=button: self.statusBar.showMessage(button.toolTip())
-                button.leaveEvent = lambda event: self.statusBar.clearMessage()
+                button.enterEvent = lambda event, button=button: self.change_status_message(button.toolTip())
+                button.leaveEvent = lambda event: self.change_status_message()
 
                 button_layout.addWidget(button)
                 self.non_basics.append(button)
-                print("button added to self.non_basics")
 
         self.scroll_layout.addLayout(button_layout)
         self.non_basics.append(button_layout)
@@ -174,15 +182,46 @@ class MainApplication(QMainWindow):
         changing a page by removing the old content and adding the new
         :param index: new page number
         """
-        self.clearLayout()
+        self.clear_screen()
         self.current_page = index
         self.create_widgets()
 
 
-    def clearLayout(self) -> None:
+    def clear_screen(self) -> None:
         """ Clearing the current layout and its sublayouts """
-        print("clear layout",flush=True)
-        for i in range(len(self.non_basics)-1,-1,-1):
-            item = self.non_basics[i]
-            item.deleteLater()
-            del self.non_basics[i]
+        # # print("clear layout",flush=True)
+        # for i in range(len(self.non_basics)-1,-1,-1):
+        #     item = self.non_basics[i]
+        #     if item is not None:
+        #         if isinstance(item, QHBoxLayout) or isinstance(item, QVBoxLayout):
+        #             # remove content first:
+        #             self.clear_layout(item)
+        #         try:
+        #             item.deleteLater()
+        #             del self.non_basics[i]
+        #         except:
+        #             pass # already deleted
+        self.clear_layout()# whatever is left (like spacers)
+
+        self.label = QLabel()
+        self.label.setStyleSheet("color: black;")
+        self.label.setStyleSheet("background-color: transparent;")
+        self.scroll_layout.addWidget(self.label)  # inserts a bit of vertical space (thereby not in create_widget)
+        self.create_language_buttons()
+
+
+    def clear_layout(self, layout: Union[QHBoxLayout, QVBoxLayout, None]=None) -> None:
+        if layout == None:
+            layout = self.scroll_layout
+
+        while layout.count():
+            while layout.count():
+                item = layout.takeAt(0)
+                widget = item.widget()
+                if widget:
+                    widget.deleteLater()
+                else:
+                    sublayout = item.layout()
+                    if sublayout:
+                        self.clear_layout(sublayout)
+

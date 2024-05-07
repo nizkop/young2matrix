@@ -1,8 +1,10 @@
 
 import sys
 from typing import Union
+
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QWidget, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
-    QProgressBar, QPushButton, QWidgetItem, QLayoutItem, QVBoxLayout
+    QProgressBar, QPushButton, QVBoxLayout, QSpacerItem
 
 from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
@@ -14,7 +16,7 @@ from source.texts.get_title_spin import get_title_spin
 from source.texts.get_title_youngtableaus import get_title_multiplied_youngtableaus
 from source.ui_parts.MainApplication import MainApplication
 from source.ui_parts.DownloadThread import DownloadThread
-from source.ui_parts.settings.idea_config import get_language
+
 
 
 class ApplicationWindows(MainApplication):
@@ -31,7 +33,6 @@ class ApplicationWindows(MainApplication):
 
     def open_page(self, page_number:int) -> None:
         """ checking the input and (if the input is okay) loading another page """
-        print("open_page:", page_number)
         # getting and checking the input information:
         if page_number == 0:
             return self.change_page(page_number)
@@ -60,10 +61,7 @@ class ApplicationWindows(MainApplication):
                 warning_text = get_general_text("warning_wrong_type")
             if warning_text:
                 warning_box = QMessageBox()
-                if get_language() == "de":
-                    warning_box.setWindowTitle("Warnung")
-                else:
-                    warning_box.setWindowTitle("warning")
+                warning_box.setWindowTitle(get_general_text("warning"))
                 warning_box.setText(warning_text)
                 warning_box.setStyleSheet(f"color: black; background-color: {self.color}; font-weight: bold;")
                 warning_box.exec_()
@@ -73,6 +71,10 @@ class ApplicationWindows(MainApplication):
 
 
     def set_basic_permutation_attributes(self, input_value:int) -> None:
+        """
+        using the input to set the group object on which calculations may occur
+        :param input_value: number of permutation group, as given in the input box
+        """
         if (self.permutation_group_no is not None and self.permutation_group is not None and
                 self.permutation_group_no == input_value and self.permutation_group.permutation_group == input_value):
             return
@@ -82,7 +84,6 @@ class ApplicationWindows(MainApplication):
 
     def update_page(self) -> None:
         """ adding content to layout """
-        print("update page Windows:", self.current_page)
         try:
             page_info = next((page_dict for page_dict in self.pages
                               if page_dict.get("index").value == self.current_page), None)
@@ -158,69 +159,88 @@ class ApplicationWindows(MainApplication):
                 self.add_equation(equation)
 
 
+    # def load_main_page(self) -> None:
+    #     permutation_group_input = QVBoxLayout()
+    #     # permutation_group_input.addStretch(1)
+    #     permutation_group_input.setAlignment(Qt.AlignCenter)
+    #     permutation_group_label = QLabel(get_general_text("input_command"))
+    #     permutation_group_label.setStyleSheet("color: black;")
+    #     permutation_group_input.addWidget(permutation_group_label)
+    #     self.input_box = QLineEdit()
+    #     self.input_box.setStyleSheet("color: black;")
+    #     self.input_box.setToolTip(get_general_text("input_line_command"))
+    #     self.input_box.enterEvent = lambda event, input=input: self.change_status_message(self.input_box.toolTip())
+    #     self.input_box.leaveEvent = lambda event: self.change_status_message()
+    #
+    #     permutation_group_input.addWidget(self.input_box)
+    #
+    #     # permutation_group_input.addStretch(1)
+    #     self.scroll_layout.addLayout(permutation_group_input)
+    #
+    #     self.non_basics.append(permutation_group_label)
+    #     self.non_basics.append(permutation_group_input)
+    #     self.non_basics.append(self.input_box)
+
     def load_main_page(self) -> None:
-        print("load_main_page")
-        permutation_group_input = QHBoxLayout()
+        permutation_group_input = QVBoxLayout()
+        # permutation_group_input.addStretch(1)#input not completely at the too (but language button)
+        permutation_group_input.setAlignment(Qt.AlignCenter)
+        spacer_top = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        permutation_group_input.addItem(spacer_top)
+
+        hbox = QHBoxLayout()# to put label and input in 1 line
+        hbox.setAlignment(Qt.AlignCenter)
+
         permutation_group_label = QLabel(get_general_text("input_command"))
         permutation_group_label.setStyleSheet("color: black;")
-        permutation_group_input.addWidget(permutation_group_label)
+        hbox.addWidget(permutation_group_label)
+
         self.input_box = QLineEdit()
         self.input_box.setStyleSheet("color: black;")
-        permutation_group_input.addWidget(self.input_box)
+        self.input_box.setToolTip(get_general_text("input_line_command"))
+        self.input_box.enterEvent = lambda event, input=input: self.change_status_message(self.input_box.toolTip())
+        self.input_box.leaveEvent = lambda event: self.change_status_message()
+        hbox.addWidget(self.input_box)
 
-        # spacer to center input line
-        spacer = QWidget()
-        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        permutation_group_input.addWidget(spacer)
-
+        permutation_group_input.addLayout(hbox)
+        # permutation_group_input.addStretch(1)# input not completely at the bottom
+        spacer_top = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        permutation_group_input.addItem(spacer_top)
         self.scroll_layout.addLayout(permutation_group_input)
-        self.scroll_layout.setStretch(self.scroll_layout.indexOf(spacer),1)
-
         self.non_basics.append(permutation_group_label)
-        self.non_basics.append(permutation_group_input)
         self.non_basics.append(self.input_box)
 
 
     def load_download(self) -> None:
         """ initializes download and goes back to main page """
-        spacer = QWidget()
-        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-
-        self.progress_bar = QProgressBar()
-        self.progress_bar.setRange(0, 100)
-        self.progress_bar.setStyleSheet("color: black;")
-        self.scroll_layout.addWidget(spacer)
-        self.scroll_layout.addWidget(self.progress_bar)
-        self.scroll_layout.addWidget(spacer)
-        self.non_basics.append(self.progress_bar)
-        self.non_basics.append(spacer)
-
-        self.download_thread = DownloadThread(self.permutation_group, self.scroll_layout)
-        self.download_thread.update_progress.connect(self.update_progress_bar)
-        self.download_thread.start()
-
-
-    def load_download(self) -> None:
-        """ initializes download and goes back to main page """
-        spacer = QWidget()#<- for vertical centering
-        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        label = QLabel(get_general_text("download_start_info1")+str(self.permutation_group_no)+get_general_text("download_start_info2")+"\n")
+        label.setStyleSheet("color: black;")
+        self.non_basics.append(label)
 
         self.progress_bar = QProgressBar()#<- bar to show the progress
         self.progress_bar.setRange(0, 100)
         self.progress_bar.setStyleSheet("color: black;")
 
         download_layout = QVBoxLayout()
-        download_layout.addWidget(spacer)
+        download_layout.setAlignment(Qt.AlignCenter)
+        spacer_top = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        download_layout.addItem(spacer_top)
+
+
+        download_layout.addWidget(label)
         download_layout.addWidget(self.progress_bar)
-        download_layout.addWidget(spacer)
+        spacer_top = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        download_layout.addItem(spacer_top)
         # add new layout:
         self.scroll_layout.addLayout(download_layout)
-        self.non_basics.append(self.progress_bar)
+        self.non_basics.append(download_layout)
 
         # start download thread:
-        self.download_thread = DownloadThread(self.permutation_group, self.scroll_layout)
+        self.download_thread = DownloadThread(self.permutation_group, self.scroll_layout, background_color=self.color)
+        self.download_thread.enable_all_buttons(activated=False)
         self.download_thread.update_progress.connect(self.update_progress_bar)
         self.download_thread.start()
+
 
 
     def update_progress_bar(self, value:int, message:str) -> None:
@@ -241,8 +261,8 @@ class ApplicationWindows(MainApplication):
         self.non_basics.append(label)
         self.add_equation(equation)
         for i in self.permutation_group.overlap:
-            if i['kind'] == spin_vs_spatial_kind.SPIN and len(i['result'].parts) == 1 and i['result'].parts[
-                0].factor != 0 and i['result'].parts[0].factor != 1:
+            if (i['kind'] == spin_vs_spatial_kind.SPIN and len(i['result'].parts) == 1 and
+                    i['result'].parts[0].factor != 0 and i['result'].parts[0].factor != 1):
                 equation_tex = get_dirac_notation(str(i['bra_tableau']), str(i['ket_tableau']), kind=text_kinds.TEX)
                 equation_tex += r"_{\sigma }"
                 equation_tex += "=" + get_dirac_notation(str(i['bra']), str(i['ket']), kind=text_kinds.TEX)
@@ -290,7 +310,7 @@ class ApplicationWindows(MainApplication):
 
     def load_hamilton_spin(self) -> None:
         label = QLabel(get_general_text("h_info_spin")+"\n\n")
-        label.setStyleSheet("color: red; font-weight: bold;")
+        label.setStyleSheet("color: darkred; font-weight: bold;")
         self.scroll_layout.addWidget(label)
         self.non_basics.append(label)
 
