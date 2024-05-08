@@ -19,6 +19,19 @@ from source.young_tableau import young_tableau
 
 
 class permutation_group(object):
+    _instance = None # used as a singleton, limited to 1 instance at a time
+    _instance_count = 0
+    _max_instances = 1
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance_count >= cls._max_instances:
+            raise ValueError("to many permutation_group instances (at the same time)")
+        instance = super().__new__(cls)
+        cls._instance_count += 1
+        return instance
+    def __del__(self):
+        type(self)._instance_count -= 1
+
     def __init__(self, permutation_group:int=0):
         self.permutation_group: int = permutation_group
         self.tableaus : List[young_tableau] = []
@@ -299,12 +312,15 @@ class permutation_group(object):
 
 if __name__ == '__main__':
     p = permutation_group(3)
-    p.get_all_standard_tableaus()
+    # p.get_all_standard_tableaus()
     # p.print()
+    print(p)
+    del p
 
     # results = p.calculate_all_overlap_integrals()
     # for i in results:
     #     print(f"<{i['bra']}|{i['ket']}> = {i['result'].to_tex()}")
+    # p.get_overview_pdf()
 
-
-    p.get_overview_pdf()
+    p2 = permutation_group(1)
+    print(p2)

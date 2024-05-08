@@ -1,6 +1,5 @@
+from abc import abstractmethod
 from typing import Union, Dict, List
-
-from PyQt5.QtCore import Qt
 from matplotlib import pyplot as plt
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QLabel, \
     QScrollArea, QStatusBar
@@ -71,13 +70,36 @@ class MainApplication(QMainWindow):
             self.pages[p]["name"] = get_page_name(self.pages[p]["index"])
 
         self.clear_screen()
-        # self.label = QLabel()
-        # self.label.setStyleSheet("color: black;")
-        # self.label.setStyleSheet("background-color: transparent;")
-        # self.scroll_layout.addWidget(self.label)# inserts a bit of vertical space (thereby not in create_widget)
-        #
-        # self.create_language_buttons()
+
         self.create_widgets()
+
+    @abstractmethod
+    def load_main_page(self):
+        pass
+    @abstractmethod
+    def load_tableau_page(self):
+        pass
+    @abstractmethod
+    def load_spatial_page(self):
+        pass
+    @abstractmethod
+    def load_spin_page(self):
+        pass
+    @abstractmethod
+    def load_download(self):
+        pass
+    @abstractmethod
+    def load_overlap_spatial(self):
+        pass
+    @abstractmethod
+    def load_overlap_spin(self):
+        pass
+    @abstractmethod
+    def load_hamilton_spatial(self):
+        pass
+    @abstractmethod
+    def load_hamilton_spin(self):
+        pass
 
     def change_status_message(self, message:Union[str,None]=None) -> None:
         """
@@ -152,6 +174,7 @@ class MainApplication(QMainWindow):
 
         self.scroll_layout.addLayout(button_layout)
 
+    @abstractmethod
     def open_page(self, page_number:int) -> None:
         """
         to be implemented in sub-class
@@ -160,6 +183,7 @@ class MainApplication(QMainWindow):
         """
         return self.change_page(page_number)
 
+    @abstractmethod
     def update_page(self) -> None:
         # print("update_page", flush=True)
         formulas = [r"E = m \cdot c^ 2", r"\frac{1}{2}", "\\begin{array}{c}{1}\\end{array}", r"\bra{1}"]# test equations
@@ -214,4 +238,3 @@ class MainApplication(QMainWindow):
                     sublayout = item.layout()
                     if sublayout:
                         self.clear_layout(sublayout)
-

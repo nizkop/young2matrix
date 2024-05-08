@@ -79,6 +79,7 @@ class ApplicationWindows(MainApplication):
                 self.permutation_group_no == input_value and self.permutation_group.permutation_group == input_value):
             return
         self.permutation_group_no = input_value
+        del self.permutation_group # remove, to allow a new instance
         self.permutation_group = permutation_group(self.permutation_group_no)
 
 
