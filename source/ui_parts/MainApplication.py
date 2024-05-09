@@ -1,17 +1,24 @@
 from abc import abstractmethod
 from typing import Union, Dict, List
+
+from PyQt5 import QtGui
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor
 from matplotlib import pyplot as plt
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QLabel, \
-    QScrollArea, QStatusBar
+    QScrollArea, QStatusBar, QMessageBox, QToolButton
+from rich import palette
 
 from source.texts.general_texts import get_general_text
+from source.texts.get_page_information import get_page_information
 from source.ui_parts.get_latex_canvas import get_latex_canvas
 from source.ui_parts.ui_pages import ui_pages, get_page_name
 from source.ui_parts.settings.idea_config import update_language, get_language
 
 
 class MainApplication(QMainWindow):
-    """ basic setup for application (only a parent class, because it would become to large to keep track) """
+    """ basic setup for application (only a parent class, because it would become to large to keep track)
+    = Subclass Responsibility """
     def __init__(self):
         super().__init__()
 
@@ -133,6 +140,33 @@ class MainApplication(QMainWindow):
 
         self.language_button.setParent(self)
 
+    def create_help_button(self) -> None:
+        help_button = QPushButton("?", self)
+        size = 30
+        help_button.setFixedSize(size, size)
+        help_button.move(740,10)
+        help_button.setStyleSheet(f"background-color: rgb(255, 150, 150); color: black; border-radius: {size//2}; border :   1px   solid   grey  ")# 50 % <-> circle
+        help_button.clicked.connect(self.show_info)
+        help_button.enterEvent = lambda event, button=help_button:self.change_status_message(get_general_text("help"))
+        help_button.leaveEvent = lambda event: self.change_status_message()
+        help_button.setParent(self)
+
+
+
+    def show_info(self):
+        # print("show info", flush=True)
+        page_info = next((page_dict for page_dict in self.pages
+                          if page_dict.get("index").value == self.current_page), None)
+        if page_info is None:
+            return self.change_page(0)
+        # print(self.current_page, page_info)
+        info = QMessageBox()
+        info.setWindowTitle("INFO")
+        info.setTextFormat(Qt.RichText)
+        info.setText(get_page_information(page_info["index"]))
+        info.setStyleSheet(f"color: black; background-color: {self.color};")
+        info.exec_()
+
 
     def set_language(self, language: str) -> None:
         """ updating the language (as it was changed by the user)
@@ -199,8 +233,7 @@ class MainApplication(QMainWindow):
         # print("add_equation", flush=True)
         canvas = get_latex_canvas(formula)
         self.scroll_layout.addWidget(canvas)
-
-        plt.close()
+        # plt.close()
 
 
     def change_page(self, index: int) -> None:
@@ -222,6 +255,7 @@ class MainApplication(QMainWindow):
         self.label.setStyleSheet("background-color: transparent;")
         self.scroll_layout.addWidget(self.label)  # inserts a bit of vertical space (thereby not in create_widget)
         self.create_language_buttons()
+        self.create_help_button()
 
 
     def clear_layout(self, layout: Union[QHBoxLayout, QVBoxLayout, None]=None) -> None:

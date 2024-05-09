@@ -3,7 +3,7 @@ import sys
 from typing import Union
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QWidget, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
+from PyQt5.QtWidgets import QApplication, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
     QProgressBar, QPushButton, QVBoxLayout, QSpacerItem
 
 from source.function_parts.get_dirac_notation import get_dirac_notation
@@ -62,7 +62,8 @@ class ApplicationWindows(MainApplication):
             if warning_text:
                 warning_box = QMessageBox()
                 warning_box.setWindowTitle(get_general_text("warning"))
-                warning_box.setText(warning_text)
+                warning_box.setTextFormat(Qt.RichText)
+                warning_box.setText(f"<b>{warning_text}</b>")
                 warning_box.setStyleSheet(f"color: black; background-color: {self.color}; font-weight: bold;")
                 warning_box.exec_()
                 return self.change_page(0)
@@ -239,6 +240,11 @@ class ApplicationWindows(MainApplication):
                 equation_tex += r"_{\Phi}"
                 equation_tex += f" = {i['result'].to_tex()}"
                 self.add_equation(equation_tex)
+        if len(self.permutation_group.overlap) == 0:
+            label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")#todo
+            label.setTextFormat(Qt.RichText)
+            self.scroll_layout.addWidget(label)
+
 
     def load_overlap_spatial(self) -> None:
         title, content = get_title_spatial(kind=text_kinds.TXT)
@@ -256,6 +262,10 @@ class ApplicationWindows(MainApplication):
                 equation_tex += r"_{\Phi}"
                 equation_tex += f" = {i['result'].to_tex()}"
                 self.add_equation(equation_tex)
+        if len(self.permutation_group.overlap) == 0:
+            label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")#todo
+            label.setTextFormat(Qt.RichText)
+            self.scroll_layout.addWidget(label)
 
 
     def load_hamilton_spatial(self) -> None:
@@ -272,6 +282,10 @@ class ApplicationWindows(MainApplication):
                 for addend in info["hamilton_integral_sum"]:
                     equation_tex += addend.to_tex()
                 self.add_equation(equation_tex)
+        if len(self.permutation_group.hamilton_integrals) == 0:
+            label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")#todo
+            label.setTextFormat(Qt.RichText)
+            self.scroll_layout.addWidget(label)
 
 
 
