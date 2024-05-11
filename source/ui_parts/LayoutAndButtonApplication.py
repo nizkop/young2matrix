@@ -1,7 +1,6 @@
 
 from typing import Union
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QPushButton, QScrollArea, QStatusBar, QMessageBox, QApplication
 
 
@@ -12,15 +11,19 @@ from source.ui_parts.settings.language_choices import language_choices
 from source.ui_parts.ui_pages import get_page_name
 from source.ui_parts.settings.idea_config import update_language, get_language
 from source.ui_parts.SettingsDialog import SettingsDialog
+from source.ui_parts.get_colored_icon_button import get_colored_icon_button
 
 
 class LayoutAndButtonApplication(QMainWindow):
     """ basic setup for application (only a parent class, because it would become too large to keep track)
-    = Subclass Responsibility """
+    = Subclass Responsibility;
+    this sets up the general structure and format of the screen, including the general buttons settings and info as well as the information bar at the bottom
+    (actual content in the middle of the screen is not added yet)
+    """
     def __init__(self):
         super().__init__()
 
-        self.color = color_styles.DARKMODE #color_styles.DEFAULT
+        self.color = color_styles.DEFAULT #color_styles.DEFAULT
         self.setGeometry(100, 100, 800, 600)
 
         self.central_widget = QWidget()
@@ -50,9 +53,11 @@ class LayoutAndButtonApplication(QMainWindow):
             # print("create_settings_button",flush=True)
             if self.settings_button is None:
                 self.settings_button = QPushButton()
-                self.settings_button.setIcon(QIcon("./source/ui_parts/settings/icons8-settings.svg"))
                 self.settings_button.setFixedSize(30, 30)
                 self.settings_button.move(5, 5)
+
+            self.settings_button = get_colored_icon_button(button=self.settings_button, file_path="./source/ui_parts/settings/icons8-settings.svg",
+                                                           color=self.color.value["settings"])
 
             self.settings_button.setStyleSheet(f"background-color: {self.color.value['background']}; color: {self.color.value['text']}; font-weight: bold; font-size: 15pt;")
             self.settings_button.clicked.connect(self.open_settings)
@@ -74,6 +79,7 @@ class LayoutAndButtonApplication(QMainWindow):
                         self.color = color
                         self.setStyleSheet(f"background-color: {color.value['background']};")
                         self.change_status_message()  # change background color in case of changed color
+                        self.create_settings_button()
 
             selected_language = dialog.selected_language()
             self.set_language(selected_language)

@@ -14,17 +14,18 @@ plt.rcParams['text.latex.preamble'] = r'''
 '''
 
 
-def get_latex_canvas(eq:str) -> FigureCanvas:#todo scroll/size
+def get_latex_canvas(eq:str, color:str) -> FigureCanvas:#todo scroll/size
     """
     building a suitable object for the ui from a string to display an equation
     :param eq: latex formatted equation including latex commands such as \cdot, \bra, \frac
+    :param color: color of the text/lines/symbols in the equation (usually black)
     :return: figure of the equation
     """
     eq = eq.replace("_",r"\_")
 
     figure = plt.figure()
     ax = figure.add_subplot(111)
-    ax.text(0.05, 0.5, rf"\[{eq}\]", horizontalalignment='left', verticalalignment='center', fontsize=20)
+    ax.text(0.05, 0.5, rf"\[{eq}\]", color=color, horizontalalignment='left', verticalalignment='center', fontsize=20)
     ax.axis('off')
     figure.patch.set_facecolor('none')
     plt.tight_layout(pad=0.2)

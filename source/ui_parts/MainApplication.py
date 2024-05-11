@@ -1,51 +1,21 @@
 from abc import abstractmethod
 from typing import Union, Dict, List
 
-from PyQt5 import QtGui
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor
-from matplotlib import pyplot as plt
-from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QLabel, \
-    QScrollArea, QStatusBar, QMessageBox, QToolButton
-from rich import palette
-
-from source.texts.general_texts import get_general_text
-from source.texts.get_page_information import get_page_information
+from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QPushButton
 from source.ui_parts.LayoutAndButtonApplication import LayoutAndButtonApplication
-from source.ui_parts.color_styles import color_styles
 from source.ui_parts.get_latex_canvas import get_latex_canvas
 from source.ui_parts.ui_pages import ui_pages, get_page_name
-from source.ui_parts.settings.idea_config import update_language, get_language
+from source.ui_parts.settings.idea_config import get_language
 
 
 class MainApplication(LayoutAndButtonApplication):
-    """ basic setup for application (only a parent class, because it would become to large to keep track)
-    = Subclass Responsibility """
+    """ class in-between
+    - LayoutAndButtonApplication (which is more general)
+    - and ApplicationWindows (which
+     -> here a basic stucture of the pages and methods for changing are given """
     def __init__(self):
         super().__init__()
-
         self.setWindowTitle("young2matrix")
-        # self.color = color_styles.DARKMODE #color_styles.DEFAULT
-        # self.setGeometry(100, 100, 800, 600)
-
-        # self.central_widget = QWidget()
-        # self.setCentralWidget(self.central_widget)
-        # self.layout = QVBoxLayout(self.central_widget)
-        # self.layout.setContentsMargins(0, 0, 0, 0)
-
-        # self.scroll_area = QScrollArea()
-        # self.scroll_widget = QWidget()
-        # self.scroll_layout = QVBoxLayout(self.scroll_widget)
-        # self.scroll_area.setWidgetResizable(True)
-        # self.scroll_area.setWidget(self.scroll_widget)
-        # self.layout.addWidget(self.scroll_area)
-        # self.language_button = None
-
-        # self.statusBar = QStatusBar()#information about button functions
-        # self.setStatusBar(self.statusBar)#(shown at the bottom of the screen)
-        # self.statusBar.setStyleSheet(f"color: {self.color.value['text']};")
-
-        # self.setStyleSheet(f"background-color: {self.color.value['background']}; font-size: 15pt;")
 
         self.current_page:int = 0
         self.pages: List[Dict] = [
@@ -78,8 +48,6 @@ class MainApplication(LayoutAndButtonApplication):
         for p in range(len(self.pages)):
             self.pages[p]["name"] = get_page_name(self.pages[p]["index"])
 
-        # self.clear_screen()
-
         self.create_widgets()
 
     @abstractmethod
@@ -109,79 +77,6 @@ class MainApplication(LayoutAndButtonApplication):
     @abstractmethod
     def load_hamilton_spin(self):
         pass
-
-    # def change_status_message(self, message:Union[str,None]=None) -> None:
-    #     """
-    #     giving/deleting an information at the bottom of the screen (when the mouse hovers above an item)
-    #     :param message: information (status bar is reset to an empty space in case the message is None)
-    #     """
-    #     if message is None or len(message) == 0:
-    #         self.statusBar.clearMessage()
-    #         self.statusBar.setStyleSheet(f"background-color: {self.color.value['background']}; color: {self.color.value['text']};")
-    #     else:
-    #         self.statusBar.showMessage(message)
-    #         self.statusBar.setStyleSheet(f"background-color: {self.color.value['status_background']}; color: {self.color.value['status_text']};")
-    #
-
-    # def create_language_buttons(self) -> None:
-    #     """ adding a button, that may change the language settings, to the top of the screen """
-    #     choice = "de" if get_language() == "en" else "en"
-    #     if self.language_button is None:
-    #         self.language_button = QPushButton(choice)
-    #         self.language_button.setFixedSize(30, 30)
-    #         self.language_button.move(5, 5)
-    #     else:
-    #         self.language_button.setText(choice)
-    #
-    #     self.language_button.setStyleSheet(f"background-color: {self.color.value['background']}; color: {self.color.value['text']}; font-weight: bold;")
-    #     self.language_button.clicked.connect(lambda: self.set_language(choice))
-    #
-    #     self.language_button.setToolTip(get_general_text("language_change"))
-    #     self.language_button.enterEvent = lambda event, button= self.language_button: self.change_status_message( self.language_button.toolTip())
-    #     self.language_button.leaveEvent = lambda event: self.change_status_message()
-    #
-    #     self.language_button.setParent(self)
-    #
-    # def create_colortheme_button(self):
-    #
-    #
-    # def create_help_button(self) -> None:
-    #     help_button = QPushButton("?", self)
-    #     size = 30
-    #     help_button.setFixedSize(size, size)
-    #     help_button.move(740,10)
-    #     help_button.setStyleSheet(f"background-color: {self.color.value['info_background']}; color: {self.color.value['text']}; border-radius: {size//2}; border :   1px   solid   grey  ")# 50 % <-> circle
-    #     help_button.clicked.connect(self.show_info)
-    #     help_button.enterEvent = lambda event, button=help_button:self.change_status_message(get_general_text("help"))
-    #     help_button.leaveEvent = lambda event: self.change_status_message()
-    #     help_button.setParent(self)
-
-
-
-    # def show_info(self):
-    #     # print("show info", flush=True)
-    #     page_info = next((page_dict for page_dict in self.pages
-    #                       if page_dict.get("index").value == self.current_page), None)
-    #     if page_info is None:
-    #         return self.change_page(0)
-    #     # print(self.current_page, page_info)
-    #     info = QMessageBox()
-    #     info.setWindowTitle("INFO")
-    #     info.setTextFormat(Qt.RichText)
-    #     info.setText(get_page_information(page_info["index"]))
-    #     info.setStyleSheet(f"color: {self.color.value['text']}; background-color: {self.color.value['background']};")
-    #     info.exec_()
-
-
-    # def set_language(self, language: str) -> None:
-    #     """ updating the language (as it was changed by the user)
-    #     :param language: abbreviation for the new language ('en' or 'de')
-    #     """
-    #     update_language(language)
-    #     for p in range(len(self.pages)):# update pages names
-    #         self.pages[p]["name"] = get_page_name(self.pages[p]["index"])
-    #     self.create_language_buttons()
-    #     self.open_page(self.current_page)
 
     def create_widgets(self) -> None:
         """
@@ -236,7 +131,7 @@ class MainApplication(LayoutAndButtonApplication):
         :param formula: latex-formatted equation, e.g. r"\frac{1}{2} \cdot \pi"
         """
         # print("add_equation", flush=True)
-        canvas = get_latex_canvas(formula)
+        canvas = get_latex_canvas(eq=formula, color=self.color.value["text"])
         self.scroll_layout.addWidget(canvas)
         # plt.close()
 
