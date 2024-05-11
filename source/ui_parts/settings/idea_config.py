@@ -16,6 +16,8 @@ def update_language(language:str) -> None:
     change the current language (in the configuration file, so that the change lasts)
     :param language: abbreviation of the wanted language
     """
+    if language not in ["en", "de"]:
+        raise Exception("wrong format for language choice")
     config = load_config()
     config['language'] = language
     with open(CONFIG_FILE, 'w') as file:
@@ -24,7 +26,7 @@ def update_language(language:str) -> None:
 
 def get_language() -> str:
     """ get current language
-    :return: abbreviation of the current language """
+    :return: abbreviation of the current language (in case of error: default_language) """
     return load_config().get('language', 'default_language')
 
 

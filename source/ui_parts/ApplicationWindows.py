@@ -31,6 +31,8 @@ class ApplicationWindows(MainApplication):
         self.permutation_group_no: Union[None, int] = None
 
 
+
+
     def open_page(self, page_number:int) -> None:
         """ checking the input and (if the input is okay) loading another page """
         # getting and checking the input information:
@@ -49,7 +51,7 @@ class ApplicationWindows(MainApplication):
                     # double check before calculating too much (because high numbers might fry the computer)
                     warning_box = QMessageBox()
                     warning_box.setText(get_general_text("check_big_data"))
-                    warning_box.setStyleSheet(f"color: black; background-color: {self.color}; font-weight: bold;")
+                    warning_box.setStyleSheet(f"color: {self.color.value['text']}; background-color: {self.color.value['background']}; font-weight: bold;")
                     yes_button = QPushButton(get_general_text("yes"))
                     no_button = QPushButton(get_general_text("no"))
                     warning_box.addButton(yes_button, QMessageBox.YesRole)
@@ -64,7 +66,7 @@ class ApplicationWindows(MainApplication):
                 warning_box.setWindowTitle(get_general_text("warning"))
                 warning_box.setTextFormat(Qt.RichText)
                 warning_box.setText(f"<b>{warning_text}</b>")
-                warning_box.setStyleSheet(f"color: black; background-color: {self.color}; font-weight: bold;")
+                warning_box.setStyleSheet(f"color: {self.color.value['text']}; background-color: {self.color.value['background']}; font-weight: bold;")
                 warning_box.exec_()
                 return self.change_page(0)
             self.set_basic_permutation_attributes(input_value=input_value)
@@ -85,7 +87,7 @@ class ApplicationWindows(MainApplication):
 
 
     def update_page(self) -> None:
-        """ adding content to layout """
+        """ adding content (in between general buttons at the top and information bar at the bottom) to layout """
         try:
             page_info = next((page_dict for page_dict in self.pages
                               if page_dict.get("index").value == self.current_page), None)
@@ -122,7 +124,7 @@ class ApplicationWindows(MainApplication):
                     group_empty = False
             if group_empty:
                 label = QLabel(get_general_text("spin_2rows"))
-                label.setStyleSheet("color: black;")
+                label.setStyleSheet(f"color: {self.color.value['text']};")
                 self.scroll_layout.addWidget(label)
 
 
@@ -142,12 +144,12 @@ class ApplicationWindows(MainApplication):
                     group_empty = False
             if group_empty:
                 label = QLabel(get_general_text("spatial_2columns"))
-                label.setStyleSheet("color: black;")
+                label.setStyleSheet(f"color: {self.color.value['text']};")
                 self.scroll_layout.addWidget(label)
 
     def load_tableau_page_multiplied(self) -> None:
         label = QLabel(":\n".join(get_title_multiplied_youngtableaus(kind=text_kinds.TXT)))
-        label.setStyleSheet("color: black;")
+        label.setStyleSheet(f"color: {self.color.value['text']};")
         self.scroll_layout.addWidget(label)
         for group in self.permutation_group.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.permutation_group.standard_tableaus):
             equation = group[0].get_shortend_symbol()["tex"] + ":"
@@ -168,11 +170,11 @@ class ApplicationWindows(MainApplication):
         hbox.setAlignment(Qt.AlignCenter)
 
         permutation_group_label = QLabel(get_general_text("input_command"))
-        permutation_group_label.setStyleSheet("color: black;")
+        permutation_group_label.setStyleSheet(f"color: {self.color.value['text']}; font-size: 15pt;")
         hbox.addWidget(permutation_group_label)
 
         self.input_box = QLineEdit()
-        self.input_box.setStyleSheet("color: black;")
+        self.input_box.setStyleSheet(f"color: {self.color.value['text']};")
         self.input_box.setToolTip(get_general_text("input_line_command"))
         self.input_box.enterEvent = lambda event, input=input: self.change_status_message(self.input_box.toolTip())
         self.input_box.leaveEvent = lambda event: self.change_status_message()
@@ -188,11 +190,11 @@ class ApplicationWindows(MainApplication):
     def load_download(self) -> None:
         """ initializes download and goes back to main page """
         label = QLabel(get_general_text("download_start_info1")+str(self.permutation_group_no)+get_general_text("download_start_info2")+"\n")
-        label.setStyleSheet("color: black;")
+        label.setStyleSheet(f"color: bla{self.color.value['text']}ck;")
 
         self.progress_bar = QProgressBar()#<- bar to show the progress
         self.progress_bar.setRange(0, 100)
-        self.progress_bar.setStyleSheet("color: black;")
+        self.progress_bar.setStyleSheet(f"color: {self.color.value['text']};")
 
         download_layout = QVBoxLayout()
         download_layout.setAlignment(Qt.AlignCenter)
@@ -208,7 +210,7 @@ class ApplicationWindows(MainApplication):
         self.scroll_layout.addLayout(download_layout)
 
         # start download thread:
-        self.download_thread = DownloadThread(self.permutation_group, self.scroll_layout, background_color=self.color)
+        self.download_thread = DownloadThread(self.permutation_group, self.scroll_layout, background_color=self.color.value['background'])
         self.download_thread.enable_all_buttons(activated=False)
         self.download_thread.update_progress.connect(self.update_progress_bar)
         self.download_thread.start()
@@ -228,7 +230,7 @@ class ApplicationWindows(MainApplication):
     def load_overlap_spin(self) -> None:
         title, content, equation = get_title_spin(kind=text_kinds.TXT)
         label = QLabel(title + "\n" + content)
-        label.setStyleSheet("color: black;")
+        label.setStyleSheet(f"color: {self.color.value['text']};")
         self.scroll_layout.addWidget(label)
         self.add_equation(equation)
         for i in self.permutation_group.overlap:
@@ -249,7 +251,7 @@ class ApplicationWindows(MainApplication):
     def load_overlap_spatial(self) -> None:
         title, content = get_title_spatial(kind=text_kinds.TXT)
         label = QLabel(title+"\n"+content)
-        label.setStyleSheet("color: black;")
+        label.setStyleSheet(f"color: {self.color.value['text']};")
         self.scroll_layout.addWidget(label)
         self.permutation_group.calculate_all_overlap_integrals()
         for i in self.permutation_group.overlap:
@@ -270,7 +272,7 @@ class ApplicationWindows(MainApplication):
 
     def load_hamilton_spatial(self) -> None:
         label = QLabel("Hamiltonmatrixelemente für die Raumorbitale"+"\n")
-        label.setStyleSheet("color: black;")
+        label.setStyleSheet(f"color: {self.color.value['text']};")
         self.scroll_layout.addWidget(label)
         self.permutation_group.calculate_all_hamilton_integrals()
         for info in self.permutation_group.hamilton_integrals:

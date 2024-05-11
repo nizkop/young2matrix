@@ -19,8 +19,13 @@ def get_general_text(key:str) -> str:
             "spatial_2columns": "(Bacause spatial tableaus have to be adjoint to the spin tableaus" +
                                 " (and for them only two functions can be anti symmetric at most), " +
                                 "more than two columns are impossible.)",
+            "too_small_for_overlap": "The permutation group is too small to lead to non-trivial combinations of basis functions.",
 
             # solely UI:
+            "settings_change": "change setting (language/design).",
+            "choose_language": "choose a language:",
+            "choose_color": "change the color scheme:",
+            "help": "What is happening here?",
             "download_start_info1": "You have started the download for permutation group ",
             "download_start_info2": ".\n\nPlease be patient.",
             "language_change": "change language to German",
@@ -44,8 +49,13 @@ def get_general_text(key:str) -> str:
             "spatial_2columns": "(Da die Raum-Tableaus adjoint zu den Spin-Tableaus sein müssen"+
                          " (und dort nur maximal 2 Funktionen antisymmetrisch sein können), "+
                          "sind nicht mehr als zwei Spalten möglich.)",
+            "too_small_for_overlap": "Die Permutationsgruppe ist zu klein, um nicht-triviale Kombinationen von Basisfunktionen zu bilden. ",
 
             # solely UI:
+            "settings_change": "Einstellungen (Sprache/Design) ändern.",
+            "choose_language": "Sprachauswahl:",
+            "choose_color": "Anpassen der Farbgestaltung:",
+            "help": "Was passiert hier eigentlich?",
             "download_start_info1": "Sie haben den Download für die Permutationsgruppe ",
             "download_start_info2": " gestartet.\n\nBitte haben Sie einen Moment Geduld.",
             "language_change": "Sprache zu Englisch ändern",

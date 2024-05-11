@@ -48,7 +48,7 @@ class DownloadThread(QThread):
         for button in self.get_buttons_from_layout():
             button.setEnabled(activated)
             if activated:
-                button.setStyleSheet(f"background-color: {self.background_color}; color: black;") # reset
+                button.setStyleSheet(f"background-color: {self.background_color}; color: black;") # reset, todo: fit to color styles
             else:
                 button.setStyleSheet(f"background-color: #6fa287; color: gray;")
 
