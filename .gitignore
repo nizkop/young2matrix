@@ -10,3 +10,6 @@
 source/*pdf
 source/build/
 /venv/**
+./venv/**
+venv/
+/venv/
