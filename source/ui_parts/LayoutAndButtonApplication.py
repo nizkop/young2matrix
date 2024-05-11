@@ -87,29 +87,6 @@ class LayoutAndButtonApplication(QMainWindow):
             self.change_page(self.current_page)#update colors/...
 
 
-
-
-
-    # def create_language_buttons(self) -> None:
-    #     """ adding a button, that may change the language settings, to the top of the screen """
-    #     choice = "de" if get_language() == "en" else "en"
-    #     if self.language_button is None:
-    #         self.language_button = QPushButton(choice)
-    #         self.language_button.setFixedSize(30, 30)
-    #         self.language_button.move(5, 5)
-    #     else:
-    #         self.language_button.setText(choice)
-    #
-    #     self.language_button.setStyleSheet(f"background-color: {self.color.value['background']}; color: {self.color.value['text']}; font-weight: bold;")
-    #     self.language_button.clicked.connect(lambda: self.set_language(choice))
-    #
-    #     self.language_button.setToolTip(get_general_text("language_change"))
-    #     self.language_button.enterEvent = lambda event, button= self.language_button: self.change_status_message( self.language_button.toolTip())
-    #     self.language_button.leaveEvent = lambda event: self.change_status_message()
-    #
-    #     self.language_button.setParent(self)
-
-
     def create_help_button(self) -> None:
         help_button = QPushButton("?", self)
         size = 30
