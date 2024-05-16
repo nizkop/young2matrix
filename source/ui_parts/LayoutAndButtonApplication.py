@@ -50,17 +50,21 @@ class LayoutAndButtonApplication(QMainWindow):
 
     def create_settings_button(self):
             """ adding a button, that may change the settings, to the top of the screen """
-            # print("create_settings_button",flush=True)
+            print("create_settings_button",flush=True)
             if self.settings_button is None:
                 self.settings_button = QPushButton()
                 self.settings_button.setFixedSize(30, 30)
                 self.settings_button.move(5, 5)
 
+                # ! activates Button each time it is called -> potentially raising number of clicks needed to get
+                # rid of button if ths line is called every time create_settings_button is called:
+                self.settings_button.clicked.connect(self.open_settings)
+
             self.settings_button = get_colored_icon_button(button=self.settings_button, file_path="./source/ui_parts/settings/icons8-settings.svg",
                                                            color=self.color.value["settings"])
 
             self.settings_button.setStyleSheet(f"background-color: {self.color.value['background']}; color: {self.color.value['text']}; font-weight: bold; font-size: 15pt;")
-            self.settings_button.clicked.connect(self.open_settings)
+
 
             self.settings_button.setToolTip(get_general_text("settings_change"))
             self.settings_button.enterEvent = lambda event, button= self.settings_button: self.change_status_message( self.settings_button.toolTip())
@@ -70,7 +74,6 @@ class LayoutAndButtonApplication(QMainWindow):
 
     def open_settings(self):
         # print("open_settings",flush=True)
-        # todo: prevent self.settings_button.clicked.connect(self.open_settings) after clicking ok
         dialog = SettingsDialog(self.color)
         if dialog.exec_():
             selected_color = dialog.selected_color()
@@ -80,12 +83,13 @@ class LayoutAndButtonApplication(QMainWindow):
                         self.color = color
                         self.setStyleSheet(f"background-color: {color.value['background']};")
                         self.change_status_message()  # change background color in case of changed color
-                        self.create_settings_button()
+                        # self.create_settings_button()
 
             selected_language = dialog.selected_language()
             self.set_language(selected_language)
 
             self.change_page(self.current_page)#update colors/...
+            # self.settings_button.clicked.connect(self.open_settings)
 
 
 

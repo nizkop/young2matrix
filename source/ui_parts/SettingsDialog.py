@@ -14,7 +14,6 @@ class SettingsDialog(QDialog):
         self.layout = QVBoxLayout()
         self.setStyleSheet(f"background-color: {colorscheme.value['background']}; color: {colorscheme.value['text']}; font-size: 15pt;")
 
-
         self.create_language_button()
         self.create_colorscheme_button()
         self.create_confirm_button()
@@ -38,7 +37,7 @@ class SettingsDialog(QDialog):
         self.input_language = QComboBox()
         for language in language_choices:
             self.input_language.addItem(language.value)
-        print([choice for choice in language_choices], [choice.name for choice in language_choices], get_language())
+        # print([choice for choice in language_choices], [choice.name for choice in language_choices], get_language())
         choice = [choice for choice in language_choices if choice.name == get_language()]
         if len(choice) == 0:
             choice = [language_choices.de]#default
@@ -53,10 +52,10 @@ class SettingsDialog(QDialog):
 
     def selected_color(self):
         """Returns selected color as string of name """
-        print("selected_color",flush=True)
+        # print("selected_color",flush=True)
         return self.input_colorscheme.currentText()
 
     def selected_language(self):
-        print("selected_language",flush=True)
+        # print("selected_language",flush=True)
         return self.input_language.currentText()
 
