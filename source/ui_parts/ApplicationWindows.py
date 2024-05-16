@@ -109,6 +109,9 @@ class ApplicationWindows(MainApplication):
         self.permutation_group.get_all_standard_tableaus()
         for equation in self.permutation_group.get_young_tableau_equations():
             self.add_equation(formula=equation)
+        #todo:
+        tst = (r"1 \cdot 2 = E \cdot c^2")
+        self.add_equation(tst)
 
     def load_spin_page(self) -> None:
         self.permutation_group.get_all_standard_tableaus()

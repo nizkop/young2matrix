@@ -22,13 +22,14 @@ def get_latex_canvas(eq:str, color:str) -> FigureCanvas:#todo scroll/size
     :return: figure of the equation
     """
     eq = eq.replace("_",r"\_")
-
+    # width=max((eq.count("\n")+1)*0.5,2.0)
+    # height=200
     figure = plt.figure()
     ax = figure.add_subplot(111)
     ax.text(0.05, 0.5, rf"\[{eq}\]", color=color, horizontalalignment='left', verticalalignment='center', fontsize=20)
     ax.axis('off')
-    figure.patch.set_facecolor('none')
-    plt.tight_layout(pad=0.2)
+    # figure.patch.set_facecolor('none')
+    plt.tight_layout(pad=0.2)#centering horizontally
 
     canvas = FigureCanvas(figure)
     # plt.show()

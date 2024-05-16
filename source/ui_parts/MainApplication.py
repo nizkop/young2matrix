@@ -1,11 +1,15 @@
 from abc import abstractmethod
 from typing import Union, Dict, List
 
+
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QPushButton
+from qtpy import QtCore
+
 from source.ui_parts.LayoutAndButtonApplication import LayoutAndButtonApplication
 from source.ui_parts.get_latex_canvas import get_latex_canvas
 from source.ui_parts.ui_pages import ui_pages, get_page_name
 from source.ui_parts.settings.idea_config import get_language
+from tst import determine_height_of_equation, fit_arrayheight_from_rownumber
 
 
 class MainApplication(LayoutAndButtonApplication):
@@ -132,6 +136,12 @@ class MainApplication(LayoutAndButtonApplication):
         """
         # print("add_equation", flush=True)
         canvas = get_latex_canvas(eq=formula, color=self.color.value["text"])
+
+        height = determine_height_of_equation(formula)
+        w, h = canvas.get_width_height()
+
+        canvas.setFixedSize(QtCore.QSize(w, height))
+
         self.scroll_layout.addWidget(canvas)
         # plt.close()
 
