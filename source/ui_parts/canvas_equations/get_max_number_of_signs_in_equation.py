@@ -8,7 +8,7 @@ def get_max_number_of_signs_in_equation(eq:str) -> int:
 
     # formula = formula.replace(" ", "")# is displayed in UI!
     formula = formula.replace(r"\\hline","")
-    formula = formula.replace(r"\\quad","pp").replace(r"\\qquad","ppp")#placeholders
+    formula = formula.replace(r"\\quad","p").replace(r"\\qquad","pp")#placeholders
     formula = formula.replace(r"\\cdot", "m")
     if len(formula) == 0:
         return 0
@@ -59,4 +59,17 @@ def get_max_number_of_signs_in_equation(eq:str) -> int:
 
 def fit_length_to_width(formula:str) -> int:
     number_of_relevant_signs = get_max_number_of_signs_in_equation(eq=formula)
-    return math.ceil(4.24 + 1.49 * number_of_relevant_signs)# next higher integer
+    if "begin{array}" in formula:
+        number_of_relevant_signs /= 20
+    return math.ceil(42.4 + 14.9 * number_of_relevant_signs)# next higher integer
+    # return 5+number_of_relevant_signs
+
+
+
+if __name__ == '__main__':
+    s = r"\begin{array}{|c|} \hline 1\\ \cline{1-1} 2\\ \cline{1-1} \end{array} \quad \frac{1}{\sqrt{2}} \left( + a_{1} \cdot b_{2}  - a_{2} \cdot b_{1}\right)"
+
+    no = get_max_number_of_signs_in_equation(s)
+    w = fit_length_to_width(s)
+
+    print("->", no, w)

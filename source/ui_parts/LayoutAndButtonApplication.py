@@ -70,6 +70,7 @@ class LayoutAndButtonApplication(QMainWindow):
 
     def open_settings(self):
         # print("open_settings",flush=True)
+        # todo: prevent self.settings_button.clicked.connect(self.open_settings) after clicking ok
         dialog = SettingsDialog(self.color)
         if dialog.exec_():
             selected_color = dialog.selected_color()
@@ -85,6 +86,7 @@ class LayoutAndButtonApplication(QMainWindow):
             self.set_language(selected_language)
 
             self.change_page(self.current_page)#update colors/...
+
 
 
     def create_help_button(self) -> None:

@@ -111,8 +111,8 @@ class ApplicationWindows(MainApplication):
             self.add_equation(formula=equation)
         #todo:
         # tst = r"\\begin{array}{|c|} \\hline 1\\\\ \\cline{1-1} \\end{array} "
-        tst = r"a=bkjhwerhgfhgkhwekjwhaasdfghjklgjggdfghjklhewertrkjhweraaa"
-        self.add_equation(tst)
+        # tst = r"a=bkjhwerhgfhgkhwekjwhaasdfghjklgjggdfghjklhewertrkjhweraaa"
+        # self.add_equation(tst)
 
     def load_spin_page(self) -> None:
         self.permutation_group.get_all_standard_tableaus()

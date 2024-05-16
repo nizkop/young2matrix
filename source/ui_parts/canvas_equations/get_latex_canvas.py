@@ -31,6 +31,7 @@ def get_latex_canvas(eq:str, color:str) -> FigureCanvas:#todo scroll/size
     # figure.patch.set_facecolor('none')
     plt.tight_layout(pad=0.2)#centering horizontally
 
+    # print(figure, figure.bbox )
     canvas = FigureCanvas(figure)
     # plt.show()
     plt.close(figure)

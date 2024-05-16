@@ -137,13 +137,13 @@ class MainApplication(LayoutAndButtonApplication):
         adding a line with an equation to the current screen/page
         :param formula: latex-formatted equation, e.g. r"\frac{1}{2} \cdot \pi"
         """
-        # print("add_equation", formula, flush=True)
+        print("add_equation", formula, flush=True)
         canvas = get_latex_canvas(eq=formula, color=self.color.value["text"])
 
         height = determine_height_of_equation(formula)
         width = fit_length_to_width(formula)
 
-        canvas.setFixedSize(QtCore.QSize(width*10, height))
+        canvas.setFixedSize(QtCore.QSize(width, height))
         self.scroll_layout.addWidget(canvas)
         # plt.close()
 

@@ -8,9 +8,18 @@ def get_page_information(page:ui_pages) -> str:
     language = get_language()
     if page == ui_pages.START:
         if language == "en":
-            return """
-            This is the start page. Here, you determine which permutation group you want to calculate. 
-            \n<b>What is a permutation group?</b>
+            return r"""
+            <p>This is the starting page, where you may determine, for which particular permutation group 
+            the calculations shall be carried out. </p> <br>
+            <b>What is a permutation group?</b>
+            <p>The group holding all n! permuations of a set of size n.</p> <br>    
+            <b>Why is this relevant?</b>
+            <p>
+            For example, the basic functions (that you need to calculate molecules) need to have fitting characteristics
+            depending on which irreducible representation they should belong to (s. symmetric / antisymmetric parts).
+            To construct this basic/basis functions with the accurate properties you can use young diagrams.</p>
+            <p>Additionally, if you see the behavior of the young tableaus, you can extrapolate it to the 
+            behavior of chemical systems. </p>
             """
         else:
             return r"""
@@ -28,6 +37,23 @@ def get_page_information(page:ui_pages) -> str:
             erkennbar und ggf. sind Rückschlüsse auf das chemische System möglich. </p>
             """
     if page == ui_pages.TABLEAUS:
+        if language == "en":
+            return """
+            <b>What is happening here? </b>
+            <p>To describe coupled electrons, spin functions are necessary. This spin functions need to be 
+            symmetric/antisymmetric, depending on the electrons, they describe. 
+            Young tableaus are able to visualize, which parts are symmetric and which parts are antisymmetric. </p> <br>
+            <b>What is a young tableau? </b>
+            <p>There are multiple elements in a young tableau; they are displayed next to eachother or above/below eachother.
+            This has different meaning: Boxes below eachother represent an antisymmetric combination,
+            boxes next to eachother say, that their elements behave symmetrically with regard to eachother. </p>
+            <p>The name young tableau is based on the basic form of a tableau: 
+            If the number of boxes is only increasing in each row and each column, 
+            this mathematical construct is called young diagram/standard tableau. 
+            To be precise, another requirement for this is, that the numbers start with 1 
+            and that they are increasing by one from there.
+            </p>
+            """
         return """
         <b>Worum geht es hier? </b>
         <p>Um gekoppelte Elektronen zu beschreiben, werden Spinfunktionen benötigt, 
@@ -39,9 +65,20 @@ def get_page_information(page:ui_pages) -> str:
         Kästchen untereinander stehen für eine antisymmetrische Kombination,
         wenn Kästchen nebeneinander liegen, verhalten sich ihre Elemente symmetrisch zueinander. </p>
         <p>Der Name Young-Tableau stammt von der Grundform: Wenn die Anzahl der Kästchen in einer Reihe und in einer 
-        Spalte jeweils nur zunimmt, wird dieses mathematische Konstrukt Young-Diagramm/Standard-Tableau genannt.</p>
+        Spalte jeweils nur zunimmt, wird dieses mathematische Konstrukt Young-Diagramm/Standard-Tableau genannt. 
+        Außerdem muss hierfür gelten, dass die Zahlen bei 1 beginnen und von dort in Einerschritten ansteigen. </p>
         """
     if page == ui_pages.MULTIPLIED_OUT_TABLEAUS:
+        if language == "en":
+            return """
+            <b> What are the displayed young tableaus here? </b>
+            <p>young tableaus are a visual display of the correlation between symmetric and antisymmetric function parts. 
+            Thereby this function parts can be multiplied out to form the meaning of the tableau as an arithmetic function. </p>
+            <b> How to interpret young tableaus?</b>
+            <p>
+            The single elements/boxes/electrons/whatever they should represent,
+            become indices of - for now - general functions a,b,c,... that build up the total function. </p>
+            """
         return """
         <b> Was sind die hier dargestellten Young-Tableaus? </b>
         <p>Young-Tableaus sind eine visuelle Darstellung der Zusammenhänge symmetrischer und 
@@ -54,6 +91,18 @@ def get_page_information(page:ui_pages) -> str:
         aus denen sich die Gesamtfunktion zusammensetzt. </p>
         """
     if page == ui_pages.SPIN:
+        if language == "en":
+            return """
+            <b>What is happening here? </b>
+            <p>If you want to build spin function, the total basis function has to be build from only two different functions: 
+            alpha (α) oder beta (β). This is, because electron are possessing either an alpha spin or a beta spin. 
+            There are not other possibilities. </p>
+            <b> What was calculated here? </b> 
+            <p> 
+            The general functions/function parts a,b,c,... were replaced by α or β. 
+            This screen shows what is left of the function afterwards; 
+            meaning which function parts have not cancelled each other.</p>
+            """
         return """
         <b>Worum geht es hier? </b>
         <p>Sollen Spinfunktionen ermittelt werden, besteht die gesamte Basisfunktion maximal aus zwei verschiedenen 
@@ -65,6 +114,19 @@ def get_page_information(page:ui_pages) -> str:
         Also die Teile, die sich nach dem Einsetzen nicht gegenseitig aufheben. </p>
         """
     if page == ui_pages.SPATIAL_FUNCTIONS:
+        if language == "en":
+            return """
+            <b>What is happening here? </b>
+            <p>To describe electrons within a molecule, it is necessary to consider the space they occupate.
+            Functions describing the occupational space of an electron, are called orbitals. 
+            But here, they are still represented by the general functions a,b,c,...
+             </p> </br>       
+            <b> What was calculated here? </b> 
+            <p> 
+            In this application the functions a,b,c,... are not replaced by specific orbitals, 
+            to keep the result generally valid. 
+            This is why the results for the spatial functions are the same than that of the multiplied out tableaus.</p>
+            """
         return """
         <b>Worum geht es hier? </b>
         <p>Um Elektronen in einem Molekül zu beschreiben, muss berücksichtigt werden, wie der Raum aussieht, 
@@ -78,6 +140,16 @@ def get_page_information(page:ui_pages) -> str:
         Daher entsprechen die Ergebnisse für die Raumfunktionen dem Allgemeinfall ausmultiplizierter Tableaus.</p>
         """
     if page == ui_pages.OVERLAP_SPIN or page == ui_pages.OVERLAP_SPATIAL:
+        if language == "en":
+            function_kind = "spin functions" if page == ui_pages.OVERLAP_SPIN else "spatial functions"
+            return f"""
+            <b>What is happening here?</b>
+            <p>If the {function_kind} are used as basis functions to calculate molecules,
+             combinations of them occur. 
+             If a function in an integral over the total space is multiplicatively combined with another function  
+             (without the interference of an operator acting on one of the functions)
+             this is called overlap/overlap integral. </p>
+            """
         function_kind = "Spinfunktionen" if page == ui_pages.OVERLAP_SPIN else "Raumfunktionen"
         return f"""
         <b>Worum geht es hier?</b>
@@ -88,7 +160,7 @@ def get_page_information(page:ui_pages) -> str:
         wird dies Überlapp/Überlappintegral genannt. </p>
         """
     if page == ui_pages.HAMILTON_SPIN or page == ui_pages.HAMILTON_SPATIAL:
-        return """
+        style = """
         <style>
         .operator {
             position: relative;
@@ -101,7 +173,21 @@ def get_page_information(page:ui_pages) -> str:
             left: 50%;
             transform: translateX(-50%);
         }
-    </style>
+        </style>
+        """
+        if language == "en":
+            return style + """
+                    <b>What is happening here? </b>
+                    <p> Quantum chemistry is calculating molecules by solving the (stationary) Schrödinger equation. 
+                    This equation combines the wave function (that is build from the prior found basis functions) and 
+                    the hamilton opterator <span class='operator'>H<span class='hat'>^</span></span>. 
+                    Basically, this adds the kinetic and potential energy to the to-be-calculated system/molecule. </p>
+                    <p> combinations of basis functions are called hamilton matrix elements, 
+                    when the hamilton operator is acting within the integral. </p>
+                    """
+
+
+        return style+"""
         <b>Worum geht es hier? </b>
         <p> Die Berechnung von Molekülen erfolgt in der Quantenchemie nach der (stationären) Schrödingergleichung. 
         Diese verbindet die Wellenfunktion (bestehend aus den bisher berechneten Basisfunktionen) mit dem sogenannten 
