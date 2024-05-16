@@ -6,10 +6,13 @@ from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QPushButton
 from qtpy import QtCore
 
 from source.ui_parts.LayoutAndButtonApplication import LayoutAndButtonApplication
-from source.ui_parts.get_latex_canvas import get_latex_canvas
+from source.ui_parts.canvas_equations.determine_height_of_equation import determine_height_of_equation
+from source.ui_parts.canvas_equations.get_latex_canvas import get_latex_canvas
+from source.ui_parts.canvas_equations.get_max_number_of_signs_in_equation import get_max_number_of_signs_in_equation, \
+    fit_length_to_width
 from source.ui_parts.ui_pages import ui_pages, get_page_name
 from source.ui_parts.settings.idea_config import get_language
-from tst import determine_height_of_equation, fit_arrayheight_from_rownumber
+
 
 
 class MainApplication(LayoutAndButtonApplication):
@@ -134,14 +137,13 @@ class MainApplication(LayoutAndButtonApplication):
         adding a line with an equation to the current screen/page
         :param formula: latex-formatted equation, e.g. r"\frac{1}{2} \cdot \pi"
         """
-        # print("add_equation", flush=True)
+        # print("add_equation", formula, flush=True)
         canvas = get_latex_canvas(eq=formula, color=self.color.value["text"])
 
         height = determine_height_of_equation(formula)
-        w, h = canvas.get_width_height()
+        width = fit_length_to_width(formula)
 
-        canvas.setFixedSize(QtCore.QSize(w, height))
-
+        canvas.setFixedSize(QtCore.QSize(width*10, height))
         self.scroll_layout.addWidget(canvas)
         # plt.close()
 

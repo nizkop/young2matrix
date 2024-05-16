@@ -110,7 +110,8 @@ class ApplicationWindows(MainApplication):
         for equation in self.permutation_group.get_young_tableau_equations():
             self.add_equation(formula=equation)
         #todo:
-        tst = (r"1 \cdot 2 = E \cdot c^2")
+        # tst = r"\\begin{array}{|c|} \\hline 1\\\\ \\cline{1-1} \\end{array} "
+        tst = r"a=bkjhwerhgfhgkhwekjwhaasdfghjklgjggdfghjklhewertrkjhweraaa"
         self.add_equation(tst)
 
     def load_spin_page(self) -> None:
