@@ -50,7 +50,7 @@ class LayoutAndButtonApplication(QMainWindow):
 
     def create_settings_button(self):
             """ adding a button, that may change the settings, to the top of the screen """
-            print("create_settings_button",flush=True)
+            # print("create_settings_button",flush=True)
             if self.settings_button is None:
                 self.settings_button = QPushButton()
                 self.settings_button.setFixedSize(30, 30)

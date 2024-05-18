@@ -25,7 +25,8 @@ def get_latex_canvas(eq:str, color:str) -> FigureCanvas:#todo scroll/size
     # width=max((eq.count("\n")+1)*0.5,2.0)
     # height=200
     figure = plt.figure()
-    ax = figure.add_subplot(111)
+    # ax = figure.add_subplot(111)
+    ax = figure.add_axes([0, 0, 1, 1])
     ax.text(0.05, 0.5, rf"\[{eq}\]", color=color, horizontalalignment='left', verticalalignment='center', fontsize=20)
     ax.axis('off')
     # figure.patch.set_facecolor('none')

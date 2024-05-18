@@ -132,17 +132,20 @@ class MainApplication(LayoutAndButtonApplication):
         for formula in formulas:
             self.add_equation(formula)
 
-    def add_equation(self, formula: str) -> None:
+    def add_equation(self, formula: str, width=None) -> None:
         """
         adding a line with an equation to the current screen/page
         :param formula: latex-formatted equation, e.g. r"\frac{1}{2} \cdot \pi"
         """
-        print("add_equation", formula, flush=True)
+        print("\nadd_equation", formula, flush=True)
         canvas = get_latex_canvas(eq=formula, color=self.color.value["text"])
 
         height = determine_height_of_equation(formula)
-        width = fit_length_to_width(formula)
+        if width is None:
+            width = fit_length_to_width(formula)
+            # width = 400
 
+        print(width, get_max_number_of_signs_in_equation(eq=formula))
         canvas.setFixedSize(QtCore.QSize(width, height))
         self.scroll_layout.addWidget(canvas)
         # plt.close()

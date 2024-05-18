@@ -10,6 +10,7 @@ from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 from source.function_parts.text_kinds import text_kinds
 from source.permutation_group import permutation_group
+from source.tests.tst_equation_width import tests
 from source.texts.general_texts import get_general_text
 from source.texts.get_title_spatial import get_title_spatial
 from source.texts.get_title_spin import get_title_spin
@@ -110,9 +111,9 @@ class ApplicationWindows(MainApplication):
         for equation in self.permutation_group.get_young_tableau_equations():
             self.add_equation(formula=equation)
         #todo:
-        # tst = r"\\begin{array}{|c|} \\hline 1\\\\ \\cline{1-1} \\end{array} "
-        # tst = r"a=bkjhwerhgfhgkhwekjwhaasdfghjklgjggdfghjklhewertrkjhweraaa"
-        # self.add_equation(tst)
+        # tst = r"\sqrt{2}"
+        # tst = r"a=bktj87hgfr4uewegpybe956*g9ha"
+        # self.add_equation(tst,width=480)
 
     def load_spin_page(self) -> None:
         self.permutation_group.get_all_standard_tableaus()
