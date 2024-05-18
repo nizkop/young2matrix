@@ -10,7 +10,6 @@ from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 from source.function_parts.text_kinds import text_kinds
 from source.permutation_group import permutation_group
-from source.tests.tst_equation_width import tests
 from source.texts.general_texts import get_general_text
 from source.texts.get_title_spatial import get_title_spatial
 from source.texts.get_title_spin import get_title_spin
@@ -129,6 +128,8 @@ class ApplicationWindows(MainApplication):
                     group_empty = False
             if group_empty:
                 label = QLabel(get_general_text("spin_2rows"))
+                label.setWordWrap(True)
+                label.setMaximumWidth(self.width())
                 label.setStyleSheet(f"color: {self.color.value['text']};")
                 self.scroll_layout.addWidget(label)
 
@@ -149,11 +150,15 @@ class ApplicationWindows(MainApplication):
                     group_empty = False
             if group_empty:
                 label = QLabel(get_general_text("spatial_2columns"))
+                label.setWordWrap(True)
+                label.setMaximumWidth(self.width())
                 label.setStyleSheet(f"color: {self.color.value['text']};")
                 self.scroll_layout.addWidget(label)
 
     def load_tableau_page_multiplied(self) -> None:
         label = QLabel(":\n".join(get_title_multiplied_youngtableaus(kind=text_kinds.TXT)))
+        label.setWordWrap(True)
+        label.setMaximumWidth(self.width())
         label.setStyleSheet(f"color: {self.color.value['text']};")
         self.scroll_layout.addWidget(label)
         for group in self.permutation_group.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.permutation_group.standard_tableaus):
@@ -175,6 +180,8 @@ class ApplicationWindows(MainApplication):
         hbox.setAlignment(Qt.AlignCenter)
 
         permutation_group_label = QLabel(get_general_text("input_command"))
+        permutation_group_label.setWordWrap(True)
+        permutation_group_label.setMaximumWidth(self.width())
         permutation_group_label.setStyleSheet(f"color: {self.color.value['text']}; font-size: 15pt;")
         hbox.addWidget(permutation_group_label)
 
@@ -235,6 +242,8 @@ class ApplicationWindows(MainApplication):
     def load_overlap_spin(self) -> None:
         title, content, equation = get_title_spin(kind=text_kinds.TXT)
         label = QLabel(title + "\n" + content)
+        label.setWordWrap(True)
+        label.setMaximumWidth(self.width())
         label.setStyleSheet(f"color: {self.color.value['text']};")
         self.scroll_layout.addWidget(label)
         self.add_equation(equation)
@@ -249,6 +258,8 @@ class ApplicationWindows(MainApplication):
                 self.add_equation(equation_tex)
         if len(self.permutation_group.overlap) == 0:
             label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")#todo
+            label.setWordWrap(True)
+            label.setMaximumWidth(self.width())
             label.setTextFormat(Qt.RichText)
             self.scroll_layout.addWidget(label)
 
@@ -256,6 +267,8 @@ class ApplicationWindows(MainApplication):
     def load_overlap_spatial(self) -> None:
         title, content = get_title_spatial(kind=text_kinds.TXT)
         label = QLabel(title+"\n"+content)
+        label.setWordWrap(True)
+        label.setMaximumWidth(self.width())
         label.setStyleSheet(f"color: {self.color.value['text']};")
         self.scroll_layout.addWidget(label)
         self.permutation_group.calculate_all_overlap_integrals()
@@ -271,12 +284,16 @@ class ApplicationWindows(MainApplication):
                 self.add_equation(equation_tex)
         if len(self.permutation_group.overlap) == 0:
             label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")#todo
+            label.setWordWrap(True)
+            label.setMaximumWidth(self.width())
             label.setTextFormat(Qt.RichText)
             self.scroll_layout.addWidget(label)
 
 
     def load_hamilton_spatial(self) -> None:
         label = QLabel("Hamiltonmatrixelemente für die Raumorbitale"+"\n")
+        label.setWordWrap(True)
+        label.setMaximumWidth(self.width())
         label.setStyleSheet(f"color: {self.color.value['text']};")
         self.scroll_layout.addWidget(label)
         self.permutation_group.calculate_all_hamilton_integrals()
@@ -291,6 +308,8 @@ class ApplicationWindows(MainApplication):
                 self.add_equation(equation_tex)
         if len(self.permutation_group.hamilton_integrals) == 0:
             label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")#todo
+            label.setWordWrap(True)
+            label.setMaximumWidth(self.width())
             label.setTextFormat(Qt.RichText)
             self.scroll_layout.addWidget(label)
 
@@ -298,6 +317,8 @@ class ApplicationWindows(MainApplication):
 
     def load_hamilton_spin(self) -> None:
         label = QLabel(get_general_text("h_info_spin")+"\n\n")
+        label.setWordWrap(True)
+        label.setMaximumWidth(self.width())
         label.setStyleSheet("color: darkred; font-weight: bold;")
         self.scroll_layout.addWidget(label)
 
