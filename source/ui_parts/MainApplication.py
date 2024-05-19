@@ -117,6 +117,7 @@ class MainApplication(LayoutAndButtonApplication):
 
                 button_layout.addWidget(button)
 
+        # ensuring that buttons are at the bottom:
         spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.scroll_layout.addItem(spacer)
         # adding width-limited button panel to layout:

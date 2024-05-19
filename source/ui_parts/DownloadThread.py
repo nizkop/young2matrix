@@ -13,11 +13,12 @@ from source.ui_parts.settings.language_choices import language_choices
 class DownloadThread(QThread):
     """ needed to show download progress during the process """
     update_progress = pyqtSignal(int,str)  # signal
-    def __init__(self, permutation_group:permutation_group, layout: QVBoxLayout, background_color:str):
+    def __init__(self, permutation_group:permutation_group, layout: QVBoxLayout, background_color:str, text_color:str):
         super().__init__()
         self.permutation_group = permutation_group
         self.scroll_layout = layout
         self.background_color = background_color
+        self.text_color = text_color
 
     def get_buttons_from_layout(self, layout=None) -> List[QPushButton]:
         """
@@ -49,7 +50,7 @@ class DownloadThread(QThread):
         for button in self.get_buttons_from_layout():
             button.setEnabled(activated)
             if activated:
-                button.setStyleSheet(f"background-color: {self.background_color}; color: black;") # reset, todo: fit to color styles
+                button.setStyleSheet(f"background-color: {self.background_color}; color: {self.text_color};")# reset
             else:
                 button.setStyleSheet(f"background-color: #6fa287; color: gray;")
 

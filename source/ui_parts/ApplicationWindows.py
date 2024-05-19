@@ -236,7 +236,7 @@ class ApplicationWindows(MainApplication):
                 equation_tex += f" = {i['result'].to_tex()}"
                 self.add_equation(equation_tex)
         if len(self.permutation_group.overlap) == 0:
-            label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")#todo
+            label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")
             label.setWordWrap(True)
             label.setMaximumWidth(self.width())
             label.setTextFormat(Qt.RichText)
@@ -257,7 +257,7 @@ class ApplicationWindows(MainApplication):
                 equation_tex += f" = {i['result'].to_tex()}"
                 self.add_equation(equation_tex)
         if len(self.permutation_group.overlap) == 0:
-            label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")#todo
+            label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")
             label.setWordWrap(True)
             label.setMaximumWidth(self.width())
             label.setTextFormat(Qt.RichText)
@@ -276,7 +276,7 @@ class ApplicationWindows(MainApplication):
                     equation_tex += addend.to_tex()
                 self.add_equation(equation_tex)
         if len(self.permutation_group.hamilton_integrals) == 0:
-            label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")#todo
+            label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")
             label.setWordWrap(True)
             label.setMaximumWidth(self.width())
             label.setTextFormat(Qt.RichText)
@@ -315,7 +315,8 @@ class ApplicationWindows(MainApplication):
         self.scroll_layout.addLayout(download_layout)
 
         # start download thread:
-        self.download_thread = DownloadThread(self.permutation_group, self.scroll_layout, background_color=self.color.value['background'])
+        self.download_thread = DownloadThread(self.permutation_group, self.scroll_layout,
+                                              background_color=self.color.value['background'], text_color=self.color.value["text"])
         self.download_thread.enable_all_buttons(activated=False)
         self.download_thread.update_progress.connect(self.update_progress_bar)
         self.download_thread.start()
