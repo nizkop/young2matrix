@@ -68,7 +68,7 @@ class permutation_group(object):
         """
         chapter 1 of overview giving pdf
         """
-        self.overview.add_section("Young-Tableaus",
+        self.overview.add_section(get_general_text("tableau_header"),
                                   content=get_title_permutation_to_tableaus(self.permutation_group))
         self.overview.vspace()
         for equation in self.get_young_tableau_equations():
@@ -99,7 +99,7 @@ class permutation_group(object):
         """
         chapter 3 of overview giving pdf
         """
-        self.overview.add_section("Spin",content=get_info_spin_possibilities(self.permutation_group, kind=text_kinds.TEX))
+        self.overview.add_section(get_general_text("spin_header"),content=get_info_spin_possibilities(self.permutation_group, kind=text_kinds.TEX))
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
             self.overview.vspace()
             equation = group[0].get_shortend_symbol()["tex"] + ":"
@@ -161,8 +161,8 @@ class permutation_group(object):
         """
         chapter 5 of overview giving pdf
         """
-        self.overview.add_section("Hamiltonmatrixelemente",
-                                  content=get_general_text("h_info_spin"))
+        self.overview.add_section(get_general_text("header_hamilton_general"),
+                                  content=get_general_text("h_info_spin")+get_general_text("ref_hspin"))
         self.calculate_all_hamilton_integrals()
         for info in self.hamilton_integrals:
             if len(info["hamilton_integral_sum"]) > 0:

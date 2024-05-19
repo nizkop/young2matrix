@@ -2,7 +2,7 @@ from abc import abstractmethod
 from typing import Union, Dict, List
 
 
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy
+from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QLayout, QWidget
 from qtpy import QtCore
 
 from source.ui_parts.LayoutAndButtonApplication import LayoutAndButtonApplication
@@ -119,7 +119,11 @@ class MainApplication(LayoutAndButtonApplication):
 
         spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.scroll_layout.addItem(spacer)
-        self.scroll_layout.addLayout(button_layout)
+        # adding width-limited button panel to layout:
+        button_layout_widget = QWidget()
+        button_layout_widget.setLayout(button_layout)
+        button_layout_widget.setFixedSize(self.width()-self.margin_x*4, button_layout.sizeHint().height())
+        self.scroll_layout.addWidget(button_layout_widget)
 
     @abstractmethod
     def open_page(self, page_number:int) -> None:

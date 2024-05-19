@@ -2,7 +2,7 @@
 from source.ui_parts.settings.idea_config import get_language
 from source.ui_parts.ui_pages import ui_pages
 
-# TODO: check content, english version; title for each page
+# TODO: check content
 
 def get_page_information(page:ui_pages) -> str:
     language = get_language()

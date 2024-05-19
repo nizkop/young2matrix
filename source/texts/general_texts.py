@@ -13,13 +13,20 @@ def get_general_text(key:str) -> str:
 
     if get_language() == "en":
         general_texts = {
-
+            "overlap_header": "overlap integrals of ",
+            "spatial_header": "spatial functions",
+            "spin_header": "spin functions",
+            "tableau_header": "young tableaus",
             "spin_2rows": "(Because there are only two spin functions α, β, more than two anti symmetric spin functions are impossible.)",
             "spin_2rows_tex": r"\textit{(Because there are only two spin functions $\alpha, \beta$, more than two anti symmetric spin functions are impossible.)}",
             "spatial_2columns": "(Bacause spatial tableaus have to be adjoint to the spin tableaus" +
                                 " (and for them only two functions can be anti symmetric at most), " +
                                 "more than two columns are impossible.)",
             "too_small_for_overlap": "The permutation group is too small to lead to non-trivial combinations of basis functions.",
+            "h_info_spin": "Attention: The Hamiltonian does not depend on the spin. Thereby hamilton integrals of spin functions revert to overlap integrals and are not listed again here.",
+            "header_hamilton_general": "hamilton integrals",
+            "ref_hspin": " (s. section 4.2) ",
+
 
             # solely UI:
             "settings_change": "change setting (language/design).",
@@ -40,16 +47,23 @@ def get_general_text(key:str) -> str:
             "warning_wrong_type": "Please fill in an integer for setting the permutations group.",
             "successful_download": "The download was successful.",
             "failed_download": "Sadly, we encountered an unknown error while downloading the pdf.",
-            "h_info_spin": "",#TODO
+
         }
     else: # default
         general_texts ={
+            "overlap_header": "Überlappungsintegrale von ",
+            "spatial_header": "Raum-Funktionen",
+            "spin_header": "Spin-Funktionen",
+            "tableau_header": "Young-Tableaus",
             "spin_2rows": "(Da es nur zwei Spinfunktionen α, β gibt, sind mehr als zwei antisymmetrische Funktionen nicht möglich.)",
             "spin_2rows_tex": r"\textit{(Da es nur zwei Spinfunktionen $\alpha, \beta$ gibt, sind mehr als zwei antisymmetrische Funktionen nicht möglich.)}",
             "spatial_2columns": "(Da die Raum-Tableaus adjoint zu den Spin-Tableaus sein müssen"+
                          " (und dort nur maximal 2 Funktionen antisymmetrisch sein können), "+
                          "sind nicht mehr als zwei Spalten möglich.)",
             "too_small_for_overlap": "Die Permutationsgruppe ist zu klein, um nicht-triviale Kombinationen von Basisfunktionen zu bilden. ",
+            "h_info_spin": "Achtung: Der Hamiltonoperator ist unabhängig vom Spin, daher werden die Hamiltonintegrale der Spin-Tableaus zu den Überlappungsintegralen und werden hier nicht erneut aufgeführt.",
+            "header_hamilton_general": "Hamiltonmatrixelemente",
+            "ref_hspin": " (s. Kapitel 4.2) ",
 
             # solely UI:
             "settings_change": "Einstellungen (Sprache/Design) ändern.",
@@ -70,7 +84,8 @@ def get_general_text(key:str) -> str:
             "warning_wrong_type": "Bitte geben Sie die Nummer für eine Permutationsgruppe ein.",
             "successful_download": "Der Download war erfolgreich.",
             "failed_download": "Leider gab es ein unbekanntes Problem beim Downloaden.",
-            "h_info_spin": "Achtung: Der Hamiltonoperator ist unabhängig vom Spin, daher werden die Hamiltonintegrale der Spin-Tableaus zu den Überlappungsintegralen (s. Kapitel 4.2) und werden hier nicht erneut aufgeführt."
+            "header_hamilton_spatial": "Hamiltonmatrixelemente für die Raumorbitale",
+
         }
 
     return general_texts[key]
