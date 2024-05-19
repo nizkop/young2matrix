@@ -109,10 +109,6 @@ class ApplicationWindows(MainApplication):
         self.permutation_group.get_all_standard_tableaus()
         for equation in self.permutation_group.get_young_tableau_equations():
             self.add_equation(formula=equation)
-        #todo:
-        # tst = r"\sqrt{2}"
-        # tst = r"a=bktj87hgfr4uewegpybe956*g9ha"
-        # self.add_equation(tst,width=480)
 
     def load_spin_page(self) -> None:
         self.permutation_group.get_all_standard_tableaus()
@@ -194,8 +190,8 @@ class ApplicationWindows(MainApplication):
 
         permutation_group_input.addLayout(hbox)
         # permutation_group_input.addStretch(1)# input not completely at the bottom
-        spacer_top = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        permutation_group_input.addItem(spacer_top)
+        # spacer_bottom = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        # permutation_group_input.addItem(spacer_bottom)
         self.scroll_layout.addLayout(permutation_group_input)
 
 

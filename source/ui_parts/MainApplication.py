@@ -2,7 +2,7 @@ from abc import abstractmethod
 from typing import Union, Dict, List
 
 
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QPushButton
+from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy
 from qtpy import QtCore
 
 from source.ui_parts.LayoutAndButtonApplication import LayoutAndButtonApplication
@@ -85,6 +85,10 @@ class MainApplication(LayoutAndButtonApplication):
     def load_hamilton_spin(self):
         pass
 
+    from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton, QHBoxLayout
+
+
+
     def create_widgets(self) -> None:
         """
         setting up the buttons for the current page and linking them to following pages / information;
@@ -113,6 +117,8 @@ class MainApplication(LayoutAndButtonApplication):
 
                 button_layout.addWidget(button)
 
+        spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.scroll_layout.addItem(spacer)
         self.scroll_layout.addLayout(button_layout)
 
     @abstractmethod

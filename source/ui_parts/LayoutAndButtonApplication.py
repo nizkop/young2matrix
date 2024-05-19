@@ -1,8 +1,8 @@
 
 from typing import Union
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QPushButton, QScrollArea, QStatusBar, QMessageBox, QApplication
-
+from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QPushButton, QScrollArea, QStatusBar, QMessageBox, \
+    QApplication, QSpacerItem, QSizePolicy
 
 from source.texts.general_texts import get_general_text
 from source.texts.get_page_information import get_page_information
@@ -25,11 +25,16 @@ class LayoutAndButtonApplication(QMainWindow):
 
         self.color = color_styles.DEFAULT #color_styles.DEFAULT
         self.setGeometry(100, 100, 800, 600)
+        self.top_y = 5
+        self.margin_x = 5
+        self.button_size = 30
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
         self.layout = QVBoxLayout(self.central_widget)
         self.layout.setContentsMargins(0, 0, 0, 0)
+        top_spacer = QSpacerItem(0, 40, QSizePolicy.Minimum, QSizePolicy.Fixed)
+        self.layout.addItem(top_spacer)
 
         self.scroll_area = QScrollArea()
         self.scroll_widget = QWidget()
@@ -53,8 +58,8 @@ class LayoutAndButtonApplication(QMainWindow):
             # print("create_settings_button",flush=True)
             if self.settings_button is None:
                 self.settings_button = QPushButton()
-                self.settings_button.setFixedSize(30, 30)
-                self.settings_button.move(5, 5)
+                self.settings_button.setFixedSize(self.button_size, self.button_size)
+                self.settings_button.move(self.margin_x, self.top_y)
 
                 # ! activates Button each time it is called -> potentially raising number of clicks needed to get
                 # rid of button if ths line is called every time create_settings_button is called:
@@ -95,10 +100,9 @@ class LayoutAndButtonApplication(QMainWindow):
 
     def create_help_button(self) -> None:
         help_button = QPushButton("?", self)
-        size = 30
-        help_button.setFixedSize(size, size)
-        help_button.move(740,10)
-        help_button.setStyleSheet(f"background-color: {self.color.value['info_background']}; color: {self.color.value['text']}; border-radius: {size//2}; border :   1px   solid   grey  ")# 50 % <-> circle
+        help_button.setFixedSize(self.button_size, self.button_size)
+        help_button.move(self.width()-self.margin_x-self.button_size,self.top_y)#x, y
+        help_button.setStyleSheet(f"background-color: {self.color.value['info_background']}; color: {self.color.value['text']}; border-radius: {self.button_size//2}; border :   1px   solid   grey  ")# 50 % <-> circle
         help_button.clicked.connect(self.show_info)
         help_button.enterEvent = lambda event, button=help_button:self.change_status_message(get_general_text("help"))
         help_button.leaveEvent = lambda event: self.change_status_message()
