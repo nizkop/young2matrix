@@ -2,14 +2,14 @@ from abc import abstractmethod
 from typing import Union, Dict, List
 
 
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QLayout, QWidget
+from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QWidget
 from qtpy import QtCore
 
 from source.ui_parts.LayoutAndButtonApplication import LayoutAndButtonApplication
 from source.ui_parts.canvas_equations.determine_height_of_equation import determine_height_of_equation
 from source.ui_parts.canvas_equations.get_latex_canvas import get_latex_canvas
-from source.ui_parts.canvas_equations.get_max_number_of_signs_in_equation import get_max_number_of_signs_in_equation, \
-    fit_length_to_width
+from source.ui_parts.canvas_equations.get_max_number_of_signs_in_equation import fit_length_to_width
+from source.ui_parts.settings.language_choices import language_choices
 from source.ui_parts.ui_pages import ui_pages, get_page_name
 from source.ui_parts.settings.idea_config import get_language
 
@@ -26,12 +26,12 @@ class MainApplication(LayoutAndButtonApplication):
 
         self.current_page:int = 0
         self.pages: List[Dict] = [
-            {"sign": "start" if get_language()=="en" else "Start",
+            {"sign": "start" if get_language()== language_choices.en.name else "Start",
                     "index": ui_pages.START, "function": self.load_main_page, "parent": None,
                     "buttons": [ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS, ui_pages.DOWNLOAD]},
             {"sign": "[1][2]", "index": ui_pages.TABLEAUS, "function": self.load_tableau_page, "parent": ui_pages.START,
                     "buttons": [ui_pages.START, ui_pages.MULTIPLIED_OUT_TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS]},
-            {"sign": "ausmultiplizieren" if get_language() == "de" else "multiply out", "index": ui_pages.MULTIPLIED_OUT_TABLEAUS,
+            {"sign": "ausmultiplizieren" if get_language() == language_choices.de.name else "multiply out", "index": ui_pages.MULTIPLIED_OUT_TABLEAUS,
                     "buttons": [ui_pages.START, ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS],
                     "function": self.load_tableau_page_multiplied, "parent": ui_pages.TABLEAUS},
             {"sign": "σ", "index": ui_pages.SPIN, "function": self.load_spin_page, "parent": ui_pages.START,
@@ -104,7 +104,7 @@ class MainApplication(LayoutAndButtonApplication):
         for page_info in self.pages:
             if page_info["index"].value != self.current_page and page_info["index"] in current_page_info["buttons"]:
                 if page_info["index"] == current_page_info["parent"]:
-                    sign = f"zurück zu: {page_info['sign']}" if get_language() == "de" else f"back to: {page_info['sign']}"
+                    sign = f"zurück zu: {page_info['sign']}" if get_language() == language_choices.de.name else f"back to: {page_info['sign']}"
                 else:
                     sign = page_info["sign"]
 

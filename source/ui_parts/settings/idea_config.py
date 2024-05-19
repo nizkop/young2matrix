@@ -1,5 +1,7 @@
 import json
 
+from source.ui_parts.settings.language_choices import language_choices
+
 CONFIG_FILE = './source/ui_parts/settings/language_config.json'
 
 def load_config() -> None:
@@ -16,7 +18,7 @@ def update_language(language:str) -> None:
     change the current language (in the configuration file, so that the change lasts)
     :param language: abbreviation of the wanted language
     """
-    if language not in ["en", "de"]:
+    if language not in [language_choices.en.name, language_choices.de.name]:
         raise Exception("wrong format for language choice")
     config = load_config()
     config['language'] = language

@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QVBoxLayout, QPushButton, QLayoutItem, QWidgetItem
 from source.permutation_group import permutation_group
 from source.texts.general_texts import get_general_text
 from source.ui_parts.settings.idea_config import get_language
+from source.ui_parts.settings.language_choices import language_choices
 
 
 class DownloadThread(QThread):
@@ -63,27 +64,27 @@ class DownloadThread(QThread):
             self.permutation_group.get_all_standard_tableaus()  # at least needed for chapter 4
             time.sleep(1)
 
-            self.update_progress.emit(30,"calculating all tableaus" if get_language()== "en" else "Berechnung aller Tableaus")
+            self.update_progress.emit(30,"calculating all tableaus" if get_language()== language_choices.en.name else "Berechnung aller Tableaus")
             self.permutation_group.get_chapter_youngtableaus()
             time.sleep(1)
 
-            self.update_progress.emit(40,"multiplying out the tableaus" if get_language()=="en" else "Ausmultiplizieren der Tableaus")
+            self.update_progress.emit(40,"multiplying out the tableaus" if get_language()==language_choices.en.name else "Ausmultiplizieren der Tableaus")
             self.permutation_group.get_chapter_multiplied()
             time.sleep(1)
 
-            self.update_progress.emit(50,"setting up spin-based tableaus" if get_language()=="en" else "Aufsetzen der Spinfunktionstableaus")
+            self.update_progress.emit(50,"setting up spin-based tableaus" if get_language()==language_choices.en.name else "Aufsetzen der Spinfunktionstableaus")
             self.permutation_group.get_chapter_spinfunctions()
             time.sleep(1)
 
-            self.update_progress.emit(70,"calculating overlap integrals" if get_language()=="en" else "Berechnung der Überlappintegrale")
+            self.update_progress.emit(70,"calculating overlap integrals" if get_language()==language_choices.en.name else "Berechnung der Überlappintegrale")
             self.permutation_group.get_chapter_overlapintegrals()
             time.sleep(1)
 
-            self.update_progress.emit(90,"calculating hamilton integrals" if get_language()=="en" else "Berechnung der Hamiltonintegrale")
+            self.update_progress.emit(90,"calculating hamilton integrals" if get_language()==language_choices.en.name else "Berechnung der Hamiltonintegrale")
             self.permutation_group.get_chapter_hamiltonintegrals()
             time.sleep(1)
 
-            self.update_progress.emit(95,"saving pdf" if get_language()=="en" else "PDF abspeichern")
+            self.update_progress.emit(95,"saving pdf" if get_language()==language_choices.en.name else "PDF abspeichern")
             self.permutation_group.overview.save(title=self.permutation_group.title_pdf)
             time.sleep(1)
             # todo: matrix?

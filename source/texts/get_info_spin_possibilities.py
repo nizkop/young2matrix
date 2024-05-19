@@ -1,9 +1,10 @@
 from source.function_parts.text_kinds import text_kinds
+from source.ui_parts.settings import language_choices
 from source.ui_parts.settings.idea_config import get_language
 
 
 def get_info_spin_possibilities(permutation_group:int, kind:text_kinds) -> str:
-    if get_language() == "en":
+    if get_language() == language_choices.en.name:
         s = r"Possible combinations "
         s += r"$\ket{S \; M_S}$" if kind == text_kinds.TEX else "| S Ms >"
         s += "for the tableaus of permutation group "

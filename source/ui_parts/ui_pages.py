@@ -1,6 +1,7 @@
 from enum import Enum
 
 from source.ui_parts.settings.idea_config import get_language
+from source.ui_parts.settings.language_choices import language_choices
 
 
 class ui_pages(Enum):
@@ -26,25 +27,25 @@ def get_page_name(page:ui_pages) -> str:
     :return: name/label of the page
     """
     if page == ui_pages.START:
-        return "Startseite" if get_language() == "de" else "start"
+        return "Startseite" if get_language() == language_choices.de.name else "start"
     if page == ui_pages.TABLEAUS:
-        return "Tableaus" if get_language() == "de" else "tableaus"
+        return "Tableaus" if get_language() == language_choices.de.name else "tableaus"
     if page == ui_pages.MULTIPLIED_OUT_TABLEAUS:
-        return "Ausmultiplizierte Tableaus" if get_language() == "de" else "multiplied out tableaus"
+        return "Ausmultiplizierte Tableaus" if get_language() == language_choices.de.name else "multiplied out tableaus"
     if page == ui_pages.SPIN:
-        return "Spinfunktionen" if get_language() == "de" else "spin functions"
+        return "Spinfunktionen" if get_language() == language_choices.de.name else "spin functions"
     if page == ui_pages.SPATIAL_FUNCTIONS:
-        return "Raumfunktionen" if get_language() == "de" else "spatial functions"
+        return "Raumfunktionen" if get_language() == language_choices.de.name else "spatial functions"
     if page == ui_pages.DOWNLOAD:
-        return "Download" if get_language() == "de" else "download"
+        return "Download" if get_language() == language_choices.de.name else "download"
     if page == ui_pages.OVERLAP_SPIN:
-        return "Überlapp Spin" if get_language() == "de" else "overlap of spin functions"
+        return "Überlapp Spin" if get_language() == language_choices.de.name else "overlap of spin functions"
     if page == ui_pages.OVERLAP_SPATIAL:
-        return "Überlapp Raum" if get_language() == "de" else "overlap of spatial functions"
+        return "Überlapp Raum" if get_language() == language_choices.de.name else "overlap of spatial functions"
     if page == ui_pages.HAMILTON_SPIN:
-        return "Hamilton Spin" if get_language() == "de" else "hamilton integrals for spin"
+        return "Hamilton Spin" if get_language() == language_choices.de.name else "hamilton integrals for spin"
     if page == ui_pages.HAMILTON_SPATIAL:
-        return "Hamilton Raum" if get_language() == "de" else "hamilton integrals for spatial functions"
-    return "unbekannt" if get_language() == "de" else "unknown"
+        return "Hamilton Raum" if get_language() == language_choices.de.name else "hamilton integrals for spatial functions"
+    return "unbekannt" if get_language() == language_choices.de.name else "unknown"
 
 

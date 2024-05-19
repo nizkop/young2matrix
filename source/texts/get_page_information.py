@@ -1,5 +1,6 @@
 
 from source.ui_parts.settings.idea_config import get_language
+from source.ui_parts.settings.language_choices import language_choices
 from source.ui_parts.ui_pages import ui_pages
 
 # TODO: check content
@@ -7,7 +8,7 @@ from source.ui_parts.ui_pages import ui_pages
 def get_page_information(page:ui_pages) -> str:
     language = get_language()
     if page == ui_pages.START:
-        if language == "en":
+        if language == language_choices.en.name:
             return r"""
             <p>This is the starting page, where you may determine, for which particular permutation group 
             the calculations shall be carried out. </p> <br>
@@ -37,7 +38,7 @@ def get_page_information(page:ui_pages) -> str:
             erkennbar und ggf. sind Rückschlüsse auf das chemische System möglich. </p>
             """
     if page == ui_pages.TABLEAUS:
-        if language == "en":
+        if language == language_choices.en.name:
             return """
             <b>What is happening here? </b>
             <p>To describe coupled electrons, spin functions are necessary. This spin functions need to be 
@@ -69,7 +70,7 @@ def get_page_information(page:ui_pages) -> str:
         Außerdem muss hierfür gelten, dass die Zahlen bei 1 beginnen und von dort in Einerschritten ansteigen. </p>
         """
     if page == ui_pages.MULTIPLIED_OUT_TABLEAUS:
-        if language == "en":
+        if language == language_choices.en.name:
             return """
             <b> What are the displayed young tableaus here? </b>
             <p>young tableaus are a visual display of the correlation between symmetric and antisymmetric function parts. 
@@ -91,7 +92,7 @@ def get_page_information(page:ui_pages) -> str:
         aus denen sich die Gesamtfunktion zusammensetzt. </p>
         """
     if page == ui_pages.SPIN:
-        if language == "en":
+        if language == language_choices.en.name:
             return """
             <b>What is happening here? </b>
             <p>If you want to build spin function, the total basis function has to be build from only two different functions: 
@@ -114,7 +115,7 @@ def get_page_information(page:ui_pages) -> str:
         Also die Teile, die sich nach dem Einsetzen nicht gegenseitig aufheben. </p>
         """
     if page == ui_pages.SPATIAL_FUNCTIONS:
-        if language == "en":
+        if language == language_choices.en.name:
             return """
             <b>What is happening here? </b>
             <p>To describe electrons within a molecule, it is necessary to consider the space they occupate.
@@ -140,7 +141,7 @@ def get_page_information(page:ui_pages) -> str:
         Daher entsprechen die Ergebnisse für die Raumfunktionen dem Allgemeinfall ausmultiplizierter Tableaus.</p>
         """
     if page == ui_pages.OVERLAP_SPIN or page == ui_pages.OVERLAP_SPATIAL:
-        if language == "en":
+        if language == language_choices.en.name:
             function_kind = "spin functions" if page == ui_pages.OVERLAP_SPIN else "spatial functions"
             return f"""
             <b>What is happening here?</b>
@@ -175,7 +176,7 @@ def get_page_information(page:ui_pages) -> str:
         }
         </style>
         """
-        if language == "en":
+        if language == language_choices.en.name:
             return style + """
                     <b>What is happening here? </b>
                     <p> Quantum chemistry is calculating molecules by solving the (stationary) Schrödinger equation. 

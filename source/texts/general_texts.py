@@ -1,5 +1,5 @@
 from source.ui_parts.settings.idea_config import get_language
-
+from source.ui_parts.settings.language_choices import language_choices
 
 
 def get_general_text(key:str) -> str:
@@ -11,7 +11,7 @@ def get_general_text(key:str) -> str:
     :return: fully expressed text in choosen language
     """
 
-    if get_language() == "en":
+    if get_language() == language_choices.en.name:
         general_texts = {
             "overlap_header": "overlap integrals of ",
             "spatial_header": "spatial functions",

@@ -2,10 +2,11 @@ from typing import Tuple
 
 from source.function_parts.text_kinds import text_kinds
 from source.ui_parts.settings.idea_config import get_language
+from source.ui_parts.settings.language_choices import language_choices
 
 
 def get_title_spatial(kind: text_kinds) -> Tuple[str, str]:
-    if get_language() == "en":
+    if get_language() == language_choices.en.name:
         title = "spatial functions"
         content = " (only non-vanishing combinations are listed)"
         content += r"\\" if kind == text_kinds.TEX else "\n"
