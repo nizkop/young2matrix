@@ -123,7 +123,7 @@ class permutation_group(object):
         """
         chapter 4 of overview giving pdf
         """
-        self.overview.add_section("Überlappungsintegrale", content="")
+        self.overview.add_section(get_general_text("header_overlap_general"), content="")
         title, content = get_title_spatial(kind=text_kinds.TEX)
         self.overview.add_section(sec_title=title, layer=1, content=content)
         self.calculate_all_overlap_integrals()

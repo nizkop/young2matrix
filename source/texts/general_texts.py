@@ -26,6 +26,7 @@ def get_general_text(key:str) -> str:
             "h_info_spin": "Attention: The Hamiltonian does not depend on the spin. Thereby hamilton integrals of spin functions revert to overlap integrals and are not listed again here.",
             "header_hamilton_general": "hamilton integrals",
             "ref_hspin": " (s. section 4.2) ",
+            "header_overlap_general": "overlap integrals",
 
 
             # solely UI:
@@ -64,6 +65,7 @@ def get_general_text(key:str) -> str:
             "h_info_spin": "Achtung: Der Hamiltonoperator ist unabhängig vom Spin, daher werden die Hamiltonintegrale der Spin-Tableaus zu den Überlappungsintegralen und werden hier nicht erneut aufgeführt.",
             "header_hamilton_general": "Hamiltonmatrixelemente",
             "ref_hspin": " (s. Kapitel 4.2) ",
+            "header_overlap_general": "Überlappungsintegrale",
 
             # solely UI:
             "settings_change": "Einstellungen (Sprache/Design) ändern.",

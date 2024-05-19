@@ -4,7 +4,7 @@ from source.ui_parts.settings.idea_config import get_language
 
 def get_title_multiplied_youngtableaus(kind:text_kinds):
     if get_language() == "en":
-        header = "young tableaus in there multiplied out form"
+        header = "young tableaus in their multiplied out form"
         content = "a, b, c, ... " if kind == text_kinds.TXT else r"$a, b, c, \hdots \quad $ "
         content += "= general functions, that could e.g. represent p orbitals"
     else:
