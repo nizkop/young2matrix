@@ -14,7 +14,7 @@ plt.rcParams['text.latex.preamble'] = r'''
 '''
 
 
-def get_latex_canvas(eq:str, color:str) -> FigureCanvas:#todo scroll/size
+def get_latex_canvas(eq:str, color:str) -> FigureCanvas:
     """
     building a suitable object for the ui from a string to display an equation
     :param eq: latex formatted equation including latex commands such as \cdot, \bra, \frac

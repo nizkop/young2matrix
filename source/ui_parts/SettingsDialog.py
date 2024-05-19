@@ -7,6 +7,10 @@ from source.ui_parts.settings.language_choices import language_choices
 
 
 class SettingsDialog(QDialog):
+    """
+    this is the actual settings dialog box (accessible on each page)
+    (aside from the initiation, this class/its methods are not used)
+    """
     def __init__(self, colorscheme:color_styles):
         super().__init__()
         self.color_scheme = colorscheme
@@ -20,7 +24,8 @@ class SettingsDialog(QDialog):
 
         self.setLayout(self.layout)
 
-    def create_colorscheme_button(self):
+    def create_colorscheme_button(self) -> None:
+        """ setting up a single-choice button to choose a color scheme for the ui display """
         colorscheme_label = QLabel(get_general_text("choose_color"))
         self.layout.addWidget(colorscheme_label)
 
@@ -30,7 +35,8 @@ class SettingsDialog(QDialog):
         self.input_colorscheme.setCurrentText(self.color_scheme.value["name"])
         self.layout.addWidget(self.input_colorscheme)
 
-    def create_language_button(self):
+    def create_language_button(self) -> None:
+        """ setting up a single-choice button to choose a language (choice persistently saved in settings file) """
         language_label = QLabel(get_general_text("choose_language"))
         self.layout.addWidget(language_label)
 
@@ -44,18 +50,19 @@ class SettingsDialog(QDialog):
         self.input_language.setCurrentText(choice[0].value)
         self.layout.addWidget(self.input_language)
 
-    def create_confirm_button(self):
+    def create_confirm_button(self) -> None:
+        """ setting up the confirm button to save and exit the settings dialog """
         self.confirm_button = QPushButton("OK")
         self.layout.addWidget(self.confirm_button)
         self.confirm_button.clicked.connect(self.accept)
 
-
-    def selected_color(self):
-        """Returns selected color as string of name """
+    def _selected_color(self) -> None:
+        """ private method, that returns selected color as string of name """
         # print("selected_color",flush=True)
         return self.input_colorscheme.currentText()
 
-    def selected_language(self):
+    def _selected_language(self) -> None:
+        """ private method, that return selected language as string of name """
         # print("selected_language",flush=True)
         return self.input_language.currentText()
 

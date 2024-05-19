@@ -22,7 +22,8 @@ from source.ui_parts.DownloadThread import DownloadThread
 
 class ApplicationWindows(MainApplication):
     """
-    class needed to fill ui pages of main application with actual content
+    class needed to fill ui pages of main application with actual content;
+    the chemical content (permutation group) is brought in here
     """
 
     def __init__(self):
@@ -30,8 +31,6 @@ class ApplicationWindows(MainApplication):
 
         self.permutation_group: Union[None, permutation_group] = None
         self.permutation_group_no: Union[None, int] = None
-
-
 
 
     def open_page(self, page_number:int) -> None:
@@ -73,7 +72,6 @@ class ApplicationWindows(MainApplication):
             self.set_basic_permutation_attributes(input_value=input_value)
         self.change_page(page_number)
 
-
     def set_basic_permutation_attributes(self, input_value:int) -> None:
         """
         using the input to set the group object on which calculations may occur
@@ -86,25 +84,6 @@ class ApplicationWindows(MainApplication):
         del self.permutation_group # remove, to allow a new instance
         self.permutation_group = permutation_group(self.permutation_group_no)
 
-    def set_ui_label(self, header: str = None, content: str = None, spacing:bool=True) -> None:
-        if header and content:
-            text = f"<b>{header}</b><p>{content}</p>"
-        elif header:
-            text = f"<b>{header}</b>"
-        elif content:
-            text = f"<p>{content}</p>"
-            spacing=False
-        else:
-            raise Exception("Label needs some kind of content")
-        if spacing is True:
-            text += "<br>"
-        label = QLabel(text)
-        label.setTextFormat(Qt.RichText)#enable html formatting
-        label.setWordWrap(True)
-        label.setMaximumWidth(self.width())
-        label.setStyleSheet(f"color: {self.color.value['text']};")
-        self.scroll_layout.addWidget(label)
-
     def update_page(self) -> None:
         """ adding content (in between general buttons at the top and information bar at the bottom) to layout """
         try:
@@ -115,6 +94,8 @@ class ApplicationWindows(MainApplication):
             self.current_page = 0
             return self.load_main_page()
 
+
+    ###   single pages   ############################################################################################
     def test_page(self) -> None:
         # working equations:
         eqs = [r"E = m \cdot c^ 2", r"\frac{1}{2}", "\\begin{array}{c}{1}\\end{array}", r"\begin{array}{|c|}{2}\end{array}",

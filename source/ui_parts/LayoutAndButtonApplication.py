@@ -53,7 +53,7 @@ class LayoutAndButtonApplication(QMainWindow):
         self.create_settings_button()
         self.create_help_button()
 
-    def create_settings_button(self):
+    def create_settings_button(self) -> None:
             """ adding a button, that may change the settings, to the top of the screen """
             # print("create_settings_button",flush=True)
             if self.settings_button is None:
@@ -77,11 +77,15 @@ class LayoutAndButtonApplication(QMainWindow):
 
             self.settings_button.setParent(self)
 
-    def open_settings(self):
+    def open_settings(self) -> None:
+        """
+        opening a separate ui box for the settings dialog
+        :return:
+        """
         # print("open_settings",flush=True)
         dialog = SettingsDialog(self.color)
         if dialog.exec_():
-            selected_color = dialog.selected_color()
+            selected_color = dialog._selected_color()
             for color in color_styles:
                 if selected_color == color.value["name"]:
                     if color != self.color:
@@ -90,15 +94,17 @@ class LayoutAndButtonApplication(QMainWindow):
                         self.change_status_message()  # change background color in case of changed color
                         # self.create_settings_button()
 
-            selected_language = dialog.selected_language()
+            selected_language = dialog._selected_language()
             self.set_language(selected_language)
 
             self.change_page(self.current_page)#update colors/...
             # self.settings_button.clicked.connect(self.open_settings)
 
-
-
     def create_help_button(self) -> None:
+        """
+        setting up a belp button, where more information about the content of the actual page/screen is shown
+        :return:
+        """
         help_button = QPushButton("?", self)
         help_button.setFixedSize(self.button_size, self.button_size)
         help_button.move(self.width()-self.margin_x-self.button_size,self.top_y)#x, y
@@ -136,9 +142,11 @@ class LayoutAndButtonApplication(QMainWindow):
             self.statusBar.showMessage(message)
             self.statusBar.setStyleSheet(f"background-color: {self.color.value['status_background']}; color: {self.color.value['status_text']};")
 
-
-
-    def show_info(self):
+    def show_info(self) -> None:
+        """
+        activating a separate ui box, showing the requested additional information about the acutal page
+        :return:
+        """
         # print("show info", flush=True)
         page_info = next((page_dict for page_dict in self.pages
                           if page_dict.get("index").value == self.current_page), None)

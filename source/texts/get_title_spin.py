@@ -29,11 +29,15 @@ def get_title_spin(kind: text_kinds) -> Tuple[str, str, str]:
         content += r"hier informale Darstellung der Tableaus mit Spinfunktionen nach dem Schema: "
 
 
-    # if kind == text_kinds.TEX:
-    equation = r"\bra{\,\text{Tableau 1}\,}\ket{\,\text{Tableau 2}\,} "
-    equation += r"= \bra{\, \underbrace{S \quad m_S}_{\text{von Tableau 1}} \,}"
-    equation += r" \ket{\, \underbrace{S \quad m_S}_{\text{von Tableau 2}} \,} "
-    equation += r"= \underbrace{...}_{\text{Überlapp der Tableaus 1 und 2}}"
-    # else: TODO ?
+    if kind == text_kinds.TEX:
+        equation = r"\bra{\,\text{Tableau 1}\,}\ket{\,\text{Tableau 2}\,} "
+        equation += r"= \bra{\, \underbrace{S \quad m_S}_{\text{von Tableau 1}} \,}"
+        equation += r" \ket{\, \underbrace{S \quad m_S}_{\text{von Tableau 2}} \,} "
+        equation += r"= \underbrace{...}_{\text{Überlapp der Tableaus 1 und 2}}"
+    else:
+        equation = r"< Tableau 1 | Tableau 2 > "
+        equation += r"=  < S \quad m_S_{von Tableau 1} | "
+        equation += r"S \quad m_S_{von Tableau 2} > "
+        equation += r"= ... = \"Überlapp der Tableaus 1 und 2\" "
 
     return (title, content, equation)

@@ -1,8 +1,6 @@
 from abc import abstractmethod
 from typing import Union, Dict, List
-
-
-from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QWidget
+from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton, QHBoxLayout, QWidget
 from qtpy import QtCore
 
 from source.ui_parts.LayoutAndButtonApplication import LayoutAndButtonApplication
@@ -14,12 +12,11 @@ from source.ui_parts.ui_pages import ui_pages, get_page_name
 from source.ui_parts.settings.idea_config import get_language
 
 
-
 class MainApplication(LayoutAndButtonApplication):
     """ class in-between
     - LayoutAndButtonApplication (which is more general)
     - and ApplicationWindows (which
-     -> here a basic stucture of the pages and methods for changing are given """
+     -> here a basic structure of the pages and methods for changing them are given """
     def __init__(self):
         super().__init__()
         self.setWindowTitle("young2matrix")
@@ -56,38 +53,6 @@ class MainApplication(LayoutAndButtonApplication):
             self.pages[p]["name"] = get_page_name(self.pages[p]["index"])
 
         self.create_widgets()
-
-    @abstractmethod
-    def load_main_page(self):
-        pass
-    @abstractmethod
-    def load_tableau_page(self):
-        pass
-    @abstractmethod
-    def load_spatial_page(self):
-        pass
-    @abstractmethod
-    def load_spin_page(self):
-        pass
-    @abstractmethod
-    def load_download(self):
-        pass
-    @abstractmethod
-    def load_overlap_spatial(self):
-        pass
-    @abstractmethod
-    def load_overlap_spin(self):
-        pass
-    @abstractmethod
-    def load_hamilton_spatial(self):
-        pass
-    @abstractmethod
-    def load_hamilton_spin(self):
-        pass
-
-    from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton, QHBoxLayout
-
-
 
     def create_widgets(self) -> None:
         """
@@ -126,22 +91,24 @@ class MainApplication(LayoutAndButtonApplication):
         button_layout_widget.setFixedSize(self.width()-self.margin_x*4, button_layout.sizeHint().height())
         self.scroll_layout.addWidget(button_layout_widget)
 
-    @abstractmethod
-    def open_page(self, page_number:int) -> None:
-        """
-        to be implemented in sub-class
-        :param page_number: number of the page to be opened
-        :return: None
-        """
-        return self.change_page(page_number)
-
-    @abstractmethod
-    def update_page(self) -> None:
-        # print("update_page", flush=True)
-        formulas = [r"E = m \cdot c^ 2", r"\frac{1}{2}", "\\begin{array}{c}{1}\\end{array}", r"\bra{1}"]# test equations
-
-        for formula in formulas:
-            self.add_equation(formula)
+    def set_ui_label(self, header: str = None, content: str = None, spacing:bool=True) -> None:
+        if header and content:
+            text = f"<b>{header}</b><p>{content}</p>"
+        elif header:
+            text = f"<b>{header}</b>"
+        elif content:
+            text = f"<p>{content}</p>"
+            spacing=False
+        else:
+            raise Exception("Label needs some kind of content")
+        if spacing is True:
+            text += "<br>"
+        label = QLabel(text)
+        label.setTextFormat(Qt.RichText)#enable html formatting
+        label.setWordWrap(True)
+        label.setMaximumWidth(self.width())
+        label.setStyleSheet(f"color: {self.color.value['text']};")
+        self.scroll_layout.addWidget(label)
 
     def add_equation(self, formula: str) -> None:
         """
@@ -159,7 +126,6 @@ class MainApplication(LayoutAndButtonApplication):
         self.scroll_layout.addWidget(canvas)
         # plt.close()
 
-
     def change_page(self, index: int) -> None:
         """
         changing a page by removing the old content and adding the new
@@ -169,13 +135,11 @@ class MainApplication(LayoutAndButtonApplication):
         self.current_page = index
         self.create_widgets()
 
-
     def clear_screen(self) -> None:
         """ Clearing the current layout and its sublayouts """
         self.clear_layout()
         self.create_settings_button()
         self.create_help_button()
-
 
     def clear_layout(self, layout: Union[QHBoxLayout, QVBoxLayout, None]=None) -> None:
         if layout == None:
@@ -191,3 +155,50 @@ class MainApplication(LayoutAndButtonApplication):
                     sublayout = item.layout()
                     if sublayout:
                         self.clear_layout(sublayout)
+
+
+    ###   abstract methods   ###########################################################################
+    @abstractmethod
+    def open_page(self, page_number:int) -> None:
+        """
+        to be implemented in sub-class
+        :param page_number: number of the page to be opened
+        :return: None
+        """
+        return self.change_page(page_number)
+
+    @abstractmethod
+    def update_page(self) -> None:
+        # print("update_page", flush=True)
+        formulas = [r"E = m \cdot c^ 2", r"\frac{1}{2}", "\\begin{array}{c}{1}\\end{array}", r"\bra{1}"]# test equations
+
+        for formula in formulas:
+            self.add_equation(formula)
+
+    @abstractmethod
+    def load_main_page(self):
+        pass
+    @abstractmethod
+    def load_tableau_page(self):
+        pass
+    @abstractmethod
+    def load_spatial_page(self):
+        pass
+    @abstractmethod
+    def load_spin_page(self):
+        pass
+    @abstractmethod
+    def load_download(self):
+        pass
+    @abstractmethod
+    def load_overlap_spatial(self):
+        pass
+    @abstractmethod
+    def load_overlap_spin(self):
+        pass
+    @abstractmethod
+    def load_hamilton_spatial(self):
+        pass
+    @abstractmethod
+    def load_hamilton_spin(self):
+        pass
