@@ -29,7 +29,7 @@ def update_language(language:str) -> None:
 def get_language() -> str:
     """ get current language
     :return: abbreviation of the current language (in case of error: default_language) """
-    return load_config().get('language', 'default_language')
+    return load_config()['language']
 
 
 

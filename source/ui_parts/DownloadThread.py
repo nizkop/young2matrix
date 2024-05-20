@@ -6,7 +6,8 @@ from PyQt5.QtWidgets import QVBoxLayout, QPushButton, QLayoutItem, QWidgetItem
 
 from source.permutation_group import permutation_group
 from source.texts.general_texts import get_general_text
-from source.ui_parts.settings.idea_config import get_language
+from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
+from source.ui_parts.settings.language_config import get_language
 from source.ui_parts.settings.language_choices import language_choices
 
 
@@ -50,7 +51,7 @@ class DownloadThread(QThread):
         for button in self.get_buttons_from_layout():
             button.setEnabled(activated)
             if activated:
-                button.setStyleSheet(f"background-color: {self.background_color}; color: {self.text_color};")# reset
+                format_layout_part(button)#f"background-color: {self.background_color}; color: {self.text_color};")# reset
             else:
                 button.setStyleSheet(f"background-color: #6fa287; color: gray;")
 

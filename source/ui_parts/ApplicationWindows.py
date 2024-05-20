@@ -1,4 +1,4 @@
-
+import math
 import sys
 from typing import Union
 
@@ -18,6 +18,7 @@ from source.texts.get_title_youngtableaus import get_title_multiplied_youngtable
 from source.texts.get_titles_for_permutation_parts import get_title_permutation_to_tableaus
 from source.ui_parts.MainApplication import MainApplication
 from source.ui_parts.DownloadThread import DownloadThread
+from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
 
 
 class ApplicationWindows(MainApplication):
@@ -51,7 +52,7 @@ class ApplicationWindows(MainApplication):
                     # double check before calculating too much (because high numbers might fry the computer)
                     warning_box = QMessageBox()
                     warning_box.setText(get_general_text("check_big_data"))
-                    warning_box.setStyleSheet(f"color: {self.color.value['text']}; background-color: {self.color.value['background']}; font-weight: bold;")
+                    format_layout_part(warning_box)#f"color: {self.color.value['text']}; background-color: {self.color.value['background']}; font-weight: bold;")
                     yes_button = QPushButton(get_general_text("yes"))
                     no_button = QPushButton(get_general_text("no"))
                     warning_box.addButton(yes_button, QMessageBox.YesRole)
@@ -66,7 +67,7 @@ class ApplicationWindows(MainApplication):
                 warning_box.setWindowTitle(get_general_text("warning"))
                 warning_box.setTextFormat(Qt.RichText)
                 warning_box.setText(f"<b>{warning_text}</b>")
-                warning_box.setStyleSheet(f"color: {self.color.value['text']}; background-color: {self.color.value['background']}; font-weight: bold;")
+                format_layout_part(warning_box)#f"color: {self.color.value['text']}; background-color: {self.color.value['background']}; font-weight: bold;")
                 warning_box.exec_()
                 return self.change_page(0)
             self.set_basic_permutation_attributes(input_value=input_value)
@@ -116,29 +117,32 @@ class ApplicationWindows(MainApplication):
     def load_main_page(self) -> None:
         permutation_group_input = QVBoxLayout()
         permutation_group_input.setAlignment(Qt.AlignCenter)
-        spacer_top = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        spacer_top = QSpacerItem(0, self.spacer_height, QSizePolicy.Minimum, QSizePolicy.Expanding)
         permutation_group_input.addItem(spacer_top)
 
         hbox = QHBoxLayout()# to put label and input in 1 line
         hbox.setAlignment(Qt.AlignCenter)
+        hbox.addSpacing(self.button_size)
 
         permutation_group_label = QLabel(get_general_text("input_command"))
         permutation_group_label.setWordWrap(True)
         permutation_group_label.setMaximumWidth(self.width())
-        permutation_group_label.setStyleSheet(f"color: {self.color.value['text']}; font-size: 15pt;")
+        format_layout_part(permutation_group_label)#f"color: {self.color.value['text']}; font-size: {self.font_size}pt;")
         hbox.addWidget(permutation_group_label)
+        hbox.addSpacing(self.button_size)# distance between label and input box
 
         self.input_box = QLineEdit()
-        self.input_box.setStyleSheet(f"color: {self.color.value['text']};")
-        self.input_box.setToolTip(get_general_text("input_line_command"))
-        self.input_box.enterEvent = lambda event, input=input: self.change_status_message(self.input_box.toolTip())
+        format_layout_part(self.input_box)#f"color: {self.color.value['text']};")
+        self.input_box.setToolTip(f"<span style='font-size:{self.font_size}pt;'>{get_general_text('input_line_command')}</span>")
+        self.input_box.enterEvent = lambda event, input=input: (
+                                            self.change_status_message(get_general_text('input_line_command')))
         self.input_box.leaveEvent = lambda event: self.change_status_message()
+        self.input_box.setMaximumWidth(max(self.button_size, math.ceil(self.width()/4)))
         hbox.addWidget(self.input_box)
+        self.input_box.setAlignment(Qt.AlignLeft)
 
+        hbox.addStretch()#avoid input line totally on the right
         permutation_group_input.addLayout(hbox)
-        # permutation_group_input.addStretch(1)# input not completely at the bottom
-        # spacer_bottom = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        # permutation_group_input.addItem(spacer_bottom)
         self.scroll_layout.addLayout(permutation_group_input)
 
     def load_tableau_page(self) -> None:
@@ -176,10 +180,6 @@ class ApplicationWindows(MainApplication):
                     group_empty = False
             if group_empty:
                 self.set_ui_label(content = get_general_text("spin_2rows"))
-                # label.setWordWrap(True)
-                # label.setMaximumWidth(self.width())
-                # label.setStyleSheet(f"color: {self.color.value['text']};")
-                # self.scroll_layout.addWidget(label)
 
     def load_spatial_page(self) -> None:
         self.set_ui_label(header=get_general_text("spatial_header"))
@@ -197,10 +197,6 @@ class ApplicationWindows(MainApplication):
                     group_empty = False
             if group_empty:
                 self.set_ui_label(content = get_general_text("spatial_2columns"))
-                # label.setWordWrap(True)
-                # label.setMaximumWidth(self.width())
-                # label.setStyleSheet(f"color: {self.color.value['text']};")
-                # self.scroll_layout.addWidget(label)
 
     def load_overlap_spin(self) -> None:
         title, content, equation = get_title_spin(kind=text_kinds.TXT)
@@ -268,7 +264,7 @@ class ApplicationWindows(MainApplication):
         label = QLabel(get_general_text("h_info_spin")+"\n\n")
         label.setWordWrap(True)
         label.setMaximumWidth(self.width())
-        label.setStyleSheet("color: darkred; font-weight: bold;")
+        format_layout_part(label, added_style ="color: darkred; font-weight: bold;")
         self.scroll_layout.addWidget(label)
 
         self.load_overlap_spin()
@@ -276,21 +272,21 @@ class ApplicationWindows(MainApplication):
     def load_download(self) -> None:
         """ initializes download and goes back to main page """
         label = QLabel(get_general_text("download_start_info1")+str(self.permutation_group_no)+get_general_text("download_start_info2")+"\n")
-        label.setStyleSheet(f"color: {self.color.value['text']};")
+        format_layout_part(label)
 
         self.progress_bar = QProgressBar()#<- bar to show the progress
         self.progress_bar.setRange(0, 100)
-        self.progress_bar.setStyleSheet(f"color: {self.color.value['text']};")
+        format_layout_part(self.progress_bar)#f"color: {self.color.value['text']};")
 
         download_layout = QVBoxLayout()
         download_layout.setAlignment(Qt.AlignCenter)
-        spacer_top = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        spacer_top = QSpacerItem(0, self.spacer_height, QSizePolicy.Minimum, QSizePolicy.Expanding)
         download_layout.addItem(spacer_top)
 
 
         download_layout.addWidget(label)
         download_layout.addWidget(self.progress_bar)
-        spacer_top = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        spacer_top = QSpacerItem(0, self.spacer_height, QSizePolicy.Minimum, QSizePolicy.Expanding)
         download_layout.addItem(spacer_top)
         # add new layout:
         self.scroll_layout.addLayout(download_layout)

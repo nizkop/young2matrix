@@ -1,8 +1,9 @@
 from PyQt5.QtWidgets import QComboBox, QDialog, QVBoxLayout, QPushButton, QLabel
 
 from source.texts.general_texts import get_general_text
-from source.ui_parts.color_styles import color_styles
-from source.ui_parts.settings.idea_config import get_language
+from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
+from source.ui_parts.settings.color_styles import color_styles
+from source.ui_parts.settings.language_config import get_language
 from source.ui_parts.settings.language_choices import language_choices
 
 
@@ -11,12 +12,13 @@ class SettingsDialog(QDialog):
     this is the actual settings dialog box (accessible on each page)
     (aside from the initiation, this class/its methods are not used)
     """
-    def __init__(self, colorscheme:color_styles):
+    def __init__(self, colorscheme:color_styles, font_size:int):
         super().__init__()
         self.color_scheme = colorscheme
+        self.font_size = font_size
 
         self.layout = QVBoxLayout()
-        self.setStyleSheet(f"background-color: {colorscheme.value['background']}; color: {colorscheme.value['text']}; font-size: 15pt;")
+        format_layout_part(self)#f"background-color: {colorscheme.value['background']}; color: {colorscheme.value['text']}; font-size: {self.font_size}pt;")
 
         self.create_language_button()
         self.create_colorscheme_button()
