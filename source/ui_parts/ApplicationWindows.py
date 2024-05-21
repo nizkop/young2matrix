@@ -202,8 +202,12 @@ class ApplicationWindows(MainApplication):
     def load_overlap_spin(self) -> None:
         title, content, equation = get_title_spin(kind=text_kinds.TXT)
         self.set_ui_label(header=get_general_text("overlap_header")+title, spacing=False,
-                          content=content.replace("\n","<br>"))
-        self.add_equation(equation)
+                          content=content.replace(r"\n","<br>"))
+        label = QLabel(equation)
+        label.setWordWrap(True)
+        label.setMaximumWidth(self.width())
+        self.scroll_layout.addWidget(label)
+        # actual equations for this case:
         for i in self.permutation_group.overlap:
             if (i['kind'] == spin_vs_spatial_kind.SPIN and len(i['result'].parts) == 1 and
                     i['result'].parts[0].factor != 0 and i['result'].parts[0].factor != 1):
@@ -214,7 +218,7 @@ class ApplicationWindows(MainApplication):
                 equation_tex += f" = {i['result'].to_tex()}"
                 self.add_equation(equation_tex)
         if len(self.permutation_group.overlap) == 0:
-            label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")
+            label = QLabel(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>")
             label.setWordWrap(True)
             label.setMaximumWidth(self.width())
             label.setTextFormat(Qt.RichText)
@@ -235,7 +239,7 @@ class ApplicationWindows(MainApplication):
                 equation_tex += f" = {i['result'].to_tex()}"
                 self.add_equation(equation_tex)
         if len(self.permutation_group.overlap) == 0:
-            label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")
+            label = QLabel(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>")
             label.setWordWrap(True)
             label.setMaximumWidth(self.width())
             label.setTextFormat(Qt.RichText)
@@ -254,7 +258,7 @@ class ApplicationWindows(MainApplication):
                     equation_tex += addend.to_tex()
                 self.add_equation(equation_tex)
         if len(self.permutation_group.hamilton_integrals) == 0:
-            label = QLabel(fr"<p><b>!</b> <textit>{get_general_text('too_small_for_overlap')}<\textit></p>")
+            label = QLabel(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>")
             label.setWordWrap(True)
             label.setMaximumWidth(self.width())
             label.setTextFormat(Qt.RichText)

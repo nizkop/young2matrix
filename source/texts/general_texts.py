@@ -22,7 +22,7 @@ def get_general_text(key:str) -> str:
             "spatial_2columns": "(Bacause spatial tableaus have to be adjoint to the spin tableaus" +
                                 " (and for them only two functions can be anti symmetric at most), " +
                                 "more than two columns are impossible.)",
-            "too_small_for_overlap": "The permutation group is too small to lead to non-trivial combinations of basis functions.",
+            "too_small_for_overlap": "This permutation group is too small to lead to non-trivial combinations of basis functions.",
             "h_info_spin": "Attention: The Hamiltonian does not depend on the spin. Thereby hamilton integrals of spin functions revert to overlap integrals and are not listed again here.",
             "header_hamilton_general": "hamilton integrals",
             "ref_hspin": " (s. section 4.2) ",

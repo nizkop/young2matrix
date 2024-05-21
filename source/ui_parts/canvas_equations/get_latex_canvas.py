@@ -34,7 +34,7 @@ def get_latex_canvas(eq:str, color:str) -> FigureCanvas:
     ax.text(0.05, 0.5, rf"\[{eq}\]", color=color, horizontalalignment='left', verticalalignment='center', fontsize=20)
     ax.axis('off')
     figure.patch.set_facecolor('none')
-    plt.tight_layout(pad=0.2)#centering horizontally
+    # plt.tight_layout(pad=0.2)#centering horizontally
 
     # print(figure, figure.bbox )
     canvas = FigureCanvas(figure)

@@ -35,9 +35,12 @@ def get_title_spin(kind: text_kinds) -> Tuple[str, str, str]:
         equation += r" \ket{\, \underbrace{S \quad m_S}_{\text{von Tableau 2}} \,} "
         equation += r"= \underbrace{...}_{\text{Überlapp der Tableaus 1 und 2}}"
     else:
-        equation = r"< Tableau 1 | Tableau 2 > "
-        equation += r"=  < S \quad m_S_{von Tableau 1} | "
-        equation += r"S \quad m_S_{von Tableau 2} > "
-        equation += r"= ... = \"Überlapp der Tableaus 1 und 2\" "
+        equation = " "*5
+        if get_language() == language_choices.en.name:
+            equation += r""" "overlap of the tableaus 1 and 2"  =  < tableau 1 | tableau 2 > """
+        else:
+            equation += r""" "Überlapp der Tableaus 1 und 2"  =  < Tableau 1 | Tableau 2 > """
+        equation += "\n"+" "*5 +"=  < S \quad m_S_{von Tableau 1} | S \quad m_S_{von Tableau 2} >  =  ... "
+
 
     return (title, content, equation)

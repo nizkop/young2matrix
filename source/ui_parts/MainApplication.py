@@ -104,7 +104,7 @@ class MainApplication(LayoutAndButtonApplication):
                                           button_layout.sizeHint().height())
         self.scroll_layout.addWidget(button_layout_widget)
 
-    def set_ui_label(self, header: str = None, content: str = None, spacing:bool=True) -> None:
+    def set_ui_label(self, header: str = None, content: str = None, spacing: bool = True) -> None:
         if header and content:
             text = f"<b>{header}</b><p>{content}</p>"
         elif header:
@@ -113,7 +113,7 @@ class MainApplication(LayoutAndButtonApplication):
             text = f"<p>{content}</p>"
             spacing=False
         else:
-            raise Exception("Label needs some kind of content")
+            raise Exception("A label needs some kind of content.")
         if spacing is True:
             text += "<br>"
         label = QLabel(text)
