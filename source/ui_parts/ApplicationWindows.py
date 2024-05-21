@@ -22,6 +22,7 @@ from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_p
 from source.ui_parts.settings.language_config import get_color, load_config
 
 
+
 class ApplicationWindows(MainApplication):
     """
     class needed to fill ui pages of main application with actual content;
@@ -272,12 +273,16 @@ class ApplicationWindows(MainApplication):
 
     def load_download(self) -> None:
         """ initializes download and goes back to main page """
+        print("load download", flush=True)
         label = QLabel(get_general_text("download_start_info1")+str(self.permutation_group_no)+get_general_text("download_start_info2")+"\n")
         format_layout_part(label)
 
         self.progress_bar = QProgressBar()#<- bar to show the progress
+        # self.progress_bar.setStyleSheet(f"background-color: {get_color()['status-background']};")
         self.progress_bar.setRange(0, 100)
-        format_layout_part(self.progress_bar)#f"color: {self.color.value['text']};")
+        format_layout_part(self.progress_bar)
+        # print("progress:", get_color()['status_background'], flush=True)
+
 
         download_layout = QVBoxLayout()
         download_layout.setAlignment(Qt.AlignCenter)

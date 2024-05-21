@@ -94,7 +94,7 @@ class MainApplication(LayoutAndButtonApplication):
         # adding width-limited button panel to layout:
         button_layout_widget = QWidget()
         button_layout_widget.setLayout(button_layout)
-        button_layout_widget.setFixedSize(self.width()-(load_config()['margin-top-y']//2)*4, button_layout.sizeHint().height())
+        button_layout_widget.setFixedSize(self.width()-(load_config()['margin-top-y'])*4, button_layout.sizeHint().height())
         self.scroll_layout.addWidget(button_layout_widget)
 
     def set_ui_label(self, header: str = None, content: str = None, spacing:bool=True) -> None:

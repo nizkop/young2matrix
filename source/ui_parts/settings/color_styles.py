@@ -2,7 +2,6 @@ from enum import Enum
 
 
 class color_styles(Enum):
-
     DEFAULT = {"name": "default",
                "text": "black",
                "status_text": "white",
@@ -21,27 +20,23 @@ class color_styles(Enum):
                 "info_background": "rgb(40, 60, 100)",
                 "button-border": "rgb(60, 60, 60)",
                 }
-    PLAIN = {"name": "plain", "background":  "white", "text": "black", "status_background": "gray",
-               "status_text": "white", "info_background": "red", "settings": "darkred","button-background": "lightgrey",}
-
-    GREEN1 = {"name": "green1", "text": "black","status_text": "white", "settings": "black",
-              "background": "rgb(125, 180, 108)",
-              "status_background": "rgb(135, 206, 250)",
-              "button-background": "rgb(170, 213, 219)",
-              "info_background": "darkred",
-              }
-    HONEY = {"name": "honey",  "text": "black","status_text": "white", "settings": "black",
-             "background": "rgb(235, 169, 55)",
-             "status_background": "rgb(172, 225, 175)",
-             "button-background": "rgb(243, 229, 171)",
-             "info_background": "rgb(227, 66, 52)",
+    PLAIN = {"name": "plain",
+             "background":  "white",
+             "text": "black",
+             "status_background": "rgb(105, 105, 105)",
+             "status_text": "white",
+             "info_background": "rgb(204,0,0)",
+             "button-background": "lightgrey",
+             "button-border": "grey"
              }
+    WARM = {"name": "warm",
+            "text": "rgb(51,25,0)",
+            "status_text": "rgb(51,25,0)",
+            "background": "rgb(235, 169, 55)",
+            "status_background": "orange",
+            "button-background": "rgb(243, 229, 171)",
+            "info_background": "rgb(255, 102, 51)",
+            "button-border": "rgb(102,51,0)"
+            }
 
 # https://acrylgiessen.com/farbkombinationen/
-
-
-"""
-#8D230F, #1E434C, #9B4F0F, #C99E10
-#363237, #2D4262, #73605B 
-#1E1F26, #283655, #4D648D (#D0E1F9 statt weiß)
-"""

@@ -62,7 +62,7 @@ class LayoutAndButtonApplication(QMainWindow):
             if self.settings_button is None:
                 self.settings_button = QPushButton()
                 self.settings_button.setFixedSize(load_config()["button-size"], load_config()["button-size"])
-                self.settings_button.move(load_config()["margin-top-y"]//2, load_config()["margin-top-y"])
+                self.settings_button.move(load_config()["margin-top-y"], load_config()["margin-top-y"])
 
                 # ! activates Button each time it is called -> potentially raising number of clicks needed
                 # to get rid of button if ths line is called every time create_settings_button is called:
@@ -126,9 +126,10 @@ class LayoutAndButtonApplication(QMainWindow):
         if self.help_button is None:
             self.help_button = QPushButton("?", self)
             self.help_button.setFixedSize(load_config()['button-size'],load_config()['button-size'])
-            self.help_button.move(self.width() - load_config()['margin-top-y']//2 - load_config()['button-size'], load_config()['margin-top-y'])
+            self.help_button.move(self.width() - load_config()['margin-top-y'] - load_config()['button-size'], load_config()['margin-top-y'])
         format_layout_part(self.help_button, added_style=f"background-color: {get_color()['info_background']}; " +
-                                                    f"border-radius: {load_config()['button-size']//2}; ")# 50 % <-> circle
+                           f"border-radius: {load_config()['button-size']//2}; "+# 50 % <-> circle
+                           f"border: 2px solid {get_color()['button-border']} ;")# <- vanishes from default because of set 'border'
         self.help_button.clicked.connect(self.show_info)
         self.help_button.setToolTip(f"<span style='font-size:{load_config()['font-size']}pt;'>{get_general_text('help')}</span>")
         self.help_button.enterEvent = lambda event, button=self.help_button:self.change_status_message(get_general_text("help"))
@@ -138,7 +139,7 @@ class LayoutAndButtonApplication(QMainWindow):
 
     def removing_help_button_as_event(self, event: QResizeEvent) -> None:
         """ automatically move help button further to the right in case the screen size is changed """
-        self.help_button.move(self.width() - (load_config()["margin-top-y"])//2 - load_config()["button-size"], load_config()["margin-top-y"])# x, y
+        self.help_button.move(self.width() - (load_config()["margin-top-y"]) - load_config()["button-size"], load_config()["margin-top-y"])# x, y
         event.accept()
 
     def set_language(self, choosen_language: language_choices) -> None:
