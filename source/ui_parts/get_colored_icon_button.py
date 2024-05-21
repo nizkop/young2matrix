@@ -22,7 +22,12 @@ def get_colored_icon_button(button:QPushButton, file_path:str, color:str) -> QPu
     """
     # print("get_colored_icon_button", color, flush=True)
     icon = QIcon(file_path)
-    colored_pixmap = colorize_pixmap(icon=icon, color=QColor(color))
+    if "rgb" in color:
+        color = color.replace("rgb","").replace("(","").replace(")","")
+        r, g, b = color.split(',')
+        colored_pixmap = colorize_pixmap(icon=icon,color=QColor(int(r),int(g),int(b)))
+    else:
+        colored_pixmap = colorize_pixmap(icon=icon, color=QColor(color))
     button.setIcon(QIcon(colored_pixmap))
     return button
 

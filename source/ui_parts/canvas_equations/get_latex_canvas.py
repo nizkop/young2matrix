@@ -27,6 +27,10 @@ def get_latex_canvas(eq:str, color:str) -> FigureCanvas:
     figure = plt.figure()
     # ax = figure.add_subplot(111)
     ax = figure.add_axes([0, 0, 1, 1])
+    if "rgb" in color:
+        color = color.replace("rgb", "").replace("(", "").replace(")", "")
+        r, g, b = map(int, color.split(','))
+        color = "#{:02x}{:02x}{:02x}".format(r, g, b)
     ax.text(0.05, 0.5, rf"\[{eq}\]", color=color, horizontalalignment='left', verticalalignment='center', fontsize=20)
     ax.axis('off')
     figure.patch.set_facecolor('none')

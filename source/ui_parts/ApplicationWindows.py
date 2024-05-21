@@ -19,6 +19,7 @@ from source.texts.get_titles_for_permutation_parts import get_title_permutation_
 from source.ui_parts.MainApplication import MainApplication
 from source.ui_parts.DownloadThread import DownloadThread
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
+from source.ui_parts.settings.language_config import get_color, load_config
 
 
 class ApplicationWindows(MainApplication):
@@ -122,22 +123,22 @@ class ApplicationWindows(MainApplication):
 
         hbox = QHBoxLayout()# to put label and input in 1 line
         hbox.setAlignment(Qt.AlignCenter)
-        hbox.addSpacing(self.button_size)
+        hbox.addSpacing(load_config()['button-size'])
 
         permutation_group_label = QLabel(get_general_text("input_command"))
         permutation_group_label.setWordWrap(True)
         permutation_group_label.setMaximumWidth(self.width())
         format_layout_part(permutation_group_label)#f"color: {self.color.value['text']}; font-size: {self.font_size}pt;")
         hbox.addWidget(permutation_group_label)
-        hbox.addSpacing(self.button_size)# distance between label and input box
+        hbox.addSpacing(load_config()['button-size'])# distance between label and input box
 
         self.input_box = QLineEdit()
         format_layout_part(self.input_box)#f"color: {self.color.value['text']};")
-        self.input_box.setToolTip(f"<span style='font-size:{self.font_size}pt;'>{get_general_text('input_line_command')}</span>")
+        self.input_box.setToolTip(f"<span style='font-size:{load_config()['font-size']}pt;'>{get_general_text('input_line_command')}</span>")
         self.input_box.enterEvent = lambda event, input=input: (
                                             self.change_status_message(get_general_text('input_line_command')))
         self.input_box.leaveEvent = lambda event: self.change_status_message()
-        self.input_box.setMaximumWidth(max(self.button_size, math.ceil(self.width()/4)))
+        self.input_box.setMaximumWidth(max(load_config()['button-size'], math.ceil(self.width()/4)))
         hbox.addWidget(self.input_box)
         self.input_box.setAlignment(Qt.AlignLeft)
 
@@ -293,7 +294,7 @@ class ApplicationWindows(MainApplication):
 
         # start download thread:
         self.download_thread = DownloadThread(self.permutation_group, self.scroll_layout,
-                                              background_color=self.color.value['background'], text_color=self.color.value["text"])
+                                              background_color=get_color()['background'], text_color=get_color()["text"])
         self.download_thread.enable_all_buttons(activated=False)
         self.download_thread.update_progress.connect(self.update_progress_bar)
         self.download_thread.start()

@@ -3,7 +3,7 @@ from typing import Union
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QResizeEvent
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QPushButton, QScrollArea, QStatusBar, QMessageBox, \
-    QApplication, QSpacerItem, QSizePolicy, QLabel
+    QApplication, QSpacerItem, QSizePolicy
 
 from source.texts.general_texts import get_general_text
 from source.texts.get_page_information import get_page_information
@@ -11,7 +11,7 @@ from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_p
 from source.ui_parts.settings.color_styles import color_styles
 from source.ui_parts.settings.language_choices import language_choices
 from source.ui_parts.ui_pages import get_page_name
-from source.ui_parts.settings.language_config import update_language, get_language
+from source.ui_parts.settings.language_config import update_settings, get_language, load_config, get_color
 from source.ui_parts.SettingsDialog import SettingsDialog
 from source.ui_parts.get_colored_icon_button import get_colored_icon_button
 
@@ -24,19 +24,14 @@ class LayoutAndButtonApplication(QMainWindow):
     """
     def __init__(self):
         super().__init__()
-
-        self.color = color_styles.DEFAULT #color_styles.DEFAULT
-        self.setGeometry(100, 100, 800, 600)
-        self.top_y = 10
-        self.margin_x = 10
-        self.button_size = 50
-        self.font_size = 16
-        self.button_font_size = self.font_size + 5
-        self.spacer_height = self.button_size + 2 * self.top_y
+        settings = load_config()
+        x, y, width, height = settings["geometry"]
+        self.setGeometry(x, y, width, height)
+        self.spacer_height = settings["button-size"] + 2 * settings["margin-top-y"]
 
         self.central_widget = QWidget()
         format_layout_part(self.central_widget)
-        self.central_widget.setStyleSheet(f"background-color: {self.color.value['status_background']}")
+        self.central_widget.setStyleSheet(f"background-color: {get_color()['status_background']}")
         self.setCentralWidget(self.central_widget)
         self.layout = QVBoxLayout(self.central_widget)
         self.layout.setContentsMargins(0, 0, 0, 0)
@@ -58,6 +53,7 @@ class LayoutAndButtonApplication(QMainWindow):
 
         self.settings_button = None
         self.create_settings_button()
+        self.help_button = None
         self.create_help_button()
 
     def create_settings_button(self) -> None:
@@ -65,8 +61,8 @@ class LayoutAndButtonApplication(QMainWindow):
             # print("create_settings_button",flush=True)
             if self.settings_button is None:
                 self.settings_button = QPushButton()
-                self.settings_button.setFixedSize(self.button_size, self.button_size)
-                self.settings_button.move(self.margin_x, self.top_y)
+                self.settings_button.setFixedSize(load_config()["button-size"], load_config()["button-size"])
+                self.settings_button.move(load_config()["margin-top-y"]//2, load_config()["margin-top-y"])
 
                 # ! activates Button each time it is called -> potentially raising number of clicks needed
                 # to get rid of button if ths line is called every time create_settings_button is called:
@@ -74,12 +70,12 @@ class LayoutAndButtonApplication(QMainWindow):
 
             self.settings_button = get_colored_icon_button(button=self.settings_button,
                                                            file_path="./source/ui_parts/settings/icons8-settings.svg",
-                                                           color=self.color.value["settings"])
-            self.settings_button.setIconSize(QSize(self.button_size, self.button_size))
+                                                           color=get_color()["text"])
+            self.settings_button.setIconSize(QSize(load_config()["button-size"], load_config()["button-size"]))
             format_layout_part(self.settings_button)#f"background-color: {self.color.value['background']}; "+
             #                                    f"color: {self.color.value['text']}; font-weight: bold; "+
             #                                    f"font-size: {self.button_font_size}pt;")
-            self.settings_button.setToolTip(f"<span style='font-size:{self.font_size}pt;'>"+
+            self.settings_button.setToolTip(f"<span style='font-size:{load_config()['font-size']}pt;'>"+
                                             f"{get_general_text('settings_change')}</span>")
             self.settings_button.enterEvent = lambda event, button= self.settings_button: (
                                             self.change_status_message(get_general_text('settings_change')))
@@ -93,17 +89,28 @@ class LayoutAndButtonApplication(QMainWindow):
         :return:
         """
         # print("open_settings",flush=True)
-        dialog = SettingsDialog(self.color, font_size=self.font_size)
+        dialog = SettingsDialog()
         if dialog.exec_():
             selected_color = dialog._selected_color()
             for color in color_styles:
                 if selected_color == color.value["name"]:
-                    if color != self.color:
+                    if color.value != get_color():
                         format_layout_part(self)
                         # self.color = color
                         # f"background-color: {color.value['background']};")
                         self.change_status_message()  # change background color in case of changed color
                         # self.create_settings_button()
+                        update_settings(color.name, "color")
+                        # print(color, load_config())
+                        # format_layout_part(self)
+                        format_layout_part(self.central_widget)# top spacer
+                        format_layout_part(self.scroll_area)# main background
+                        format_layout_part(self.statusBar)
+                        # format_layout_part(self)#just to be sure
+
+                        self.create_settings_button()#update
+                        self.create_help_button()#update
+
 
             selected_language = dialog._selected_language()
             self.set_language(selected_language)
@@ -113,24 +120,25 @@ class LayoutAndButtonApplication(QMainWindow):
 
     def create_help_button(self) -> None:
         """
-        setting up a belp button, where more information about the content of the actual page/screen is shown
+        setting up a help button, where more information about the content of the actual page/screen is shown
         :return:
         """
-        help_button = QPushButton("?", self)
-        help_button.setFixedSize(self.button_size, self.button_size)
-        help_button.move(self.width() - self.margin_x - self.button_size, self.top_y)
-        format_layout_part(help_button, added_style=f"background-color: {self.color.value['info_background']}; " +
-                                                    f"border-radius: {self.button_size//2}; ")# 50 % <-> circle
-        help_button.clicked.connect(self.show_info)
-        help_button.setToolTip(f"<span style='font-size:{self.font_size}pt;'>{get_general_text('help')}</span>")
-        help_button.enterEvent = lambda event, button=help_button:self.change_status_message(get_general_text("help"))
-        help_button.leaveEvent = lambda event: self.change_status_message()
-        help_button.setParent(self)
-        self.help_button = help_button
+        if self.help_button is None:
+            self.help_button = QPushButton("?", self)
+            self.help_button.setFixedSize(load_config()['button-size'],load_config()['button-size'])
+            self.help_button.move(self.width() - load_config()['margin-top-y']//2 - load_config()['button-size'], load_config()['margin-top-y'])
+        format_layout_part(self.help_button, added_style=f"background-color: {get_color()['info_background']}; " +
+                                                    f"border-radius: {load_config()['button-size']//2}; ")# 50 % <-> circle
+        self.help_button.clicked.connect(self.show_info)
+        self.help_button.setToolTip(f"<span style='font-size:{load_config()['font-size']}pt;'>{get_general_text('help')}</span>")
+        self.help_button.enterEvent = lambda event, button=self.help_button:self.change_status_message(get_general_text("help"))
+        self.help_button.leaveEvent = lambda event: self.change_status_message()
+        self.help_button.setParent(self)
+
 
     def removing_help_button_as_event(self, event: QResizeEvent) -> None:
         """ automatically move help button further to the right in case the screen size is changed """
-        self.help_button.move(self.width() - self.margin_x - self.button_size, self.top_y)# x, y
+        self.help_button.move(self.width() - (load_config()["margin-top-y"])//2 - load_config()["button-size"], load_config()["margin-top-y"])# x, y
         event.accept()
 
     def set_language(self, choosen_language: language_choices) -> None:
@@ -143,7 +151,7 @@ class LayoutAndButtonApplication(QMainWindow):
                 break
         if language.name == get_language():
             return
-        update_language(language.name)
+        update_settings(language.name, "language")
         for p in range(len(self.pages)):# update pages names
             self.pages[p]["name"] = get_page_name(self.pages[p]["index"])
         self.create_settings_button()
@@ -155,12 +163,12 @@ class LayoutAndButtonApplication(QMainWindow):
         :param message: information (status bar is reset to an empty space in case the message is None)
         """
         if message is None or len(message) == 0:
-            format_layout_part(self.statusBar, added_style=f"background-color: {self.color.value['background']};" +
-                                                           f" color: {self.color.value['text']};")
+            format_layout_part(self.statusBar, added_style=f"background-color: {get_color()['background']};" +
+                                                           f" color: {get_color()['text']};")
             self.statusBar.clearMessage()
         else:
-            format_layout_part(self.statusBar, added_style=f"background-color:{self.color.value['status_background']};" +
-                                                           f" color: {self.color.value['status_text']};")
+            format_layout_part(self.statusBar, added_style=f"background-color:{get_color()['status_background']};" +
+                                                           f" color: {get_color()['status_text']};")
             self.statusBar.showMessage(message)
 
     def show_info(self) -> None:

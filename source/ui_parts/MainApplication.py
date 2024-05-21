@@ -12,7 +12,7 @@ from source.ui_parts.canvas_equations.get_max_number_of_signs_in_equation import
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
 from source.ui_parts.settings.language_choices import language_choices
 from source.ui_parts.ui_pages import ui_pages, get_page_name
-from source.ui_parts.settings.language_config import get_language
+from source.ui_parts.settings.language_config import get_language, get_color, load_config
 
 
 class MainApplication(LayoutAndButtonApplication):
@@ -77,12 +77,12 @@ class MainApplication(LayoutAndButtonApplication):
                     sign = page_info["sign"]
 
                 button = QPushButton(sign)
-                button.setFixedHeight(self.button_size)
+                button.setFixedHeight(load_config()['button-size'])
                 format_layout_part(button)#f"background-color: {self.color.value['background']}; " +
                                                    # f"color: {self.color.value['text']}; font-weight: bold; " +
                                                    # f"font-size: {self.button_font_size}pt;")
                 button.clicked.connect(lambda _, index=page_info["index"].value: self.open_page(index))
-                button.setToolTip(f"<span style='font-size:{self.font_size}pt;'>{page_info['name']}</span>")
+                button.setToolTip(f"<span style='font-size:{load_config()['font-size']}pt;'>{page_info['name']}</span>")
                 button.enterEvent = lambda event, button=button: self.change_status_message(page_info['name'])
                 button.leaveEvent = lambda event: self.change_status_message()
 
@@ -94,7 +94,7 @@ class MainApplication(LayoutAndButtonApplication):
         # adding width-limited button panel to layout:
         button_layout_widget = QWidget()
         button_layout_widget.setLayout(button_layout)
-        button_layout_widget.setFixedSize(self.width()-self.margin_x*4, button_layout.sizeHint().height())
+        button_layout_widget.setFixedSize(self.width()-(load_config()['margin-top-y']//2)*4, button_layout.sizeHint().height())
         self.scroll_layout.addWidget(button_layout_widget)
 
     def set_ui_label(self, header: str = None, content: str = None, spacing:bool=True) -> None:
@@ -113,7 +113,7 @@ class MainApplication(LayoutAndButtonApplication):
         label.setTextFormat(Qt.RichText)#enable html formatting
         label.setWordWrap(True)
         label.setMaximumWidth(self.width())
-        label.setStyleSheet(f"color: {self.color.value['text']};")
+        label.setStyleSheet(f"color: {get_color()['text']};")
         self.scroll_layout.addWidget(label)
 
     def add_equation(self, formula: str) -> None:
@@ -122,7 +122,7 @@ class MainApplication(LayoutAndButtonApplication):
         :param formula: latex-formatted equation, e.g. r"\frac{1}{2} \cdot \pi"
         """
         # print("\nadd_equation", formula, flush=True)
-        canvas = get_latex_canvas(eq=formula, color=self.color.value["text"])
+        canvas = get_latex_canvas(eq=formula, color=get_color()["text"])
 
         height = determine_height_of_equation(formula)
         width = fit_length_to_width(formula)
