@@ -73,6 +73,8 @@ class ApplicationWindows(MainApplication):
                 return self.change_page(0)
             self.set_basic_permutation_attributes(input_value=input_value)
         self.change_page(page_number)
+        self.scroll_area.verticalScrollBar().setValue(0)#scroll to the top (for the new page)
+        self.scroll_area.horizontalScrollBar().setValue(0)#in case of long equations
 
     def set_basic_permutation_attributes(self, input_value:int) -> None:
         """

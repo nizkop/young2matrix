@@ -173,7 +173,7 @@ class MainApplication(LayoutAndButtonApplication):
     ###   abstract methods: to be implemented in sub-class  ###########################################################################
     @abstractmethod
     def open_page(self, page_number:int) -> None:
-        passi
+        pass
 
     @abstractmethod
     def update_page(self) -> None:
