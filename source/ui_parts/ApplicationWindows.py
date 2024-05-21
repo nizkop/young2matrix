@@ -185,10 +185,11 @@ class ApplicationWindows(MainApplication):
                 self.set_ui_label(content = get_general_text("spin_2rows"))
 
     def load_spatial_page(self) -> None:
-        self.set_ui_label(header=get_general_text("spatial_header"))
+        self.set_ui_label(header=get_general_text("spatial_header"), content=get_title_multiplied_youngtableaus(text_kinds.TXT)[1])
         self.permutation_group.get_all_standard_tableaus()
-        for group in self.permutation_group.group_tableaus_by_shortend_symbol(
-                tableaus_to_sort=self.permutation_group.standard_tableaus):
+        groups = self.permutation_group.group_tableaus_by_shortend_symbol(
+                tableaus_to_sort=self.permutation_group.standard_tableaus)
+        for group in groups:
             equation = group[0].get_shortend_symbol()["tex"] + ":"
             self.add_equation(equation)
             group_empty = True
@@ -230,9 +231,11 @@ class ApplicationWindows(MainApplication):
         title, content = get_title_spatial(kind=text_kinds.TXT)
         self.set_ui_label(header=get_general_text("overlap_header")+title, content=content)
         self.permutation_group.calculate_all_overlap_integrals()
+        empty = True
         for i in self.permutation_group.overlap:
             if i['kind'] == spin_vs_spatial_kind.SPATIAL and len(i['result'].parts) == 1 and i['result'].parts[
                 0].factor != 0 and i['result'].parts[0].factor != 1:
+                empty = False
                 equation_tex = get_dirac_notation(str(i['bra_tableau']), str(i['ket_tableau']), kind=text_kinds.TEX)
                 if i['kind'] == spin_vs_spatial_kind.SPIN:
                     equation_tex += r"_{\sigma }"
@@ -240,7 +243,7 @@ class ApplicationWindows(MainApplication):
                 equation_tex += r"_{\Phi}"
                 equation_tex += f" = {i['result'].to_tex()}"
                 self.add_equation(equation_tex)
-        if len(self.permutation_group.overlap) == 0:
+        if len(self.permutation_group.overlap) == 0 or empty:
             label = QLabel(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>")
             label.setWordWrap(True)
             label.setMaximumWidth(self.width())

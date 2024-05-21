@@ -1,4 +1,3 @@
-
 from typing import Tuple
 
 from source.function_parts.text_kinds import text_kinds
@@ -7,6 +6,11 @@ from source.ui_parts.settings.language_choices import language_choices
 
 
 def get_title_spin(kind: text_kinds) -> Tuple[str, str, str]:
+    """
+    get introduction text for the spin overlap chapter
+    :param kind: choice of formatting (latex/normal text)
+    :return: describing text as a tuple of the title, explaining sentences and the example equation
+    """
     if get_language() == language_choices.en.name:
         title = "spin functions"
         content = "(only non-vanishing combinations are listed)"
@@ -28,7 +32,6 @@ def get_title_spin(kind: text_kinds) -> Tuple[str, str, str]:
             content += r"Überlapp zwischen gleichen Tableaus mit gleichem mS-Wert ist 1 (wird hier ausgelassen)"+"\n"
         content += r"hier informale Darstellung der Tableaus mit Spinfunktionen nach dem Schema: "
 
-
     if kind == text_kinds.TEX:
         equation = r"\bra{\,\text{Tableau 1}\,}\ket{\,\text{Tableau 2}\,} "
         equation += r"= \bra{\, \underbrace{S \quad m_S}_{\text{von Tableau 1}} \,}"
@@ -40,7 +43,6 @@ def get_title_spin(kind: text_kinds) -> Tuple[str, str, str]:
             equation += r""" "overlap of the tableaus 1 and 2"  =  < tableau 1 | tableau 2 > """
         else:
             equation += r""" "Überlapp der Tableaus 1 und 2"  =  < Tableau 1 | Tableau 2 > """
-        equation += "\n"+" "*5 +"=  < S \quad m_S_{von Tableau 1} | S \quad m_S_{von Tableau 2} >  =  ... "
-
+        equation += "\n"+" "*5 +"=  < S  m_S | S  m_S >  =  ... "
 
     return (title, content, equation)

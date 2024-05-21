@@ -63,7 +63,7 @@ class spin_part(integral_part):
 
     def get_shortend_form(self, kind:text_kinds=text_kinds.TXT) -> str:
         """ getting the short representation of a spin tableau, given by spin total quantum number S and single-particle quantum number ms
-        :return: short version according to | S Ms >
+        :return: short version according to | S M_S >
         """
         if kind == text_kinds.TEX:
             return rf" {self.total_spin}\quad {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "

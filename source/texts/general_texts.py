@@ -19,12 +19,13 @@ def get_general_text(key:str) -> str:
             "tableau_header": "young tableaus",
             "spin_2rows": "(Because there are only two spin functions α, β, more than two anti symmetric spin functions are impossible.)",
             "spin_2rows_tex": r"\textit{(Because there are only two spin functions $\alpha, \beta$, more than two anti symmetric spin functions are impossible.)}",
-            "spatial_2columns": "(Bacause spatial tableaus have to be adjoint to the spin tableaus" +
+            "spatial_2columns": "(Because spatial tableaus have to be adjoint to the spin tableaus" +
                                 " (and for them only two functions can be anti symmetric at most), " +
                                 "more than two columns are impossible.)",
             "too_small_for_overlap": "This permutation group is too small to lead to non-trivial combinations of basis functions.",
             "h_info_spin": "Attention: The Hamiltonian does not depend on the spin. Thereby hamilton integrals of spin functions revert to overlap integrals and are not listed again here.",
             "header_hamilton_general": "hamilton integrals",
+            "header_hamilton_spin": "hamilton integrals based on spin functions",
             "ref_hspin": " (s. section 4.2) ",
             "header_overlap_general": "overlap integrals",
 
@@ -48,6 +49,8 @@ def get_general_text(key:str) -> str:
             "warning_wrong_type": "Please fill in an integer for setting the permutations group.",
             "successful_download": "The download was successful.",
             "failed_download": "Sadly, we encountered an unknown error while downloading the pdf.",
+            "header_hamilton_spatial": "hamilton matrix elements for the spatial functions",
+            # "spatial_h_empty": "This permutation group is to small to build non-trivial hamilton integrals.",
 
         }
     else: # default
@@ -66,6 +69,7 @@ def get_general_text(key:str) -> str:
             "header_hamilton_general": "Hamiltonmatrixelemente",
             "ref_hspin": " (s. Kapitel 4.2) ",
             "header_overlap_general": "Überlappungsintegrale",
+            "header_hamilton_spin": "Hamiltonmatrixelemente basierend auf Spinfunktionen",
 
             # solely UI:
             "settings_change": "Einstellungen (Sprache/Design) ändern.",
@@ -87,7 +91,11 @@ def get_general_text(key:str) -> str:
             "successful_download": "Der Download war erfolgreich.",
             "failed_download": "Leider gab es ein unbekanntes Problem beim Downloaden.",
             "header_hamilton_spatial": "Hamiltonmatrixelemente für die Raumorbitale",
+            # "spatial_h_empty": "Diese Permuatationsgruppe ist zu klein, um nicht-triviale Hamiltonintegrale zu bilden.",
 
         }
-
-    return general_texts[key]
+    try:
+        return general_texts[key]
+    except KeyError:
+        error = f"undetermined key for general texts {key}"
+        raise Exception(error)

@@ -63,7 +63,6 @@ class permutation_group(object):
             equations.append(equation)
         return equations
 
-
     def get_chapter_youngtableaus(self):
         """
         chapter 1 of overview giving pdf

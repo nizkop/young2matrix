@@ -1,6 +1,7 @@
 from abc import abstractmethod
 from typing import Union, Dict, List
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QResizeEvent
 from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton, QHBoxLayout, QWidget, QLabel
 from qtpy import QtCore
 
@@ -49,7 +50,7 @@ class MainApplication(LayoutAndButtonApplication):
                     "buttons": [ui_pages.START, ui_pages.SPIN, ui_pages.OVERLAP_SPATIAL, ui_pages.HAMILTON_SPIN]},
             {"sign": "<|> (Φ)", "index": ui_pages.OVERLAP_SPATIAL,
                     "function": self.load_overlap_spatial, "parent": ui_pages.SPATIAL_FUNCTIONS,
-                    "buttons": [ui_pages.START, ui_pages.SPIN, ui_pages.OVERLAP_SPIN, ui_pages.HAMILTON_SPATIAL]},
+                    "buttons": [ui_pages.START, ui_pages.SPATIAL_FUNCTIONS, ui_pages.OVERLAP_SPIN, ui_pages.HAMILTON_SPATIAL]},
             {"sign": "H (σ)" , "index": ui_pages.HAMILTON_SPIN, "function": self.load_hamilton_spin,
                     "parent": ui_pages.OVERLAP_SPIN,
                     "buttons": [ui_pages.START, ui_pages.OVERLAP_SPIN, ui_pages.OVERLAP_SPATIAL, ui_pages.SPIN]},
@@ -98,11 +99,18 @@ class MainApplication(LayoutAndButtonApplication):
         spacer = QSpacerItem(0, self.spacer_height, QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.scroll_layout.addItem(spacer)
         # adding width-limited button panel to layout:
-        button_layout_widget = QWidget()
-        button_layout_widget.setLayout(button_layout)
-        button_layout_widget.setFixedSize(self.width()-(load_config()['margin-top-y'])*4,
+        self.button_layout_widget = QWidget()
+        self.button_layout_widget.setLayout(button_layout)
+        self.button_layout_widget.setFixedSize(self.width()-(load_config()['margin-top-y'])*4,
                                           button_layout.sizeHint().height())
-        self.scroll_layout.addWidget(button_layout_widget)
+        self.scroll_layout.addWidget(self.button_layout_widget)
+
+    def resizeEvent(self, event: QResizeEvent) -> None:
+        """
+        adjusting the widths of all current buttons
+        """
+        super().resizeEvent(event)#move help button to the right side
+        self.button_layout_widget.setFixedWidth(self.width() - (load_config()['margin-top-y']) * 4)
 
     def set_ui_label(self, header: str = None, content: str = None, spacing: bool = True) -> None:
         if header and content:

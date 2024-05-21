@@ -136,8 +136,12 @@ class LayoutAndButtonApplication(QMainWindow):
         self.help_button.setParent(self)
 
 
-    def removing_help_button_as_event(self, event: QResizeEvent) -> None:
-        """ automatically move help button further to the right in case the screen size is changed """
+    def resizeEvent(self, event: QResizeEvent) -> None:
+        """
+         (! function needs to be called this (this is an overwrite))
+        removing help button upn event:
+        automatically move help button further to the right in case the screen size is changed
+        """
         self.help_button.move(self.width() - (load_config()["margin-top-y"]) - load_config()["button-size"], load_config()["margin-top-y"])# x, y
         event.accept()
 
