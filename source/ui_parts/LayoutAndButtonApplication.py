@@ -1,4 +1,3 @@
-
 from typing import Union
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QResizeEvent

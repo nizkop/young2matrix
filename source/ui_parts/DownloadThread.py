@@ -1,6 +1,5 @@
 import time
 from typing import List
-
 from PyQt5.QtCore import pyqtSignal, QThread
 from PyQt5.QtWidgets import QVBoxLayout, QPushButton, QLayoutItem, QWidgetItem
 

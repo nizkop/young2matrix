@@ -1,6 +1,5 @@
 from abc import abstractmethod
 from typing import Union, Dict, List
-
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton, QHBoxLayout, QWidget, QLabel
 from qtpy import QtCore
@@ -31,16 +30,20 @@ class MainApplication(LayoutAndButtonApplication):
                     "buttons": [ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS, ui_pages.DOWNLOAD]},
             {"sign": "[1][2]", "index": ui_pages.TABLEAUS, "function": self.load_tableau_page, "parent": ui_pages.START,
                     "buttons": [ui_pages.START, ui_pages.MULTIPLIED_OUT_TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS]},
-            {"sign": "ausmultiplizieren" if get_language() == language_choices.de.name else "multiply out", "index": ui_pages.MULTIPLIED_OUT_TABLEAUS,
+            {"sign": "ausmultiplizieren" if get_language() == language_choices.de.name else "multiply out",
+                    "index": ui_pages.MULTIPLIED_OUT_TABLEAUS,
                     "buttons": [ui_pages.START, ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS],
                     "function": self.load_tableau_page_multiplied, "parent": ui_pages.TABLEAUS},
             {"sign": "σ", "index": ui_pages.SPIN, "function": self.load_spin_page, "parent": ui_pages.START,
-                    "buttons": [ui_pages.START, ui_pages.TABLEAUS, ui_pages.SPATIAL_FUNCTIONS, ui_pages.OVERLAP_SPIN, ui_pages.HAMILTON_SPIN]},
+                    "buttons": [ui_pages.START, ui_pages.TABLEAUS, ui_pages.SPATIAL_FUNCTIONS,
+                                ui_pages.OVERLAP_SPIN, ui_pages.HAMILTON_SPIN]},
             {"sign": "Φ", "index": ui_pages.SPATIAL_FUNCTIONS,
                     "function": self.load_spatial_page, "parent": ui_pages.START,
-                    "buttons": [ui_pages.START, ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.OVERLAP_SPATIAL, ui_pages.HAMILTON_SPATIAL]},
+                    "buttons": [ui_pages.START, ui_pages.TABLEAUS, ui_pages.SPIN,
+                                ui_pages.OVERLAP_SPATIAL, ui_pages.HAMILTON_SPATIAL]},
             {"sign": "⤓"  # "⬇️" ↓ ⬇  ⤓
-                    , "index": ui_pages.DOWNLOAD, "function": self.load_download, "parent": ui_pages.START, "buttons": [ui_pages.START]},
+                    , "index": ui_pages.DOWNLOAD, "function": self.load_download,
+                    "parent": ui_pages.START, "buttons": [ui_pages.START]},
             {"sign": "<|> (σ)", "index": ui_pages.OVERLAP_SPIN,
                     "function": self.load_overlap_spin, "parent": ui_pages.SPIN,
                     "buttons": [ui_pages.START, ui_pages.SPIN, ui_pages.OVERLAP_SPATIAL, ui_pages.HAMILTON_SPIN]},
@@ -48,9 +51,11 @@ class MainApplication(LayoutAndButtonApplication):
                     "function": self.load_overlap_spatial, "parent": ui_pages.SPATIAL_FUNCTIONS,
                     "buttons": [ui_pages.START, ui_pages.SPIN, ui_pages.OVERLAP_SPIN, ui_pages.HAMILTON_SPATIAL]},
             {"sign": "H (σ)" , "index": ui_pages.HAMILTON_SPIN, "function": self.load_hamilton_spin,
-                    "parent": ui_pages.OVERLAP_SPIN, "buttons": [ui_pages.START, ui_pages.OVERLAP_SPIN, ui_pages.SPIN]},
+                    "parent": ui_pages.OVERLAP_SPIN,
+                    "buttons": [ui_pages.START, ui_pages.OVERLAP_SPIN, ui_pages.OVERLAP_SPATIAL, ui_pages.SPIN]},
             {"sign": "H (Φ)" , "index": ui_pages.HAMILTON_SPATIAL, "function": self.load_hamilton_spatial,
-                    "parent": ui_pages.OVERLAP_SPATIAL, "buttons": [ui_pages.START, ui_pages.OVERLAP_SPIN, ui_pages.SPATIAL_FUNCTIONS]}
+                    "parent": ui_pages.OVERLAP_SPATIAL, "buttons": [ui_pages.START, ui_pages.OVERLAP_SPATIAL,
+                                                                    ui_pages.OVERLAP_SPIN, ui_pages.SPATIAL_FUNCTIONS]}
         ]
         for p in range(len(self.pages)):
             self.pages[p]["name"] = get_page_name(self.pages[p]["index"])
@@ -72,7 +77,8 @@ class MainApplication(LayoutAndButtonApplication):
         for page_info in self.pages:
             if page_info["index"].value != self.current_page and page_info["index"] in current_page_info["buttons"]:
                 if page_info["index"] == current_page_info["parent"]:
-                    sign = f"zurück zu: {page_info['sign']}" if get_language() == language_choices.de.name else f"back to: {page_info['sign']}"
+                    sign = f"zurück zu: {page_info['sign']}" if get_language() == language_choices.de.name \
+                            else f"back to: {page_info['sign']}"
                 else:
                     sign = page_info["sign"]
 
@@ -83,9 +89,9 @@ class MainApplication(LayoutAndButtonApplication):
                                                    # f"font-size: {self.button_font_size}pt;")
                 button.clicked.connect(lambda _, index=page_info["index"].value: self.open_page(index))
                 button.setToolTip(f"<span style='font-size:{load_config()['font-size']}pt;'>{page_info['name']}</span>")
-                button.enterEvent = lambda event, button=button: self.change_status_message(page_info['name'])
+                name = page_info['name']  # Freeze current name (so that not the last triggerer counts for every event)
+                button.enterEvent = lambda event, button=button, name=name: self.change_status_message(name)
                 button.leaveEvent = lambda event: self.change_status_message()
-
                 button_layout.addWidget(button)
 
         # ensuring that buttons are at the bottom:
@@ -94,7 +100,8 @@ class MainApplication(LayoutAndButtonApplication):
         # adding width-limited button panel to layout:
         button_layout_widget = QWidget()
         button_layout_widget.setLayout(button_layout)
-        button_layout_widget.setFixedSize(self.width()-(load_config()['margin-top-y'])*4, button_layout.sizeHint().height())
+        button_layout_widget.setFixedSize(self.width()-(load_config()['margin-top-y'])*4,
+                                          button_layout.sizeHint().height())
         self.scroll_layout.addWidget(button_layout_widget)
 
     def set_ui_label(self, header: str = None, content: str = None, spacing:bool=True) -> None:
@@ -163,23 +170,14 @@ class MainApplication(LayoutAndButtonApplication):
                         self.clear_layout(sublayout)
 
 
-    ###   abstract methods   ###########################################################################
+    ###   abstract methods: to be implemented in sub-class  ###########################################################################
     @abstractmethod
     def open_page(self, page_number:int) -> None:
-        """
-        to be implemented in sub-class
-        :param page_number: number of the page to be opened
-        :return: None
-        """
-        return self.change_page(page_number)
+        passi
 
     @abstractmethod
     def update_page(self) -> None:
-        # print("update_page", flush=True)
-        formulas = [r"E = m \cdot c^ 2", r"\frac{1}{2}", "\\begin{array}{c}{1}\\end{array}", r"\bra{1}"]# test equations
-
-        for formula in formulas:
-            self.add_equation(formula)
+        pass
 
     @abstractmethod
     def load_main_page(self):

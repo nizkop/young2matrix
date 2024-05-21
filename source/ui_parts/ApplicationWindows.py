@@ -1,7 +1,6 @@
 import math
 import sys
 from typing import Union
-
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
     QProgressBar, QPushButton, QVBoxLayout, QSpacerItem
