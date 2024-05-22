@@ -2,7 +2,8 @@ from abc import abstractmethod
 from typing import Union, Dict, List
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QResizeEvent
-from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton, QHBoxLayout, QWidget, QLabel
+from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton, QHBoxLayout, QWidget, QLabel, \
+    QApplication
 from qtpy import QtCore
 
 from source.ui_parts.LayoutAndButtonApplication import LayoutAndButtonApplication
@@ -22,6 +23,7 @@ class MainApplication(LayoutAndButtonApplication):
      -> here a basic structure of the pages and methods for changing them are given """
     def __init__(self):
         super().__init__()
+        self.buttons = []
         self.setWindowTitle("young2matrix")
 
         self.current_page:int = 0
@@ -61,19 +63,19 @@ class MainApplication(LayoutAndButtonApplication):
         for p in range(len(self.pages)):
             self.pages[p]["name"] = get_page_name(self.pages[p]["index"])
 
+        self.update_page()
         self.create_widgets()
 
     def create_widgets(self) -> None:
         """
+        AFTER CONTENT IS ADDED!
         setting up the buttons for the current page and linking them to following pages / information;
         because the buttons shall be at the bottom of the screen, first the creation of all other content of the page is initialized
         """
         # print("create widgets", flush=True)
-        self.update_page() #content above buttons
-
         current_page_info = next((page_dict for page_dict in self.pages
                                   if page_dict.get("index").value == self.current_page), None)
-
+        self.buttons = []#remove prior buttons from fast access
         button_layout = QHBoxLayout()  # horizontal layout (for buttons)
         for page_info in self.pages:
             if page_info["index"].value != self.current_page and page_info["index"] in current_page_info["buttons"]:
@@ -94,6 +96,7 @@ class MainApplication(LayoutAndButtonApplication):
                 button.enterEvent = lambda event, button=button, name=name: self.change_status_message(name)
                 button.leaveEvent = lambda event: self.change_status_message()
                 button_layout.addWidget(button)
+                self.buttons.append(button)
 
         # ensuring that buttons are at the bottom:
         spacer = QSpacerItem(0, self.spacer_height, QSizePolicy.Minimum, QSizePolicy.Expanding)
@@ -152,17 +155,24 @@ class MainApplication(LayoutAndButtonApplication):
         changing a page by removing the old content and adding the new
         :param index: new page number
         """
+        # print("change page", flush=True)
         self.clear_screen()
         self.current_page = index
-        self.create_widgets()
+        if self.current_page != ui_pages.DOWNLOAD.value:
+            self.update_page()
+            self.create_widgets()
+        else:
+            self.update_page()
 
     def clear_screen(self) -> None:
         """ Clearing the current layout and its sublayouts """
+        # print("clear screen", flush=True)
         self.clear_layout()
         self.create_settings_button()
         self.create_help_button()
 
     def clear_layout(self, layout: Union[QHBoxLayout, QVBoxLayout, None]=None) -> None:
+        # print("clear layout", flush=True)
         if layout == None:
             layout = self.scroll_layout
 

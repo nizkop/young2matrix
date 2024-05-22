@@ -55,7 +55,7 @@ class LayoutAndButtonApplication(QMainWindow):
         self.help_button = None
         self.create_help_button()
 
-    def create_settings_button(self) -> None:
+    def create_settings_button(self, color=get_color()["text"]) -> None:
             """ adding a button, that may change the settings, to the top of the screen """
             # print("create_settings_button",flush=True)
             if self.settings_button is None:
@@ -69,7 +69,7 @@ class LayoutAndButtonApplication(QMainWindow):
 
             self.settings_button = get_colored_icon_button(button=self.settings_button,
                                                            file_path="./source/ui_parts/settings/icons8-settings.svg",
-                                                           color=get_color()["text"])
+                                                           color=color)
             self.settings_button.setIconSize(QSize(load_config()["button-size"], load_config()["button-size"]))
             format_layout_part(self.settings_button)#f"background-color: {self.color.value['background']}; "+
             #                                    f"color: {self.color.value['text']}; font-weight: bold; "+
@@ -95,13 +95,8 @@ class LayoutAndButtonApplication(QMainWindow):
                 if selected_color == color.value["name"]:
                     if color.value != get_color():
                         format_layout_part(self)
-                        # self.color = color
-                        # f"background-color: {color.value['background']};")
                         self.change_status_message()  # change background color in case of changed color
-                        # self.create_settings_button()
                         update_settings(color.name, "color")
-                        # print(color, load_config())
-                        # format_layout_part(self)
                         format_layout_part(self.central_widget)# top spacer
                         format_layout_part(self.scroll_area)# main background
                         format_layout_part(self.statusBar)
@@ -109,7 +104,6 @@ class LayoutAndButtonApplication(QMainWindow):
 
                         self.create_settings_button()#update
                         self.create_help_button()#update
-
 
             selected_language = dialog._selected_language()
             self.set_language(selected_language)
@@ -126,10 +120,10 @@ class LayoutAndButtonApplication(QMainWindow):
             self.help_button = QPushButton("?", self)
             self.help_button.setFixedSize(load_config()['button-size'],load_config()['button-size'])
             self.help_button.move(self.width() - load_config()['margin-top-y'] - load_config()['button-size'], load_config()['margin-top-y'])
-        format_layout_part(self.help_button, added_style=f"background-color: {get_color()['info_background']}; " +
-                           f"border-radius: {load_config()['button-size']//2}; "+# 50 % <-> circle
-                           f"border: 2px solid {get_color()['button-border']} ;")# <- vanishes from default because of set 'border'
-        self.help_button.clicked.connect(self.show_info)
+            self.help_button.clicked.connect(self.show_info) # ! activates the click each time this is called
+        format_layout_part(self.help_button)#, added_style=f"background-color: {get_color()['info_background']}; " +
+                           # f"border-radius: {load_config()['button-size']//2}; "+# 50 % <-> circle
+                           # f"border: 2px solid {get_color()['button-border']} ;")# <- vanishes from default because of set 'border'
         self.help_button.setToolTip(f"<span style='font-size:{load_config()['font-size']}pt;'>{get_general_text('help')}</span>")
         self.help_button.enterEvent = lambda event, button=self.help_button:self.change_status_message(get_general_text("help"))
         self.help_button.leaveEvent = lambda event: self.change_status_message()

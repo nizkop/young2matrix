@@ -26,6 +26,9 @@ def format_layout_part(layout_part: Union[QPushButton, QLabel, QMessageBox, QSta
 
     items = [f"font-size: {settings['font-size']}pt;", f"color: {color.value['text']};", "padding: 10px;"]
     if isinstance(layout_part, QPushButton):
+        if layout_part.text() =="?":
+            added_style += f"border-radius: {settings['button-size'] // 2}; "  # 50 % <-> circle
+            added_style += f"border: 2px solid {color.value['button-border']} ;"# <- vanishes from default because of set 'border'
         for item in [f"background-color: {color.value['button-background']};", "font-weight: bold;",
                                       "border-radius: 5px;", f"border: 2px solid {color.value['button-border']} ;", ]:
             items.append(item)

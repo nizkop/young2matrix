@@ -1,9 +1,9 @@
 import math
 import sys
-from typing import Union
+from typing import Union, List
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
-    QProgressBar, QPushButton, QVBoxLayout, QSpacerItem
+    QProgressBar, QPushButton, QVBoxLayout, QSpacerItem, QWidgetItem, QLayoutItem, QWidget, QScrollArea
 
 from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
@@ -18,8 +18,9 @@ from source.texts.get_titles_for_permutation_parts import get_title_permutation_
 from source.ui_parts.MainApplication import MainApplication
 from source.ui_parts.DownloadThread import DownloadThread
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
+from source.ui_parts.get_colored_icon_button import get_colored_icon_button
 from source.ui_parts.settings.settings_config import get_color, load_config
-
+from source.ui_parts.ui_pages import ui_pages
 
 
 class ApplicationWindows(MainApplication):
@@ -37,11 +38,12 @@ class ApplicationWindows(MainApplication):
 
     def open_page(self, page_number:int) -> None:
         """ checking the input and (if the input is okay) loading another page """
+        print("\nopen_page", flush=True)
         # getting and checking the input information:
-        if page_number == 0:
+        if page_number == ui_pages.START.value:
             return self.change_page(page_number)
         warning_text = None
-        if self.current_page == 0:
+        if self.current_page == ui_pages.START.value:
             input_value = self.input_box.text()
             if not input_value:
                 warning_text = get_general_text("warning_no_group")
@@ -60,7 +62,7 @@ class ApplicationWindows(MainApplication):
                     warning_box.addButton(no_button, QMessageBox.NoRole)
                     reply = warning_box.exec_()
                     if reply == QMessageBox.No:
-                        return self.change_page(0)
+                        return self.change_page(ui_pages.START.value)
             except:
                 warning_text = get_general_text("warning_wrong_type")
             if warning_text:
@@ -70,9 +72,10 @@ class ApplicationWindows(MainApplication):
                 warning_box.setText(f"<b>{warning_text}</b>")
                 format_layout_part(warning_box)#f"color: {self.color.value['text']}; background-color: {self.color.value['background']}; font-weight: bold;")
                 warning_box.exec_()
-                return self.change_page(0)
+                return self.change_page(ui_pages.START.value)
             self.set_basic_permutation_attributes(input_value=input_value)
-        self.change_page(page_number)
+        if self.current_page != ui_pages.DOWNLOAD.value:
+            self.change_page(page_number)
         self.scroll_area.verticalScrollBar().setValue(0)#scroll to the top (for the new page)
         self.scroll_area.horizontalScrollBar().setValue(0)#in case of long equations
 
@@ -90,6 +93,7 @@ class ApplicationWindows(MainApplication):
 
     def update_page(self) -> None:
         """ adding content (in between general buttons at the top and information bar at the bottom) to layout """
+        print("update page", flush=True)
         try:
             page_info = next((page_dict for page_dict in self.pages
                               if page_dict.get("index").value == self.current_page), None)
@@ -282,6 +286,9 @@ class ApplicationWindows(MainApplication):
     def load_download(self) -> None:
         """ initializes download and goes back to main page """
         print("load download", flush=True)
+        self.clear_screen()
+        self.current_page = ui_pages.DOWNLOAD.value
+
         label = QLabel(get_general_text("download_start_info1")+str(self.permutation_group_no)+get_general_text("download_start_info2")+"\n")
         format_layout_part(label)
 
@@ -291,12 +298,10 @@ class ApplicationWindows(MainApplication):
         format_layout_part(self.progress_bar)
         # print("progress:", get_color()['status_background'], flush=True)
 
-
         download_layout = QVBoxLayout()
         download_layout.setAlignment(Qt.AlignCenter)
         spacer_top = QSpacerItem(0, self.spacer_height, QSizePolicy.Minimum, QSizePolicy.Expanding)
         download_layout.addItem(spacer_top)
-
 
         download_layout.addWidget(label)
         download_layout.addWidget(self.progress_bar)
@@ -305,16 +310,19 @@ class ApplicationWindows(MainApplication):
         # add new layout:
         self.scroll_layout.addLayout(download_layout)
 
+        # add button (! before download thread is started = so it can deactivate the button)
+        self.create_widgets()
+        self.settings_button = get_colored_icon_button(button=self.settings_button,
+                                    file_path="./source/ui_parts/settings/icons8-settings.svg",
+                                    color=get_color()["disabled-text"])#disabled
+
         # start download thread:
-        self.download_thread = DownloadThread(self.permutation_group, self.scroll_layout,
+        self.download_thread = DownloadThread(self.permutation_group,
+                                              buttons=self.buttons+[self.help_button,self.settings_button],
                                               background_color=get_color()['background'], text_color=get_color()["text"])
-        self.download_thread.enable_all_buttons(activated=False)
         self.download_thread.update_progress.connect(self.update_progress_bar)
         self.download_thread.start()
-
-
-
-
+        self.download_thread.finished.connect(self.create_settings_button)#reset icon color
 
 
 

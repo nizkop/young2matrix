@@ -74,7 +74,8 @@ def get_page_information(page:ui_pages) -> str:
             return """
             <b> What are the displayed young tableaus here? </b>
             <p>young tableaus are a visual display of the correlation between symmetric and antisymmetric function parts. 
-            Thereby this function parts can be multiplied out to form the meaning of the tableau as an arithmetic function. </p>
+            Thereby this function parts can be multiplied out to form the meaning of the tableau as an arithmetic function. 
+            </p> <br>
             <b> How to interpret young tableaus?</b>
             <p>
             The single elements/boxes/electrons/whatever they should represent,
@@ -85,7 +86,7 @@ def get_page_information(page:ui_pages) -> str:
         <p>Young-Tableaus sind eine visuelle Darstellung der Zusammenhänge symmetrischer und 
         antisymmetrischer Funktionsteile. Dementsprechend lassen sich die dahinterliegenden Funktionsteile auch 
         ausmultiplizieren und so kann die Aussage, die hinter der Tableau-Darstellung steckt, 
-        als arithmetische Formel angegeben werden. </p>
+        als arithmetische Formel angegeben werden. </p><br>
         <b> Wie sind die Young-Tableaus zu interpretieren?</b>
         <p>Die einzelnen Elementen/Kästchen/Elektronen/oder was auch immer diese repräsentieren sollen, 
         werden dabei zu Indizes an - zuerst einmal - allgemeinen Funktionen a,b,c,...,
@@ -97,7 +98,7 @@ def get_page_information(page:ui_pages) -> str:
             <b>What is happening here? </b>
             <p>If you want to build spin function, the total basis function has to be build from only two different functions: 
             alpha (α) oder beta (β). This is, because electron are possessing either an alpha spin or a beta spin. 
-            There are not other possibilities. </p>
+            There are not other possibilities. </p><br>
             <b> What was calculated here? </b> 
             <p> 
             The general functions/function parts a,b,c,... were replaced by α or β. 
@@ -108,7 +109,7 @@ def get_page_information(page:ui_pages) -> str:
         <b>Worum geht es hier? </b>
         <p>Sollen Spinfunktionen ermittelt werden, besteht die gesamte Basisfunktion maximal aus zwei verschiedenen 
         Funktionen: alpha (α) oder beta (β). Denn die Elektronen besitzen entweder einen alpha-Spin, oder einen beta-Spin. 
-        Mehr Möglichkeiten gibt es nicht. </p>
+        Mehr Möglichkeiten gibt es nicht. </p><br>
         <b> Was wurde hier berechnet? </b> 
         <p> Die allgemeinen Funktionen/Funktionsteile a,b,c,... wurden hier durch α oder β ersetzt. 
         Diese Seite zeigt die danach übrigen Funktionsteile an. 

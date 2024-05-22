@@ -10,6 +10,8 @@ class color_styles(Enum):
                "button-background": "rgb(152, 225, 115)",
                "info_background": "rgb(165, 75, 75)",
                "button-border": "rgb(30, 70, 30)",
+               "deactivated-button": "#6fa287",
+               "disabled-text": "rgb(169, 169, 169)"
                }
     DARKMODE = {"name": "darkmode",
                 "text": "rgb(208, 225, 249)",
@@ -19,6 +21,8 @@ class color_styles(Enum):
                 "button-background": "rgb(90, 90, 90)",
                 "info_background": "rgb(40, 60, 100)",
                 "button-border": "rgb(60, 60, 60)",
+                "deactivated-button": "rgb(169, 169, 169)",
+                "disabled-text": "rgb(60, 60, 60)"
                 }
     PLAIN = {"name": "plain",
              "background":  "white",
@@ -27,16 +31,20 @@ class color_styles(Enum):
              "status_text": "white",
              "info_background": "rgb(204,0,0)",
              "button-background": "lightgrey",
-             "button-border": "grey"
+             "button-border": "grey",
+             "deactivated-button": "rgb(169, 169, 169)",
+             "disabled-text": "rgb(105, 105, 105)"
              }
     WARM = {"name": "warm",
             "text": "rgb(51,25,0)",
             "status_text": "rgb(51,25,0)",
             "background": "rgb(235, 169, 55)",
-            "status_background": "orange",
+            "status_background": "orange",#todo: needs more contrast
             "button-background": "rgb(243, 229, 171)",
             "info_background": "rgb(255, 102, 51)",
-            "button-border": "rgb(102,51,0)"
+            "button-border": "rgb(102,51,0)",
+            "deactivated-button": "rgb(200, 190, 160)",
+            "disabled-text": "rgb(100, 70, 40)"
             }
 
 # https://acrylgiessen.com/farbkombinationen/
