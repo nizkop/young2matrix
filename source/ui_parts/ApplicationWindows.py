@@ -18,7 +18,7 @@ from source.texts.get_titles_for_permutation_parts import get_title_permutation_
 from source.ui_parts.MainApplication import MainApplication
 from source.ui_parts.DownloadThread import DownloadThread
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
-from source.ui_parts.settings.language_config import get_color, load_config
+from source.ui_parts.settings.settings_config import get_color, load_config
 
 
 

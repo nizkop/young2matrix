@@ -4,7 +4,7 @@ from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QPushButton, QMessageBox, QLabel, QStatusBar, QLineEdit, QWidget, QScrollArea, QProgressBar
 
 from source.ui_parts.settings.color_styles import color_styles
-from source.ui_parts.settings.language_config import load_config
+from source.ui_parts.settings.settings_config import load_config
 
 
 #ApplicationWindows, SettingsDialog

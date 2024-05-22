@@ -10,7 +10,7 @@ from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_p
 from source.ui_parts.settings.color_styles import color_styles
 from source.ui_parts.settings.language_choices import language_choices
 from source.ui_parts.ui_pages import get_page_name
-from source.ui_parts.settings.language_config import update_settings, get_language, load_config, get_color
+from source.ui_parts.settings.settings_config import update_settings, get_language, load_config, get_color
 from source.ui_parts.SettingsDialog import SettingsDialog
 from source.ui_parts.get_colored_icon_button import get_colored_icon_button
 

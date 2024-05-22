@@ -1,6 +1,6 @@
 from source.function_parts.text_kinds import text_kinds
 from source.ui_parts.settings.language_choices import language_choices
-from source.ui_parts.settings.language_config import get_language
+from source.ui_parts.settings.settings_config import get_language
 
 
 def get_info_spin_possibilities(permutation_group:int, kind:text_kinds) -> str:
