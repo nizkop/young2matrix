@@ -18,6 +18,7 @@ from source.texts.get_titles_for_permutation_parts import get_title_permutation_
 from source.ui_parts.MainApplication import MainApplication
 from source.ui_parts.DownloadThread import DownloadThread
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
+from source.ui_parts.get_basic_push_button import get_basic_push_button
 from source.ui_parts.get_colored_icon_button import get_colored_icon_button
 from source.ui_parts.settings.settings_config import get_color, load_config
 from source.ui_parts.ui_pages import ui_pages
@@ -55,7 +56,7 @@ class ApplicationWindows(MainApplication):
                     # double check before calculating too much (because high numbers might fry the computer)
                     warning_box = QMessageBox()
                     warning_box.setText(get_general_text("check_big_data"))
-                    format_layout_part(warning_box)#f"color: {self.color.value['text']}; background-color: {self.color.value['background']}; font-weight: bold;")
+                    format_layout_part(warning_box)
                     yes_button = QPushButton(get_general_text("yes"))
                     no_button = QPushButton(get_general_text("no"))
                     warning_box.addButton(yes_button, QMessageBox.YesRole)
@@ -70,7 +71,7 @@ class ApplicationWindows(MainApplication):
                 warning_box.setWindowTitle(get_general_text("warning"))
                 warning_box.setTextFormat(Qt.RichText)
                 warning_box.setText(f"<b>{warning_text}</b>")
-                format_layout_part(warning_box)#f"color: {self.color.value['text']}; background-color: {self.color.value['background']}; font-weight: bold;")
+                format_layout_part(warning_box)
                 warning_box.exec_()
                 return self.change_page(ui_pages.START.value)
             self.set_basic_permutation_attributes(input_value=input_value)

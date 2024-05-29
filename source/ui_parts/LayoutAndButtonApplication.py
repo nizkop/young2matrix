@@ -2,11 +2,12 @@ from typing import Union
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QResizeEvent, QIcon
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QPushButton, QScrollArea, QStatusBar, QMessageBox, \
-    QApplication
+    QApplication, QGraphicsDropShadowEffect
 
 from source.texts.general_texts import get_general_text
 from source.texts.get_page_information import get_page_information
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
+from source.ui_parts.get_basic_push_button import get_basic_push_button
 from source.ui_parts.settings.color_styles import color_styles
 from source.ui_parts.settings.language_choices import language_choices
 from source.ui_parts.ui_pages import get_page_name
@@ -60,13 +61,14 @@ class LayoutAndButtonApplication(QMainWindow):
         self.create_help_button()
 
 
+
     def create_settings_button(self, color:str=None) -> None:
             """ adding a button, that may change the settings, to the top of the screen """
             # print("create_settings_button",flush=True)
             if color is None:
                 color = get_color()["text"]
             if self.settings_button is None:
-                self.settings_button = QPushButton()
+                self.settings_button = get_basic_push_button()
                 self.settings_button.setFixedSize(load_config()["button-size"], load_config()["button-size"])
                 self.settings_button.move(load_config()["margin-top-y"], load_config()["margin-top-y"])
 
@@ -122,7 +124,9 @@ class LayoutAndButtonApplication(QMainWindow):
         :return:
         """
         if self.help_button is None:
-            self.help_button = QPushButton("?", self)
+            self.help_button = get_basic_push_button("?")
+            self.help_button.setParent(self)
+            # self.help_button = QPushButton("?", self)
             self.help_button.setFixedSize(load_config()['button-size'],load_config()['button-size'])
             self.help_button.move(self.width() - load_config()['margin-top-y'] - load_config()['button-size'], load_config()['margin-top-y'])
             self.help_button.clicked.connect(self.show_info) # ! activates the click each time this is called

@@ -10,6 +10,7 @@ from source.ui_parts.canvas_equations.determine_height_of_equation import determ
 from source.ui_parts.canvas_equations.get_latex_canvas import get_latex_canvas
 from source.ui_parts.canvas_equations.get_max_number_of_signs_in_equation import fit_length_to_width
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
+from source.ui_parts.get_basic_push_button import get_basic_push_button
 from source.ui_parts.settings.language_choices import language_choices
 from source.ui_parts.ui_pages import ui_pages, get_page_name
 from source.ui_parts.settings.settings_config import get_language, get_color, load_config
@@ -84,7 +85,7 @@ class MainApplication(LayoutAndButtonApplication):
                 else:
                     sign = page_info["sign"]
 
-                button = QPushButton(sign)
+                button = get_basic_push_button(sign)
                 button.setFixedHeight(load_config()['button-size'])
                 format_layout_part(button)#f"background-color: {self.color.value['background']}; " +
                                                    # f"color: {self.color.value['text']}; font-weight: bold; " +
