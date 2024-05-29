@@ -4,6 +4,7 @@ from PyQt5.QtGui import QResizeEvent
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QPushButton, QScrollArea, QStatusBar, QMessageBox, \
     QApplication, QSpacerItem, QSizePolicy
 
+from problem import tst_separate, tst_common, tst_csv, tst_limited
 from source.texts.general_texts import get_general_text
 from source.texts.get_page_information import get_page_information
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
@@ -29,31 +30,35 @@ class LayoutAndButtonApplication(QMainWindow):
         self.spacer_height = settings["button-size"] + 2 * settings["margin-top-y"]
 
         self.central_widget = QWidget()
-        format_layout_part(self.central_widget)
-        self.central_widget.setStyleSheet(f"background-color: {get_color()['status_background']}")
         self.setCentralWidget(self.central_widget)
         self.layout = QVBoxLayout(self.central_widget)
         self.layout.setContentsMargins(0, 0, 0, 0)
-        top_spacer = QSpacerItem(0, self.spacer_height, QSizePolicy.Minimum, QSizePolicy.Fixed)
-        self.layout.addItem(top_spacer)#status_background
+        format_layout_part(self.central_widget)
+        top_spacer = QWidget()# spacer as widget to change background color
+        top_spacer.setFixedHeight(self.spacer_height)
+        top_spacer.setStyleSheet(f"background-color: {get_color()['status_background']};")
+        self.layout.addWidget(top_spacer)
 
         self.scroll_area = QScrollArea()
-        format_layout_part(self.scroll_area)#f"background-color: {self.color.value['background']}")
         self.scroll_widget = QWidget()
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.scroll_layout = QVBoxLayout(self.scroll_widget)
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setWidget(self.scroll_widget)
-        self.layout.addWidget(self.scroll_area)
+        format_layout_part(self.scroll_area)
+
+        self.layout.addWidget(self.scroll_area)# !! setStylesheet before adding it to something
 
         self.statusBar = QStatusBar()#information about button functions
         self.setStatusBar(self.statusBar)#(shown at the bottom of the screen)
         format_layout_part(self.statusBar)#f"color: {self.color.value['text']};")
-        format_layout_part(self)#f"background-color: {self.color.value['background']}; font-size: {self.font_size}pt;")
 
         self.settings_button = None
         self.create_settings_button()
         self.help_button = None
         self.create_help_button()
+
 
     def create_settings_button(self, color=get_color()["text"]) -> None:
             """ adding a button, that may change the settings, to the top of the screen """
@@ -94,11 +99,11 @@ class LayoutAndButtonApplication(QMainWindow):
             for color in color_styles:
                 if selected_color == color.value["name"]:
                     if color.value != get_color():
-                        format_layout_part(self)
+                        # format_layout_part(self)#todo reactivate
                         self.change_status_message()  # change background color in case of changed color
                         update_settings(color.name, "color")
                         format_layout_part(self.central_widget)# top spacer
-                        format_layout_part(self.scroll_area)# main background
+                        # format_layout_part(self.scroll_area)# main background#todo: reactivate
                         format_layout_part(self.statusBar)
                         # format_layout_part(self)#just to be sure
 

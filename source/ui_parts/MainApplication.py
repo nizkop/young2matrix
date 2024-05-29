@@ -2,8 +2,7 @@ from abc import abstractmethod
 from typing import Union, Dict, List
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QResizeEvent
-from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton, QHBoxLayout, QWidget, QLabel, \
-    QApplication
+from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton, QHBoxLayout, QWidget, QLabel
 from qtpy import QtCore
 
 from source.ui_parts.LayoutAndButtonApplication import LayoutAndButtonApplication
@@ -131,7 +130,7 @@ class MainApplication(LayoutAndButtonApplication):
         label.setTextFormat(Qt.RichText)#enable html formatting
         label.setWordWrap(True)
         label.setMaximumWidth(self.width())
-        label.setStyleSheet(f"color: {get_color()['text']};")
+        # label.setStyleSheet(f"color: {get_color()['text']};")#todo: reactivate
         self.scroll_layout.addWidget(label)
 
     def add_equation(self, formula: str) -> None:
@@ -192,11 +191,9 @@ class MainApplication(LayoutAndButtonApplication):
     @abstractmethod
     def open_page(self, page_number:int) -> None:
         pass
-
     @abstractmethod
     def update_page(self) -> None:
         pass
-
     @abstractmethod
     def load_main_page(self):
         pass

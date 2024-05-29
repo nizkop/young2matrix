@@ -1,0 +1,18 @@
+/* styles.css */
+
+/* Allgemeine Stilregeln */
+body {
+    font-size: 14pt;
+    color: black;
+    background-color: aqua;
+}
+
+/* Stilregeln für die Scrollleiste */
+QScrollBar:vertical {
+    background: blue;
+}
+
+QScrollBar::handle:vertical {
+    background: orange;
+    margin: 15px 1px 15px 1px;  /* top, right, bottom, left */
+}
