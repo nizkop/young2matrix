@@ -1,9 +1,7 @@
 from typing import Union
-
-from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QPushButton, QMessageBox, QLabel, QStatusBar, QLineEdit, QWidget, QScrollArea, QProgressBar
 
-from source.ui_parts.get_scrollbar_colors import get_scrollbar_colors
+from source.ui_parts.get_scrollbar_colors import get_scrollbar_colors, directions
 from source.ui_parts.settings.color_styles import color_styles
 from source.ui_parts.settings.settings_config import load_config
 
@@ -29,8 +27,8 @@ def format_layout_part(layout_part: Union[QPushButton, QLabel, QMessageBox, QSta
         color = color_styles["DEFAULT"]
 
     if isinstance(layout_part, QScrollArea):
-        layout_part.verticalScrollBar().setStyleSheet(get_scrollbar_colors("vertical"))
-        layout_part.horizontalScrollBar().setStyleSheet(get_scrollbar_colors("horizontal"))
+        layout_part.verticalScrollBar().setStyleSheet(get_scrollbar_colors(directions.v))
+        layout_part.horizontalScrollBar().setStyleSheet(get_scrollbar_colors(directions.h))
         return
 
 
@@ -57,7 +55,7 @@ def format_layout_part(layout_part: Union[QPushButton, QLabel, QMessageBox, QSta
                 }}
                 """
                 ]#changing the color of the progress following bar inside the progress bar  /* color: {color.value['text']}; */)
-    if type(layout_part) == QWidget:# no sub-class!
+    elif type(layout_part) == QWidget:# no sub-class!
         # (-> just concerns the main area, that somehow can not have a padding or it inhibits formatting of the scroll-bar)
         items = [f"font-size: {settings['font-size']}pt;", f"color: {color.value['text']};",
                  f"background-color: {color.value['background']};"]
@@ -69,24 +67,4 @@ def format_layout_part(layout_part: Union[QPushButton, QLabel, QMessageBox, QSta
         if item[:item.find(":")].replace(" ","") not in added_style:
             style+=item
 
-    # print("before setting", flush=True)
-    # try:
     layout_part.setStyleSheet(style+added_style)
-    # except Warning:
-    #     print("warning")
-    # except Exception:
-    #     print("An error occurred while setting stylesheet:")
-    # print("after setting:", style, "\n", items, flush=True)
-
-
-def get_contrast_color(background_color: str) -> str:
-    print("get_contrast_color", flush=True)
-    # Farbe in ein QColor-Objekt umwandeln
-    background_qcolor = QColor(background_color)
-
-    # Helligkeit des Hintergrunds berechnen (YIQ-Formel)
-    yiq = ((background_qcolor.red() * 299) + (background_qcolor.green() * 587) + (
-                background_qcolor.blue() * 114)) / 1000
-
-    # Kontrastfarbe basierend auf der Helligkeit wählen
-    return "black" if yiq >= 128 else "white"

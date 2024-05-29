@@ -39,7 +39,7 @@ class color_styles(Enum):
             "text": "rgb(51,25,0)",
             "status_text": "rgb(51,25,0)",
             "background": "rgb(235, 169, 55)",
-            "status_background": "orange",#todo: needs more contrast
+            "status_background": "rgb(204,102,0)",
             "button-background": "rgb(243, 229, 171)",
             "info_background": "rgb(255, 102, 51)",
             "button-border": "rgb(102,51,0)",

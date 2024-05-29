@@ -131,7 +131,6 @@ class MainApplication(LayoutAndButtonApplication):
         label.setWordWrap(True)
         label.setMaximumWidth(self.width())
         format_layout_part(label)
-        # label.setStyleSheet(f"color: {get_color()['text']};")
         self.scroll_layout.addWidget(label)
 
     def add_equation(self, formula: str) -> None:
@@ -139,15 +138,23 @@ class MainApplication(LayoutAndButtonApplication):
         adding a line with an equation to the current screen/page
         :param formula: latex-formatted equation, e.g. r"\frac{1}{2} \cdot \pi"
         """
-        # print("\nadd_equation", formula, flush=True)
+        # get equation as picture:
         canvas = get_latex_canvas(eq=formula, color=get_color()["text"])
 
+        # find needed size (so the equation is not clipped):
         height = determine_height_of_equation(formula)
         width = fit_length_to_width(formula)
-
-        # print(width, get_max_number_of_signs_in_equation(eq=formula))
         canvas.setFixedSize(QtCore.QSize(width, height))
-        self.scroll_layout.addWidget(canvas)
+
+        # align equation with a fixed margin to the left side:
+        line = QHBoxLayout()
+        line.setAlignment(Qt.AlignLeft)
+        spacer = QSpacerItem(self.spacer_height, 0, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        line.addItem(spacer)
+        line.addWidget(canvas)
+
+        # adding to view:
+        self.scroll_layout.addLayout(line)
         # plt.close()
 
     def change_page(self, index: int) -> None:

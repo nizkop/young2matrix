@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
-from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QVBoxLayout, QWidget, QHBoxLayout, QSpacerItem
 
 # NOT: from matplotlib_inline.backend_inline import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -31,7 +32,7 @@ def get_latex_canvas(eq:str, color:str) -> FigureCanvas:
         color = color.replace("rgb", "").replace("(", "").replace(")", "")
         r, g, b = map(int, color.split(','))
         color = "#{:02x}{:02x}{:02x}".format(r, g, b)
-    ax.text(0.05, 0.5, rf"\[{eq}\]", color=color, horizontalalignment='left', verticalalignment='center', fontsize=20)
+    ax.text(0.0, 0.5, rf"\[{eq}\]", color=color, horizontalalignment='left', verticalalignment='center', fontsize=20)
     ax.axis('off')
     figure.patch.set_facecolor('none')
     # plt.tight_layout(pad=0.2)#centering horizontally
@@ -45,15 +46,13 @@ def get_latex_canvas(eq:str, color:str) -> FigureCanvas:
 
 
 
-def add_formula(formula, scroll_layout: QVBoxLayout):
-        canvas = get_latex_canvas(formula)
-        scroll_layout.addWidget(canvas)
+# def add_formula(formula, scroll_layout: QVBoxLayout):
+#         # canvas = get_latex_canvas(formula)
+#         # scroll_layout.addWidget(canvas, alignment=Qt.AlignLeft)
+#
+#         canvas = get_latex_canvas(formula)
+#         canvas.setGeometry(200, 0, canvas.sizeHint().width(), canvas.sizeHint().height())
 
-        # scene = QGraphicsScene()
-        # scene.addWidget(canvas)
-        # graphics_view = QGraphicsView()
-        # graphics_view.setScene(scene)
-        # scroll_layout.addWidget(graphics_view)
 
 
 if __name__ == '__main__':

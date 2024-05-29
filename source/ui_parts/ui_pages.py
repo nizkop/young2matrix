@@ -5,7 +5,7 @@ from source.ui_parts.settings.language_choices import language_choices
 
 
 class ui_pages(Enum):
-    """ correlation between pages names/content and their indizes """
+    """ correlation between pages names/content and their indices """
     START = 0
     TABLEAUS = 1
     MULTIPLIED_OUT_TABLEAUS = 2
