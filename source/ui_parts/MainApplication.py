@@ -130,7 +130,8 @@ class MainApplication(LayoutAndButtonApplication):
         label.setTextFormat(Qt.RichText)#enable html formatting
         label.setWordWrap(True)
         label.setMaximumWidth(self.width())
-        # label.setStyleSheet(f"color: {get_color()['text']};")#todo: reactivate
+        format_layout_part(label)
+        # label.setStyleSheet(f"color: {get_color()['text']};")
         self.scroll_layout.addWidget(label)
 
     def add_equation(self, formula: str) -> None:

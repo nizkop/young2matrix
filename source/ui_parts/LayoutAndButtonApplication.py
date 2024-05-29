@@ -1,10 +1,9 @@
 from typing import Union
 from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QResizeEvent
+from PyQt5.QtGui import QResizeEvent, QIcon
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QPushButton, QScrollArea, QStatusBar, QMessageBox, \
-    QApplication, QSpacerItem, QSizePolicy
+    QApplication
 
-from problem import tst_separate, tst_common, tst_csv, tst_limited
 from source.texts.general_texts import get_general_text
 from source.texts.get_page_information import get_page_information
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
@@ -34,10 +33,11 @@ class LayoutAndButtonApplication(QMainWindow):
         self.layout = QVBoxLayout(self.central_widget)
         self.layout.setContentsMargins(0, 0, 0, 0)
         format_layout_part(self.central_widget)
-        top_spacer = QWidget()# spacer as widget to change background color
-        top_spacer.setFixedHeight(self.spacer_height)
-        top_spacer.setStyleSheet(f"background-color: {get_color()['status_background']};")
-        self.layout.addWidget(top_spacer)
+        self.top_spacer = QWidget()# spacer as widget to change background color
+        self.top_spacer.setFixedHeight(self.spacer_height)
+        format_layout_part(self.top_spacer)
+        self.top_spacer.setStyleSheet(f"background-color: {get_color()['status_background']};")
+        self.layout.addWidget(self.top_spacer)
 
         self.scroll_area = QScrollArea()
         self.scroll_widget = QWidget()
@@ -60,9 +60,11 @@ class LayoutAndButtonApplication(QMainWindow):
         self.create_help_button()
 
 
-    def create_settings_button(self, color=get_color()["text"]) -> None:
+    def create_settings_button(self, color:str=None) -> None:
             """ adding a button, that may change the settings, to the top of the screen """
             # print("create_settings_button",flush=True)
+            if color is None:
+                color = get_color()["text"]
             if self.settings_button is None:
                 self.settings_button = QPushButton()
                 self.settings_button.setFixedSize(load_config()["button-size"], load_config()["button-size"])
@@ -99,22 +101,20 @@ class LayoutAndButtonApplication(QMainWindow):
             for color in color_styles:
                 if selected_color == color.value["name"]:
                     if color.value != get_color():
-                        # format_layout_part(self)#todo reactivate
                         self.change_status_message()  # change background color in case of changed color
                         update_settings(color.name, "color")
-                        format_layout_part(self.central_widget)# top spacer
-                        # format_layout_part(self.scroll_area)# main background#todo: reactivate
+                        format_layout_part(self.top_spacer, f"background-color: {get_color()['status_background']};")# headline
+                        format_layout_part(self.central_widget)# main background
+                        format_layout_part(self.scroll_area)# main background
                         format_layout_part(self.statusBar)
-                        # format_layout_part(self)#just to be sure
 
-                        self.create_settings_button()#update
-                        self.create_help_button()#update
+                        self.create_settings_button(color=color.value["text"])#update
+                        # self.create_help_button()#update
+                        # is called in clear_screen in change_page anyway
 
             selected_language = dialog._selected_language()
             self.set_language(selected_language)
-
-            self.change_page(self.current_page)#update colors/...
-            # self.settings_button.clicked.connect(self.open_settings)
+            self.open_page(self.current_page)#update colors/...
 
     def create_help_button(self) -> None:
         """
@@ -138,7 +138,7 @@ class LayoutAndButtonApplication(QMainWindow):
     def resizeEvent(self, event: QResizeEvent) -> None:
         """
          (! function needs to be called this (this is an overwrite))
-        removing help button upn event:
+        removing help button upon event:
         automatically move help button further to the right in case the screen size is changed
         """
         self.help_button.move(self.width() - (load_config()["margin-top-y"]) - load_config()["button-size"], load_config()["margin-top-y"])# x, y
@@ -157,8 +157,8 @@ class LayoutAndButtonApplication(QMainWindow):
         update_settings(language.name, "language")
         for p in range(len(self.pages)):# update pages names
             self.pages[p]["name"] = get_page_name(self.pages[p]["index"])
-        self.create_settings_button()
-        self.open_page(self.current_page)
+        # self.create_settings_button()
+        # self.open_page(self.current_page)
 
     def change_status_message(self, message:Union[str,None]=None) -> None:
         """

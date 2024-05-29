@@ -24,10 +24,12 @@ def update_settings(new_input:str, key:str) -> None:
     if key == "language":
         if new_input not in [language.name for language in language_choices]:
             raise Exception(f"wrong format for language choice")
-    elif key =="color":
+    elif key == "color":
         if new_input not in [c.name for c in color_styles]:
             print(new_input)
             raise Exception(f"wrong format for color scheme choice")
+    else:
+        raise Exception("unknown key for settings")
     config = load_config()
     config[key] = new_input
     with open(CONFIG_FILE, 'w') as file:

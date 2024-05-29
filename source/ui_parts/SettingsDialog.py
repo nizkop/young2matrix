@@ -56,12 +56,12 @@ class SettingsDialog(QDialog):
         self.layout.addWidget(self.confirm_button)
         self.confirm_button.clicked.connect(self.accept)
 
-    def _selected_color(self) -> None:
+    def _selected_color(self) -> str:
         """ private method, that returns selected color as string of name """
         # print("selected_color",flush=True)
         return self.input_colorscheme.currentText()
 
-    def _selected_language(self) -> None:
+    def _selected_language(self) -> str:
         """ private method, that return selected language as string of name """
         # print("selected_language",flush=True)
         return self.input_language.currentText()
