@@ -9,6 +9,7 @@ def get_scrollbar_colors(kind:str):
                 }}
                 QScrollBar::handle:{kind} {{
                     background: {color['status_background']};
+                    border-radius: 4px;
                     margin: {'15px 1px 15px 1px' if kind == 'vertical' else '1px 15px 1px 15px'};  /* top, right, bottom, left */
                 }}
             """

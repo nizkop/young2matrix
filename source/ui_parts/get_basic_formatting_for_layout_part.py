@@ -3,7 +3,7 @@ from typing import Union
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QPushButton, QMessageBox, QLabel, QStatusBar, QLineEdit, QWidget, QScrollArea, QProgressBar
 
-from get_scrollbar_colors import get_scrollbar_colors
+from source.ui_parts.get_scrollbar_colors import get_scrollbar_colors
 from source.ui_parts.settings.color_styles import color_styles
 from source.ui_parts.settings.settings_config import load_config
 
@@ -21,7 +21,7 @@ def format_layout_part(layout_part: Union[QPushButton, QLabel, QMessageBox, QSta
     #     print(layout_part)
     #     return
     if type(layout_part) not in [QPushButton, QLabel, QMessageBox, QStatusBar, QLineEdit, QWidget, QScrollArea, QProgressBar]: # development only!!! todo: remove
-        print(f"missing typing of: {type(layout_part)}")
+        print(f"format_layout_part: missing typing of: {type(layout_part)}")
     settings = load_config()
     try:
         color = color_styles[settings['color']]
@@ -57,30 +57,10 @@ def format_layout_part(layout_part: Union[QPushButton, QLabel, QMessageBox, QSta
                 }}
                 """
                 ]#changing the color of the progress following bar inside the progress bar  /* color: {color.value['text']}; */)
-    # if  type(layout_part) == QWidget:
-    #     items.append("""
-    #                         QScrollBar:vertical {
-    #                             background: blue;
-    #                         }
-    #                         QScrollBar::handle:vertical {
-    #                             background: orange;
-    #                             margin: 15px 1px 15px 1px;  /* top, right, bottom, left */
-    #                         }
-    #                     """)
-    # elif isinstance(layout_part, QScrollArea): #or  type(layout_part) == QWidget:
-    #     items = [r"""
-    #             QScrollBar:vertical {
-    #                 background: blue;
-    #             }
-    #             QScrollBar::handle:vertical {
-    #                 background: orange;
-    #                 margin: 15px 1px 15px 1px;  /* top, right, bottom, left */
-    #             }
-    #         """]
-    #     layout_part.verticalScrollBar().setStyleSheet(items[0])
-    #     return
-    if type(layout_part) == QWidget:
-        items = [f"font-size: {settings['font-size']}pt;", f"color: {color.value['text']};", f"background-color: {color.value['background']};"]
+    if type(layout_part) == QWidget:# no sub-class!
+        # (-> just concerns the main area, that somehow can not have a padding or it inhibits formatting of the scroll-bar)
+        items = [f"font-size: {settings['font-size']}pt;", f"color: {color.value['text']};",
+                 f"background-color: {color.value['background']};"]
     else:
         items.append(f"background-color: {color.value['background']};")
 
