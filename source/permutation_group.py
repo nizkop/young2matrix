@@ -158,6 +158,7 @@ class permutation_group(object):
                 equation_tex += f" = {info['result'].to_tex()}"
                 self.overview.add_latex_formula(equation_tex)
                 self.overview.vspace()
+        self.overview.newpage()
 
     def get_chapter_hamiltonintegrals(self):
         """
@@ -165,6 +166,8 @@ class permutation_group(object):
         """
         self.overview.add_section(get_general_text("header_hamilton_general"),
                                   content=get_general_text("h_info_spin")+get_general_text("ref_hspin"))
+        self.overview.vspace()
+        self.overview.vspace()
         self.calculate_all_hamilton_integrals()
         for info in self.hamilton_integrals:
             if len(info["hamilton_integral_sum"]) > 0:

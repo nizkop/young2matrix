@@ -1,12 +1,22 @@
+import locale
+from datetime import date
 from typing import Union
-from pylatex import Document, Section, Math, Command, Package, Subsection
+from pylatex import Document, Section, Math, Command, Package, Subsection, Center
 from pylatex.utils import NoEscape
+
+from source.texts.general_texts import get_general_text
+from source.ui_parts.settings.language_choices import language_choices
+from source.ui_parts.settings.settings_config import get_language
 
 
 class overview_pdf(object):
     def __init__(self):
         self.permutation_group:int=0
         self.file_type:str = "pdf"
+
+        self.language = get_language()
+        if get_language() == "de":
+            locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')# changes name of month into german version
 
         self.doc = Document(documentclass='article', document_options=['fleqn']) # left alignment for equations
         self.doc.packages.append(Package('geometry',
@@ -18,6 +28,37 @@ class overview_pdf(object):
         self.doc.preamble.append(Package("breqn"))# for dmath command
 
         self.doc.append(Command('noindent'))
+        self.doc.packages.append(Package('setspace', options=['doublespacing']))
+
+        self.add_title_page()
+        # self.add_header()
+
+    def add_title_page(self):
+        self.doc.append(Command('thispagestyle', 'empty'))
+
+        with self.doc.create(Center()):
+            self.doc.append(Command('vspace*', '4cm'))
+            self.doc.append(Command('Huge', ""))
+            for line in get_general_text("pdf_title").split("\n"):
+                self.doc.append(line)
+                self.doc.append(Command(r'\ '))
+            self.doc.append(Command('vspace', '1cm'))
+            self.doc.append(Command('Large', f"{get_general_text('permutation_part_title')}: {self.permutation_group}"))
+            self.doc.append(Command(r'\ '))
+            self.doc.append(Command('vspace', '4cm'))
+            if self.language == language_choices.en.name:
+                self.doc.append(Command('Large', date.today().strftime('%B %d, %Y')))
+            else:#default
+                print(self.language, language_choices.en.name)
+                self.doc.append(Command('Large', date.today().strftime('%d. %B %Y')))
+
+        self.newpage()
+        self.doc.append(Command('setcounter', arguments=['page', '1']))
+
+    # def add_header(self):
+    #     self.doc.append(Command('pagestyle', 'headings'))
+
+
 
     def save(self, title:str) -> None:
         """

@@ -52,6 +52,10 @@ def get_general_text(key:str) -> str:
             "header_hamilton_spatial": "hamilton matrix elements for the spatial functions",
             # "spatial_h_empty": "This permutation group is to small to build non-trivial hamilton integrals.",
 
+            # sorely pdf:
+            "pdf_title": "Generation \n of overlap and hamilton integrals \n by using the symmetry properties \n of young tableaus",
+            "permutation_part_title": "here for permutation group"
+
         }
     else: # default
         general_texts ={
@@ -93,6 +97,9 @@ def get_general_text(key:str) -> str:
             "header_hamilton_spatial": "Hamiltonmatrixelemente für die Raumorbitale",
             # "spatial_h_empty": "Diese Permuatationsgruppe ist zu klein, um nicht-triviale Hamiltonintegrale zu bilden.",
 
+            # sorely pdf:
+            "pdf_title": "Erstellung \n von Überlappungs- und Hamiltonintegralen \n auf Basis der Symmetrieeigenschaften \n von Young-Tableaus",
+            "permutation_part_title": "hier für die Permutationsgruppe"
         }
     try:
         return general_texts[key]
