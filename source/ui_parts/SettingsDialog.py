@@ -28,7 +28,6 @@ class SettingsDialog(QDialog):
 
     def create_colorscheme_button(self) -> None:
         """ setting up a single-choice button to choose a color scheme for the ui display """
-        # colorscheme_label = QLabel(get_general_text("choose_color"))
         colorscheme_label = get_basic_label(get_general_text("choose_color"), self.width())# does not set a fixed width!
         colorscheme_label.setMinimumWidth(load_config()["geometry"][2]//2)# half of main appl. width
         self.layout.addWidget(colorscheme_label)
@@ -41,7 +40,6 @@ class SettingsDialog(QDialog):
 
     def create_language_button(self) -> None:
         """ setting up a single-choice button to choose a language (choice persistently saved in settings file) """
-        # language_label = QLabel(get_general_text("choose_language"))
         language_label = get_basic_label(get_general_text("choose_language"), self.width())
         language_label.setMinimumWidth(load_config()["geometry"][2]//2)# half of main appl. width!
         self.layout.addWidget(language_label)

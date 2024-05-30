@@ -41,7 +41,7 @@ class ApplicationWindows(MainApplication):
 
     def open_page(self, page_number:int) -> None:
         """ checking the input and (if the input is okay) loading another page """
-        print("\nopen_page", page_number, flush=True)
+        # print("\nopen_page", page_number, flush=True)
         # getting and checking the input information:
         if page_number == ui_pages.START.value:
             return self.change_page(page_number)
@@ -98,7 +98,7 @@ class ApplicationWindows(MainApplication):
 
     def update_page(self) -> None:
         """ adding content (in between general buttons at the top and information bar at the bottom) to layout """
-        print("update page", flush=True)
+        # print("update page", flush=True)
         try:
             page_info = next((page_dict for page_dict in self.pages
                               if page_dict.get("index").value == self.current_page), None)
@@ -269,33 +269,20 @@ class ApplicationWindows(MainApplication):
                     equation_tex += addend.to_tex()
                 self.add_equation(equation_tex)
         if len(self.permutation_group.hamilton_integrals) == 0:
-            # label = QLabel(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>")
-            # label.setWordWrap(True)
-            # label.setMaximumWidth(self.width())
-            # label.setTextFormat(Qt.RichText)
             self.scroll_layout.addWidget(get_basic_label(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>", self.width()))
-            # self.scroll_layout.addWidget(get_basic_label(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>", self.width()))
+
 
     def load_hamilton_spin(self) -> None:
         self.set_ui_label(header=get_general_text("header_hamilton_spin"))
-        # label = QLabel(f"<b> {get_general_text('h_info_spin')}</b> <br><br>")
-        # label.setWordWrap(True)
-        # label.setMaximumWidth(self.width())
-        # format_layout_part(label, added_style ="color: darkred; font-weight: bold;")
-        # self.scroll_layout.addWidget(label)
         self.scroll_layout.addWidget(get_basic_label(f"<b>{get_general_text('h_info_spin')}</b><br><br>",
-                                                     self.width(), added_style="color: darkred;"))#todo: test with all color schemes!
-
+                                            self.width(), added_style="color: darkred;"))#<- works with all color schemes
         self.load_overlap_spin()
 
     def load_download(self) -> None:
         """ initializes download and goes back to main page """
-        print("load download", flush=True)
+        # print("load download", flush=True)
         self.clear_screen()
         self.current_page = ui_pages.DOWNLOAD.value
-
-        # label = QLabel(get_general_text("download_start_info1")+str(self.permutation_group_no)+get_general_text("download_start_info2")+"\n")
-        # format_layout_part(label)
 
         self.progress_bar = QProgressBar()#<- bar to show the progress
         # self.progress_bar.setStyleSheet(f"background-color: {get_color()['status-background']};")

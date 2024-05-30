@@ -6,7 +6,7 @@ from source.ui_parts.settings.color_styles import color_styles
 from source.ui_parts.settings.settings_config import load_config
 
 
-#ApplicationWindows, SettingsDialog
+#(ApplicationWindows), SettingsDialog, FormatableMessageBox
 def format_layout_part(layout_part: Union[QPushButton, QLabel, QMessageBox, QStatusBar, QLineEdit, QWidget, QScrollArea
     ], added_style: str = "") -> None:
     """

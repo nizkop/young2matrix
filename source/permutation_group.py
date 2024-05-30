@@ -23,6 +23,7 @@ class permutation_group(object):
     _instance_count = 0
     _max_instances = 1
 
+    @classmethod
     def __new__(cls, *args, **kwargs):
         if cls._instance_count >= cls._max_instances:
             raise ValueError("to many permutation_group instances (at the same time)")
@@ -30,7 +31,9 @@ class permutation_group(object):
         cls._instance_count += 1
         return instance
     def __del__(self):
+        # print("__del",flush=True)
         type(self)._instance_count -= 1
+        self._instance = None
 
     def __init__(self, permutation_group:int=0):
         self.permutation_group: int = permutation_group

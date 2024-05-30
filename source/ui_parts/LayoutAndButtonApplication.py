@@ -80,9 +80,7 @@ class LayoutAndButtonApplication(QMainWindow):
                                                            file_path="./source/ui_parts/settings/icons8-settings.svg",
                                                            color=color)
             self.settings_button.setIconSize(QSize(load_config()["button-size"], load_config()["button-size"]))
-            format_layout_part(self.settings_button)#f"background-color: {self.color.value['background']}; "+
-            #                                    f"color: {self.color.value['text']}; font-weight: bold; "+
-            #                                    f"font-size: {self.button_font_size}pt;")
+            format_layout_part(self.settings_button)
             self.settings_button.setToolTip(f"<span style='font-size:{load_config()['font-size']}pt;'>"+
                                             f"{get_general_text('settings_change')}</span>")
             self.settings_button.enterEvent = lambda event, button= self.settings_button: (
@@ -131,9 +129,7 @@ class LayoutAndButtonApplication(QMainWindow):
             self.help_button.move(self.width() - load_config()['margin-top-y'] - load_config()['button-size'],
                                   load_config()['margin-top-y'])
             self.help_button.clicked.connect(self.show_info) # ! activates the click each time this is called
-        format_layout_part(self.help_button)#, added_style=f"background-color: {get_color()['info_background']}; " +
-                           # f"border-radius: {load_config()['button-size']//2}; "+# 50 % <-> circle
-                           # f"border: 2px solid {get_color()['button-border']} ;")# <- vanishes from default because of set 'border'
+        format_layout_part(self.help_button)
         self.help_button.setToolTip(f"<span style='font-size:{load_config()['font-size']}pt;'>{get_general_text('help')}</span>")
         self.help_button.enterEvent = lambda event, button=self.help_button:self.change_status_message(get_general_text("help"))
         self.help_button.leaveEvent = lambda event: self.change_status_message()

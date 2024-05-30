@@ -128,11 +128,6 @@ class MainApplication(LayoutAndButtonApplication):
             raise Exception("A label needs some kind of content.")
         if spacing is True:
             text += "<br>"
-        # label = QLabel(text)
-        # label.setTextFormat(Qt.RichText)#enable html formatting
-        # label.setWordWrap(True)
-        # label.setMaximumWidth(self.width())
-        # format_layout_part(label)
         self.scroll_layout.addWidget(get_basic_label(text, allowed_width=self.width()))
 
     def add_equation(self, formula: str) -> None:
