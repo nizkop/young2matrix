@@ -10,8 +10,8 @@ from source.ui_parts.settings.settings_config import get_language
 
 
 class overview_pdf(object):
-    def __init__(self):
-        self.permutation_group:int=0
+    def __init__(self, permutation_group:int):
+        self.permutation_group:int=permutation_group
         self.file_type:str = "pdf"
 
         self.language = get_language()
@@ -20,18 +20,20 @@ class overview_pdf(object):
 
         self.doc = Document(documentclass='article', document_options=['fleqn']) # left alignment for equations
         self.doc.packages.append(Package('geometry',
-                 options=['a4paper', 'left=2cm', 'right=2cm', 'top=2cm', 'bottom=2cm']))
+                 options=['a4paper', 'left=2cm', 'right=2cm', 'top=2.5cm', 'bottom=2.5cm']))
         self.doc.preamble.append(Package("babel", options=r'ngerman'))
         self.doc.preamble.append(Package("tocloft"))
         self.doc.preamble.append(NoEscape(r"\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}   % activating dots in table of contents"))
         self.doc.preamble.append(Package("physics"))
         self.doc.preamble.append(Package("breqn"))# for dmath command
+        self.doc.preamble.append(Package("needspace"))
+        self.doc.preamble.append(NoEscape(r"\newcommand{\checkpagebreak}{\needspace{.25\textheight}}"))#page break when 3/4 is already full
 
         self.doc.append(Command('noindent'))
         self.doc.packages.append(Package('setspace', options=['doublespacing']))
 
         self.add_title_page()
-        # self.add_header()
+        self.add_header_and_foot()
 
     def add_title_page(self):
         self.doc.append(Command('thispagestyle', 'empty'))
@@ -43,31 +45,41 @@ class overview_pdf(object):
                 self.doc.append(line)
                 self.doc.append(Command(r'\ '))
             self.doc.append(Command('vspace', '1cm'))
-            self.doc.append(Command('Large', f"{get_general_text('permutation_part_title')}: {self.permutation_group}"))
+            self.doc.append(Command('Large',
+                                    f"{get_general_text('permutation_part_title')}: {self.permutation_group}"))
             self.doc.append(Command(r'\ '))
             self.doc.append(Command('vspace', '4cm'))
             if self.language == language_choices.en.name:
                 self.doc.append(Command('Large', date.today().strftime('%B %d, %Y')))
             else:#default
-                print(self.language, language_choices.en.name)
                 self.doc.append(Command('Large', date.today().strftime('%d. %B %Y')))
 
         self.newpage()
         self.doc.append(Command('setcounter', arguments=['page', '1']))
 
-    # def add_header(self):
-    #     self.doc.append(Command('pagestyle', 'headings'))
+    def add_header_and_foot(self):
+        self.doc.packages.append(Package('fancyhdr'))
 
+        self.doc.append(Command('pagestyle', 'fancy'))
+        self.doc.append(Command('fancyhf',''))
+        header_label = f"{get_general_text('input_command').replace(':', '')} {self.permutation_group}"
+        self.doc.append(NoEscape(rf'\fancyhead[L]{{ {header_label} }}'))
+        self.doc.append(NoEscape(r'\fancyhead[R]{\nouppercase{\leftmark}}'))
+        self.doc.append(NoEscape(r'\renewcommand{\footrulewidth}{0.4pt}'))
 
+        self.doc.append(NoEscape(r'\fancyfoot[C]{\thepage}'))
 
-    def save(self, title:str) -> None:
+    def save(self) -> None:
         """
         '.pdf' is added automatically
         :param title: name of the to-be-generated pdf file
         :return:
         """
-        self.doc.append(Command('newpage'))  # Seite umbrechen
+        self.newpage()
         self.doc.append(Command('tableofcontents'))
+        self.doc.append(Command('thispagestyle', 'fancy'))#ensure header & footer
+
+        title = f"group_{self.permutation_group}"
         self.doc.generate_pdf(title, clean_tex=True)
 
     def add_information(self, additional_info:str) -> None:
@@ -117,9 +129,13 @@ class overview_pdf(object):
         #                [0, 0, 2]])
         # self.doc.append(Math(data=[Matrix(M), Matrix(a), '=', Matrix(M * a)]))
 
-    def newpage(self) -> None:
+    def newpage(self,definitely:bool=True) -> None:
         """ adding a page break """
-        self.doc.append(Command('newpage'))
+        if definitely:
+            self.doc.append(Command('newpage'))
+        else:
+            # only break when the space on the page is small:
+            self.doc.append(Command('checkpagebreak'))
 
     def vspace(self) -> None:
         """ adding vertical space after the current line """
@@ -127,7 +143,7 @@ class overview_pdf(object):
 
 
 if __name__ == '__main__':
-    o = overview_pdf()
+    o = overview_pdf(1)
     o.add_information("here it goes")
     o.add_latex_formula(NoEscape(r"E = m \cdot c^2"))
     o.add_information("bla bla bla")

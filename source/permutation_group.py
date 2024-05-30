@@ -39,8 +39,7 @@ class permutation_group(object):
         self.permutation_group: int = permutation_group
         self.tableaus : List[young_tableau] = []
         self.standard_tableaus : List[chemical_standard_tableau] = []
-        self.overview = overview_pdf()
-        self.title_pdf = f"group_{self.permutation_group}"
+        self.overview = overview_pdf(permutation_group)
 
         self.overlap: List[dict] = []
         self.hamilton_integrals: List[hamilton_integral] = []
@@ -66,7 +65,7 @@ class permutation_group(object):
             equations.append(equation)
         return equations
 
-    def get_chapter_youngtableaus(self):
+    def get_chapter_youngtableaus(self) -> None:
         """
         chapter 1 of overview giving pdf
         """
@@ -78,12 +77,13 @@ class permutation_group(object):
             self.overview.vspace()
         self.overview.newpage()
 
-    def get_chapter_multiplied(self):
+    def get_chapter_multiplied(self) -> None:
         """
         chapter 2 of overview giving pdf
         """
         header, content = get_title_multiplied_youngtableaus(kind=text_kinds.TEX)
-        self.overview.add_section(header, content=content)
+        self.overview.add_section(header,"")
+        self.overview.add_section(get_general_text("spatial_header"), layer=1, content=content)
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
             self.overview.vspace()
             equation = group[0].get_shortend_symbol()["tex"] + ":"
@@ -95,13 +95,14 @@ class permutation_group(object):
                 self.overview.add_latex_formula(equation)
                 self.overview.vspace()
             self.overview.vspace()
-        self.overview.newpage()
+        self.overview.newpage(False)
 
-    def get_chapter_spinfunctions(self):
+    def get_chapter_spinfunctions(self) -> None:
         """
         chapter 3 of overview giving pdf
         """
-        self.overview.add_section(get_general_text("spin_header"),content=get_info_spin_possibilities(self.permutation_group, kind=text_kinds.TEX))
+        self.overview.add_section(get_general_text("spin_header"),layer=1,
+                                  content=get_info_spin_possibilities(self.permutation_group, kind=text_kinds.TEX))
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
             self.overview.vspace()
             equation = group[0].get_shortend_symbol()["tex"] + ":"
@@ -121,7 +122,7 @@ class permutation_group(object):
             self.overview.vspace()
         self.overview.newpage()
 
-    def get_chapter_overlapintegrals(self):
+    def get_chapter_overlapintegrals(self) -> None:
         """
         chapter 4 of overview giving pdf
         """
@@ -142,7 +143,7 @@ class permutation_group(object):
                 self.overview.add_latex_formula(equation_tex)
                 self.overview.vspace()
 
-        self.overview.newpage()
+        self.overview.newpage(definitely=False)
         title, content, equation = get_title_spin(kind=text_kinds.TEX)
         self.overview.add_section(sec_title=title, layer=1, content=content)
         self.overview.add_latex_formula(equation)
@@ -160,12 +161,12 @@ class permutation_group(object):
                 self.overview.vspace()
         self.overview.newpage()
 
-    def get_chapter_hamiltonintegrals(self):
+    def get_chapter_hamiltonintegrals(self) -> None:
         """
         chapter 5 of overview giving pdf
         """
-        self.overview.add_section(get_general_text("header_hamilton_general"),
-                                  content=get_general_text("h_info_spin")+get_general_text("ref_hspin"))
+        self.overview.add_section(get_general_text("header_hamilton_general"),"")
+        self.overview.add_section(get_general_text("spatial_header"),content="",layer=1)
         self.overview.vspace()
         self.overview.vspace()
         self.calculate_all_hamilton_integrals()
@@ -181,6 +182,10 @@ class permutation_group(object):
             self.overview.add_latex_formula(equation_tex)
             self.overview.vspace()
 
+        self.overview.newpage(definitely=False)
+        self.overview.add_section(get_general_text("spin_header"),layer=1,
+                                  content=get_general_text("h_info_spin")+get_general_text("ref_hspin"))
+
     def get_overview_pdf(self) -> None:
         """ creating a pdf with all calculated information about this particular permutation group """
         self.get_all_standard_tableaus()  # at least needed for chapter 4
@@ -191,7 +196,7 @@ class permutation_group(object):
         self.get_chapter_overlapintegrals()
         self.get_chapter_hamiltonintegrals()
 
-        self.overview.save(title=self.title_pdf)
+        self.overview.save()
 
 
     def get_all_standard_tableaus(self) -> None:
