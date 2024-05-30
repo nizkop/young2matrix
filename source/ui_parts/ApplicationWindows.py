@@ -1,9 +1,9 @@
 import math
 import sys
-from typing import Union, List
+from typing import Union
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QSizePolicy, \
-    QProgressBar, QPushButton, QVBoxLayout, QSpacerItem, QWidgetItem, QLayoutItem, QWidget, QScrollArea
+from PyQt5.QtWidgets import QApplication, QHBoxLayout, QLabel, QLineEdit, QSizePolicy, \
+    QProgressBar, QVBoxLayout, QSpacerItem, QDialog
 
 from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
@@ -18,10 +18,11 @@ from source.texts.get_titles_for_permutation_parts import get_title_permutation_
 from source.ui_parts.MainApplication import MainApplication
 from source.ui_parts.DownloadThread import DownloadThread
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
-from source.ui_parts.get_basic_push_button import get_basic_push_button
-from source.ui_parts.get_colored_icon_button import get_colored_icon_button
+from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
+from source.ui_parts.small_basic_parts.get_colored_icon_button import get_colored_icon_button
 from source.ui_parts.settings.settings_config import get_color, load_config
 from source.ui_parts.ui_pages import ui_pages
+from source.ui_parts.FormatableMessageBox import FormatableMessageBox
 
 
 class ApplicationWindows(MainApplication):
@@ -39,7 +40,7 @@ class ApplicationWindows(MainApplication):
 
     def open_page(self, page_number:int) -> None:
         """ checking the input and (if the input is okay) loading another page """
-        print("\nopen_page", flush=True)
+        print("\nopen_page", page_number, flush=True)
         # getting and checking the input information:
         if page_number == ui_pages.START.value:
             return self.change_page(page_number)
@@ -54,24 +55,26 @@ class ApplicationWindows(MainApplication):
                     warning_text = get_general_text("warning_wrong_number")
                 elif input_value >= 10:
                     # double check before calculating too much (because high numbers might fry the computer)
-                    warning_box = QMessageBox()
+                    warning_box = FormatableMessageBox(get_general_text("warning"))
                     warning_box.setText(get_general_text("check_big_data"))
-                    format_layout_part(warning_box)
-                    yes_button = QPushButton(get_general_text("yes"))
-                    no_button = QPushButton(get_general_text("no"))
-                    warning_box.addButton(yes_button, QMessageBox.YesRole)
-                    warning_box.addButton(no_button, QMessageBox.NoRole)
-                    reply = warning_box.exec_()
-                    if reply == QMessageBox.No:
+
+                    yes_button = get_basic_push_button(get_general_text("yes"))
+                    format_layout_part(yes_button)
+                    no_button = get_basic_push_button(get_general_text("no"))
+                    format_layout_part(no_button)
+                    yes_button.clicked.connect(warning_box.accept)
+                    no_button.clicked.connect(warning_box.reject)
+                    warning_box.add_button(yes_button)
+                    warning_box.add_button(no_button)
+
+                    result = warning_box.exec_()
+                    if result != QDialog.Accepted: #no = 0, yes = 1
                         return self.change_page(ui_pages.START.value)
             except:
                 warning_text = get_general_text("warning_wrong_type")
             if warning_text:
-                warning_box = QMessageBox()
-                warning_box.setWindowTitle(get_general_text("warning"))
-                warning_box.setTextFormat(Qt.RichText)
+                warning_box = FormatableMessageBox(get_general_text("warning"))
                 warning_box.setText(f"<b>{warning_text}</b>")
-                format_layout_part(warning_box)
                 warning_box.exec_()
                 return self.change_page(ui_pages.START.value)
             self.set_basic_permutation_attributes(input_value=input_value)
@@ -273,6 +276,7 @@ class ApplicationWindows(MainApplication):
             label.setMaximumWidth(self.width())
             label.setTextFormat(Qt.RichText)
             self.scroll_layout.addWidget(label)
+            # self.scroll_layout.addWidget(get_basic_label(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>", self.width()))
 
     def load_hamilton_spin(self) -> None:
         self.set_ui_label(header=get_general_text("header_hamilton_spin"))

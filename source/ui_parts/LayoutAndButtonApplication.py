@@ -1,19 +1,19 @@
 from typing import Union
 from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QResizeEvent, QIcon
-from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QPushButton, QScrollArea, QStatusBar, QMessageBox, \
-    QApplication, QGraphicsDropShadowEffect
+from PyQt5.QtGui import QResizeEvent
+from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QScrollArea, QStatusBar, QApplication
 
 from source.texts.general_texts import get_general_text
 from source.texts.get_page_information import get_page_information
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
-from source.ui_parts.get_basic_push_button import get_basic_push_button
+from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
 from source.ui_parts.settings.color_styles import color_styles
 from source.ui_parts.settings.language_choices import language_choices
 from source.ui_parts.ui_pages import get_page_name
 from source.ui_parts.settings.settings_config import update_settings, get_language, load_config, get_color
 from source.ui_parts.SettingsDialog import SettingsDialog
-from source.ui_parts.get_colored_icon_button import get_colored_icon_button
+from source.ui_parts.small_basic_parts.get_colored_icon_button import get_colored_icon_button
+from source.ui_parts.FormatableMessageBox import FormatableMessageBox
 
 
 class LayoutAndButtonApplication(QMainWindow):
@@ -105,7 +105,8 @@ class LayoutAndButtonApplication(QMainWindow):
                     if color.value != get_color():
                         self.change_status_message()  # change background color in case of changed color
                         update_settings(color.name, "color")
-                        format_layout_part(self.top_spacer, f"background-color: {get_color()['status_background']};")# headline
+                        format_layout_part(self.top_spacer,
+                                           f"background-color: {get_color()['status_background']};")# headline
                         format_layout_part(self.central_widget)# main background
                         format_layout_part(self.scroll_area)# main background
                         format_layout_part(self.statusBar)
@@ -126,9 +127,9 @@ class LayoutAndButtonApplication(QMainWindow):
         if self.help_button is None:
             self.help_button = get_basic_push_button("?")
             self.help_button.setParent(self)
-            # self.help_button = QPushButton("?", self)
             self.help_button.setFixedSize(load_config()['button-size'],load_config()['button-size'])
-            self.help_button.move(self.width() - load_config()['margin-top-y'] - load_config()['button-size'], load_config()['margin-top-y'])
+            self.help_button.move(self.width() - load_config()['margin-top-y'] - load_config()['button-size'],
+                                  load_config()['margin-top-y'])
             self.help_button.clicked.connect(self.show_info) # ! activates the click each time this is called
         format_layout_part(self.help_button)#, added_style=f"background-color: {get_color()['info_background']}; " +
                            # f"border-radius: {load_config()['button-size']//2}; "+# 50 % <-> circle
@@ -145,7 +146,8 @@ class LayoutAndButtonApplication(QMainWindow):
         removing help button upon event:
         automatically move help button further to the right in case the screen size is changed
         """
-        self.help_button.move(self.width() - (load_config()["margin-top-y"]) - load_config()["button-size"], load_config()["margin-top-y"])# x, y
+        self.help_button.move(self.width() - (load_config()["margin-top-y"]) - load_config()["button-size"],
+                              load_config()["margin-top-y"])# x, y
         event.accept()
 
     def set_language(self, choosen_language: language_choices) -> None:
@@ -180,18 +182,20 @@ class LayoutAndButtonApplication(QMainWindow):
 
     def show_info(self) -> None:
         """
-        activating a separate ui box, showing the requested additional information about the acutal page
+        activating a separate ui box, showing the requested additional information about the actual page
         :return:
         """
         page_info = next((page_dict for page_dict in self.pages
                           if page_dict.get("index").value == self.current_page), None)
         if page_info is None:
             return self.change_page(0)
-        info = QMessageBox()
-        info.setWindowTitle("INFO")
-        info.setTextFormat(Qt.RichText)
+        info = FormatableMessageBox("INFO")
         info.setText(get_page_information(page_info["index"]))
-        format_layout_part(info)
+        # info = QMessageBox()
+        # info.setWindowTitle("INFO")#todo
+        # info.setTextFormat(Qt.RichText)
+        # info.setText(get_page_information(page_info["index"]))
+        # format_layout_part(info)
         info.exec_()
 
 

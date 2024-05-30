@@ -1,7 +1,8 @@
-from PyQt5.QtWidgets import QComboBox, QDialog, QVBoxLayout, QPushButton, QLabel
+from PyQt5.QtWidgets import QComboBox, QDialog, QVBoxLayout, QLabel
 
 from source.texts.general_texts import get_general_text
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
+from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
 from source.ui_parts.settings.color_styles import color_styles
 from source.ui_parts.settings.settings_config import get_language, get_color
 from source.ui_parts.settings.language_choices import language_choices
@@ -51,7 +52,8 @@ class SettingsDialog(QDialog):
 
     def create_confirm_button(self) -> None:
         """ setting up the confirm button to save and exit the settings dialog """
-        self.confirm_button = QPushButton("OK")
+        self.confirm_button = get_basic_push_button("OK")
+        format_layout_part(self.confirm_button)
         self.layout.addWidget(self.confirm_button)
         self.confirm_button.clicked.connect(self.accept)
 

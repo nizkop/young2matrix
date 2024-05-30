@@ -2,7 +2,7 @@ from abc import abstractmethod
 from typing import Union, Dict, List
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QResizeEvent
-from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton, QHBoxLayout, QWidget, QLabel
+from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QHBoxLayout, QWidget, QLabel
 from qtpy import QtCore
 
 from source.ui_parts.LayoutAndButtonApplication import LayoutAndButtonApplication
@@ -10,7 +10,7 @@ from source.ui_parts.canvas_equations.determine_height_of_equation import determ
 from source.ui_parts.canvas_equations.get_latex_canvas import get_latex_canvas
 from source.ui_parts.canvas_equations.get_max_number_of_signs_in_equation import fit_length_to_width
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
-from source.ui_parts.get_basic_push_button import get_basic_push_button
+from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
 from source.ui_parts.settings.language_choices import language_choices
 from source.ui_parts.ui_pages import ui_pages, get_page_name
 from source.ui_parts.settings.settings_config import get_language, get_color, load_config
