@@ -18,6 +18,7 @@ from source.texts.get_titles_for_permutation_parts import get_title_permutation_
 from source.ui_parts.MainApplication import MainApplication
 from source.ui_parts.DownloadThread import DownloadThread
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
+from source.ui_parts.small_basic_parts.get_basic_label import get_basic_label
 from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
 from source.ui_parts.small_basic_parts.get_colored_icon_button import get_colored_icon_button
 from source.ui_parts.settings.settings_config import get_color, load_config
@@ -135,10 +136,7 @@ class ApplicationWindows(MainApplication):
         hbox.setAlignment(Qt.AlignCenter)
         hbox.addSpacing(load_config()['button-size'])
 
-        permutation_group_label = QLabel(get_general_text("input_command"))
-        permutation_group_label.setWordWrap(True)
-        permutation_group_label.setMaximumWidth(self.width())
-        format_layout_part(permutation_group_label)#f"color: {self.color.value['text']}; font-size: {self.font_size}pt;")
+        permutation_group_label = get_basic_label(get_general_text("input_command"), self.width())
         hbox.addWidget(permutation_group_label)
         hbox.addSpacing(load_config()['button-size'])# distance between label and input box
 
@@ -214,7 +212,7 @@ class ApplicationWindows(MainApplication):
         title, content, equation = get_title_spin(kind=text_kinds.TXT)
         self.set_ui_label(header=get_general_text("overlap_header")+title, spacing=False,
                           content=content.replace(r"\n","<br>"))
-        label = QLabel(equation)
+        label = QLabel(equation)# ! here no get_basic_label (no html)
         label.setWordWrap(True)
         label.setMaximumWidth(self.width())
         self.scroll_layout.addWidget(label)
@@ -229,11 +227,11 @@ class ApplicationWindows(MainApplication):
                 equation_tex += f" = {i['result'].to_tex()}"
                 self.add_equation(equation_tex)
         if len(self.permutation_group.overlap) == 0:
-            label = QLabel(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>")
-            label.setWordWrap(True)
-            label.setMaximumWidth(self.width())
-            label.setTextFormat(Qt.RichText)
-            self.scroll_layout.addWidget(label)
+            # label = QLabel(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>")
+            # label.setWordWrap(True)
+            # label.setMaximumWidth(self.width())
+            # label.setTextFormat(Qt.RichText)
+            self.scroll_layout.addWidget(get_basic_label(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>", self.width()))
 
     def load_overlap_spatial(self) -> None:
         title, content = get_title_spatial(kind=text_kinds.TXT)
@@ -252,11 +250,11 @@ class ApplicationWindows(MainApplication):
                 equation_tex += f" = {i['result'].to_tex()}"
                 self.add_equation(equation_tex)
         if len(self.permutation_group.overlap) == 0 or empty:
-            label = QLabel(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>")
-            label.setWordWrap(True)
-            label.setMaximumWidth(self.width())
-            label.setTextFormat(Qt.RichText)
-            self.scroll_layout.addWidget(label)
+            # label = QLabel(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>")
+            # label.setWordWrap(True)
+            # label.setMaximumWidth(self.width())
+            # label.setTextFormat(Qt.RichText)
+            self.scroll_layout.addWidget(get_basic_label(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>", self.width()))
 
     def load_hamilton_spatial(self) -> None:
         self.set_ui_label(header=get_general_text("header_hamilton_spatial"))
@@ -271,20 +269,22 @@ class ApplicationWindows(MainApplication):
                     equation_tex += addend.to_tex()
                 self.add_equation(equation_tex)
         if len(self.permutation_group.hamilton_integrals) == 0:
-            label = QLabel(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>")
-            label.setWordWrap(True)
-            label.setMaximumWidth(self.width())
-            label.setTextFormat(Qt.RichText)
-            self.scroll_layout.addWidget(label)
+            # label = QLabel(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>")
+            # label.setWordWrap(True)
+            # label.setMaximumWidth(self.width())
+            # label.setTextFormat(Qt.RichText)
+            self.scroll_layout.addWidget(get_basic_label(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>", self.width()))
             # self.scroll_layout.addWidget(get_basic_label(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>", self.width()))
 
     def load_hamilton_spin(self) -> None:
         self.set_ui_label(header=get_general_text("header_hamilton_spin"))
-        label = QLabel(get_general_text("h_info_spin")+"\n\n")
-        label.setWordWrap(True)
-        label.setMaximumWidth(self.width())
-        format_layout_part(label, added_style ="color: darkred; font-weight: bold;")
-        self.scroll_layout.addWidget(label)
+        # label = QLabel(f"<b> {get_general_text('h_info_spin')}</b> <br><br>")
+        # label.setWordWrap(True)
+        # label.setMaximumWidth(self.width())
+        # format_layout_part(label, added_style ="color: darkred; font-weight: bold;")
+        # self.scroll_layout.addWidget(label)
+        self.scroll_layout.addWidget(get_basic_label(f"<b>{get_general_text('h_info_spin')}</b><br><br>",
+                                                     self.width(), added_style="color: darkred;"))#todo: test with all color schemes!
 
         self.load_overlap_spin()
 
@@ -294,8 +294,8 @@ class ApplicationWindows(MainApplication):
         self.clear_screen()
         self.current_page = ui_pages.DOWNLOAD.value
 
-        label = QLabel(get_general_text("download_start_info1")+str(self.permutation_group_no)+get_general_text("download_start_info2")+"\n")
-        format_layout_part(label)
+        # label = QLabel(get_general_text("download_start_info1")+str(self.permutation_group_no)+get_general_text("download_start_info2")+"\n")
+        # format_layout_part(label)
 
         self.progress_bar = QProgressBar()#<- bar to show the progress
         # self.progress_bar.setStyleSheet(f"background-color: {get_color()['status-background']};")
@@ -307,6 +307,11 @@ class ApplicationWindows(MainApplication):
         download_layout.setAlignment(Qt.AlignCenter)
         spacer_top = QSpacerItem(0, self.spacer_height, QSizePolicy.Minimum, QSizePolicy.Expanding)
         download_layout.addItem(spacer_top)
+
+        label = get_basic_label("<p>"+get_general_text("download_start_info1")+str(self.permutation_group_no)+
+                                get_general_text("download_start_info2")+"</p><br>",
+                                self.width()# here the same as download layout (which has no direct attribute for this)
+                                )
 
         download_layout.addWidget(label)
         download_layout.addWidget(self.progress_bar)

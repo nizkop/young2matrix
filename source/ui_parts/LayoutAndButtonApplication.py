@@ -191,11 +191,6 @@ class LayoutAndButtonApplication(QMainWindow):
             return self.change_page(0)
         info = FormatableMessageBox("INFO")
         info.setText(get_page_information(page_info["index"]))
-        # info = QMessageBox()
-        # info.setWindowTitle("INFO")#todo
-        # info.setTextFormat(Qt.RichText)
-        # info.setText(get_page_information(page_info["index"]))
-        # format_layout_part(info)
         info.exec_()
 
 

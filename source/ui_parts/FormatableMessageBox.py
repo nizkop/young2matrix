@@ -19,6 +19,7 @@ from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QLabel
 
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
+from source.ui_parts.small_basic_parts.get_basic_label import get_basic_label
 from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
 
 
@@ -29,15 +30,12 @@ class FormatableMessageBox(QDialog):
     def __init__(self, window_title:str="", parent=None):
         super().__init__(parent)
         self.setWindowTitle(window_title)
-        self.setFixedSize(400, 200)
+        # self.setFixedSize(400, 400)
         format_layout_part(self)
 
         layout = QVBoxLayout(self)
 
-        self.label = QLabel("", self)#dummy label text
-        self.label.setWordWrap(True)
-        self.label.setMaximumWidth(self.width())
-        self.label.setTextFormat(Qt.RichText)
+        self.label = get_basic_label("", self.width())#dummy label text
         layout.addWidget(self.label)
 
         self.button_layout = QHBoxLayout()
