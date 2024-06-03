@@ -120,7 +120,8 @@ class chemical_standard_tableau(standard_tableau):
                 ms_values = calculate_ms_quantum_number(total_spin=spin)
                 for ms in ms_values:
                     if ms == spin: #anti * -Fraction(1,2) + Fraction(1,2) * (self.permutation_group - anti)
-                        self.spin_parts.append( spin_part(permutation_group=self.permutation_group, total_spin=spin, ms=ms, choices_for_spin=alpha_beta,behavior=self.function) )
+                        self.spin_parts.append( spin_part(permutation_group=self.permutation_group, total_spin=spin,
+                                                          ms=ms, choices_for_spin=alpha_beta,behavior=self.function) )
                     else:
                         modified_alpha_beta = copy.deepcopy(alpha_beta)
                         diff = spin - ms

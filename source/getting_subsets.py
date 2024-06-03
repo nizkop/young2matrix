@@ -1,12 +1,11 @@
-
-from itertools import chain, combinations, permutations
 from typing import List
+from itertools import chain, combinations, permutations
 
 
 def permutations_of_subsets(array: List[List[int]], group_number:int) -> List[tuple]:
     """ combinations of possible subsets;
     differentiate between different sortings in these combinations,
-    and sort out combinations, if the obviously are not going to fit into young tableaus
+    and sort out combinations, if they obviously are not going to fit into young tableaus
     :return: list of fitting combinations
     """
     all_combinations = chain.from_iterable(combinations(array, r) for r in range(len(array) + 1))
