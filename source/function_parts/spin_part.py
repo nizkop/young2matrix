@@ -69,22 +69,3 @@ class spin_part(integral_part):
             return rf" {self.total_spin}\quad {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "
         return f" {self.total_spin}   {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "
 
-
-
-    # def find_all_choices(self):
-    #     pass
-
-    # def get_normalization_factor(self) -> Dict:
-    #     if self.function.get_number_of_terms() == 1:
-    #         return {"no": 1, "text":"", "tex":""}
-    #     n = 1/math.sqrt(self.function.get_number_of_terms())
-    #     text = f"1/√({self.function.get_number_of_terms()}) "
-    #     tex = r"\frac{1}{\sqrt{"+fr"{self.function.get_number_of_terms()}"+"}} "
-    #     return {"no": n,"text":text,"tex":tex}
-
-
-if __name__ == '__main__':
-    f = function(product_term(Sign("+"), (1,2,3,4)))
-    s = spin_part(4, 2,2,{"alpha":[1,2,3,4], "beta":[]}, f)
-
-    s.print()

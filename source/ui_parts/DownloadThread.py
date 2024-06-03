@@ -1,13 +1,11 @@
 import time
-from typing import List
 from PyQt5.QtCore import pyqtSignal, QThread
-from PyQt5.QtWidgets import QVBoxLayout, QPushButton, QLayoutItem, QWidgetItem
 
 from source.permutation_group import permutation_group
 from source.texts.general_texts import get_general_text
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
-from source.ui_parts.settings.settings_config import get_language, get_color
-from source.ui_parts.settings.language_choices import language_choices
+from source.settings import get_language, get_color
+from source.settings.language_choices import language_choices
 
 
 class DownloadThread(QThread):

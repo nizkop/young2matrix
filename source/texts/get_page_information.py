@@ -1,6 +1,6 @@
 
-from source.ui_parts.settings.settings_config import get_language
-from source.ui_parts.settings.language_choices import language_choices
+from source.settings import get_language
+from source.settings.language_choices import language_choices
 from source.ui_parts.ui_pages import ui_pages
 
 # TODO: check content

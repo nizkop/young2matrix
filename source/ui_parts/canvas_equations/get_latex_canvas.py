@@ -1,7 +1,4 @@
 import matplotlib.pyplot as plt
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QVBoxLayout, QWidget, QHBoxLayout, QSpacerItem
-
 # NOT: from matplotlib_inline.backend_inline import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
@@ -23,10 +20,7 @@ def get_latex_canvas(eq:str, color:str) -> FigureCanvas:
     :return: figure of the equation
     """
     eq = eq.replace("_",r"\_")
-    # width=max((eq.count("\n")+1)*0.5,2.0)
-    # height=200
     figure = plt.figure()
-    # ax = figure.add_subplot(111)
     ax = figure.add_axes([0, 0, 1, 1])
     if "rgb" in color:
         color = color.replace("rgb", "").replace("(", "").replace(")", "")
@@ -37,23 +31,8 @@ def get_latex_canvas(eq:str, color:str) -> FigureCanvas:
     figure.patch.set_facecolor('none')
     # plt.tight_layout(pad=0.2)#centering horizontally
 
-    # print(figure, figure.bbox )
     canvas = FigureCanvas(figure)
-    # plt.show()
     plt.close(figure)
     return canvas
 
 
-
-
-# def add_formula(formula, scroll_layout: QVBoxLayout):
-#         # canvas = get_latex_canvas(formula)
-#         # scroll_layout.addWidget(canvas, alignment=Qt.AlignLeft)
-#
-#         canvas = get_latex_canvas(formula)
-#         canvas.setGeometry(200, 0, canvas.sizeHint().width(), canvas.sizeHint().height())
-
-
-
-if __name__ == '__main__':
-    get_latex_canvas(r"\bra{E}\ket{x} = \frac{1}{2} = \begin{array}{|c|} 1 \\ \hline \end{array}")

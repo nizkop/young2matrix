@@ -55,9 +55,3 @@ def fit_length_to_width(formula:str) -> int:
     # print("number_of_relevant_signs", number_of_relevant_signs)
     return max(number_of_relevant_signs, math.ceil(29.04 + 15.10 * number_of_relevant_signs))# next higher integer
 
-
-if __name__ == '__main__':
-    s = r"\begin{array}{|c|} \hline123\\ \cline{1-1} 2\\ \cline{1-1} \end{array}"# \quad \frac{1}{\sqrt{2}} \left( + a_{1} \cdot b_{2}  - a_{2} \cdot b_{1}\right)"
-    no = get_max_number_of_signs_in_equation(s)
-    w = fit_length_to_width(s)
-    # print("->", no, w)

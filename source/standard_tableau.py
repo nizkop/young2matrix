@@ -105,15 +105,3 @@ class standard_tableau(young_tableau):
         self.function.aggregate_terms()
         self.function.reduce_to_least_common_basis()
 
-
-
-
-
-if __name__ == '__main__':
-    s = standard_tableau([(1,2,3),(4,)])
-    s.print()
-
-    s.set_up_function()
-    s.print()
-
-    print("columns:", s.get_number_of_columns(), "rows:", s.number_of_rows)

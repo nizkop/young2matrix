@@ -1,3 +1,6 @@
+# python3 -m venv venv
+# source venv/bin/activate
+# pip3 install -r requirements.txt
 sympy==1.9
 PyQt5==5.15.10
 matplotlib==3.5.1

@@ -1,5 +1,3 @@
-import copy
-import math
 from math import gcd
 from fractions import Fraction
 from itertools import permutations
@@ -144,20 +142,3 @@ class function(object):
 
 
 
-
-
-
-
-if __name__ == '__main__':
-    f = function(product_term(Sign("+"), (1,2,3,)))
-    f.symmetrize([1,2])
-    f.anti_symmetrize([1, 3])
-    for i in f.parts:
-        i.print()
-    # print("after:")
-    f.set_spin_functions(["α", "β", "β"])
-    # print()
-    # for i in f.parts:
-    #     i.print()
-
-    f.print()

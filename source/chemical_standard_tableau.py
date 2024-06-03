@@ -115,7 +115,7 @@ class chemical_standard_tableau(standard_tableau):
                     for i in self.numbers_in_row[r]:
                         alpha_beta["alpha"].append(i)
 
-            # only pick s, ms combination, if value of S is fitting (first line alpha, second beta, ...)_
+            # only pick s, ms combination, if value of S is fitting (first line alpha, second beta, ...):
             if spin == anti * -Fraction(1,2) + Fraction(1,2) * (self.permutation_group - anti):
                 ms_values = calculate_ms_quantum_number(total_spin=spin)
                 for ms in ms_values:
@@ -138,26 +138,3 @@ class chemical_standard_tableau(standard_tableau):
                         self.spin_parts.append(spin_part(permutation_group=self.permutation_group, total_spin=spin, ms=ms,
                                           choices_for_spin=modified_alpha_beta, behavior=self.function))
 
-
-
-
-
-
-
-
-
-
-
-
-
-if __name__ == '__main__':
-    s = chemical_standard_tableau([(1,4), (2,), (3,)])
-    s.set_up_function()
-
-    # s.get_spatial_choices()
-    # s.get_spin_choices()
-
-    s.calulate_all_overlap_integrals(kind=spin_vs_spatial_kind.SPATIAL)
-    # print(len(s.overlap), len(s.spin_parts), len(s.spatial_parts), len([x for x in s.overlap if x["kind"] == spin_vs_spatial_kind.SPIN]))
-    print([x["result"].to_text() for x in s.overlap])
-    print(len(s.spin_parts), len(s.spatial_parts))

@@ -5,8 +5,8 @@ from pylatex import Document, Section, Math, Command, Package, Subsection, Cente
 from pylatex.utils import NoEscape
 
 from source.texts.general_texts import get_general_text
-from source.ui_parts.settings.language_choices import language_choices
-from source.ui_parts.settings.settings_config import get_language
+from source.settings.language_choices import language_choices
+from source.settings import get_language
 
 
 class overview_pdf(object):
@@ -123,11 +123,6 @@ class overview_pdf(object):
         :return:
         """
         self.doc.append(self.get_latex_formula(formula_text=formula_text, inline=inline))
-        # a = np.array([[100, 10, 20]]).T
-        # M = np.matrix([[2, 3, 4],
-        #                [0, 0, 1],
-        #                [0, 0, 2]])
-        # self.doc.append(Math(data=[Matrix(M), Matrix(a), '=', Matrix(M * a)]))
 
     def newpage(self,definitely:bool=True) -> None:
         """ adding a page break """
@@ -140,11 +135,3 @@ class overview_pdf(object):
     def vspace(self) -> None:
         """ adding vertical space after the current line """
         self.doc.append(Command('vspace', '0.25cm'))
-
-
-if __name__ == '__main__':
-    o = overview_pdf(1)
-    o.add_information("here it goes")
-    o.add_latex_formula(NoEscape(r"E = m \cdot c^2"))
-    o.add_information("bla bla bla")
-    o.save("bla")

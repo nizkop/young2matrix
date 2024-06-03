@@ -10,14 +10,16 @@ from source.function_parts.hamilton_integral import hamilton_integral
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 
 
-def calculate_hamilton_integral(tableau_a: chemical_standard_tableau, tableau_b: chemical_standard_tableau, kind :spin_vs_spatial_kind) -> List[hamilton_integral]:
+def calculate_hamilton_integral(tableau_a:chemical_standard_tableau, tableau_b:chemical_standard_tableau,
+                                kind:spin_vs_spatial_kind) -> List[hamilton_integral]:
     """
     calculate all hamilton integrals between different tableaus
     :param tableau_a: bra terms
     :param tableau_b: ket terms
     :return: combined non-vanishing hamilton integrals
     """
-    if tableau_a.number_of_rows != tableau_b.number_of_rows and tableau_a.get_number_of_columns() != tableau_b.get_number_of_columns():
+    if (tableau_a.number_of_rows != tableau_b.number_of_rows and
+            tableau_a.get_number_of_columns() != tableau_b.get_number_of_columns()):
         return []# always gives 0
 
     results = []
@@ -40,6 +42,3 @@ def calculate_hamilton_integral(tableau_a: chemical_standard_tableau, tableau_b:
 
 
 
-
-
-# if __name__ == '__main__':

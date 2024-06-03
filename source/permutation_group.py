@@ -319,18 +319,3 @@ class permutation_group(object):
     def setup_matrix(self) -> str:
         pass
 
-
-if __name__ == '__main__':
-    p = permutation_group(3)
-    # p.get_all_standard_tableaus()
-    # p.print()
-    print(p)
-    del p
-
-    # results = p.calculate_all_overlap_integrals()
-    # for i in results:
-    #     print(f"<{i['bra']}|{i['ket']}> = {i['result'].to_tex()}")
-    # p.get_overview_pdf()
-
-    p2 = permutation_group(1)
-    print(p2)

@@ -1,7 +1,7 @@
 import json
 
-from source.ui_parts.settings.color_styles import color_styles
-from source.ui_parts.settings.language_choices import language_choices
+from source.settings.color_styles import color_styles
+from source.settings.language_choices import language_choices
 
 CONFIG_FILE = './source/ui_parts/settings/config.json'
 

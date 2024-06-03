@@ -2,8 +2,8 @@ from typing import Union
 from PyQt5.QtWidgets import QPushButton, QMessageBox, QLabel, QStatusBar, QLineEdit, QWidget, QScrollArea, QProgressBar
 
 from source.ui_parts.get_scrollbar_colors import get_scrollbar_colors, directions
-from source.ui_parts.settings.color_styles import color_styles
-from source.ui_parts.settings.settings_config import load_config
+from source.settings.color_styles import color_styles
+from source.settings import load_config
 
 
 #(ApplicationWindows), SettingsDialog, FormatableMessageBox
@@ -15,11 +15,6 @@ def format_layout_part(layout_part: Union[QPushButton, QLabel, QMessageBox, QSta
     :param added_style: additional styling information (that is not added in general here)
     :return:
     """
-    # if type(layout_part) == QWidget: #and type(layout_part) not in [QPushButton, QLabel, QMessageBox, QStatusBar, QLineEdit, QScrollArea, QProgressBar]:
-    #     print(layout_part)
-    #     return
-    if type(layout_part) not in [QPushButton, QLabel, QMessageBox, QStatusBar, QLineEdit, QWidget, QScrollArea, QProgressBar]: # development only!!! todo: remove
-        print(f"format_layout_part: missing typing of: {type(layout_part)}")
     settings = load_config()
     try:
         color = color_styles[settings['color']]

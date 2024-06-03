@@ -1,7 +1,7 @@
 from enum import Enum
 
-from source.ui_parts.settings.settings_config import get_language
-from source.ui_parts.settings.language_choices import language_choices
+from source.settings import get_language
+from source.settings.language_choices import language_choices
 
 
 class ui_pages(Enum):

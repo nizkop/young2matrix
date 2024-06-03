@@ -4,9 +4,9 @@ from source.texts.general_texts import get_general_text
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
 from source.ui_parts.small_basic_parts.get_basic_label import get_basic_label
 from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
-from source.ui_parts.settings.color_styles import color_styles
-from source.ui_parts.settings.settings_config import get_language, get_color, load_config
-from source.ui_parts.settings.language_choices import language_choices
+from source.settings.color_styles import color_styles
+from source.settings import get_language, get_color, load_config
+from source.settings.language_choices import language_choices
 
 
 class SettingsDialog(QDialog):

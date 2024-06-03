@@ -68,8 +68,6 @@ class product_term(object):
         p.factor = new_factor
         p.lowercase_letters = p.lowercase_letters[:len(p.ordered_functions)] * 2
         p.ordered_functions = tuple( list(p.ordered_functions) + list(self.ordered_functions) )
-
-        #print(f"{self.to_text()}       *       {other.to_text()}     =     {p.to_text()}")
         return p
 
     def integrational_multiply(self, other#: product_term
@@ -86,28 +84,10 @@ class product_term(object):
             empty_part.factor = 0
         else:
             empty_part.factor = abs( self.factor * other.factor * 1 )
-        # eq_right = empty_part.to_text()
-        # print(eq_left , "=", empty_part.to_text())
         return empty_part, eq_left
 
 
 
-
-
-if __name__ == '__main__':
-    p = product_term(Sign("+"), (2,1))
-    p.factor = 2
-    p.lowercase_letters = ["α", "β"]*3
-    # p.print()
-    # print(p.to_tex())
-    q = product_term(Sign("+"), ordered_functions=(1,2))
-
-    p.integrational_multiply(q)
-
-    # p=product_term(Sign("+"), (1,2,))
-    # p.lowercase_letters = p.lowercase_letters[:len(p.ordered_functions)] * 2
-    # p.ordered_functions = (1,2,2,1)
-    # p.print()
 
 
 

@@ -1,8 +1,7 @@
 import math
-import sys
 from typing import Union
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QLabel, QLineEdit, QSizePolicy, \
+from PyQt5.QtWidgets import QHBoxLayout, QLabel, QLineEdit, QSizePolicy, \
     QProgressBar, QVBoxLayout, QSpacerItem, QDialog
 
 from source.function_parts.get_dirac_notation import get_dirac_notation
@@ -21,7 +20,7 @@ from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_p
 from source.ui_parts.small_basic_parts.get_basic_label import get_basic_label
 from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
 from source.ui_parts.small_basic_parts.get_colored_icon_button import get_colored_icon_button
-from source.ui_parts.settings.settings_config import get_color, load_config
+from source.settings import get_color, load_config
 from source.ui_parts.ui_pages import ui_pages
 from source.ui_parts.FormatableMessageBox import FormatableMessageBox
 
@@ -103,7 +102,7 @@ class ApplicationWindows(MainApplication):
             page_info = next((page_dict for page_dict in self.pages
                               if page_dict.get("index").value == self.current_page), None)
             page_info["function"]()
-        except KeyError or TypeError:# todo catch all errors
+        except:
             self.current_page = 0
             return self.load_main_page()
 
@@ -323,17 +322,3 @@ class ApplicationWindows(MainApplication):
 
 
 
-
-
-
-
-
-
-
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = ApplicationWindows()
-    window.show()
-    sys.exit(app.exec_())

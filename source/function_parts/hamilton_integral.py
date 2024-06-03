@@ -122,19 +122,3 @@ class hamilton_integral(object):
 
 
 
-if __name__ == '__main__':
-    # p1 = product_term(Sign("-"), (4,3,2,1))
-    # p2 = product_term(Sign("-"), (4, 2, 1, 3))
-    # h = hamilton_integral(p1, p2)
-    # # print(h.to_text())
-    #
-    # p1 = product_term(Sign("-"), (4,3,2,1))
-    # p2 = product_term(Sign("-"), (4, 3,1,2))
-    # h = hamilton_integral(p1, p2)
-    # print(h.to_text())
-
-    p1 = product_term(Sign("-"), (1,2,4,3))#a1b2d3c4
-    p2 = product_term(Sign("+"), (1,3,4,2))#a1d2b3c4
-    h = hamilton_integral(p1, p2)
-    print(h.to_tex(), h.get_shortened_symbol(), h.factor, h.sign)# < - a_1 * b_2 * c_4 * d_3 |H| + a_1 * b_3 * c_4 * d_2>
-

@@ -1,8 +1,8 @@
 from typing import Tuple
 
 from source.function_parts.text_kinds import text_kinds
-from source.ui_parts.settings.settings_config import get_language
-from source.ui_parts.settings.language_choices import language_choices
+from source.settings import get_language
+from source.settings.language_choices import language_choices
 
 
 def get_title_multiplied_youngtableaus(kind:text_kinds) -> Tuple[str,str]:

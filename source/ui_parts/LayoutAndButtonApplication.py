@@ -1,16 +1,16 @@
 from typing import Union
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QResizeEvent
-from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QScrollArea, QStatusBar, QApplication
+from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QScrollArea, QStatusBar
 
 from source.texts.general_texts import get_general_text
 from source.texts.get_page_information import get_page_information
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
 from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
-from source.ui_parts.settings.color_styles import color_styles
-from source.ui_parts.settings.language_choices import language_choices
+from source.settings.color_styles import color_styles
+from source.settings.language_choices import language_choices
 from source.ui_parts.ui_pages import get_page_name
-from source.ui_parts.settings.settings_config import update_settings, get_language, load_config, get_color
+from source.settings import update_settings, get_language, load_config, get_color
 from source.ui_parts.SettingsDialog import SettingsDialog
 from source.ui_parts.small_basic_parts.get_colored_icon_button import get_colored_icon_button
 from source.ui_parts.FormatableMessageBox import FormatableMessageBox
@@ -189,10 +189,3 @@ class LayoutAndButtonApplication(QMainWindow):
         info.setText(get_page_information(page_info["index"]))
         info.exec_()
 
-
-
-if __name__ == "__main__":
-    app = QApplication([])
-    main_view = LayoutAndButtonApplication()
-    main_view.show()
-    app.exec_()

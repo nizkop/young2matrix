@@ -3,7 +3,6 @@ from typing import List, Dict
 
 class young_tableau(object):
     def __init__(self, number_of_rows:int, number_of_columns:List[int]):
-        # self.number_of_parts:int=0
         self.number_of_rows:int=number_of_rows
         self.numbers_in_columns:List[int]=number_of_columns
         self.check()
@@ -56,10 +55,3 @@ class young_tableau(object):
         return {"plain_text": f"[{parts}]", "tex": rf"\left[{parts}\right]"}
 
 
-
-
-if __name__ == '__main__':
-    y = young_tableau(2, [2,2,1,1])
-    y.print()
-    # print(y.get_permutation_group())
-    print(y.get_shortend_symbol())
