@@ -23,7 +23,7 @@ class young_tableau(object):
     def print(self) -> None:
         if not self.check():
             return
-        print(self.get_shortend_symbol()["plain_text"])
+        print(self.get_shortened_symbol()["plain_text"])
         print(self.to_text())
 
     def to_text(self) -> str:
@@ -38,17 +38,17 @@ class young_tableau(object):
         """ calculate the number of boxes in the tableau
         :return: number of elements in the group
         """
-        sum = 0
+        sum_elements = 0
         for i in range(self.number_of_rows):
             for j in range(self.numbers_in_columns[i]):
-                sum += 1
-        return sum
+                sum_elements += 1
+        return sum_elements
 
-    def get_shortend_symbol(self) -> Dict[str, str]:
+    def get_shortened_symbol(self) -> Dict[str, str]:
         """
         short version of representing a young tableau by listing the number of boxes in a row
         (combining identical values by setting an exponent)
-        :return: shortend information, split into the different visualization choices (text/latex)
+        :return: shortened information, split into the different visualization choices (text/latex)
         """
         parts = "".join([str(i) for i in self.numbers_in_columns]) # getting the relevant numbers
         parts = ''.join([f"{char}^{parts.count(char)}" if parts.count(char) > 1 else char for char in set(parts)])#replace multiples with power

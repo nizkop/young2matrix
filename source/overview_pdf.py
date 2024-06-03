@@ -4,9 +4,9 @@ from typing import Union
 from pylatex import Document, Section, Math, Command, Package, Subsection, Center
 from pylatex.utils import NoEscape
 
+from source.settings.settings_config import get_language
 from source.texts.general_texts import get_general_text
 from source.settings.language_choices import language_choices
-from source.settings import get_language
 
 
 class overview_pdf(object):
@@ -72,7 +72,6 @@ class overview_pdf(object):
     def save(self) -> None:
         """
         '.pdf' is added automatically
-        :param title: name of the to-be-generated pdf file
         :return:
         """
         self.newpage()
@@ -104,7 +103,8 @@ class overview_pdf(object):
         else:
             return
 
-    def get_latex_formula(self, formula_text:str, inline:bool = False) -> Union[Math, NoEscape]:
+    @staticmethod
+    def get_latex_formula(formula_text:str, inline:bool = False) -> Union[Math, NoEscape]:
         """
         adding a latex formatted equation to the pdf
         :param: latex equation including latex commands

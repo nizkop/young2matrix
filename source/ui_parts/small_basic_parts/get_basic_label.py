@@ -7,6 +7,7 @@ from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_p
 def get_basic_label(content:str, allowed_width:int, added_style:str = "") -> QLabel:
     """
     getting a set-up label
+    :param added_style:
     :param content: e.g. html formatted text
     :param allowed_width: fixed maximal width where the line needs to break
     :return: ui label, that can be added to a layout

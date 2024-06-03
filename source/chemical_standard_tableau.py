@@ -52,14 +52,14 @@ class chemical_standard_tableau(standard_tableau):
             self.spatial_parts.append(spatial_part(behavior=self.function))
 
 
-    def calulate_all_overlap_integrals(self, kind: spin_vs_spatial_kind=spin_vs_spatial_kind.GENERAL) -> None:
+    def calculate_all_overlap_integrals(self, kind: spin_vs_spatial_kind=spin_vs_spatial_kind.GENERAL) -> None:
         """
         determine overlap of all integral combinations and saving the results in self.overlap
         :param kind: choice of spin or spatial function type
         """
         if kind == spin_vs_spatial_kind.GENERAL:
-            self.calulate_all_overlap_integrals(kind=spin_vs_spatial_kind.SPATIAL)
-            self.calulate_all_overlap_integrals(kind=spin_vs_spatial_kind.SPIN)
+            self.calculate_all_overlap_integrals(kind=spin_vs_spatial_kind.SPATIAL)
+            self.calculate_all_overlap_integrals(kind=spin_vs_spatial_kind.SPIN)
             return
         if kind == spin_vs_spatial_kind.SPIN:
             if any(entry.get("kind") == spin_vs_spatial_kind.SPIN for entry in self.overlap):
@@ -74,7 +74,7 @@ class chemical_standard_tableau(standard_tableau):
         if len(tableau_functions) == 0:
             if (not (self.number_of_rows > 2 and kind == spin_vs_spatial_kind.SPIN) and
                 not (len(self.get_numbers_in_columns()) > 2 and kind == spin_vs_spatial_kind.SPATIAL)):
-                    raise Exception("calulate_all_overlap_integrals impossible because of no parts")
+                    raise Exception("calculate_all_overlap_integrals impossible because of no parts")
             return
         for i in range(len(tableau_functions)):
             for j in range(i, len(tableau_functions)):

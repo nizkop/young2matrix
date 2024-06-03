@@ -72,7 +72,7 @@ for i in trials:
     s.set_up_function()
     s.get_spin_choices()
 
-    # getting calculated informations:
+    # getting calculated information:
     calculated_values = []
     for t in s.spin_parts:
         calculated_values.append({"total_spin": t.total_spin, "ms": t.ms, "behavior": []})
@@ -87,7 +87,7 @@ for i in trials:
         for term in should_be["behavior"]:
             term.sort()
         should_be["behavior"].sort()
-        if should_be not in calculated_values: # compares whole dict (spin + ms + behavior) (<- theirby sorting needed before)
+        if should_be not in calculated_values: # compares whole dict (spin + ms + behavior) (<- thereby sorting needed before)
             print(should_be)
             print(calculated_values)
             raise Exception(general_error + " - missing function - " + i["error_message"])

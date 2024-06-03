@@ -1,11 +1,17 @@
 
-from source.settings import get_language
+
 from source.settings.language_choices import language_choices
+from source.settings.settings_config import get_language
 from source.ui_parts.ui_pages import ui_pages
 
 # TODO: check content
 
 def get_page_information(page:ui_pages) -> str:
+    """
+    todo
+    :param page:
+    :return:
+    """
     language = get_language()
     if page == ui_pages.START:
         if language == language_choices.en.name:
@@ -13,7 +19,7 @@ def get_page_information(page:ui_pages) -> str:
             <p>This is the starting page, where you may determine, for which particular permutation group 
             the calculations shall be carried out. </p> <br>
             <b>What is a permutation group?</b>
-            <p>The group holding all n! permuations of a set of size n.</p> <br>    
+            <p>The group holding all n! permutations of a set of size n.</p> <br>    
             <b>Why is this relevant?</b>
             <p>
             For example, the basic functions (that you need to calculate molecules) need to have fitting characteristics

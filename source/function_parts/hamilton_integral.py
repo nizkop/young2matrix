@@ -75,18 +75,21 @@ class hamilton_integral(object):
 
 
 
-    def get_occurence_of_functions(self):
-        #count occurences of functions in bra and ket
-        functions = {}
-        lists = [self.bra, self.ket]
-        for list in lists:
-            for i in range(len(list.ordered_functions)):
-                if list.lowercase_letters[i] in functions.keys():
-                    if list.ordered_functions[i] not in functions[list.lowercase_letters[i]]:
-                        functions[list.lowercase_letters[i]].append(list.ordered_functions[i] )
-                else:
-                    functions[list.lowercase_letters[i]] = [list.ordered_functions[i]]
-        return functions
+    # def get_occurence_of_functions(self):
+    #     """
+    #     count occurences of functions in bra and ket
+    #     :return:
+    #     """
+    #     functions = {}
+    #     lists = [self.bra, self.ket]
+    #     for list in lists:
+    #         for i in range(len(list.ordered_functions)):
+    #             if list.lowercase_letters[i] in functions.keys():
+    #                 if list.ordered_functions[i] not in functions[list.lowercase_letters[i]]:
+    #                     functions[list.lowercase_letters[i]].append(list.ordered_functions[i] )
+    #             else:
+    #                 functions[list.lowercase_letters[i]] = [list.ordered_functions[i]]
+    #     return functions
 
     def get_occurence_of_indizes(self) -> Dict:
         indizes = {}

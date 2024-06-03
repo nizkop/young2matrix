@@ -60,7 +60,7 @@ class permutation_group(object):
         equations = []
         self.get_all_standard_tableaus()
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
-            equation = group[0].get_shortend_symbol()["tex"]+ ":\quad"
+            equation = group[0].get_shortened_symbol()["tex"] + ":\quad"
             equation += r"\quad , \quad ".join([t.to_tex() for t in group])
             equations.append(equation)
         return equations
@@ -86,7 +86,7 @@ class permutation_group(object):
         self.overview.add_section(get_general_text("spatial_header"), layer=1, content=content)
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
             self.overview.vspace()
-            equation = group[0].get_shortend_symbol()["tex"] + ":"
+            equation = group[0].get_shortened_symbol()["tex"] + ":"
             self.overview.add_latex_formula(equation)
             self.overview.vspace()
             for t in group:
@@ -105,7 +105,7 @@ class permutation_group(object):
                                   content=get_info_spin_possibilities(self.permutation_group, kind=text_kinds.TEX))
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
             self.overview.vspace()
-            equation = group[0].get_shortend_symbol()["tex"] + ":"
+            equation = group[0].get_shortened_symbol()["tex"] + ":"
             self.overview.add_latex_formula(equation)
             self.overview.vspace()
             group_empty = True
@@ -238,8 +238,8 @@ class permutation_group(object):
             tableaus_to_sort = self.standard_tableaus
         tableaus = []
         for i in tableaus_to_sort:
-            abbrevation = i.get_shortend_symbol()
-            if len(tableaus) > 0 and tableaus[-1][-1].get_shortend_symbol()["plain_text"] == abbrevation["plain_text"]:
+            abbrevation = i.get_shortened_symbol()
+            if len(tableaus) > 0 and tableaus[-1][-1].get_shortened_symbol()["plain_text"] == abbrevation["plain_text"]:
                 tableaus[-1].append(i)
             else:
                 tableaus.append([i])
@@ -255,7 +255,7 @@ class permutation_group(object):
             tableau_1.set_up_function()
             tableau_1.get_spatial_choices()
             tableau_1.get_spin_choices()
-            tableau_1.calulate_all_overlap_integrals()
+            tableau_1.calculate_all_overlap_integrals()
             for x in tableau_1.overlap:
                 x["bra_tableau"] = tableau_1.to_tex()
                 x["ket_tableau"] = tableau_1.to_tex()

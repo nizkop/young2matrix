@@ -4,7 +4,7 @@ from typing import List, Union
 
 def calculate_ms_quantum_number(total_spin:Union[int,Fraction]) -> List[float]:
     """  calculating m_S = { -max(S), -max(S)+1, ..., 0, ..., max(S) }
-     :param spin: total spin (float with at most 1 decimal place)
+     :param total_spin:
      :return: possibilities for quantum number ms (floats with at most 1 decimal place)
      """
     total_spin=abs(total_spin) # just to be sure

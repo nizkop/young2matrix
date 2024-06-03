@@ -44,14 +44,14 @@ class standard_tableau(young_tableau):
         :return: list of numbers per column
         """
         max_length = max(len(row) for row in self.numbers_in_row)
-        spalten = []
+        columns = []
         for i in range(max_length):
             column = []
             for row in self.numbers_in_row:
                  if i < len(row):
                      column.append(row[i])
-            spalten.append(column)
-        return spalten
+            columns.append(column)
+        return columns
         #  return [[row[i] for row in self.numbers_in_row if i < len(row)] for i in range(max_length)]
 
     def get_number_of_columns(self):
@@ -82,11 +82,11 @@ class standard_tableau(young_tableau):
         """ calculate the number of boxes in the tableau
         :return sum: number of permutation group
         """
-        sum = 0
+        sum_box = 0
         for i in range(self.number_of_rows):
             for j in range(self.numbers_in_columns[i]):
-                sum += 1
-        return sum
+                sum_box += 1
+        return sum_box
 
     def set_up_function(self) -> None:
         """ initialize function, apply young operator to tableau and multiply out the different terms

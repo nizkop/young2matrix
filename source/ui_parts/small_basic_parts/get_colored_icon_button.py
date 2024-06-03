@@ -16,10 +16,11 @@ def colorize_pixmap(icon:QIcon, color:str) -> QPixmap:
     painter.end()
     return colored_pixmap
 
-def get_colored_icon_button(button:QPushButton, file_path:str, color:str) -> QPushButton:
+def get_colored_icon_button(button:QPushButton, color:str) -> QPushButton:
     """ setting up a button build from an icon (instead of text as usual)
     and triggering the coloring
     """
+    file_path = "./source/settings/icons8-settings.svg" # ! global settings parameter
     # print("get_colored_icon_button", color, flush=True)
     icon = QIcon(file_path)
     if "rgb" in color:

@@ -78,7 +78,7 @@ class function(object):
                     fixed_elements.append(i)
                 else:
                     fixed_elements.append(None)
-            # all empty spaces in the list, that are not already determinated, have to be filled by the different permutations:
+            # all empty spaces in the list, that are not already determined, have to be filled by the different permutations:
             for change in p:
                 new = fixed_elements[:]
                 j = 0

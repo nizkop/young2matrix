@@ -20,8 +20,8 @@ class product_term(object):
             x+=1
 
     def get_list_of_parts(self) -> List[str]:
-        """ combine functions into a list: functions a,b,c are paired with their indizes 1,2,3,...
-        items in the lists are factors and need to be multiplicated with eachother later on
+        """ combine functions into a list: functions a,b,c are paired with their indices 1,2,3,...
+        items in the lists are factors and need to be multiplicated with each other later on
         :return: list of functions (as factors of eachother)
         """
         counter = Counter(zip(self.lowercase_letters, self.ordered_functions))

@@ -1,9 +1,9 @@
 from typing import Union
 from PyQt5.QtWidgets import QPushButton, QMessageBox, QLabel, QStatusBar, QLineEdit, QWidget, QScrollArea, QProgressBar
 
+from source.settings.settings_config import load_config
 from source.ui_parts.get_scrollbar_colors import get_scrollbar_colors, directions
 from source.settings.color_styles import color_styles
-from source.settings import load_config
 
 
 #(ApplicationWindows), SettingsDialog, FormatableMessageBox

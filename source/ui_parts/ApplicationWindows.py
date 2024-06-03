@@ -8,6 +8,7 @@ from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 from source.function_parts.text_kinds import text_kinds
 from source.permutation_group import permutation_group
+from source.settings.settings_config import load_config, get_color
 from source.texts.general_texts import get_general_text
 from source.texts.get_info_spin_possibilities import get_info_spin_possibilities
 from source.texts.get_title_spatial import get_title_spatial
@@ -20,7 +21,6 @@ from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_p
 from source.ui_parts.small_basic_parts.get_basic_label import get_basic_label
 from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
 from source.ui_parts.small_basic_parts.get_colored_icon_button import get_colored_icon_button
-from source.settings import get_color, load_config
 from source.ui_parts.ui_pages import ui_pages
 from source.ui_parts.FormatableMessageBox import FormatableMessageBox
 
@@ -165,7 +165,7 @@ class ApplicationWindows(MainApplication):
         header, content = get_title_multiplied_youngtableaus(kind=text_kinds.TXT)
         self.set_ui_label(header=header, content=content)
         for group in self.permutation_group.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.permutation_group.standard_tableaus):
-            equation = group[0].get_shortend_symbol()["tex"] + ":"
+            equation = group[0].get_shortened_symbol()["tex"] + ":"
             self.add_equation(equation)
             for t in group:
                 t.set_up_function()
@@ -177,7 +177,7 @@ class ApplicationWindows(MainApplication):
                  content = get_info_spin_possibilities(self.permutation_group.permutation_group, kind=text_kinds.TXT))
         self.permutation_group.get_all_standard_tableaus()
         for group in self.permutation_group.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.permutation_group.standard_tableaus):
-            equation = group[0].get_shortend_symbol()["tex"] + ":"
+            equation = group[0].get_shortened_symbol()["tex"] + ":"
             self.add_equation(equation)
             group_empty = True
             for t in group:
@@ -195,7 +195,7 @@ class ApplicationWindows(MainApplication):
         groups = self.permutation_group.group_tableaus_by_shortend_symbol(
                 tableaus_to_sort=self.permutation_group.standard_tableaus)
         for group in groups:
-            equation = group[0].get_shortend_symbol()["tex"] + ":"
+            equation = group[0].get_shortened_symbol()["tex"] + ":"
             self.add_equation(equation)
             group_empty = True
             for t in group:
@@ -309,7 +309,6 @@ class ApplicationWindows(MainApplication):
         # add button (! before download thread is started = so it can deactivate the button)
         self.create_widgets()
         self.settings_button = get_colored_icon_button(button=self.settings_button,
-                                    file_path="./source/ui_parts/settings/icons8-settings.svg",
                                     color=get_color()["disabled-text"])#disabled
 
         # start download thread:

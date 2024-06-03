@@ -3,6 +3,7 @@ from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QResizeEvent
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QScrollArea, QStatusBar
 
+from source.settings.settings_config import load_config, get_color, update_settings, get_language
 from source.texts.general_texts import get_general_text
 from source.texts.get_page_information import get_page_information
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
@@ -10,7 +11,6 @@ from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_pu
 from source.settings.color_styles import color_styles
 from source.settings.language_choices import language_choices
 from source.ui_parts.ui_pages import get_page_name
-from source.settings import update_settings, get_language, load_config, get_color
 from source.ui_parts.SettingsDialog import SettingsDialog
 from source.ui_parts.small_basic_parts.get_colored_icon_button import get_colored_icon_button
 from source.ui_parts.FormatableMessageBox import FormatableMessageBox
@@ -76,9 +76,7 @@ class LayoutAndButtonApplication(QMainWindow):
                 # to get rid of button if ths line is called every time create_settings_button is called:
                 self.settings_button.clicked.connect(self.open_settings)
 
-            self.settings_button = get_colored_icon_button(button=self.settings_button,
-                                                           file_path="./source/ui_parts/settings/icons8-settings.svg",
-                                                           color=color)
+            self.settings_button = get_colored_icon_button(button=self.settings_button,color=color)
             self.settings_button.setIconSize(QSize(load_config()["button-size"], load_config()["button-size"]))
             format_layout_part(self.settings_button)
             self.settings_button.setToolTip(f"<span style='font-size:{load_config()['font-size']}pt;'>"+
@@ -146,13 +144,13 @@ class LayoutAndButtonApplication(QMainWindow):
                               load_config()["margin-top-y"])# x, y
         event.accept()
 
-    def set_language(self, choosen_language: language_choices) -> None:
+    def set_language(self, chosen_language: str) -> None:
         """ updating the language (as it was changed by the user)
-        :param choosen_language: choice of a new language
+        :param chosen_language: choice of a new language
         """
-        # print("set language: ", [choosen_language], flush=True)
+        # print("set language: ", [chosen_language], flush=True)
         for language in language_choices:
-            if language.value == choosen_language:
+            if language.value == chosen_language:
                 break
         if language.name == get_language():
             return

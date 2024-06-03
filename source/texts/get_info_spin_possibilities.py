@@ -1,12 +1,12 @@
 from source.function_parts.text_kinds import text_kinds
 from source.settings.language_choices import language_choices
-from source.settings import get_language
+from source.settings.settings_config import get_language
 
 
 def get_info_spin_possibilities(permutation_group:int, kind:text_kinds) -> str:
     """
     get introduction sentence fot the spin function chapter
-    :param permutation_group: number of the permuation group
+    :param permutation_group: number of the permutation group
     :param kind: choice of formatting (latex/normal text)
     :return: introduction sentence
     """

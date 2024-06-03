@@ -36,7 +36,7 @@ def update_settings(new_input:str, key:str) -> None:
         json.dump(config, file)
 
 def get_language() -> str:
-    """ short verstion to get current language
+    """ short version to get current language
     safety for exception (key error) in load_config
     :return: abbreviation of the current language (in case of error: default_language) """
     return load_config()['language']

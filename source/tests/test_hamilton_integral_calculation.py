@@ -28,7 +28,7 @@ for trial in trials:
     results = calculate_hamilton_integral_between_functions(f1, f2)
 
     if len(results) != 1:
-        raise Exception("thie test is only able to test one product")
+        raise Exception("this test is only able to test one product")
 
     for r in results:
         # print(r.to_text())

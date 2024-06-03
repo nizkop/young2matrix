@@ -1,6 +1,7 @@
 from enum import Enum
 
-from source.settings import get_color
+from source.settings.settings_config import get_color
+
 
 class directions(Enum):
     """ choices of ui directions (e.g. scroll bar);

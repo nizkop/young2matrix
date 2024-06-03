@@ -4,7 +4,7 @@ from source.function_parts.hamilton_integral import hamilton_integral
 
 
 def get_total_function_from_hamilton_integral_list(h_list: List[hamilton_integral]):
-    """ converts a sum of hamilton integrals into their shortend display version """
+    """ converts a sum of hamilton integrals into their shortened display version """
     integral = ""
 
     for h in h_list:

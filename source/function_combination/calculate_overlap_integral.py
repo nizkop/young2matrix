@@ -16,6 +16,7 @@ def calculate_overlap_integral(tableau_a: chemical_standard_tableau, tableau_b: 
     """
     calculating the overlap between all functions/combinations of two standard tableaus
     -> combination of identical tableaus and different/identical standard tableaus - and entirely different tableaus
+    :param kind:
     :param tableau_a: bra terms
     :param tableau_b: ket terms
     :return: list of remaining overlap integrals

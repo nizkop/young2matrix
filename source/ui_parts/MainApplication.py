@@ -2,9 +2,10 @@ from abc import abstractmethod
 from typing import Union, Dict, List
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QResizeEvent
-from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QHBoxLayout, QWidget
+from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QHBoxLayout, QWidget, QLayout
 from qtpy import QtCore
 
+from source.settings.settings_config import get_language, load_config, get_color
 from source.ui_parts.LayoutAndButtonApplication import LayoutAndButtonApplication
 from source.ui_parts.canvas_equations.determine_height_of_equation import determine_height_of_equation
 from source.ui_parts.canvas_equations.get_latex_canvas import get_latex_canvas
@@ -14,7 +15,6 @@ from source.ui_parts.small_basic_parts.get_basic_label import get_basic_label
 from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
 from source.settings.language_choices import language_choices
 from source.ui_parts.ui_pages import ui_pages, get_page_name
-from source.settings import get_language, get_color, load_config
 
 
 class MainApplication(LayoutAndButtonApplication):
@@ -175,7 +175,7 @@ class MainApplication(LayoutAndButtonApplication):
         self.create_settings_button()
         self.create_help_button()
 
-    def clear_layout(self, layout: Union[QHBoxLayout, QVBoxLayout, None]=None) -> None:
+    def clear_layout(self, layout: Union[QHBoxLayout, QVBoxLayout, QLayout, None]=None) -> None:
         # print("clear layout", flush=True)
         if layout == None:
             layout = self.scroll_layout

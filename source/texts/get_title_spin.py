@@ -1,8 +1,8 @@
 from typing import Tuple
 
 from source.function_parts.text_kinds import text_kinds
-from source.settings import get_language
 from source.settings.language_choices import language_choices
+from source.settings.settings_config import get_language
 
 
 def get_title_spin(kind: text_kinds) -> Tuple[str, str, str]:

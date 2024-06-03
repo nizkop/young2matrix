@@ -6,7 +6,7 @@ class Sign(Enum):
     PLUS = '+'
     MINUS = '-'
 
-    def change(self) -> None:
+    def change(self): #-> Sign
         """ switching the sign """
         if self == Sign.PLUS:
             return Sign.MINUS

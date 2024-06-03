@@ -1,12 +1,13 @@
-from source.settings import get_language
+
 from source.settings.language_choices import language_choices
+from source.settings.settings_config import get_language
 
 
 def get_general_text(key:str) -> str:
     """
     getting text phrases;
     function combines multiple text parts, that can be addressed via a key;
-    allowes for change in language
+    allows for change in language
     :param key: indication, which text is needed
     :return: fully expressed text in choosen language
     """

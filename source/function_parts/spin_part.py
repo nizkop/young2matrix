@@ -18,7 +18,8 @@ class spin_part(integral_part):
         self.set_up_choices()
 
 
-    def test_choices_for_spin_input(self, choices_for_spin) -> None:
+    @staticmethod
+    def test_choices_for_spin_input(choices_for_spin) -> None:
         """
         testing if the integral function includes the spin functions (alpha, beta), not general functions a, b, c, ...
         """
@@ -43,7 +44,7 @@ class spin_part(integral_part):
             elif i in self.choices_for_spin["beta"]:
                 spin_ordered.append('β')
             else:
-                raise Exception("ungiven spin")
+                raise Exception("non-given spin")
         if len(spin_ordered) != self.permutation_group:
             raise Exception("error in set_up_choices")
         self.function.set_spin_functions(spin_ordered)

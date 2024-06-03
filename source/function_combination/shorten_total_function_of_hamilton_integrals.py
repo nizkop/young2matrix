@@ -13,7 +13,7 @@ def shorten_total_function_of_hamilton_integrals(h_list: List[hamilton_integral]
     - where do they belong together, because their integral has the same value?
     - what is their total factor (multiplying the numbers of bra and ket to a total factor)?
     :param h_list: list of calculated hamilton integrals, that are addends for one tableau
-    :return: cleaned-up list of hamilton integrals bulding a sum for a tableau combination
+    :return: cleaned-up list of hamilton integrals building a sum for a tableau combination
     """
     new_h_list = []
 

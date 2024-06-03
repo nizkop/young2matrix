@@ -7,7 +7,7 @@ from source.function_parts.product_term import product_term
 from source.function_parts.sign import Sign
 
 
-
+# noinspection SpellCheckingInspection
 def calculate_overlap_integral_between_functions(function_a:function, function_b:function) -> function:
     """
     calculating overlap between all parts of a function a and a function b
@@ -17,6 +17,7 @@ def calculate_overlap_integral_between_functions(function_a:function, function_b
     """
     empty_function = function(product_term(Sign("+"), ()) ,normalizable=False)
 
+    # noinspection SpellCheckingInspection
     if function_a == function_b:
         empty_function.parts[0].factor = 1
         empty_function.parts[0].ordered_functions = ()
@@ -31,6 +32,7 @@ def calculate_overlap_integral_between_functions(function_a:function, function_b
         for i in function_a.parts:
             for j in function_b.parts:
                 no_of_terms += 1
+                # noinspection SpellCheckingInspection
                 p, eq_braket = i.integrational_multiply(j)
                 total_eq +=" +  "+ eq_braket
                 if p.factor != 0:
