@@ -34,7 +34,7 @@ def get_max_number_of_signs_in_equation(eq: str) -> int:
         if array_match:
             array_content = array_match.group(1)
             array_content = array_content[array_content.find("}") + 1:]
-            # splitting content into rows -> finding longest row:
+            # splitting content into rows -> finding the longest row:
             rows = array_content.split(r"\\")
             max_row_length = max(get_max_number_of_signs_in_equation(row) for row in rows)
             formula = re.sub(array_pattern, "a"*max_row_length, formula, flags=re.DOTALL)

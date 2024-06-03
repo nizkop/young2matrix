@@ -50,14 +50,13 @@ trials = [
 
 
 for i in trials:
-    expected = i["expected"]
     s = standard_tableau(i["input"])
     s.set_up_function()
     s.function.set_spin_functions(i["spin_input"])
 
-    expected = ["".join(sorted(x)) for x in [x["value"] for x in i["expected"]]]
+    expected = ["".join(sorted(x)) for x in [y["value"] for y in i["expected"]]]
 
-
+    calculated_part = ""
     for calculated in s.function.parts:
         calculated_part = "".join(sorted(calculated.get_list_of_parts())).replace("{","").replace("}","").replace("_","")
         try:
@@ -72,7 +71,6 @@ for i in trials:
 
     # comparison of the square roots (underneath the fraction bar):
     if s.function.get_normalization_factor()["1/sqrt"] != i["expected_sqrt"]:
-        # print(i["expected_sqrt"], "soll, norm:", s.function.get_normalization_factor()["1/sqrt"], "einzelterme:", s.function.get_number_of_terms())
         raise Exception(f"{general_error}: wrong normalization factor for \"{i['error_message']}\"")
 
 

@@ -74,6 +74,8 @@ def calculate_overlap_integral(tableau_a: chemical_standard_tableau, tableau_b: 
                 empty_function.parts[0].factor = 0
                 empty_function.parts = [empty_function.parts[0]]
                 g = empty_function
+        else:
+            raise Exception("not implemented!")
 
         info["result"] = g
         results.append(info)

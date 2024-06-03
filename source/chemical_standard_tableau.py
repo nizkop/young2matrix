@@ -39,7 +39,7 @@ class chemical_standard_tableau(standard_tableau):
         angular momentum of a particle l = 0 (s orbital), 1 (p orbital, 2 (d orbital), ...
         ml = alignment of the individual orbital = { -l , ..., l }
         """
-        # print("we dont want to choose the orbitals yet")
+        # print("we don't want to choose the orbitals yet")
         if self.function is None:#spatial part needs function as a general behavior pattern
             self.set_up_function()
         if max([len(i) for i in self.numbers_in_row]) > 2:

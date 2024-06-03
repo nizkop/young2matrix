@@ -178,6 +178,8 @@ class permutation_group(object):
                 equation_tex += " = "
                 for addend in info["hamilton_integral_sum"]:
                     equation_tex += addend.to_tex()
+            else:
+                equation_tex = ""
 
             self.overview.add_latex_formula(equation_tex)
             self.overview.vspace()
@@ -223,7 +225,7 @@ class permutation_group(object):
     def get_non_adjoint_tableaus(self) -> List[chemical_standard_tableau]:
         """ choosing one orientation of tableaus (here: vertical alignment favored)
         e.g.: [1,2] adjoint to [1][2]
-        :return: list of all tableaus, that are non adjoint to others
+        :return: list of all tableaus, that are non-adjoint to others
         """
         if len(self.standard_tableaus) == 0:
             self.get_all_standard_tableaus()

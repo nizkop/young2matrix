@@ -51,7 +51,7 @@ class function(object):
         return {"text":text, "tex":tex, "1/sqrt": self.get_number_of_terms(), "fraction": n}
 
     def anti_symmetrize(self, changeable_elements:List[int]) -> None:
-        """ build anti-symmetric function
+        """ build antisymmetric function
         :param changeable_elements: list of affected function parts by the exchange according to the tableau
         :return: None """
         return self.permutate_basis(changeable_elements=changeable_elements, change_sign=True)
@@ -66,7 +66,7 @@ class function(object):
         """ helper function for (anti-/)symmetrizing;
         updates the product terms in self.parts according to the switched elements in changeable_elements
         :param changeable_elements: list of affected function parts by the exchange according to the tableau
-        :param change_sign: boolean indicating whether a sign is changeable (anti-symmetric) or not (symmetric)
+        :param change_sign: boolean indicating whether a sign is changeable (antisymmetric) or not (symmetric)
         """
         new_parts = []
         for part in self.parts:

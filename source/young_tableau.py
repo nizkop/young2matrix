@@ -10,7 +10,7 @@ class young_tableau(object):
 
     def check(self) -> bool:
         """ checking if columns und rows fit to eachother
-        :return: boolean indicating whether the tableau is set-up correctly """
+        :return: boolean indicating whether the tableau is set up correctly """
         if len(self.numbers_in_columns) != self.number_of_rows:
             # raise Exception("young_tableau: non-fitting dimensions")
             return False

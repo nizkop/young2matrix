@@ -50,8 +50,8 @@ def format_layout_part(layout_part: Union[QPushButton, QLabel, QMessageBox, QSta
                 }}
                 """
                 ]#changing the color of the progress following bar inside the progress bar  /* color: {color.value['text']}; */)
-    elif type(layout_part) == QWidget:# no sub-class!
-        # (-> just concerns the main area, that somehow can not have a padding or it inhibits formatting of the scroll-bar)
+    elif type(layout_part) == QWidget:# no subclass!
+        # (-> just concerns the main area, that somehow can not have a padding, or it inhibits formatting of the scroll-bar)
         items = [f"font-size: {settings['font-size']}pt;", f"color: {color.value['text']};",
                  f"background-color: {color.value['background']};"]
     else:

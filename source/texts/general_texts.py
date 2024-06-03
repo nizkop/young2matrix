@@ -51,7 +51,7 @@ def get_general_text(key:str) -> str:
             "successful_download": "The download was successful.",
             "failed_download": "Sadly, we encountered an unknown error while downloading the pdf.",
             "header_hamilton_spatial": "hamilton matrix elements for the spatial functions",
-            # "spatial_h_empty": "This permutation group is to small to build non-trivial hamilton integrals.",
+            # "spatial_h_empty": "This permutation group is too small to build non-trivial hamilton integrals.",
 
             # sorely pdf:
             "pdf_title": "Generation \n of overlap and hamilton integrals \n by using the symmetry properties \n of young tableaus",
