@@ -3,7 +3,11 @@ from typing import List, Dict
 
 class YoungTableau(object):
     """
-    todo
+    young tableau:
+    = mathematical object used in combinatorics or group theory
+    = finite collection of boxes arranged in rows and columns s.t.
+        - number of boxes in a row is decreasing with row number (top to bottom)
+        - number of boxes in a column is descresing with column number (left to right)
     """
     def __init__(self, number_of_rows:int, number_of_columns:List[int]):
         self.number_of_rows:int=number_of_rows

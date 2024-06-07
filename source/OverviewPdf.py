@@ -11,7 +11,9 @@ from source.settings.LanguageChoices import LanguageChoices
 
 class OverviewPdf(object):
     """
-    todo
+    outsourced pdf functionality of the PermutationGroup-class:
+    builds a pdf with all given/calculated information about a permutation group
+        including title page, sections, table of contents
     """
     def __init__(self, permutation_group:int):
         self.permutation_group:int=permutation_group
@@ -40,8 +42,7 @@ class OverviewPdf(object):
 
     def add_title_page(self) -> None:
         """
-        todo
-        :return:
+        adding the title page to the front of the pdf
         """
         self.doc.append(Command('thispagestyle', 'empty'))
 
@@ -66,8 +67,9 @@ class OverviewPdf(object):
 
     def add_header_and_foot(self) -> None:
         """
-        todo
-        :return:
+        adding
+        - header with informations about the chapter and the permutation group
+        - footer with page numbers
         """
         self.doc.packages.append(Package('fancyhdr'))
 

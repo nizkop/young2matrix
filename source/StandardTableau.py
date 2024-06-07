@@ -8,7 +8,11 @@ from source.YoungTableau import YoungTableau
 
 class StandardTableau(YoungTableau):
     """
-    todo
+    special kind of young tableau: includes numbers within the boxes, that follow certain rules:
+    - numbers in each row and each column descending
+    - no duplicate numbers
+    - numbers consecutive
+    - numbers start with 1
     """
 
     def __init__(self, numbers_in_row:List[Tuple[int,...]]):
@@ -112,4 +116,3 @@ class StandardTableau(YoungTableau):
             self.function.anti_symmetrize(column)
         self.function.aggregate_terms()
         self.function.reduce_to_least_common_basis()
-

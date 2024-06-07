@@ -6,7 +6,9 @@ from source.function_parts.Sign import Sign
 
 class HamiltonIntegral(object):
     """
-    todo
+    quantum chemical hamilton integral:
+    functions in bra are independent of hamilton operator,
+    hamilton operator acts on the functions in the ket
     """
 
     def __init__(self, bra:ProductTerm, ket:ProductTerm):

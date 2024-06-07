@@ -8,9 +8,9 @@ from source.ui_parts.UiPages import UiPages
 
 def get_page_information(page:UiPages) -> str:
     """
-    todo
-    :param page:
-    :return:
+    get the helping information for a given ui screen
+    :param page: actual ui page/screen
+    :return: help text (html-formatted)
     """
     language = get_language()
     if page == UiPages.START:

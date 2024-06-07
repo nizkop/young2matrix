@@ -16,7 +16,9 @@ from source.StandardTableau import StandardTableau
 
 class ChemicalStandardTableau(StandardTableau):
     """
-    todo
+    expanding the standard tableau to be able to describe quantum chemical systems
+    -> differentiating between spin and spatial interpretation
+    (step from pure mathematical concept to group theoretical, chemical application)
     """
 
     def __init__(self,numbers_in_row:List[tuple]):

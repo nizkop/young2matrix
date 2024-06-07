@@ -9,7 +9,7 @@ from source.function_parts.Sign import Sign
 
 class ProductTerm(object):
     """
-    todo
+    general integral product including multiple functional terms
     """
     def __init__(self, sign: Sign, ordered_functions:Tuple[int,...]):
         self.sign: Sign = sign
@@ -88,10 +88,4 @@ class ProductTerm(object):
         else:
             empty_part.factor = abs( self.factor * other.factor * 1 )
         return empty_part, eq_left
-
-
-
-
-
-
 

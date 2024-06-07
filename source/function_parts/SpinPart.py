@@ -7,7 +7,7 @@ from source.function_parts.TextKinds import TextKinds
 
 class SpinPart(IntegralPart):
     """
-    todo
+    quantum chemical integral representing spin functions
     """
     def __init__(self, permutation_group:int, total_spin:float, ms:float, choices_for_spin:dict, behavior:FunctionDependency):
         self.permutation_group:int=permutation_group

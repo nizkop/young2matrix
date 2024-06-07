@@ -20,7 +20,8 @@ from source.YoungTableau import YoungTableau
 
 class PermutationGroup(object):
     """
-    todo
+    permutation group: mathematical group of all permutations until a given number;
+    this class bundles the chemical/mathematical functionality
     """
     _instance = None # used as a singleton, limited to 1 instance at a time
     _instance_count = 0
