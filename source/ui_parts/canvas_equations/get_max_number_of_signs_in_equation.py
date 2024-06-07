@@ -1,13 +1,12 @@
 import re
 import math
 
-def replace_frac(match) -> str:
+def replace_frac(match: re.Match) -> str:
     """
     replacing a latex-fraction- command by its widest element
-    :param match: latex-formatted fraction
+    :param match: latex-formatted fraction, found by re search
     :return: needed width of the fraction, given as the longest term within the fraction
     """
-    print("replace-frac", match, type(match))
     numerator = match.group(1)
     denominator = match.group(2)
     return numerator if len(numerator) > len(denominator) else denominator

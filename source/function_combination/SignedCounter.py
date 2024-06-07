@@ -1,6 +1,5 @@
 from collections import defaultdict
-from collections.abc import dict_items
-from typing import List
+from typing import List, Any
 
 
 class SignedCounter:
@@ -16,10 +15,9 @@ class SignedCounter:
         for item in iterable:
             self.counter[item] += item.factor
 
-    @property
-    def items(self) -> dict_items:
+    def items(self) -> Any:#dict_items
         """
-        :return: collected (= identical) items/functions/...
+        :return: collected (= identical) items/functions/... (dict_items)
         """
         return self.counter.items()
 

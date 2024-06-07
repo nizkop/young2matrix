@@ -133,7 +133,7 @@ class MainApplication(LayoutAndButtonApplication):
             text += "<br>"
         self.scroll_layout.addWidget(get_basic_label(text, allowed_width=self.width()))
 
-    def add_equation(self, formula: str) -> None:
+    def add_equation(self, formula: str, add_indent=False) -> None:
         """
         adding a line with an equation to the current screen/page
         :param formula: latex-formatted equation, e.g. r"\frac{1}{2} \cdot \pi"
@@ -149,7 +149,10 @@ class MainApplication(LayoutAndButtonApplication):
         # align equation with a fixed margin to the left side:
         line = QHBoxLayout()
         line.setAlignment(Qt.AlignLeft)
-        spacer = QSpacerItem(self.spacer_height, 0, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        if add_indent:
+            spacer = QSpacerItem(self.spacer_height*2, 0, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        else:
+            spacer = QSpacerItem(self.spacer_height, 0, QSizePolicy.Minimum, QSizePolicy.Expanding)
         line.addItem(spacer)
         line.addWidget(canvas)
 

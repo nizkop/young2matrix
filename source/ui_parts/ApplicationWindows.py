@@ -24,6 +24,7 @@ from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_pu
 from source.ui_parts.small_basic_parts.get_colored_icon_button import get_colored_icon_button
 from source.ui_parts.UiPages import UiPages
 from source.ui_parts.FormatableMessageBox import FormatableMessageBox
+from source.ui_parts.small_basic_parts.get_label_with_indentation import get_label_with_indentation
 
 
 class ApplicationWindows(MainApplication):
@@ -156,7 +157,6 @@ class ApplicationWindows(MainApplication):
     def load_tableau_page(self) -> None:
         self.set_ui_label(header=get_general_text('tableau_header'),
                      content=get_title_permutation_to_tableaus(self.permutation_group.permutation_group))
-        # page_info = next((page_dict for page_dict in self.pages if page_dict.get("index") == self.current_page), None)
         self.permutation_group.get_all_standard_tableaus()
         for equation in self.permutation_group.get_young_tableau_equations():
             self.add_equation(formula=equation)
@@ -170,7 +170,7 @@ class ApplicationWindows(MainApplication):
             for t in group:
                 t.set_up_function()
                 equation = t.to_tex() + "\quad " + t.function.to_tex()
-                self.add_equation(equation)
+                self.add_equation(equation, add_indent=True)
 
     def load_spin_page(self) -> None:
         self.set_ui_label(header=get_general_text('spin_header'),
@@ -184,10 +184,10 @@ class ApplicationWindows(MainApplication):
                 tableau = t.to_tex()
                 t.get_spin_choices()
                 for s in t.spin_parts:
-                    self.add_equation(tableau +r"\qquad "+ s.to_tex())
+                    self.add_equation(tableau + r"\qquad " + s.to_tex(), add_indent=True)
                     group_empty = False
             if group_empty:
-                self.set_ui_label(content = get_general_text("spin_2rows"))#todo: einrücken
+                self.set_ui_label(get_label_with_indentation(get_general_text("spin_2rows")))
 
     def load_spatial_page(self) -> None:
         self.set_ui_label(header=get_general_text("spatial_header"), content=get_title_multiplied_youngtableaus(TextKinds.TXT)[1])
@@ -202,10 +202,10 @@ class ApplicationWindows(MainApplication):
                 tableau = t.to_tex()
                 t.get_spatial_choices()
                 for s in t.spatial_parts:
-                    self.add_equation(tableau + r"\qquad " + s.to_tex())
+                    self.add_equation(tableau + r"\qquad " + s.to_tex(), add_indent=True)
                     group_empty = False
             if group_empty:
-                self.set_ui_label(content = get_general_text("spatial_2columns"))
+                self.set_ui_label(get_label_with_indentation(label = get_general_text("spatial_2columns")))
 
     def load_overlap_spin(self) -> None:
         title, content, equation = get_title_spin(kind=TextKinds.TXT)
@@ -226,10 +226,6 @@ class ApplicationWindows(MainApplication):
                 equation_tex += f" = {i['result'].to_tex()}"
                 self.add_equation(equation_tex)
         if len(self.permutation_group.overlap) == 0:
-            # label = QLabel(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>")
-            # label.setWordWrap(True)
-            # label.setMaximumWidth(self.width())
-            # label.setTextFormat(Qt.RichText)
             self.scroll_layout.addWidget(get_basic_label(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>", self.width()))
 
     def load_overlap_spatial(self) -> None:
@@ -238,8 +234,8 @@ class ApplicationWindows(MainApplication):
         self.permutation_group.calculate_all_overlap_integrals()
         empty = True
         for i in self.permutation_group.overlap:
-            if i['kind'] == SpinVsSpatialKind.SPATIAL and len(i['result'].parts) == 1 and i['result'].parts[
-                0].factor != 0 and i['result'].parts[0].factor != 1:
+            if (i['kind'] == SpinVsSpatialKind.SPATIAL and len(i['result'].parts) == 1 and
+                    i['result'].parts[0].factor != 0 and i['result'].parts[0].factor != 1):
                 empty = False
                 equation_tex = get_dirac_notation(str(i['bra_tableau']), str(i['ket_tableau']), kind=TextKinds.TEX)
                 if i['kind'] == SpinVsSpatialKind.SPIN:
@@ -249,10 +245,6 @@ class ApplicationWindows(MainApplication):
                 equation_tex += f" = {i['result'].to_tex()}"
                 self.add_equation(equation_tex)
         if len(self.permutation_group.overlap) == 0 or empty:
-            # label = QLabel(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>")
-            # label.setWordWrap(True)
-            # label.setMaximumWidth(self.width())
-            # label.setTextFormat(Qt.RichText)
             self.scroll_layout.addWidget(get_basic_label(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>", self.width()))
 
     def load_hamilton_spatial(self) -> None:
@@ -268,7 +260,9 @@ class ApplicationWindows(MainApplication):
                     equation_tex += addend.to_tex()
                 self.add_equation(equation_tex)
         if len(self.permutation_group.hamilton_integrals) == 0:
-            self.scroll_layout.addWidget(get_basic_label(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>", self.width()))
+            self.scroll_layout.addWidget(
+                get_basic_label(
+                    fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>", self.width()))
 
 
     def load_hamilton_spin(self) -> None:

@@ -61,7 +61,6 @@ class StandardTableau(YoungTableau):
         return columns
         #  return [[row[i] for row in self.numbers_in_row if i < len(row)] for i in range(max_length)]
 
-    @property
     def get_number_of_columns(self):
         """
         calculate maximum number of columns
