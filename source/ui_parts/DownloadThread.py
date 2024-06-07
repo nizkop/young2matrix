@@ -25,7 +25,7 @@ class DownloadThread(QThread):
         showing the disabling by color change (this function can do everything for that except the icon color of the settings button)
         :param activated: boolean indicating whether buttons are activated or deactivated
         """
-        # print("enable_all_buttons", activated, flush=True)
+        # print("enable_all_buttons", activated, len(self.buttons), flush=True)
         for button in self.buttons:
             try:
                 button.setEnabled(activated)
@@ -35,7 +35,8 @@ class DownloadThread(QThread):
                     color = get_color()
                     format_layout_part(button,
                         f"background-color: {color['deactivated-button']}; color:{color['disabled-text']};")
-            except:
+            except Exception as e:
+                print(e, flush=True)
                 pass # button already deleted
 
     def run(self) -> None:
@@ -70,14 +71,15 @@ class DownloadThread(QThread):
             time.sleep(1)
 
             self.update_progress.emit(95,"saving pdf" if get_language() == LanguageChoices.en.name else "PDF abspeichern")
-            self.permutation_group.overview.save(title=self.permutation_group.title_pdf)
+            self.permutation_group.overview.save()
             time.sleep(1)
             # todo: matrix?
-        except:
-            self.enable_all_buttons(True)
+        except Exception as e:
+            print("except", e, flush=True)
             self.update_progress.emit(-1, get_general_text("failed_download"))
+        else:
+            self.update_progress.emit(100,get_general_text("successful_download"))
         finally:
             self.enable_all_buttons(True)
-            self.update_progress.emit(100,get_general_text("successful_download"))
 
 
