@@ -1,5 +1,5 @@
 
-from source.settings.language_choices import language_choices
+from source.settings.LanguageChoices import LanguageChoices
 from source.settings.settings_config import get_language
 
 
@@ -12,7 +12,7 @@ def get_general_text(key:str) -> str:
     :return: fully expressed text in choosen language
     """
 
-    if get_language() == language_choices.en.name:
+    if get_language() == LanguageChoices.en.name:
         general_texts = {
             "overlap_header": "overlap integrals of ",
             "spatial_header": "spatial functions",
@@ -46,8 +46,8 @@ def get_general_text(key:str) -> str:
             "check_big_data": "This is a high number for a permutation group, that gets even bigger by all the needed combinations. Are you sure you want to continue?",
             "input_command": "permutation group:",
             "warning_no_group": "Please fill in a permutation group.",
-            "warning_wrong_number": "Please give the permutation group as positive number.",
-            "warning_wrong_type": "Please fill in an integer for setting the permutations group.",
+            "warning_wrong_number": "Please give the permutation group as a positive number.",
+            "warning_wrong_type": "Please fill in an integer to set the permutation group.",
             "successful_download": "The download was successful.",
             "failed_download": "Sadly, we encountered an unknown error while downloading the pdf.",
             "header_hamilton_spatial": "hamilton matrix elements for the spatial functions",

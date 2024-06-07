@@ -1,12 +1,12 @@
 from source.function_combination.calculate_overlap_integral_between_functions import \
     calculate_overlap_integral_between_functions
-from source.function_parts.function import function
-from source.function_parts.product_term import product_term
-from source.function_parts.sign import Sign
-from source.standard_tableau import standard_tableau
+from source.function_parts.FunctionDependency import FunctionDependency
+from source.function_parts.ProductTerm import ProductTerm
+from source.function_parts.Sign import Sign
+from source.StandardTableau import StandardTableau
 
 
-def calculate_overlap_integral_basisfunction(tableau_a: standard_tableau, tableau_b: standard_tableau) -> function:
+def calculate_overlap_integral_basisfunction(tableau_a: StandardTableau, tableau_b: StandardTableau) -> FunctionDependency:
     """
     calculating the overlap between the basis function = general behavior, not spin/spatial integrals
     :param tableau_a: bra terms
@@ -17,7 +17,7 @@ def calculate_overlap_integral_basisfunction(tableau_a: standard_tableau, tablea
         raise Exception("function_combination error: The tableaus dont fit.")
 
     info = {"bra": tableau_a.function.to_tex(), "ket": tableau_b.function.to_tex()}
-    empty_function = function(product_term(Sign("+"), ()) ,normalizable=False)
+    empty_function = FunctionDependency(ProductTerm(Sign("+"), ()), normalizable=False)
     # check if identical form
     if tableau_a.number_of_rows != tableau_b.number_of_rows or tableau_a.numbers_in_columns != tableau_b.numbers_in_columns:
         # basis function of young tableaux from different young diagrams are automatically diagonal

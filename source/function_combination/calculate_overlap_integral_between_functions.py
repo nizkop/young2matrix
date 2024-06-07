@@ -1,21 +1,20 @@
 
 import sympy as sp
 
-from source.function_parts.function import function
+from source.function_parts.FunctionDependency import FunctionDependency
 from source.function_parts.get_normalization_factor_as_fraction import get_normalization_factor_as_fraction
-from source.function_parts.product_term import product_term
-from source.function_parts.sign import Sign
+from source.function_parts.ProductTerm import ProductTerm
+from source.function_parts.Sign import Sign
 
 
-# noinspection SpellCheckingInspection
-def calculate_overlap_integral_between_functions(function_a:function, function_b:function) -> function:
+def calculate_overlap_integral_between_functions(function_a:FunctionDependency, function_b:FunctionDependency) -> FunctionDependency:
     """
     calculating overlap between all parts of a function a and a function b
     :param function_a: bra terms
     :param function_b: ket terms
     :return: overlap
     """
-    empty_function = function(product_term(Sign("+"), ()) ,normalizable=False)
+    empty_function = FunctionDependency(ProductTerm(Sign("+"), ()), normalizable=False)
 
     # noinspection SpellCheckingInspection
     if function_a == function_b:

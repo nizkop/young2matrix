@@ -6,16 +6,19 @@ from pylatex.utils import NoEscape
 
 from source.settings.settings_config import get_language
 from source.texts.general_texts import get_general_text
-from source.settings.language_choices import language_choices
+from source.settings.LanguageChoices import LanguageChoices
 
 
-class overview_pdf(object):
+class OverviewPdf(object):
+    """
+    todo
+    """
     def __init__(self, permutation_group:int):
         self.permutation_group:int=permutation_group
         self.file_type:str = "pdf"
 
         self.language = get_language()
-        if get_language() == "de":
+        if get_language() == LanguageChoices.de.name:
             locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')# changes name of month into german version
 
         self.doc = Document(documentclass='article', document_options=['fleqn']) # left alignment for equations
@@ -35,7 +38,11 @@ class overview_pdf(object):
         self.add_title_page()
         self.add_header_and_foot()
 
-    def add_title_page(self):
+    def add_title_page(self) -> None:
+        """
+        todo
+        :return:
+        """
         self.doc.append(Command('thispagestyle', 'empty'))
 
         with self.doc.create(Center()):
@@ -49,7 +56,7 @@ class overview_pdf(object):
                                     f"{get_general_text('permutation_part_title')}: {self.permutation_group}"))
             self.doc.append(Command(r'\ '))
             self.doc.append(Command('vspace', '4cm'))
-            if self.language == language_choices.en.name:
+            if self.language == LanguageChoices.en.name:
                 self.doc.append(Command('Large', date.today().strftime('%B %d, %Y')))
             else:#default
                 self.doc.append(Command('Large', date.today().strftime('%d. %B %Y')))
@@ -57,7 +64,11 @@ class overview_pdf(object):
         self.newpage()
         self.doc.append(Command('setcounter', arguments=['page', '1']))
 
-    def add_header_and_foot(self):
+    def add_header_and_foot(self) -> None:
+        """
+        todo
+        :return:
+        """
         self.doc.packages.append(Package('fancyhdr'))
 
         self.doc.append(Command('pagestyle', 'fancy'))
@@ -82,7 +93,9 @@ class overview_pdf(object):
         self.doc.generate_pdf(title, clean_tex=True)
 
     def add_information(self, additional_info:str) -> None:
-        """ adding text to the current chapter of the pdf """
+        """ adding text to the current chapter of the pdf
+        :param additional_info: text, that should be added
+        """
         self.doc.append(NoEscape(additional_info))
 
     def add_section(self, sec_title:str, content:str, layer:int=0) -> None:
@@ -107,25 +120,27 @@ class overview_pdf(object):
     def get_latex_formula(formula_text:str, inline:bool = False) -> Union[Math, NoEscape]:
         """
         adding a latex formatted equation to the pdf
-        :param: latex equation including latex commands
-        :inline: boolean indicating whether the latex formula is short and does not need a separate line or not
+        :param formula_text: latex equation including latex commands
+        :param inline: boolean indicating whether the latex formula is short and does not need a separate line or not
         :return: pdf/latex math object, that will be rendered into the pdf
         """
-        if not inline: # euqation might be longer
+        if not inline: # equation might be longer
             return NoEscape(r"\begin{dmath*}"+rf"{formula_text}"+r"\end{dmath*}")
         return Math(data=[NoEscape(rf"{formula_text}")], inline=inline)
 
     def add_latex_formula(self, formula_text:str, inline:bool = False) -> None:
         """
+        adding an equation to the document
         :param formula_text: latex-equation
         :param inline: whether the equation should be written in the same line as content before (False)
                        or if it should get a line for itself (True)
-        :return:
         """
         self.doc.append(self.get_latex_formula(formula_text=formula_text, inline=inline))
 
     def newpage(self,definitely:bool=True) -> None:
-        """ adding a page break """
+        """ adding a page break
+         :param definitely: boolean indicating whether the page should definitely be changed
+         """
         if definitely:
             self.doc.append(Command('newpage'))
         else:

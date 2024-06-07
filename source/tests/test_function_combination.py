@@ -1,11 +1,11 @@
 from fractions import Fraction
 
-from source.chemical_standard_tableau import chemical_standard_tableau
+from source.ChemicalStandardTableau import ChemicalStandardTableau
 from source.function_combination.calculate_overlap_integral_basisfunction import \
     calculate_overlap_integral_basisfunction
-from source.function_parts.sign import Sign
+from source.function_parts.Sign import Sign
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
-from source.standard_tableau import standard_tableau
+from source.StandardTableau import StandardTableau
 from source.function_combination.calculate_overlap_integral import calculate_overlap_integral
 
 ###  spatial tableaus  ###
@@ -26,9 +26,9 @@ trials = [
 
 general_error = "error in overlap calculation (basis function test)"
 for trial in trials:
-    t1 = standard_tableau(trial["input1"])
+    t1 = StandardTableau(trial["input1"])
     t1.set_up_function()
-    t2 = standard_tableau(trial["input2"])
+    t2 = StandardTableau(trial["input2"])
     t2.set_up_function()
 
 
@@ -47,10 +47,10 @@ for trial in trials:
 
 general_error = "error in overlap calculation (tableaus)"
 for trial in trials:
-    t1 = chemical_standard_tableau(trial["input1"])
+    t1 = ChemicalStandardTableau(trial["input1"])
     t1.set_up_function()
     t1.get_spatial_choices()
-    t2 = chemical_standard_tableau(numbers_in_row=trial["input2"])
+    t2 = ChemicalStandardTableau(numbers_in_row=trial["input2"])
     t2.set_up_function()
     t2.get_spatial_choices()
     product = calculate_overlap_integral(t1, t2, kind=spin_vs_spatial_kind.SPATIAL)[0]["result"]
@@ -115,11 +115,11 @@ trials = [
 general_error = "error in spin overlap"
 for trial in trials:
     # set up (with spins):
-    t1 = standard_tableau(trial["tableau1"])
+    t1 = StandardTableau(trial["tableau1"])
     t1.set_up_function()
     t1.function.set_spin_functions(trial["spin1"])
 
-    t2 = standard_tableau(trial["tableau2"])
+    t2 = StandardTableau(trial["tableau2"])
     t2.set_up_function()
     t2.function.set_spin_functions(trial["spin2"])
 

@@ -1,22 +1,22 @@
-from source.function_parts.product_term import product_term
-from source.function_parts.sign import Sign
+from source.function_parts.ProductTerm import ProductTerm
+from source.function_parts.Sign import Sign
 
-p1 = product_term(Sign("+"), ordered_functions=(1, 2))
+p1 = ProductTerm(Sign("+"), ordered_functions=(1, 2))
 p1.factor = 5
-p2 = product_term(Sign("+"), ordered_functions=(1, 3))
+p2 = ProductTerm(Sign("+"), ordered_functions=(1, 3))
 p2.factor = 3
 
 trials = [
-        {"input1": product_term(Sign("+"), ordered_functions=(2, 1)),
-         "input2":  product_term(Sign("+"), ordered_functions=(1, 2)),
+        {"input1": ProductTerm(Sign("+"), ordered_functions=(2, 1)),
+         "input2":  ProductTerm(Sign("+"), ordered_functions=(1, 2)),
          "expected": {"factor": 1, "list_of_parts": ['a_{1}', 'b_{2}', 'a_{2}', 'b_{1}']},
          "error_message": "S2: different functions"},
-        {"input1": product_term(Sign("+"), ordered_functions=(2, 1)),
-         "input2":  product_term(Sign("+"), ordered_functions=(2, 1)),
+        {"input1": ProductTerm(Sign("+"), ordered_functions=(2, 1)),
+         "input2":  ProductTerm(Sign("+"), ordered_functions=(2, 1)),
          "expected": {"factor": 1, "list_of_parts": ['a_{2}^{2}', 'b_{1}^{2}']},
          "error_message": "S2: ab multiplying itself"},
-        {"input1": product_term(Sign("+"), ordered_functions=(1, 2)),
-         "input2": product_term(Sign("+"), ordered_functions=(1, 2)),
+        {"input1": ProductTerm(Sign("+"), ordered_functions=(1, 2)),
+         "input2": ProductTerm(Sign("+"), ordered_functions=(1, 2)),
          "expected": {"factor": 1, "list_of_parts": ['a_{1}^{2}', 'b_{2}^{2}']},
          "error_message": "S2: ba multiplying itself"},
         {"input1": p1,
@@ -40,11 +40,11 @@ for i in trials:
 ###  overlap spatial  ###
 
 trials = [
-    {"input1": product_term(Sign("+"), (1, 2)),"input2":product_term(Sign("+"), ordered_functions=(1,2)),
+    {"input1": ProductTerm(Sign("+"), (1, 2)), "input2":ProductTerm(Sign("+"), ordered_functions=(1, 2)),
      "expected": 1, "error_message": "S2: multiplying itself"},
-    {"input1": product_term(Sign("+"), (1, 2)), "input2": product_term(Sign("+"), ordered_functions=(2,1)),
+    {"input1": ProductTerm(Sign("+"), (1, 2)), "input2": ProductTerm(Sign("+"), ordered_functions=(2, 1)),
      "expected": 0, "error_message": "S2: multiplying antisymmetric"},
-    {"input1": product_term(Sign("+"), (1, 2, 3)), "input2": product_term(Sign("-"), ordered_functions=(3,2,1)),
+    {"input1": ProductTerm(Sign("+"), (1, 2, 3)), "input2": ProductTerm(Sign("-"), ordered_functions=(3, 2, 1)),
      "expected": 0, "error_message": "S3"},
 ]
 
@@ -57,17 +57,17 @@ for trial in trials:
 
 ###  overlap spin  ###
 trials = [
-    {"input1": product_term(Sign("+"), ordered_functions=(1, 2)), "spin1": ["α", "β"],
-     "input2": product_term(Sign("+"), ordered_functions=(1, 2)), "spin2": ["α", "β"],
+    {"input1": ProductTerm(Sign("+"), ordered_functions=(1, 2)), "spin1": ["α", "β"],
+     "input2": ProductTerm(Sign("+"), ordered_functions=(1, 2)), "spin2": ["α", "β"],
      "expected": 1, "error_message": "S2: multiplying itself"},
-    {"input1": product_term(Sign("+"), ordered_functions=(1, 2)), "spin1": ["α", "β"],
-     "input2": product_term(Sign("+"), ordered_functions=(1, 2)), "spin2": ["β", "α"],
+    {"input1": ProductTerm(Sign("+"), ordered_functions=(1, 2)), "spin1": ["α", "β"],
+     "input2": ProductTerm(Sign("+"), ordered_functions=(1, 2)), "spin2": ["β", "α"],
      "expected": 0, "error_message": "S2: multiplying itself with switched spins"},
-    {"input1": product_term(Sign("+"), (1, 2)),  "spin1": ["α", "β"],
-     "input2": product_term(Sign("+"), ordered_functions=(2, 1)),  "spin2": ["α", "β"],
+    {"input1": ProductTerm(Sign("+"), (1, 2)), "spin1": ["α", "β"],
+     "input2": ProductTerm(Sign("+"), ordered_functions=(2, 1)), "spin2": ["α", "β"],
      "expected": 0, "error_message": "S2: multiplying antisymmetric"},
-    {"input1": product_term(Sign("+"), (1, 2)), "spin1": ["β", "α"],
-     "input2": product_term(Sign("+"), ordered_functions=(2, 1)), "spin2": ["α", "β"],
+    {"input1": ProductTerm(Sign("+"), (1, 2)), "spin1": ["β", "α"],
+     "input2": ProductTerm(Sign("+"), ordered_functions=(2, 1)), "spin2": ["α", "β"],
      "expected": 1, "error_message": "S2: multiplying antisymmetric with switched spin"},
 ]
 

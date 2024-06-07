@@ -6,8 +6,8 @@ from PyQt5.QtWidgets import QHBoxLayout, QLabel, QLineEdit, QSizePolicy, \
 
 from source.function_parts.get_dirac_notation import get_dirac_notation
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
-from source.function_parts.text_kinds import text_kinds
-from source.permutation_group import permutation_group
+from source.function_parts.TextKinds import TextKinds
+from source.PermutationGroup import PermutationGroup
 from source.settings.settings_config import load_config, get_color
 from source.texts.general_texts import get_general_text
 from source.texts.get_info_spin_possibilities import get_info_spin_possibilities
@@ -21,20 +21,19 @@ from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_p
 from source.ui_parts.small_basic_parts.get_basic_label import get_basic_label
 from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
 from source.ui_parts.small_basic_parts.get_colored_icon_button import get_colored_icon_button
-from source.ui_parts.ui_pages import ui_pages
+from source.ui_parts.UiPages import UiPages
 from source.ui_parts.FormatableMessageBox import FormatableMessageBox
 
 
 class ApplicationWindows(MainApplication):
-    """
-    class needed to fill ui pages of main application with actual content;
+    """ class needed to fill ui pages of main application with actual content;
     the chemical content (permutation group) is brought in here
     """
 
     def __init__(self):
         super().__init__()
 
-        self.permutation_group: Union[None, permutation_group] = None
+        self.permutation_group: Union[None, PermutationGroup] = None
         self.permutation_group_no: Union[None, int] = None
 
 
@@ -42,10 +41,10 @@ class ApplicationWindows(MainApplication):
         """ checking the input and (if the input is okay) loading another page """
         # print("\nopen_page", page_number, flush=True)
         # getting and checking the input information:
-        if page_number == ui_pages.START.value:
+        if page_number == UiPages.START.value:
             return self.change_page(page_number)
         warning_text = None
-        if self.current_page == ui_pages.START.value:
+        if self.current_page == UiPages.START.value:
             input_value = self.input_box.text()
             if not input_value:
                 warning_text = get_general_text("warning_no_group")
@@ -69,16 +68,16 @@ class ApplicationWindows(MainApplication):
 
                     result = warning_box.exec_()
                     if result != QDialog.Accepted: #no = 0, yes = 1
-                        return self.change_page(ui_pages.START.value)
+                        return self.change_page(UiPages.START.value)
             except:
                 warning_text = get_general_text("warning_wrong_type")
             if warning_text:
                 warning_box = FormatableMessageBox(get_general_text("warning"))
                 warning_box.setText(f"<b>{warning_text}</b>")
                 warning_box.exec_()
-                return self.change_page(ui_pages.START.value)
+                return self.change_page(UiPages.START.value)
             self.set_basic_permutation_attributes(input_value=input_value)
-        if self.current_page != ui_pages.DOWNLOAD.value:
+        if self.current_page != UiPages.DOWNLOAD.value:
             self.change_page(page_number)
         self.scroll_area.verticalScrollBar().setValue(0)#scroll to the top (for the new page)
         self.scroll_area.horizontalScrollBar().setValue(0)#in case of long equations
@@ -93,7 +92,7 @@ class ApplicationWindows(MainApplication):
             return
         self.permutation_group_no = input_value
         del self.permutation_group # remove, to allow a new instance
-        self.permutation_group = permutation_group(self.permutation_group_no)
+        self.permutation_group = PermutationGroup(self.permutation_group_no)
 
     def update_page(self) -> None:
         """ adding content (in between general buttons at the top and information bar at the bottom) to layout """
@@ -162,7 +161,7 @@ class ApplicationWindows(MainApplication):
             self.add_equation(formula=equation)
 
     def load_tableau_page_multiplied(self) -> None:
-        header, content = get_title_multiplied_youngtableaus(kind=text_kinds.TXT)
+        header, content = get_title_multiplied_youngtableaus(kind=TextKinds.TXT)
         self.set_ui_label(header=header, content=content)
         for group in self.permutation_group.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.permutation_group.standard_tableaus):
             equation = group[0].get_shortened_symbol()["tex"] + ":"
@@ -174,7 +173,7 @@ class ApplicationWindows(MainApplication):
 
     def load_spin_page(self) -> None:
         self.set_ui_label(header=get_general_text('spin_header'),
-                 content = get_info_spin_possibilities(self.permutation_group.permutation_group, kind=text_kinds.TXT))
+                          content = get_info_spin_possibilities(self.permutation_group.permutation_group, kind=TextKinds.TXT))
         self.permutation_group.get_all_standard_tableaus()
         for group in self.permutation_group.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.permutation_group.standard_tableaus):
             equation = group[0].get_shortened_symbol()["tex"] + ":"
@@ -187,10 +186,10 @@ class ApplicationWindows(MainApplication):
                     self.add_equation(tableau +r"\qquad "+ s.to_tex())
                     group_empty = False
             if group_empty:
-                self.set_ui_label(content = get_general_text("spin_2rows"))
+                self.set_ui_label(content = get_general_text("spin_2rows"))#todo: einrücken
 
     def load_spatial_page(self) -> None:
-        self.set_ui_label(header=get_general_text("spatial_header"), content=get_title_multiplied_youngtableaus(text_kinds.TXT)[1])
+        self.set_ui_label(header=get_general_text("spatial_header"), content=get_title_multiplied_youngtableaus(TextKinds.TXT)[1])
         self.permutation_group.get_all_standard_tableaus()
         groups = self.permutation_group.group_tableaus_by_shortend_symbol(
                 tableaus_to_sort=self.permutation_group.standard_tableaus)
@@ -208,7 +207,7 @@ class ApplicationWindows(MainApplication):
                 self.set_ui_label(content = get_general_text("spatial_2columns"))
 
     def load_overlap_spin(self) -> None:
-        title, content, equation = get_title_spin(kind=text_kinds.TXT)
+        title, content, equation = get_title_spin(kind=TextKinds.TXT)
         self.set_ui_label(header=get_general_text("overlap_header")+title, spacing=False,
                           content=content.replace(r"\n","<br>"))
         label = QLabel(equation)# ! here no get_basic_label (no html)
@@ -219,9 +218,9 @@ class ApplicationWindows(MainApplication):
         for i in self.permutation_group.overlap:
             if (i['kind'] == spin_vs_spatial_kind.SPIN and len(i['result'].parts) == 1 and
                     i['result'].parts[0].factor != 0 and i['result'].parts[0].factor != 1):
-                equation_tex = get_dirac_notation(str(i['bra_tableau']), str(i['ket_tableau']), kind=text_kinds.TEX)
+                equation_tex = get_dirac_notation(str(i['bra_tableau']), str(i['ket_tableau']), kind=TextKinds.TEX)
                 equation_tex += r"_{\sigma }"
-                equation_tex += "=" + get_dirac_notation(str(i['bra']), str(i['ket']), kind=text_kinds.TEX)
+                equation_tex += "=" + get_dirac_notation(str(i['bra']), str(i['ket']), kind=TextKinds.TEX)
                 equation_tex += r"_{\Phi}"
                 equation_tex += f" = {i['result'].to_tex()}"
                 self.add_equation(equation_tex)
@@ -233,7 +232,7 @@ class ApplicationWindows(MainApplication):
             self.scroll_layout.addWidget(get_basic_label(fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>", self.width()))
 
     def load_overlap_spatial(self) -> None:
-        title, content = get_title_spatial(kind=text_kinds.TXT)
+        title, content = get_title_spatial(kind=TextKinds.TXT)
         self.set_ui_label(header=get_general_text("overlap_header")+title, content=content)
         self.permutation_group.calculate_all_overlap_integrals()
         empty = True
@@ -241,10 +240,10 @@ class ApplicationWindows(MainApplication):
             if i['kind'] == spin_vs_spatial_kind.SPATIAL and len(i['result'].parts) == 1 and i['result'].parts[
                 0].factor != 0 and i['result'].parts[0].factor != 1:
                 empty = False
-                equation_tex = get_dirac_notation(str(i['bra_tableau']), str(i['ket_tableau']), kind=text_kinds.TEX)
+                equation_tex = get_dirac_notation(str(i['bra_tableau']), str(i['ket_tableau']), kind=TextKinds.TEX)
                 if i['kind'] == spin_vs_spatial_kind.SPIN:
                     equation_tex += r"_{\sigma }"
-                    equation_tex += "=" + get_dirac_notation(str(i['bra']), str(i['ket']), kind=text_kinds.TEX)
+                    equation_tex += "=" + get_dirac_notation(str(i['bra']), str(i['ket']), kind=TextKinds.TEX)
                 equation_tex += r"_{\Phi}"
                 equation_tex += f" = {i['result'].to_tex()}"
                 self.add_equation(equation_tex)
@@ -281,7 +280,7 @@ class ApplicationWindows(MainApplication):
         """ initializes download and goes back to main page """
         # print("load download", flush=True)
         self.clear_screen()
-        self.current_page = ui_pages.DOWNLOAD.value
+        self.current_page = UiPages.DOWNLOAD.value
 
         self.progress_bar = QProgressBar()#<- bar to show the progress
         # self.progress_bar.setStyleSheet(f"background-color: {get_color()['status-background']};")

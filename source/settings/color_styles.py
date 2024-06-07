@@ -1,7 +1,6 @@
 from enum import Enum
 
 
-# noinspection SpellCheckingInspection
 class color_styles(Enum):
     """
     different choices of color schemes for the display of the GUI
@@ -18,11 +17,10 @@ class color_styles(Enum):
                "deactivated-button": "#6fa287",
                "disabled-text": "rgb(169, 169, 169)"#a9a9a9
                }
-    # noinspection SpellCheckingInspection
     DARKMODE = {"name": "darkmode",
                 "text": "rgb(208, 225, 249)",#D0E1F9
                 "status_text": "black",
-                "background": "rgb(99,99,99",#636363
+                "background": "rgb(99,99,99)",#636363
                 "status_background": "rgb(100, 120, 150)",#647896
                 "button-background": "rgb(90, 90, 90)",#5A5A5A
                 # "info_background": "rgb(40, 60, 100)",

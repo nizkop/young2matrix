@@ -3,16 +3,16 @@ from typing import List
 from source.function_combination.calculate_overlap_integral_between_functions import \
     calculate_overlap_integral_between_functions
 from source.function_combination.shorten_total_function_of_hamilton_integrals import shorten_total_function_of_hamilton_integrals
-from source.chemical_standard_tableau import chemical_standard_tableau
+from source.ChemicalStandardTableau import ChemicalStandardTableau
 from source.function_combination.calculate_hamilton_integral_between_functions import \
     calculate_hamilton_integral_between_functions
-from source.function_parts.hamilton_integral import hamilton_integral
+from source.function_parts.HamiltonIntegral import HamiltonIntegral
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 
 
 # noinspection PyTypeChecker
-def calculate_hamilton_integral(tableau_a:chemical_standard_tableau, tableau_b:chemical_standard_tableau,
-                                kind:spin_vs_spatial_kind) -> List[hamilton_integral]:
+def calculate_hamilton_integral(tableau_a:ChemicalStandardTableau, tableau_b:ChemicalStandardTableau,
+                                kind:spin_vs_spatial_kind) -> List[HamiltonIntegral]:
     """
     calculate all hamilton integrals between different tableaus
     :param kind:

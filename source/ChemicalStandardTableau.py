@@ -5,21 +5,24 @@ from typing import List
 from source.function_combination.calculate_overlap_integral_between_functions import \
     calculate_overlap_integral_between_functions
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
-from source.function_parts.text_kinds import text_kinds
+from source.function_parts.TextKinds import TextKinds
 from source.pure_chemical_functions.calculate_ms_quantum_number import calculate_ms_quantum_number
 from source.pure_chemical_functions.calculate_spin_quantum_numbers import calculate_spin_quantum_numbers
-from source.function_parts.spatial_part import spatial_part
-from source.function_parts.spin_part import spin_part
-from source.standard_tableau import standard_tableau
+from source.function_parts.SpatialPart import SpatialPart
+from source.function_parts.SpinPart import SpinPart
+from source.StandardTableau import StandardTableau
 
 
 
-class chemical_standard_tableau(standard_tableau):
+class ChemicalStandardTableau(StandardTableau):
+    """
+    todo
+    """
 
     def __init__(self,numbers_in_row:List[tuple]):
         super().__init__(numbers_in_row=numbers_in_row)
-        self.spatial_parts: List[spatial_part] = []
-        self.spin_parts: List[spin_part] = []
+        self.spatial_parts: List[SpatialPart] = []
+        self.spin_parts: List[SpinPart] = []
         self.overlap = []
 
     def print(self) -> None:
@@ -49,7 +52,7 @@ class chemical_standard_tableau(standard_tableau):
             #       "get number in columns:", self.get_numbers_in_columns(), "numbers in each row:", self.numbers_in_row)
             return
         if len(self.spatial_parts) == 0:
-            self.spatial_parts.append(spatial_part(behavior=self.function))
+            self.spatial_parts.append(SpatialPart(behavior=self.function))
 
 
     def calculate_all_overlap_integrals(self, kind: spin_vs_spatial_kind=spin_vs_spatial_kind.GENERAL) -> None:
@@ -80,8 +83,8 @@ class chemical_standard_tableau(standard_tableau):
             for j in range(i, len(tableau_functions)):
                 g = calculate_overlap_integral_between_functions(tableau_functions[i].function, tableau_functions[j].function)
                 if kind == spin_vs_spatial_kind.SPIN:
-                    info = {"bra": tableau_functions[i].get_shortend_form(text_kinds.TEX),
-                            "ket": tableau_functions[j].get_shortend_form(text_kinds.TEX), "kind": kind, "result": g}
+                    info = {"bra": tableau_functions[i].get_shortend_form(TextKinds.TEX),
+                            "ket": tableau_functions[j].get_shortend_form(TextKinds.TEX), "kind": kind, "result": g}
                 else:
                     info = {"bra": tableau_functions[i].function.to_tex(), "ket": tableau_functions[j].function.to_tex(),
                             "kind": kind, "result": g}
@@ -120,8 +123,8 @@ class chemical_standard_tableau(standard_tableau):
                 ms_values = calculate_ms_quantum_number(total_spin=spin)
                 for ms in ms_values:
                     if ms == spin: #anti * -Fraction(1,2) + Fraction(1,2) * (self.permutation_group - anti)
-                        self.spin_parts.append( spin_part(permutation_group=self.permutation_group, total_spin=spin,
-                                                          ms=ms, choices_for_spin=alpha_beta,behavior=self.function) )
+                        self.spin_parts.append(SpinPart(permutation_group=self.permutation_group, total_spin=spin,
+                                                        ms=ms, choices_for_spin=alpha_beta, behavior=self.function))
                     else:
                         modified_alpha_beta = copy.deepcopy(alpha_beta)
                         diff = spin - ms
@@ -135,6 +138,6 @@ class chemical_standard_tableau(standard_tableau):
                             else:
                                 modified_alpha_beta["beta"].append(min(modified_alpha_beta["alpha"]))
                                 modified_alpha_beta["alpha"].remove(min(modified_alpha_beta["alpha"]))
-                        self.spin_parts.append(spin_part(permutation_group=self.permutation_group, total_spin=spin, ms=ms,
-                                          choices_for_spin=modified_alpha_beta, behavior=self.function))
+                        self.spin_parts.append(SpinPart(permutation_group=self.permutation_group, total_spin=spin, ms=ms,
+                                                        choices_for_spin=modified_alpha_beta, behavior=self.function))
 

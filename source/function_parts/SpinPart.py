@@ -1,14 +1,15 @@
 import copy
 
-from source.function_parts.function import function
-from source.function_parts.integral_part import integral_part
-from source.function_parts.product_term import product_term
-from source.function_parts.sign import Sign
-from source.function_parts.text_kinds import text_kinds
+from source.function_parts.FunctionDependency import FunctionDependency
+from source.function_parts.IntegralPart import IntegralPart
+from source.function_parts.TextKinds import TextKinds
 
 
-class spin_part(integral_part):
-    def __init__(self, permutation_group:int, total_spin:float, ms:float, choices_for_spin:dict, behavior:function):
+class SpinPart(IntegralPart):
+    """
+    todo
+    """
+    def __init__(self, permutation_group:int, total_spin:float, ms:float, choices_for_spin:dict, behavior:FunctionDependency):
         self.permutation_group:int=permutation_group
         self.total_spin = total_spin
         self.ms = ms
@@ -19,9 +20,10 @@ class spin_part(integral_part):
 
 
     @staticmethod
-    def test_choices_for_spin_input(choices_for_spin) -> None:
+    def test_choices_for_spin_input(choices_for_spin:dict) -> None:
         """
         testing if the integral function includes the spin functions (alpha, beta), not general functions a, b, c, ...
+        :param choices_for_spin: assignment of alpha and beta spins
         """
         try:
             choices_for_spin["alpha"]
@@ -31,7 +33,6 @@ class spin_part(integral_part):
         # ms_total = len(choices_for_spin["alpha"]) * 1/2 + len(choices_for_spin["beta"])*(-1/2)
         # if self.ms != ms_total:
         #     raise Exception("spin_part-error: ms does not fit amount of alpha and beta spins")
-
 
     def set_up_choices(self) -> None:
         """
@@ -49,24 +50,26 @@ class spin_part(integral_part):
             raise Exception("error in set_up_choices")
         self.function.set_spin_functions(spin_ordered)
 
-    def print(self):
+    def print(self) -> None:
         print(self.to_text())
 
-    def to_text(self):
+    def to_text(self) -> str:
         part_1 = f"| {self.get_shortend_form()} >"
         part_2 = f"{self.function.to_text()}"
         return f"{part_1} = {part_2}"
 
-    def to_tex(self):
+    def to_tex(self) -> str:
         part_1 = r"\ket{ "+fr"{self.total_spin} \quad  {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "+ r"}"
         # part_2 = self.get_normalization_factor()["tex"] + r"\left( "+ self.function.to_tex().replace('α',r"\alpha ").replace('β', r"\beta ")+ r"\right) "
         return fr"{part_1} = {self.function.to_tex()}"
 
-    def get_shortend_form(self, kind:text_kinds=text_kinds.TXT) -> str:
-        """ getting the short representation of a spin tableau, given by spin total quantum number S and single-particle quantum number ms
+    def get_shortend_form(self, kind:TextKinds=TextKinds.TXT) -> str:
+        """ getting the short representation of a spin tableau,
+         given by spin total quantum number S and single-particle quantum number ms
+        :param kind: choice between using the text as normal text or in latex format
         :return: short version according to | S M_S >
         """
-        if kind == text_kinds.TEX:
+        if kind == TextKinds.TEX:
             return rf" {self.total_spin}\quad {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "
         return f" {self.total_spin}   {'+' if self.ms >= 0 else '-'}{abs(self.ms)} "
 

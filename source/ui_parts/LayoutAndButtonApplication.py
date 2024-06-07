@@ -9,8 +9,8 @@ from source.texts.get_page_information import get_page_information
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
 from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
 from source.settings.color_styles import color_styles
-from source.settings.language_choices import language_choices
-from source.ui_parts.ui_pages import get_page_name
+from source.settings.LanguageChoices import LanguageChoices
+from source.ui_parts.UiPages import get_page_name
 from source.ui_parts.SettingsDialog import SettingsDialog
 from source.ui_parts.small_basic_parts.get_colored_icon_button import get_colored_icon_button
 from source.ui_parts.FormatableMessageBox import FormatableMessageBox
@@ -19,7 +19,8 @@ from source.ui_parts.FormatableMessageBox import FormatableMessageBox
 class LayoutAndButtonApplication(QMainWindow):
     """ basic setup for application (only a parent class, because it would become too large to keep track)
     = Subclass Responsibility;
-    this sets up the general structure and format of the screen, including the general buttons settings and info as well as the information bar at the bottom
+    this sets up the general structure and format of the screen, including the general buttons settings and
+     info as well as the information bar at the bottom
     (actual content in the middle of the screen is not added yet)
     """
     def __init__(self):
@@ -149,7 +150,7 @@ class LayoutAndButtonApplication(QMainWindow):
         :param chosen_language: choice of a new language
         """
         # print("set language: ", [chosen_language], flush=True)
-        for language in language_choices:
+        for language in LanguageChoices:
             if language.value == chosen_language:
                 break
         if language.name == get_language():

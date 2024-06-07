@@ -13,15 +13,17 @@ from source.ui_parts.canvas_equations.get_max_number_of_signs_in_equation import
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
 from source.ui_parts.small_basic_parts.get_basic_label import get_basic_label
 from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
-from source.settings.language_choices import language_choices
-from source.ui_parts.ui_pages import ui_pages, get_page_name
+from source.settings.LanguageChoices import LanguageChoices
+from source.ui_parts.UiPages import UiPages, get_page_name
 
 
 class MainApplication(LayoutAndButtonApplication):
     """ class in-between
     - LayoutAndButtonApplication (which is more general)
     - and ApplicationWindows (which
-     -> here a basic structure of the pages and methods for changing them are given """
+     -> here a basic structure of the pages and methods for changing them are given
+     """
+
     def __init__(self):
         super().__init__()
         self.buttons = []
@@ -29,37 +31,37 @@ class MainApplication(LayoutAndButtonApplication):
 
         self.current_page:int = 0
         self.pages: List[Dict] = [
-            {"sign": "start" if get_language()== language_choices.en.name else "Start",
-                    "index": ui_pages.START, "function": self.load_main_page, "parent": None,
-                    "buttons": [ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS, ui_pages.DOWNLOAD]},
-            {"sign": "[1][2]", "index": ui_pages.TABLEAUS, "function": self.load_tableau_page, "parent": ui_pages.START,
-                    "buttons": [ui_pages.START, ui_pages.MULTIPLIED_OUT_TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS]},
-            {"sign": "ausmultiplizieren" if get_language() == language_choices.de.name else "multiply out",
-                    "index": ui_pages.MULTIPLIED_OUT_TABLEAUS,
-                    "buttons": [ui_pages.START, ui_pages.TABLEAUS, ui_pages.SPIN, ui_pages.SPATIAL_FUNCTIONS],
-                    "function": self.load_tableau_page_multiplied, "parent": ui_pages.TABLEAUS},
-            {"sign": "σ", "index": ui_pages.SPIN, "function": self.load_spin_page, "parent": ui_pages.START,
-                    "buttons": [ui_pages.START, ui_pages.TABLEAUS, ui_pages.SPATIAL_FUNCTIONS,
-                                ui_pages.OVERLAP_SPIN, ui_pages.HAMILTON_SPIN]},
-            {"sign": "Φ", "index": ui_pages.SPATIAL_FUNCTIONS,
-                    "function": self.load_spatial_page, "parent": ui_pages.START,
-                    "buttons": [ui_pages.START, ui_pages.TABLEAUS, ui_pages.SPIN,
-                                ui_pages.OVERLAP_SPATIAL, ui_pages.HAMILTON_SPATIAL]},
+            {"sign": "start" if get_language() == LanguageChoices.en.name else "Start",
+                    "index": UiPages.START, "function": self.load_main_page, "parent": None,
+                    "buttons": [UiPages.TABLEAUS, UiPages.SPIN, UiPages.SPATIAL_FUNCTIONS, UiPages.DOWNLOAD]},
+            {"sign": "[1][2]", "index": UiPages.TABLEAUS, "function": self.load_tableau_page, "parent": UiPages.START,
+                    "buttons": [UiPages.START, UiPages.MULTIPLIED_OUT_TABLEAUS, UiPages.SPIN, UiPages.SPATIAL_FUNCTIONS]},
+            {"sign": "ausmultiplizieren" if get_language() == LanguageChoices.de.name else "multiply out",
+                    "index": UiPages.MULTIPLIED_OUT_TABLEAUS,
+                    "buttons": [UiPages.START, UiPages.TABLEAUS, UiPages.SPIN, UiPages.SPATIAL_FUNCTIONS],
+                    "function": self.load_tableau_page_multiplied, "parent": UiPages.TABLEAUS},
+            {"sign": "σ", "index": UiPages.SPIN, "function": self.load_spin_page, "parent": UiPages.START,
+                    "buttons": [UiPages.START, UiPages.TABLEAUS, UiPages.SPATIAL_FUNCTIONS,
+                                UiPages.OVERLAP_SPIN, UiPages.HAMILTON_SPIN]},
+            {"sign": "Φ", "index": UiPages.SPATIAL_FUNCTIONS,
+                    "function": self.load_spatial_page, "parent": UiPages.START,
+                    "buttons": [UiPages.START, UiPages.TABLEAUS, UiPages.SPIN,
+                                UiPages.OVERLAP_SPATIAL, UiPages.HAMILTON_SPATIAL]},
             {"sign": "⤓"  # "⬇️" ↓ ⬇  ⤓
-                    , "index": ui_pages.DOWNLOAD, "function": self.load_download,
-                    "parent": ui_pages.START, "buttons": [ui_pages.START]},
-            {"sign": "<|> (σ)", "index": ui_pages.OVERLAP_SPIN,
-                    "function": self.load_overlap_spin, "parent": ui_pages.SPIN,
-                    "buttons": [ui_pages.START, ui_pages.SPIN, ui_pages.OVERLAP_SPATIAL, ui_pages.HAMILTON_SPIN]},
-            {"sign": "<|> (Φ)", "index": ui_pages.OVERLAP_SPATIAL,
-                    "function": self.load_overlap_spatial, "parent": ui_pages.SPATIAL_FUNCTIONS,
-                    "buttons": [ui_pages.START, ui_pages.SPATIAL_FUNCTIONS, ui_pages.OVERLAP_SPIN, ui_pages.HAMILTON_SPATIAL]},
-            {"sign": "H (σ)" , "index": ui_pages.HAMILTON_SPIN, "function": self.load_hamilton_spin,
-                    "parent": ui_pages.OVERLAP_SPIN,
-                    "buttons": [ui_pages.START, ui_pages.OVERLAP_SPIN, ui_pages.OVERLAP_SPATIAL, ui_pages.SPIN]},
-            {"sign": "H (Φ)" , "index": ui_pages.HAMILTON_SPATIAL, "function": self.load_hamilton_spatial,
-                    "parent": ui_pages.OVERLAP_SPATIAL, "buttons": [ui_pages.START, ui_pages.OVERLAP_SPATIAL,
-                                                                    ui_pages.OVERLAP_SPIN, ui_pages.SPATIAL_FUNCTIONS]}
+                    , "index": UiPages.DOWNLOAD, "function": self.load_download,
+                    "parent": UiPages.START, "buttons": [UiPages.START]},
+            {"sign": "<|> (σ)", "index": UiPages.OVERLAP_SPIN,
+                    "function": self.load_overlap_spin, "parent": UiPages.SPIN,
+                    "buttons": [UiPages.START, UiPages.SPIN, UiPages.OVERLAP_SPATIAL, UiPages.HAMILTON_SPIN]},
+            {"sign": "<|> (Φ)", "index": UiPages.OVERLAP_SPATIAL,
+                    "function": self.load_overlap_spatial, "parent": UiPages.SPATIAL_FUNCTIONS,
+                    "buttons": [UiPages.START, UiPages.SPATIAL_FUNCTIONS, UiPages.OVERLAP_SPIN, UiPages.HAMILTON_SPATIAL]},
+            {"sign": "H (σ)" , "index": UiPages.HAMILTON_SPIN, "function": self.load_hamilton_spin,
+                    "parent": UiPages.OVERLAP_SPIN,
+                    "buttons": [UiPages.START, UiPages.OVERLAP_SPIN, UiPages.OVERLAP_SPATIAL, UiPages.SPIN]},
+            {"sign": "H (Φ)" , "index": UiPages.HAMILTON_SPATIAL, "function": self.load_hamilton_spatial,
+                    "parent": UiPages.OVERLAP_SPATIAL, "buttons": [UiPages.START, UiPages.OVERLAP_SPATIAL,
+                                                                   UiPages.OVERLAP_SPIN, UiPages.SPATIAL_FUNCTIONS]}
         ]
         for p in range(len(self.pages)):
             self.pages[p]["name"] = get_page_name(self.pages[p]["index"])
@@ -81,7 +83,7 @@ class MainApplication(LayoutAndButtonApplication):
         for page_info in self.pages:
             if page_info["index"].value != self.current_page and page_info["index"] in current_page_info["buttons"]:
                 if page_info["index"] == current_page_info["parent"]:
-                    sign = f"zurück zu: {page_info['sign']}" if get_language() == language_choices.de.name \
+                    sign = f"zurück zu: {page_info['sign']}" if get_language() == LanguageChoices.de.name \
                             else f"back to: {page_info['sign']}"
                 else:
                     sign = page_info["sign"]
@@ -162,7 +164,7 @@ class MainApplication(LayoutAndButtonApplication):
         # print("change page", flush=True)
         self.clear_screen()
         self.current_page = index
-        if self.current_page != ui_pages.DOWNLOAD.value:
+        if self.current_page != UiPages.DOWNLOAD.value:
             self.update_page()
             self.create_widgets()
         else:

@@ -3,22 +3,25 @@ from typing import List
 from source.function_combination.calculate_hamilton_integral import calculate_hamilton_integral
 from source.function_combination.calculate_overlap_integral import calculate_overlap_integral
 from source.function_parts.get_dirac_notation import get_dirac_notation
-from source.function_parts.hamilton_integral import hamilton_integral
+from source.function_parts.HamiltonIntegral import HamiltonIntegral
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
-from source.function_parts.text_kinds import text_kinds
+from source.function_parts.TextKinds import TextKinds
 from source.getting_subsets import get_powerset, permutations_of_subsets
-from source.overview_pdf import overview_pdf
-from source.chemical_standard_tableau import chemical_standard_tableau
+from source.OverviewPdf import OverviewPdf
+from source.ChemicalStandardTableau import ChemicalStandardTableau
 from source.texts.general_texts import get_general_text
 from source.texts.get_info_spin_possibilities import get_info_spin_possibilities
 from source.texts.get_title_spatial import get_title_spatial
 from source.texts.get_title_spin import get_title_spin
 from source.texts.get_title_youngtableaus import get_title_multiplied_youngtableaus
 from source.texts.get_titles_for_permutation_parts import get_title_permutation_to_tableaus
-from source.young_tableau import young_tableau
+from source.YoungTableau import YoungTableau
 
 
-class permutation_group(object):
+class PermutationGroup(object):
+    """
+    todo
+    """
     _instance = None # used as a singleton, limited to 1 instance at a time
     _instance_count = 0
     _max_instances = 1
@@ -37,12 +40,12 @@ class permutation_group(object):
 
     def __init__(self, permutation_group:int=0):
         self.permutation_group: int = permutation_group
-        self.tableaus : List[young_tableau] = []
-        self.standard_tableaus : List[chemical_standard_tableau] = []
-        self.overview = overview_pdf(permutation_group)
+        self.tableaus : List[YoungTableau] = []
+        self.standard_tableaus : List[ChemicalStandardTableau] = []
+        self.overview = OverviewPdf(permutation_group)
 
         self.overlap: List[dict] = []
-        self.hamilton_integrals: List[hamilton_integral] = []
+        self.hamilton_integrals: List[HamiltonIntegral] = []
 
     def print(self) -> None:
        print(f"permutation group: S_{self.permutation_group}")
@@ -81,7 +84,7 @@ class permutation_group(object):
         """
         chapter 2 of overview giving pdf
         """
-        header, content = get_title_multiplied_youngtableaus(kind=text_kinds.TEX)
+        header, content = get_title_multiplied_youngtableaus(kind=TextKinds.TEX)
         self.overview.add_section(header,"")
         self.overview.add_section(get_general_text("spatial_header"), layer=1, content=content)
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
@@ -101,8 +104,8 @@ class permutation_group(object):
         """
         chapter 3 of overview giving pdf
         """
-        self.overview.add_section(get_general_text("spin_header"),layer=1,
-                                  content=get_info_spin_possibilities(self.permutation_group, kind=text_kinds.TEX))
+        self.overview.add_section(get_general_text("spin_header"), layer=1,
+                                  content=get_info_spin_possibilities(self.permutation_group, kind=TextKinds.TEX))
         for group in self.group_tableaus_by_shortend_symbol(tableaus_to_sort=self.standard_tableaus):
             self.overview.vspace()
             equation = group[0].get_shortened_symbol()["tex"] + ":"
@@ -127,24 +130,24 @@ class permutation_group(object):
         chapter 4 of overview giving pdf
         """
         self.overview.add_section(get_general_text("header_overlap_general"), content="")
-        title, content = get_title_spatial(kind=text_kinds.TEX)
+        title, content = get_title_spatial(kind=TextKinds.TEX)
         self.overview.add_section(sec_title=title, layer=1, content=content)
         self.calculate_all_overlap_integrals()
         for info in self.overlap:
             if info['kind'] == spin_vs_spatial_kind.SPATIAL and len(info['result'].parts) == 1 and info['result'].parts[
                 0].factor != 0 and info['result'].parts[0].factor != 1:
                 equation_tex = get_dirac_notation(str(info['bra_tableau']), str(info['ket_tableau']),
-                                                  kind=text_kinds.TEX)
+                                                  kind=TextKinds.TEX)
                 if info['kind'] == spin_vs_spatial_kind.SPIN:
                     equation_tex += r"_{\sigma }"
-                    equation_tex += "=" + get_dirac_notation(str(info['bra']), str(info['ket']), kind=text_kinds.TEX)
+                    equation_tex += "=" + get_dirac_notation(str(info['bra']), str(info['ket']), kind=TextKinds.TEX)
                 equation_tex += r"_{\Phi}"
                 equation_tex += f" = {info['result'].to_tex()}"
                 self.overview.add_latex_formula(equation_tex)
                 self.overview.vspace()
 
         self.overview.newpage(definitely=False)
-        title, content, equation = get_title_spin(kind=text_kinds.TEX)
+        title, content, equation = get_title_spin(kind=TextKinds.TEX)
         self.overview.add_section(sec_title=title, layer=1, content=content)
         self.overview.add_latex_formula(equation)
         self.overview.vspace(), self.overview.vspace(), self.overview.vspace()
@@ -152,9 +155,9 @@ class permutation_group(object):
             if info['kind'] == spin_vs_spatial_kind.SPIN and len(info['result'].parts) == 1 and info['result'].parts[
                 0].factor != 0 and info['result'].parts[0].factor != 1:
                 equation_tex = get_dirac_notation(str(info['bra_tableau']), str(info['ket_tableau']),
-                                                  kind=text_kinds.TEX)
+                                                  kind=TextKinds.TEX)
                 equation_tex += r"_{\sigma }"
-                equation_tex += "=" + get_dirac_notation(str(info['bra']), str(info['ket']), kind=text_kinds.TEX)
+                equation_tex += "=" + get_dirac_notation(str(info['bra']), str(info['ket']), kind=TextKinds.TEX)
                 equation_tex += r"_{\Phi}"
                 equation_tex += f" = {info['result'].to_tex()}"
                 self.overview.add_latex_formula(equation_tex)
@@ -218,11 +221,11 @@ class permutation_group(object):
         # combine subsets into tableaus:
         for possible_tableau in list(permutations_of_subsets(array=subsets, group_number=self.permutation_group)):
             if len(possible_tableau) > 0:
-                test_tableau = chemical_standard_tableau(numbers_in_row=list(possible_tableau))
+                test_tableau = ChemicalStandardTableau(numbers_in_row=list(possible_tableau))
                 if test_tableau.permutation_group == self.permutation_group and test_tableau.check():
                         self.standard_tableaus.append(test_tableau)
 
-    def get_non_adjoint_tableaus(self) -> List[chemical_standard_tableau]:
+    def get_non_adjoint_tableaus(self) -> List[ChemicalStandardTableau]:
         """ choosing one orientation of tableaus (here: vertical alignment favored)
         e.g.: [1,2] adjoint to [1][2]
         :return: list of all tableaus, that are non-adjoint to others
@@ -231,7 +234,7 @@ class permutation_group(object):
             self.get_all_standard_tableaus()
         return [t for t in self.standard_tableaus if max(t.numbers_in_columns) <= t.number_of_rows]
 
-    def group_tableaus_by_shortend_symbol(self, tableaus_to_sort:List[chemical_standard_tableau]=[]) -> List[List[chemical_standard_tableau]]:
+    def group_tableaus_by_shortend_symbol(self, tableaus_to_sort:List[ChemicalStandardTableau]=[]) -> List[List[ChemicalStandardTableau]]:
         """
         sorting all tableaus by their outer shape (= same young tableau, different/same standard tableau)
         :return: 2d-list of grouped tableaus

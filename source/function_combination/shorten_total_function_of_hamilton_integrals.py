@@ -1,11 +1,11 @@
 from typing import List
 
-from source.function_parts.hamilton_integral import hamilton_integral
-from source.function_parts.sign import Sign
+from source.function_parts.HamiltonIntegral import HamiltonIntegral
+from source.function_parts.Sign import Sign
 from source.function_combination.SignedCounter import SignedCounter
 
 
-def shorten_total_function_of_hamilton_integrals(h_list: List[hamilton_integral]) -> List[hamilton_integral]:
+def shorten_total_function_of_hamilton_integrals(h_list: List[HamiltonIntegral]) -> List[HamiltonIntegral]:
     """
     evaluate calculated (hamilton) integrals in a sum:
     - where do integrals cancel each other due to opposite signed factors?

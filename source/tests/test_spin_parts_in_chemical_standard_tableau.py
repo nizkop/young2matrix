@@ -1,6 +1,6 @@
 from fractions import Fraction
 
-from source.chemical_standard_tableau import chemical_standard_tableau
+from source.ChemicalStandardTableau import ChemicalStandardTableau
 
 
 trials = [
@@ -68,7 +68,7 @@ trials = [
 
 general_error = "error in getting spin functions"
 for i in trials:
-    s = chemical_standard_tableau(i["input"])
+    s = ChemicalStandardTableau(i["input"])
     s.set_up_function()
     s.get_spin_choices()
 

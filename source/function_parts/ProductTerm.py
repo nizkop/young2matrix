@@ -3,11 +3,14 @@ from collections import Counter
 import string
 from typing import Tuple, List
 
-from source.function_parts.sign import Sign
+from source.function_parts.Sign import Sign
 
 
 
-class product_term(object):
+class ProductTerm(object):
+    """
+    todo
+    """
     def __init__(self, sign: Sign, ordered_functions:Tuple[int,...]):
         self.sign: Sign = sign
         self.factor:int = 1
@@ -64,7 +67,7 @@ class product_term(object):
         new_factor = self.factor * other.factor
         new_sign = Sign("+") if self.sign.value == other.sign.value else Sign("-")
 
-        p = product_term(new_sign, other.ordered_functions)
+        p = ProductTerm(new_sign, other.ordered_functions)
         p.factor = new_factor
         p.lowercase_letters = p.lowercase_letters[:len(p.ordered_functions)] * 2
         p.ordered_functions = tuple( list(p.ordered_functions) + list(self.ordered_functions) )
@@ -79,7 +82,7 @@ class product_term(object):
         :return: integral information (overlap) = what was combined (1.) and the result (2.)
         """
         eq_left = f"< {self.to_text()} | {other.to_text()} >"
-        empty_part = product_term(Sign.PLUS if self.sign == other.sign else Sign.MINUS, ())
+        empty_part = ProductTerm(Sign.PLUS if self.sign == other.sign else Sign.MINUS, ())
         if sorted(self.get_list_of_parts()) != sorted(other.get_list_of_parts()):
             empty_part.factor = 0
         else:

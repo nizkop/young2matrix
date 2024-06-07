@@ -1,9 +1,9 @@
 import json
 
 from source.settings.color_styles import color_styles
-from source.settings.language_choices import language_choices
+from source.settings.LanguageChoices import LanguageChoices
 
-CONFIG_FILE = './source/ui_parts/settings/config.json'
+CONFIG_FILE = './source/settings/config.json'
 
 def load_config() -> None:
     """ load the current value of the language from the settings file """
@@ -22,7 +22,7 @@ def update_settings(new_input:str, key:str) -> None:
     :param key: key to save the new value in the settings dict
     """
     if key == "language":
-        if new_input not in [language.name for language in language_choices]:
+        if new_input not in [language.name for language in LanguageChoices]:
             raise Exception(f"wrong format for language choice")
     elif key == "color":
         if new_input not in [c.name for c in color_styles]:

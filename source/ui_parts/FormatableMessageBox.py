@@ -1,22 +1,5 @@
-from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QPushButton
-
-#
-# class CustomDialog(QDialog):
-#     def __init__(self, content="",parent=None):
-#         super().__init__(parent)
-#         self.setWindowTitle("Warning")
-#         self.setFixedSize(400, 200)
-#
-#         self.label = QLabel(content, self)
-#         layout = QHBoxLayout(self)
-#         self.setLayout(layout)
-#
-#     def add_button(self, button):
-#         """Add a button to the dialog."""
-#         self.layout().addWidget(button)
-
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QLabel
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout
 
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
 from source.ui_parts.small_basic_parts.get_basic_label import get_basic_label

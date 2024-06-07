@@ -1,7 +1,8 @@
+from typing import Union
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect, QPushButton
 
 
-def get_basic_push_button(content:str=None) -> QPushButton:
+def get_basic_push_button(content:Union[str,None]=None) -> QPushButton:
     """
     getting a button formatted with a shadow to mark it as clickable
     :param content: text inside the button

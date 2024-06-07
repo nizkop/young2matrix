@@ -2,11 +2,11 @@ from typing import Union
 from PyQt5.QtWidgets import QPushButton, QMessageBox, QLabel, QStatusBar, QLineEdit, QWidget, QScrollArea, QProgressBar
 
 from source.settings.settings_config import load_config
-from source.ui_parts.get_scrollbar_colors import get_scrollbar_colors, directions
+from source.ui_parts.get_scrollbar_colors import get_scrollbar_colors, Directions
 from source.settings.color_styles import color_styles
 
 
-#(ApplicationWindows), SettingsDialog, FormatableMessageBox
+#also uses: (ApplicationWindows), SettingsDialog, FormatableMessageBox
 def format_layout_part(layout_part: Union[QPushButton, QLabel, QMessageBox, QStatusBar, QLineEdit, QWidget, QScrollArea
     ], added_style: str = "") -> None:
     """
@@ -22,8 +22,8 @@ def format_layout_part(layout_part: Union[QPushButton, QLabel, QMessageBox, QSta
         color = color_styles["DEFAULT"]
 
     if isinstance(layout_part, QScrollArea):
-        layout_part.verticalScrollBar().setStyleSheet(get_scrollbar_colors(directions.v))
-        layout_part.horizontalScrollBar().setStyleSheet(get_scrollbar_colors(directions.h))
+        layout_part.verticalScrollBar().setStyleSheet(get_scrollbar_colors(Directions.v))
+        layout_part.horizontalScrollBar().setStyleSheet(get_scrollbar_colors(Directions.h))
         return
 
 

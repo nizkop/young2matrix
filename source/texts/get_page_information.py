@@ -1,20 +1,20 @@
 
 
-from source.settings.language_choices import language_choices
+from source.settings.LanguageChoices import LanguageChoices
 from source.settings.settings_config import get_language
-from source.ui_parts.ui_pages import ui_pages
+from source.ui_parts.UiPages import UiPages
 
 # TODO: check content
 
-def get_page_information(page:ui_pages) -> str:
+def get_page_information(page:UiPages) -> str:
     """
     todo
     :param page:
     :return:
     """
     language = get_language()
-    if page == ui_pages.START:
-        if language == language_choices.en.name:
+    if page == UiPages.START:
+        if language == LanguageChoices.en.name:
             return r"""
             <p>This is the starting page, where you may determine, for which particular permutation group 
             the calculations shall be carried out. </p> <br>
@@ -43,8 +43,8 @@ def get_page_information(page:ui_pages) -> str:
             <p>Außerdem wird aus dem Verhalten der Young-Tableaus das Verhalten der enthaltenen Basisfunktionen 
             erkennbar und ggf. sind Rückschlüsse auf das chemische System möglich. </p>
             """
-    if page == ui_pages.TABLEAUS:
-        if language == language_choices.en.name:
+    if page == UiPages.TABLEAUS:
+        if language == LanguageChoices.en.name:
             return """
             <b>What is happening here? </b>
             <p>To describe coupled electrons, spin functions are necessary. This spin functions need to be 
@@ -75,8 +75,8 @@ def get_page_information(page:ui_pages) -> str:
         Spalte jeweils nur zunimmt, wird dieses mathematische Konstrukt Young-Diagramm/Standard-Tableau genannt. 
         Außerdem muss hierfür gelten, dass die Zahlen bei 1 beginnen und von dort in Einerschritten ansteigen. </p>
         """
-    if page == ui_pages.MULTIPLIED_OUT_TABLEAUS:
-        if language == language_choices.en.name:
+    if page == UiPages.MULTIPLIED_OUT_TABLEAUS:
+        if language == LanguageChoices.en.name:
             return """
             <b> What are the displayed young tableaus here? </b>
             <p>young tableaus are a visual display of the correlation between symmetric and antisymmetric function parts. 
@@ -98,8 +98,8 @@ def get_page_information(page:ui_pages) -> str:
         werden dabei zu Indizes an - zuerst einmal - allgemeinen Funktionen a,b,c,...,
         aus denen sich die Gesamtfunktion zusammensetzt. </p>
         """
-    if page == ui_pages.SPIN:
-        if language == language_choices.en.name:
+    if page == UiPages.SPIN:
+        if language == LanguageChoices.en.name:
             return """
             <b>What is happening here? </b>
             <p>If you want to build spin function, the total basis function has to be build from only two different functions: 
@@ -121,8 +121,8 @@ def get_page_information(page:ui_pages) -> str:
         Diese Seite zeigt die danach übrigen Funktionsteile an. 
         Also die Teile, die sich nach dem Einsetzen nicht gegenseitig aufheben. </p>
         """
-    if page == ui_pages.SPATIAL_FUNCTIONS:
-        if language == language_choices.en.name:
+    if page == UiPages.SPATIAL_FUNCTIONS:
+        if language == LanguageChoices.en.name:
             return """
             <b>What is happening here? </b>
             <p>To describe electrons within a molecule, it is necessary to consider the space they occupate.
@@ -147,9 +147,9 @@ def get_page_information(page:ui_pages) -> str:
         um allgemeine Ergebnisse zu liefern. 
         Daher entsprechen die Ergebnisse für die Raumfunktionen dem Allgemeinfall ausmultiplizierter Tableaus.</p>
         """
-    if page == ui_pages.OVERLAP_SPIN or page == ui_pages.OVERLAP_SPATIAL:
-        if language == language_choices.en.name:
-            function_kind = "spin functions" if page == ui_pages.OVERLAP_SPIN else "spatial functions"
+    if page == UiPages.OVERLAP_SPIN or page == UiPages.OVERLAP_SPATIAL:
+        if language == LanguageChoices.en.name:
+            function_kind = "spin functions" if page == UiPages.OVERLAP_SPIN else "spatial functions"
             return f"""
             <b>What is happening here?</b>
             <p>If the {function_kind} are used as basis functions to calculate molecules,
@@ -158,7 +158,7 @@ def get_page_information(page:ui_pages) -> str:
              (without the interference of an operator acting on one of the functions)
              this is called overlap/overlap integral. </p>
             """
-        function_kind = "Spinfunktionen" if page == ui_pages.OVERLAP_SPIN else "Raumfunktionen"
+        function_kind = "Spinfunktionen" if page == UiPages.OVERLAP_SPIN else "Raumfunktionen"
         return f"""
         <b>Worum geht es hier?</b>
         <p>Wenn die {function_kind} als Basisfunktionen zur Berechnung von Molekülen genutzt werden, 
@@ -167,7 +167,7 @@ def get_page_information(page:ui_pages) -> str:
         wird (ohne dass ein weiterer Opterator auf eine der Funktionen wirkt), 
         wird dies Überlapp/Überlappintegral genannt. </p>
         """
-    if page == ui_pages.HAMILTON_SPIN or page == ui_pages.HAMILTON_SPATIAL:
+    if page == UiPages.HAMILTON_SPIN or page == UiPages.HAMILTON_SPATIAL:
         style = """
         <style>
         .operator {
@@ -183,7 +183,7 @@ def get_page_information(page:ui_pages) -> str:
         }
         </style>
         """
-        if language == language_choices.en.name:
+        if language == LanguageChoices.en.name:
             return style + """
                     <b>What is happening here? </b>
                     <p> Quantum chemistry is calculating molecules by solving the (stationary) Schrödinger equation. 
@@ -194,7 +194,6 @@ def get_page_information(page:ui_pages) -> str:
                     when the hamilton operator is acting within the integral. </p>
                     """
 
-
         return style+"""
         <b>Worum geht es hier? </b>
         <p> Die Berechnung von Molekülen erfolgt in der Quantenchemie nach der (stationären) Schrödingergleichung. 
@@ -203,5 +202,21 @@ def get_page_information(page:ui_pages) -> str:
         Dieser bringt im Grunde die kinetische und potentielle Energie des zu berechnenden Systems/Moleküls mit ein. </p>
         <p> Kombinationen von Basisfunktionen, in denen der Hamiltonoperator im Integral wirkt, werden Hamiltonmatrixelemente genannt. </p>
         """
+    if page == UiPages.DOWNLOAD:
+        if language == LanguageChoices.en.name:
+            return """
+            <b>What is happening here? </b>
+            <p> You just started a download for your chosen permutation group. 
+            The generated pdf collects all information about the young tableaus, the overlap and hamilton integrals 
+            for spin as well as for spatial functions. Please take a look into your downloads. </p>
+            """
+        else:
+            return """
+            <b> Wozu dient diese Seite? </b>
+            <p> Sie haben soeben einen Download für die ausgewählte Permutationsgruppe gestartet. 
+            Die erstellte PDF beinhaltet alle Informationen zu den Young-Tableaus, 
+            den Überlappungs- und Hamilton-Integralen für sowohl Spin- als auch Raum-Funktionen. 
+            Bitte sehen Sie in Ihrem Download-Ordner nach. </p>
+            """
     return "unknown"
 

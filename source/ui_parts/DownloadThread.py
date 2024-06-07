@@ -1,17 +1,17 @@
 import time
 from PyQt5.QtCore import pyqtSignal, QThread
 
-from source.permutation_group import permutation_group
+from source.PermutationGroup import PermutationGroup
 from source.settings.settings_config import get_color, get_language
 from source.texts.general_texts import get_general_text
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
-from source.settings.language_choices import language_choices
+from source.settings.LanguageChoices import LanguageChoices
 
 
 class DownloadThread(QThread):
     """ needed to show download progress during the process """
     update_progress = pyqtSignal(int,str)  # signal
-    def __init__(self, permutation_group:permutation_group, background_color:str, text_color:str,buttons):
+    def __init__(self, permutation_group:PermutationGroup, background_color:str, text_color:str, buttons):
         super().__init__()
         self.permutation_group = permutation_group
         self.buttons = buttons
@@ -49,27 +49,27 @@ class DownloadThread(QThread):
             self.permutation_group.get_all_standard_tableaus()  # at least needed for chapter 4
             time.sleep(1)
 
-            self.update_progress.emit(30,"calculating all tableaus" if get_language()== language_choices.en.name else "Berechnung aller Tableaus")
+            self.update_progress.emit(30,"calculating all tableaus" if get_language() == LanguageChoices.en.name else "Berechnung aller Tableaus")
             self.permutation_group.get_chapter_youngtableaus()
             time.sleep(1)
 
-            self.update_progress.emit(40,"multiplying out the tableaus" if get_language()==language_choices.en.name else "Ausmultiplizieren der Tableaus")
+            self.update_progress.emit(40,"multiplying out the tableaus" if get_language() == LanguageChoices.en.name else "Ausmultiplizieren der Tableaus")
             self.permutation_group.get_chapter_multiplied()
             time.sleep(1)
 
-            self.update_progress.emit(50,"setting up spin-based tableaus" if get_language()==language_choices.en.name else "Aufsetzen der Spinfunktionstableaus")
+            self.update_progress.emit(50,"setting up spin-based tableaus" if get_language() == LanguageChoices.en.name else "Aufsetzen der Spinfunktionstableaus")
             self.permutation_group.get_chapter_spinfunctions()
             time.sleep(1)
 
-            self.update_progress.emit(70,"calculating overlap integrals" if get_language()==language_choices.en.name else "Berechnung der Überlappintegrale")
+            self.update_progress.emit(70,"calculating overlap integrals" if get_language() == LanguageChoices.en.name else "Berechnung der Überlappintegrale")
             self.permutation_group.get_chapter_overlapintegrals()
             time.sleep(1)
 
-            self.update_progress.emit(90,"calculating hamilton integrals" if get_language()==language_choices.en.name else "Berechnung der Hamiltonintegrale")
+            self.update_progress.emit(90,"calculating hamilton integrals" if get_language() == LanguageChoices.en.name else "Berechnung der Hamiltonintegrale")
             self.permutation_group.get_chapter_hamiltonintegrals()
             time.sleep(1)
 
-            self.update_progress.emit(95,"saving pdf" if get_language()==language_choices.en.name else "PDF abspeichern")
+            self.update_progress.emit(95,"saving pdf" if get_language() == LanguageChoices.en.name else "PDF abspeichern")
             self.permutation_group.overview.save(title=self.permutation_group.title_pdf)
             time.sleep(1)
             # todo: matrix?

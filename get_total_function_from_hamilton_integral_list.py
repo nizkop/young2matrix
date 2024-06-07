@@ -1,9 +1,9 @@
 from typing import List
 
-from source.function_parts.hamilton_integral import hamilton_integral
+from source.function_parts.HamiltonIntegral import HamiltonIntegral
 
 
-def get_total_function_from_hamilton_integral_list(h_list: List[hamilton_integral]):
+def get_total_function_from_hamilton_integral_list(h_list: List[HamiltonIntegral]):
     """ converts a sum of hamilton integrals into their shortened display version """
     integral = ""
 

@@ -1,10 +1,10 @@
-from source.chemical_standard_tableau import chemical_standard_tableau
+from source.ChemicalStandardTableau import ChemicalStandardTableau
 from source.function_combination.calculate_hamilton_integral import calculate_hamilton_integral
 from source.function_combination.calculate_hamilton_integral_between_functions import \
     calculate_hamilton_integral_between_functions
-from source.function_parts.function import function
-from source.function_parts.product_term import product_term
-from source.function_parts.sign import Sign
+from source.function_parts.FunctionDependency import FunctionDependency
+from source.function_parts.ProductTerm import ProductTerm
+from source.function_parts.Sign import Sign
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
 
 
@@ -22,8 +22,8 @@ trials = [
 general_error = "testing single product integration including hamilton operator"
 for trial in trials:
 
-    f1 = function(product_term(Sign("+"), trial["input1"]))
-    f2 = function(product_term(Sign("+"), trial["input2"]))
+    f1 = FunctionDependency(ProductTerm(Sign("+"), trial["input1"]))
+    f2 = FunctionDependency(ProductTerm(Sign("+"), trial["input2"]))
 
     results = calculate_hamilton_integral_between_functions(f1, f2)
 
@@ -96,10 +96,10 @@ trials = [
 
 general_error = "error in hamilton integral calculation (tableaus)"
 for trial in trials:
-    t1 = chemical_standard_tableau(trial["input1"])
+    t1 = ChemicalStandardTableau(trial["input1"])
     t1.set_up_function()
     t1.get_spatial_choices()
-    t2 = chemical_standard_tableau(numbers_in_row=trial["input2"])
+    t2 = ChemicalStandardTableau(numbers_in_row=trial["input2"])
     t2.set_up_function()
     t2.get_spatial_choices()
 

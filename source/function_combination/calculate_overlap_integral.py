@@ -1,22 +1,23 @@
 from typing import List
 
-from source.chemical_standard_tableau import chemical_standard_tableau
+from source.ChemicalStandardTableau import ChemicalStandardTableau
 from source.function_combination.calculate_overlap_integral_basisfunction import \
     calculate_overlap_integral_basisfunction
 from source.function_combination.calculate_overlap_integral_between_functions import \
     calculate_overlap_integral_between_functions
-from source.function_parts.function import function
-from source.function_parts.product_term import product_term
-from source.function_parts.sign import Sign
+from source.function_parts.FunctionDependency import FunctionDependency
+from source.function_parts.ProductTerm import ProductTerm
+from source.function_parts.Sign import Sign
 from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
-from source.function_parts.text_kinds import text_kinds
+from source.function_parts.TextKinds import TextKinds
 
 
-def calculate_overlap_integral(tableau_a: chemical_standard_tableau, tableau_b: chemical_standard_tableau, kind :spin_vs_spatial_kind) -> List[dict]:
+def calculate_overlap_integral(tableau_a: ChemicalStandardTableau, tableau_b: ChemicalStandardTableau,
+                               kind: spin_vs_spatial_kind) -> List[dict]:
     """
     calculating the overlap between all functions/combinations of two standard tableaus
     -> combination of identical tableaus and different/identical standard tableaus - and entirely different tableaus
-    :param kind:
+    :param kind: type of function (spatial vs. spin)
     :param tableau_a: bra terms
     :param tableau_b: ket terms
     :return: list of remaining overlap integrals
@@ -25,7 +26,7 @@ def calculate_overlap_integral(tableau_a: chemical_standard_tableau, tableau_b: 
         raise Exception("function_combination error: The tableaus dont fit.")
 
     info = {"bra": tableau_a.function.to_tex(), "ket": tableau_b.function.to_tex(), "kind": kind}
-    empty_function = function(product_term(Sign("+"), ()) ,normalizable=False)
+    empty_function = FunctionDependency(ProductTerm(Sign("+"), ()), normalizable=False)
 
     # check if identical form
     if tableau_a.number_of_rows != tableau_b.number_of_rows or tableau_a.numbers_in_columns != tableau_b.numbers_in_columns:
@@ -54,8 +55,8 @@ def calculate_overlap_integral(tableau_a: chemical_standard_tableau, tableau_b: 
                spin_choice_2 = tableau_b.spin_parts[sp2]
                g = calculate_overlap_integral_between_functions(spin_choice.function,
                                                                      spin_choice_2.function)
-               info["bra"] = spin_choice.get_shortend_form(kind=text_kinds.TEX)
-               info["ket"] = spin_choice_2.get_shortend_form(kind=text_kinds.TEX)
+               info["bra"] = spin_choice.get_shortend_form(kind=TextKinds.TEX)
+               info["ket"] = spin_choice_2.get_shortend_form(kind=TextKinds.TEX)
                info["result"] = g
                results.append(info)
     else:

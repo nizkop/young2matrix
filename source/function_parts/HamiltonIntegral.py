@@ -1,12 +1,15 @@
 from typing import Dict
 
-from source.function_parts.product_term import product_term
-from source.function_parts.sign import Sign
+from source.function_parts.ProductTerm import ProductTerm
+from source.function_parts.Sign import Sign
 
 
-class hamilton_integral(object):
+class HamiltonIntegral(object):
+    """
+    todo
+    """
 
-    def __init__(self, bra:product_term, ket:product_term):
+    def __init__(self, bra:ProductTerm, ket:ProductTerm):
         # print("calculating... \t <", bra.to_text(), "|H|", ket.to_text(), end=">\t")
         self.factor: int = bra.factor * ket.factor
         self.sign:Sign = Sign.PLUS if bra.sign == ket.sign else Sign.MINUS
@@ -15,8 +18,8 @@ class hamilton_integral(object):
         ket.factor = 1
         bra.sign = Sign.PLUS
         ket.sign = Sign.PLUS
-        self.bra:product_term = bra
-        self.ket:product_term = ket
+        self.bra:ProductTerm = bra
+        self.ket:ProductTerm = ket
 
         self.check_integral()
         # print("\t\t==\t", self.sign.value, self.get_shortened_symbol(), end="\n")
@@ -72,24 +75,6 @@ class hamilton_integral(object):
                 self.ket.lowercase_letters.append(v[-1]) # ordering because of above assumption
             else: # electron in > 2 orbitals (case "electron in only 1 orbital" is sorted out before already)
                 pass
-
-
-
-    # def get_occurence_of_functions(self):
-    #     """
-    #     count occurences of functions in bra and ket
-    #     :return:
-    #     """
-    #     functions = {}
-    #     lists = [self.bra, self.ket]
-    #     for list in lists:
-    #         for i in range(len(list.ordered_functions)):
-    #             if list.lowercase_letters[i] in functions.keys():
-    #                 if list.ordered_functions[i] not in functions[list.lowercase_letters[i]]:
-    #                     functions[list.lowercase_letters[i]].append(list.ordered_functions[i] )
-    #             else:
-    #                 functions[list.lowercase_letters[i]] = [list.ordered_functions[i]]
-    #     return functions
 
     def get_occurence_of_indizes(self) -> Dict:
         indizes = {}

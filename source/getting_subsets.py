@@ -6,8 +6,11 @@ def permutations_of_subsets(array: List[List[int]], group_number:int) -> List[tu
     """ combinations of possible subsets;
     differentiate between different sorting in these combinations,
     and sort out combinations, if they obviously are not going to fit into young tableaus
+    :param array: todo
+    :param group_number: todo
     :return: list of fitting combinations
     """
+    print("permutations_of_subsets", array, group_number)
     all_combinations = chain.from_iterable(combinations(array, r) for r in range(len(array) + 1))
     # remove dimensional-unfitting examples:
     unique_combinations = []

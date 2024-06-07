@@ -1,7 +1,10 @@
 from typing import List, Dict
 
 
-class young_tableau(object):
+class YoungTableau(object):
+    """
+    todo
+    """
     def __init__(self, number_of_rows:int, number_of_columns:List[int]):
         self.number_of_rows:int=number_of_rows
         self.numbers_in_columns:List[int]=number_of_columns

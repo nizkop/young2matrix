@@ -1,5 +1,5 @@
-from source.function_parts.sign import Sign
-from source.standard_tableau import standard_tableau
+from source.function_parts.Sign import Sign
+from source.StandardTableau import StandardTableau
 
 
 trials = [
@@ -41,7 +41,7 @@ trials = [
 
 for i in trials:
     expected = i["expected"]
-    s = standard_tableau(i["input"])
+    s = StandardTableau(i["input"])
     s.set_up_function()
 
     if not s.function.get_number_of_terms() == len(i["expected"].keys()):

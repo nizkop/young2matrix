@@ -5,15 +5,15 @@ from typing import List, Dict, Union
 import sympy as sp
 
 from source.function_parts.get_normalization_factor_as_fraction import get_normalization_factor_as_fraction
-from source.function_parts.product_term import product_term
-from source.function_parts.sign import Sign
+from source.function_parts.ProductTerm import ProductTerm
+from source.function_parts.Sign import Sign
 
 
-class function(object):
+class FunctionDependency(object):
 
-    def __init__(self, basis: product_term, normalizable:bool=True):
+    def __init__(self, basis: ProductTerm, normalizable:bool=True):
         self.basis = basis
-        self.parts: List[product_term] = [basis]
+        self.parts: List[ProductTerm] = [basis]
         self.normalizable:bool=normalizable
 
     def print(self) -> None:
@@ -94,7 +94,7 @@ class function(object):
                 if change_sign and no_of_differences > 0 and no_of_differences % 2 == 0: # anti-symmetrizing
                     sign = Sign(sign.change())
 
-                new_parts.append(product_term(ordered_functions=tuple(new), sign=sign))
+                new_parts.append(ProductTerm(ordered_functions=tuple(new), sign=sign))
         # renewing with new function parts after the loop:
         self.parts = new_parts
 

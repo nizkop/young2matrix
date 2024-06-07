@@ -1,12 +1,24 @@
 import re
 import math
 
-def replace_frac(match):
+def replace_frac(match) -> str:
+    """
+    replacing a latex-fraction- command by its widest element
+    :param match: latex-formatted fraction
+    :return: needed width of the fraction, given as the longest term within the fraction
+    """
+    print("replace-frac", match, type(match))
     numerator = match.group(1)
     denominator = match.group(2)
     return numerator if len(numerator) > len(denominator) else denominator
 
 def get_max_number_of_signs_in_equation(eq: str) -> int:
+    """
+    stripping an equation-text of non-displayed characters;
+    commands that result in more space after rendering are replaced and the resulting width is accommodated by placeholder characters
+    :param eq: latex formatted equation
+    :return: width of equation in number of relevant characters
+    """
     formula = eq.replace(" ", "")
 
     # removing unnecessary long LaTeX commands:
@@ -51,6 +63,12 @@ def get_max_number_of_signs_in_equation(eq: str) -> int:
 
 
 def fit_length_to_width(formula:str) -> int:
+    """
+    fit function to translate the width of an equation
+     given as the number of relevant signs into a pixel size
+    :param formula: latex formatted equation
+    :return: needed width of equation in pixels
+    """
     number_of_relevant_signs = get_max_number_of_signs_in_equation(eq=formula)
     # print("number_of_relevant_signs", number_of_relevant_signs)
     return max(number_of_relevant_signs, math.ceil(29.04 + 15.10 * number_of_relevant_signs))# next higher integer

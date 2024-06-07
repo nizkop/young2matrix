@@ -1,7 +1,12 @@
 import copy
 
 
-def get_number_of_array_rows_in_equation(formula:str):
+def get_number_of_array_rows_in_equation(formula:str) -> int:
+    """
+    determine the number of rows in a latex-array-environment within the given formula
+    :param formula: latex formatted equation
+    :return: number of rows of an array environment
+    """
     formula = copy.deepcopy(formula)
     # print("determine_height_of_equation:", formula, flush=True, end="\t")
     if len(formula.replace(" ","")) == 0:

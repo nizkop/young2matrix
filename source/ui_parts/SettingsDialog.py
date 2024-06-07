@@ -6,7 +6,7 @@ from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_p
 from source.ui_parts.small_basic_parts.get_basic_label import get_basic_label
 from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
 from source.settings.color_styles import color_styles
-from source.settings.language_choices import language_choices
+from source.settings.LanguageChoices import LanguageChoices
 
 
 class SettingsDialog(QDialog):
@@ -45,11 +45,11 @@ class SettingsDialog(QDialog):
         self.layout.addWidget(language_label)
 
         self.input_language = QComboBox()
-        for language in language_choices:
+        for language in LanguageChoices:
             self.input_language.addItem(language.value)
-        choice = [choice for choice in language_choices if choice.name == get_language()]
+        choice = [choice for choice in LanguageChoices if choice.name == get_language()]
         if len(choice) == 0:
-            choice = [language_choices.de]#default
+            choice = [LanguageChoices.de]#default
         self.input_language.setCurrentText(choice[0].value)
         self.layout.addWidget(self.input_language)
 
