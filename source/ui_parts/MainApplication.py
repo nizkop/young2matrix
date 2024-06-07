@@ -5,6 +5,7 @@ from PyQt5.QtGui import QResizeEvent
 from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QHBoxLayout, QWidget, QLayout
 from qtpy import QtCore
 
+from source.settings.GLOBALS import BUTTON_SIZE, FONT_SIZE, MARGIN_TOP_Y
 from source.settings.settings_config import get_language, load_config, get_color
 from source.ui_parts.LayoutAndButtonApplication import LayoutAndButtonApplication
 from source.ui_parts.canvas_equations.determine_height_of_equation import determine_height_of_equation
@@ -89,12 +90,12 @@ class MainApplication(LayoutAndButtonApplication):
                     sign = page_info["sign"]
 
                 button = get_basic_push_button(sign)
-                button.setFixedHeight(load_config()['button-size'])
+                button.setFixedHeight(BUTTON_SIZE)
                 format_layout_part(button)#f"background-color: {self.color.value['background']}; " +
                                                    # f"color: {self.color.value['text']}; font-weight: bold; " +
                                                    # f"font-size: {self.button_font_size}pt;")
                 button.clicked.connect(lambda _, index=page_info["index"].value: self.open_page(index))
-                button.setToolTip(f"<span style='font-size:{load_config()['font-size']}pt;'>{page_info['name']}</span>")
+                button.setToolTip(f"<span style='font-size:{FONT_SIZE}pt;'>{page_info['name']}</span>")
                 name = page_info['name']  # Freeze current name (so that not the last triggerer counts for every event)
                 button.enterEvent = lambda event, button=button, name=name: self.change_status_message(name)
                 button.leaveEvent = lambda event: self.change_status_message()
@@ -107,7 +108,7 @@ class MainApplication(LayoutAndButtonApplication):
         # adding width-limited button panel to layout:
         self.button_layout_widget = QWidget()
         self.button_layout_widget.setLayout(button_layout)
-        self.button_layout_widget.setFixedSize(self.width()-(load_config()['margin-top-y'])*4,
+        self.button_layout_widget.setFixedSize(self.width()-MARGIN_TOP_Y*4,
                                           button_layout.sizeHint().height())
         self.scroll_layout.addWidget(self.button_layout_widget)
 
@@ -116,7 +117,7 @@ class MainApplication(LayoutAndButtonApplication):
         adjusting the widths of all current buttons
         """
         super().resizeEvent(event)#move help button to the right side
-        self.button_layout_widget.setFixedWidth(self.width() - (load_config()['margin-top-y']) * 4)
+        self.button_layout_widget.setFixedWidth(self.width() - MARGIN_TOP_Y * 4)
 
     def set_ui_label(self, header: str = None, content: str = None, spacing: bool = True) -> None:
         if header and content:

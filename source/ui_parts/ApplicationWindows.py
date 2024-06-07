@@ -5,9 +5,10 @@ from PyQt5.QtWidgets import QHBoxLayout, QLabel, QLineEdit, QSizePolicy, \
     QProgressBar, QVBoxLayout, QSpacerItem, QDialog
 
 from source.function_parts.get_dirac_notation import get_dirac_notation
-from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
+from source.function_parts.SpinVsSpatialKind import SpinVsSpatialKind
 from source.function_parts.TextKinds import TextKinds
 from source.PermutationGroup import PermutationGroup
+from source.settings.GLOBALS import BUTTON_SIZE, FONT_SIZE
 from source.settings.settings_config import load_config, get_color
 from source.texts.general_texts import get_general_text
 from source.texts.get_info_spin_possibilities import get_info_spin_possibilities
@@ -132,19 +133,19 @@ class ApplicationWindows(MainApplication):
 
         hbox = QHBoxLayout()# to put label and input in 1 line
         hbox.setAlignment(Qt.AlignCenter)
-        hbox.addSpacing(load_config()['button-size'])
+        hbox.addSpacing(BUTTON_SIZE)
 
         permutation_group_label = get_basic_label(get_general_text("input_command"), self.width())
         hbox.addWidget(permutation_group_label)
-        hbox.addSpacing(load_config()['button-size'])# distance between label and input box
+        hbox.addSpacing(BUTTON_SIZE)# distance between label and input box
 
         self.input_box = QLineEdit()
         format_layout_part(self.input_box)#f"color: {self.color.value['text']};")
-        self.input_box.setToolTip(f"<span style='font-size:{load_config()['font-size']}pt;'>{get_general_text('input_line_command')}</span>")
+        self.input_box.setToolTip(f"<span style='font-size:{FONT_SIZE}pt;'>{get_general_text('input_line_command')}</span>")
         self.input_box.enterEvent = lambda event, input=input: (
                                             self.change_status_message(get_general_text('input_line_command')))
         self.input_box.leaveEvent = lambda event: self.change_status_message()
-        self.input_box.setMaximumWidth(max(load_config()['button-size'], math.ceil(self.width()/4)))
+        self.input_box.setMaximumWidth(max(BUTTON_SIZE, math.ceil(self.width()/4)))
         hbox.addWidget(self.input_box)
         self.input_box.setAlignment(Qt.AlignLeft)
 
@@ -216,7 +217,7 @@ class ApplicationWindows(MainApplication):
         self.scroll_layout.addWidget(label)
         # actual equations for this case:
         for i in self.permutation_group.overlap:
-            if (i['kind'] == spin_vs_spatial_kind.SPIN and len(i['result'].parts) == 1 and
+            if (i['kind'] == SpinVsSpatialKind.SPIN and len(i['result'].parts) == 1 and
                     i['result'].parts[0].factor != 0 and i['result'].parts[0].factor != 1):
                 equation_tex = get_dirac_notation(str(i['bra_tableau']), str(i['ket_tableau']), kind=TextKinds.TEX)
                 equation_tex += r"_{\sigma }"
@@ -237,11 +238,11 @@ class ApplicationWindows(MainApplication):
         self.permutation_group.calculate_all_overlap_integrals()
         empty = True
         for i in self.permutation_group.overlap:
-            if i['kind'] == spin_vs_spatial_kind.SPATIAL and len(i['result'].parts) == 1 and i['result'].parts[
+            if i['kind'] == SpinVsSpatialKind.SPATIAL and len(i['result'].parts) == 1 and i['result'].parts[
                 0].factor != 0 and i['result'].parts[0].factor != 1:
                 empty = False
                 equation_tex = get_dirac_notation(str(i['bra_tableau']), str(i['ket_tableau']), kind=TextKinds.TEX)
-                if i['kind'] == spin_vs_spatial_kind.SPIN:
+                if i['kind'] == SpinVsSpatialKind.SPIN:
                     equation_tex += r"_{\sigma }"
                     equation_tex += "=" + get_dirac_notation(str(i['bra']), str(i['ket']), kind=TextKinds.TEX)
                 equation_tex += r"_{\Phi}"
@@ -260,7 +261,7 @@ class ApplicationWindows(MainApplication):
         for info in self.permutation_group.hamilton_integrals:
             if len(info["hamilton_integral_sum"]) > 0:
                 equation_tex = r"\bra{"+ info["bra_tableau"] + r"}\hat{H}\ket{"+ info["ket_tableau"] + r"}"
-                if info["kind"] == spin_vs_spatial_kind.SPATIAL.value:
+                if info["kind"] == SpinVsSpatialKind.SPATIAL.value:
                     equation_tex+=r"_{\Phi}"
                 equation_tex += " = "
                 for addend in info["hamilton_integral_sum"]:

@@ -4,7 +4,7 @@ from typing import List
 
 from source.function_combination.calculate_overlap_integral_between_functions import \
     calculate_overlap_integral_between_functions
-from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
+from source.function_parts.SpinVsSpatialKind import SpinVsSpatialKind
 from source.function_parts.TextKinds import TextKinds
 from source.pure_chemical_functions.calculate_ms_quantum_number import calculate_ms_quantum_number
 from source.pure_chemical_functions.calculate_spin_quantum_numbers import calculate_spin_quantum_numbers
@@ -55,34 +55,34 @@ class ChemicalStandardTableau(StandardTableau):
             self.spatial_parts.append(SpatialPart(behavior=self.function))
 
 
-    def calculate_all_overlap_integrals(self, kind: spin_vs_spatial_kind=spin_vs_spatial_kind.GENERAL) -> None:
+    def calculate_all_overlap_integrals(self, kind: SpinVsSpatialKind=SpinVsSpatialKind.GENERAL) -> None:
         """
         determine overlap of all integral combinations and saving the results in self.overlap
         :param kind: choice of spin or spatial function type
         """
-        if kind == spin_vs_spatial_kind.GENERAL:
-            self.calculate_all_overlap_integrals(kind=spin_vs_spatial_kind.SPATIAL)
-            self.calculate_all_overlap_integrals(kind=spin_vs_spatial_kind.SPIN)
+        if kind == SpinVsSpatialKind.GENERAL:
+            self.calculate_all_overlap_integrals(kind=SpinVsSpatialKind.SPATIAL)
+            self.calculate_all_overlap_integrals(kind=SpinVsSpatialKind.SPIN)
             return
-        if kind == spin_vs_spatial_kind.SPIN:
-            if any(entry.get("kind") == spin_vs_spatial_kind.SPIN for entry in self.overlap):
+        if kind == SpinVsSpatialKind.SPIN:
+            if any(entry.get("kind") == SpinVsSpatialKind.SPIN for entry in self.overlap):
                 return # stop repetition
             self.get_spin_choices()  # just to be sure
             tableau_functions = self.spin_parts
         else:
-            if any(entry.get("kind") == spin_vs_spatial_kind.SPATIAL for entry in self.overlap):
+            if any(entry.get("kind") == SpinVsSpatialKind.SPATIAL for entry in self.overlap):
                 return # no repetition
             self.get_spatial_choices()  # just to be sure
             tableau_functions = self.spatial_parts
         if len(tableau_functions) == 0:
-            if (not (self.number_of_rows > 2 and kind == spin_vs_spatial_kind.SPIN) and
-                not (len(self.get_numbers_in_columns()) > 2 and kind == spin_vs_spatial_kind.SPATIAL)):
+            if (not (self.number_of_rows > 2 and kind == SpinVsSpatialKind.SPIN) and
+                not (len(self.get_numbers_in_columns()) > 2 and kind == SpinVsSpatialKind.SPATIAL)):
                     raise Exception("calculate_all_overlap_integrals impossible because of no parts")
             return
         for i in range(len(tableau_functions)):
             for j in range(i, len(tableau_functions)):
                 g = calculate_overlap_integral_between_functions(tableau_functions[i].function, tableau_functions[j].function)
-                if kind == spin_vs_spatial_kind.SPIN:
+                if kind == SpinVsSpatialKind.SPIN:
                     info = {"bra": tableau_functions[i].get_shortend_form(TextKinds.TEX),
                             "ket": tableau_functions[j].get_shortend_form(TextKinds.TEX), "kind": kind, "result": g}
                 else:

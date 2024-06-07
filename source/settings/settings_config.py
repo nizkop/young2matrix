@@ -1,18 +1,19 @@
 import json
 
-from source.settings.color_styles import color_styles
+from source.settings.ColorStyles import ColorStyles
+from source.settings.GLOBALS import FILE_PATH_CONFIG_FILE
 from source.settings.LanguageChoices import LanguageChoices
 
-CONFIG_FILE = './source/settings/config.json'
+
 
 def load_config() -> None:
     """ load the current value of the language from the settings file """
     try:
-        with open(CONFIG_FILE, 'r') as file:
+        with open(FILE_PATH_CONFIG_FILE, 'r') as file:
             config = json.load(file)
     except FileNotFoundError:#default
-        config = {"language": "en", "color": "DEFAULT",#<- changeable in UI
-                  "font-size": 15, "button-font-size": 20, "margin-top-y": 10, "button-size": 50, "geometry": [100, 100, 800, 600]}
+        config = {"language": "en", "color": "DEFAULT"}#<- changeable in UI
+                  # "font-size": 15, "button-font-size": 20, "margin-top-y": 10, "button-size": 50, "geometry": [100, 100, 800, 600]}
     return config
 
 def update_settings(new_input:str, key:str) -> None:
@@ -25,14 +26,13 @@ def update_settings(new_input:str, key:str) -> None:
         if new_input not in [language.name for language in LanguageChoices]:
             raise Exception(f"wrong format for language choice")
     elif key == "color":
-        if new_input not in [c.name for c in color_styles]:
-            print(new_input)
+        if new_input not in [c.name for c in ColorStyles]:
             raise Exception(f"wrong format for color scheme choice")
     else:
         raise Exception("unknown key for settings")
     config = load_config()
     config[key] = new_input
-    with open(CONFIG_FILE, 'w') as file:
+    with open(FILE_PATH_CONFIG_FILE, 'w') as file:
         json.dump(config, file)
 
 def get_language() -> str:
@@ -48,4 +48,4 @@ def get_color() -> dict:
     :return: dict value containing all information about the actual color scheme
     """
     settings = load_config()
-    return color_styles[settings['color']].value
+    return ColorStyles[settings['color']].value

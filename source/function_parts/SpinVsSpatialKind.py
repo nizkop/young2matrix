@@ -3,7 +3,7 @@ from enum import Enum
 
 
 
-class spin_vs_spatial_kind(Enum):
+class SpinVsSpatialKind(Enum):
     """ different kinds of integrals/functions/orbitals """
     GENERAL = "general"
     SPIN = "spin"

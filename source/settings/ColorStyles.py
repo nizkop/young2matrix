@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class color_styles(Enum):
+class ColorStyles(Enum):
     """
     different choices of color schemes for the display of the GUI
     ! sorely UI relevant class

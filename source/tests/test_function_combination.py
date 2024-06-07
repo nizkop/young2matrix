@@ -4,7 +4,7 @@ from source.ChemicalStandardTableau import ChemicalStandardTableau
 from source.function_combination.calculate_overlap_integral_basisfunction import \
     calculate_overlap_integral_basisfunction
 from source.function_parts.Sign import Sign
-from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
+from source.function_parts.SpinVsSpatialKind import SpinVsSpatialKind
 from source.StandardTableau import StandardTableau
 from source.function_combination.calculate_overlap_integral import calculate_overlap_integral
 
@@ -53,11 +53,11 @@ for trial in trials:
     t2 = ChemicalStandardTableau(numbers_in_row=trial["input2"])
     t2.set_up_function()
     t2.get_spatial_choices()
-    product = calculate_overlap_integral(t1, t2, kind=spin_vs_spatial_kind.SPATIAL)[0]["result"]
+    product = calculate_overlap_integral(t1, t2, kind=SpinVsSpatialKind.SPATIAL)[0]["result"]
 
     if len(product.parts) != 1:
         raise Exception(f"{general_error} - {trial['error_message']}: wrong number of output terms")
-    product_revers = calculate_overlap_integral(t2, t1, kind=spin_vs_spatial_kind.SPATIAL)[0]["result"]
+    product_revers = calculate_overlap_integral(t2, t1, kind=SpinVsSpatialKind.SPATIAL)[0]["result"]
     if product.parts[0].factor != product_revers.parts[0].factor or len(product.parts[0].ordered_functions) != 0 or len(product_revers.parts[0].ordered_functions) != 0:
         raise Exception(f"{general_error} - {trial['error_message']}: multiplication not commutative")
     factor = - product.parts[0].factor  if product.parts[0].sign == Sign.MINUS else +product.parts[0].factor

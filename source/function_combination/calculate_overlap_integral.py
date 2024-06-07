@@ -8,12 +8,12 @@ from source.function_combination.calculate_overlap_integral_between_functions im
 from source.function_parts.FunctionDependency import FunctionDependency
 from source.function_parts.ProductTerm import ProductTerm
 from source.function_parts.Sign import Sign
-from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
+from source.function_parts.SpinVsSpatialKind import SpinVsSpatialKind
 from source.function_parts.TextKinds import TextKinds
 
 
 def calculate_overlap_integral(tableau_a: ChemicalStandardTableau, tableau_b: ChemicalStandardTableau,
-                               kind: spin_vs_spatial_kind) -> List[dict]:
+                               kind: SpinVsSpatialKind) -> List[dict]:
     """
     calculating the overlap between all functions/combinations of two standard tableaus
     -> combination of identical tableaus and different/identical standard tableaus - and entirely different tableaus
@@ -47,7 +47,7 @@ def calculate_overlap_integral(tableau_a: ChemicalStandardTableau, tableau_b: Ch
 
     results = []
     info = {"bra_tableau": tableau_a.to_tex(), "ket_tableau": tableau_b.to_tex(), "kind": kind}
-    if kind == spin_vs_spatial_kind.SPIN:
+    if kind == SpinVsSpatialKind.SPIN:
         # multiple results
         for sp in range(len(tableau_a.spin_parts)):
            spin_choice = tableau_a.spin_parts[sp]
@@ -60,11 +60,11 @@ def calculate_overlap_integral(tableau_a: ChemicalStandardTableau, tableau_b: Ch
                info["result"] = g
                results.append(info)
     else:
-        if kind == spin_vs_spatial_kind.GENERAL:
+        if kind == SpinVsSpatialKind.GENERAL:
             g = calculate_overlap_integral_basisfunction(tableau_a, tableau_b)
             info["bra"] = tableau_a.function.to_tex()
             info["ket"] = tableau_b.function.to_tex()
-        elif kind == spin_vs_spatial_kind.SPATIAL:
+        elif kind == SpinVsSpatialKind.SPATIAL:
             if len(tableau_a.spatial_parts) > 0 and len(tableau_b.spatial_parts) > 0:
                 # assumption that only 1 part per tableau
                 g = calculate_overlap_integral_between_functions(tableau_a.spatial_parts[0].function,

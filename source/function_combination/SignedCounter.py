@@ -1,26 +1,25 @@
 from collections import defaultdict
+from collections.abc import dict_items
+from typing import List
+
 
 class SignedCounter:
     """ counting elements while regarding their arithmetic sign """
     def __init__(self):
         self.counter = defaultdict(int)
 
-    def update(self, iterable):
+    def update(self, iterable: List) -> None:
         """
-        todo
-        :param iterable:
-        :return:
+        counting a new term (with the same functionality), but considering its pre-factor
+        :param iterable: list of integral objects (e.g. hamilton integrals)
         """
-        print("SignedCounter: update", iterable, type(iterable))
         for item in iterable:
             self.counter[item] += item.factor
 
     @property
-    def items(self):
+    def items(self) -> dict_items:
         """
-        todo
-        :return:
+        :return: collected (= identical) items/functions/...
         """
-        print("SignedCoutner: item", self.counter.items(), type(self.counter.items()))
         return self.counter.items()
 

@@ -7,12 +7,12 @@ from source.ChemicalStandardTableau import ChemicalStandardTableau
 from source.function_combination.calculate_hamilton_integral_between_functions import \
     calculate_hamilton_integral_between_functions
 from source.function_parts.HamiltonIntegral import HamiltonIntegral
-from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
+from source.function_parts.SpinVsSpatialKind import SpinVsSpatialKind
 
 
 # noinspection PyTypeChecker
 def calculate_hamilton_integral(tableau_a:ChemicalStandardTableau, tableau_b:ChemicalStandardTableau,
-                                kind:spin_vs_spatial_kind) -> List[HamiltonIntegral]:
+                                kind:SpinVsSpatialKind) -> List[HamiltonIntegral]:
     """
     calculate all hamilton integrals between different tableaus
     :param kind:
@@ -25,7 +25,7 @@ def calculate_hamilton_integral(tableau_a:ChemicalStandardTableau, tableau_b:Che
         return []# always gives 0
 
     results = []
-    if kind == spin_vs_spatial_kind.SPATIAL:
+    if kind == SpinVsSpatialKind.SPATIAL:
         for bra in tableau_a.spatial_parts:
             for ket in tableau_b.spatial_parts:
                 for h in calculate_hamilton_integral_between_functions(bra.function, ket.function):

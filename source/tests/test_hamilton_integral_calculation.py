@@ -5,7 +5,7 @@ from source.function_combination.calculate_hamilton_integral_between_functions i
 from source.function_parts.FunctionDependency import FunctionDependency
 from source.function_parts.ProductTerm import ProductTerm
 from source.function_parts.Sign import Sign
-from source.function_parts.spin_vs_spatial_kind import spin_vs_spatial_kind
+from source.function_parts.SpinVsSpatialKind import SpinVsSpatialKind
 
 
 
@@ -103,7 +103,7 @@ for trial in trials:
     t2.set_up_function()
     t2.get_spatial_choices()
 
-    product = calculate_hamilton_integral(t1, t2, kind=spin_vs_spatial_kind.SPATIAL)
+    product = calculate_hamilton_integral(t1, t2, kind=SpinVsSpatialKind.SPATIAL)
 
     if len(product) != len(trial["expected"]):
         # print(f"unfitting number of terms for {trial['error_message']}", len(product), len(trial["expected"]))

@@ -2,6 +2,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtGui import QIcon, QPixmap, QPainter, QColor
 
+from source.settings.GLOBALS import FILE_PATH_SETTINGS_ICON
+
+
 def colorize_pixmap(icon:QIcon, color:str) -> QPixmap:
     """ method needed for a changeable color of an icon in a button
      :param icon: ui icon, that shall be changed
@@ -27,9 +30,8 @@ def get_colored_icon_button(button:QPushButton, color:str) -> QPushButton:
     :param color: color the button icon should have
     :return: colored button
     """
-    FILE_PATH = "./source/settings/icons8-settings.svg" # ! global settings parameter
     # print("get_colored_icon_button", color, flush=True)
-    icon = QIcon(FILE_PATH)
+    icon = QIcon(FILE_PATH_SETTINGS_ICON)
     if "rgb" in color:
         color = color.replace("rgb","").replace("(","").replace(")","")
         r, g, b = color.split(',')

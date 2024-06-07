@@ -3,12 +3,13 @@ from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QResizeEvent
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QScrollArea, QStatusBar
 
-from source.settings.settings_config import load_config, get_color, update_settings, get_language
+from source.settings.GLOBALS import GEOMETRY, MARGIN_TOP_Y, BUTTON_SIZE, FONT_SIZE
+from source.settings.settings_config import get_color, update_settings, get_language
 from source.texts.general_texts import get_general_text
 from source.texts.get_page_information import get_page_information
 from source.ui_parts.get_basic_formatting_for_layout_part import format_layout_part
 from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
-from source.settings.color_styles import color_styles
+from source.settings.ColorStyles import ColorStyles
 from source.settings.LanguageChoices import LanguageChoices
 from source.ui_parts.UiPages import get_page_name
 from source.ui_parts.SettingsDialog import SettingsDialog
@@ -25,10 +26,9 @@ class LayoutAndButtonApplication(QMainWindow):
     """
     def __init__(self):
         super().__init__()
-        settings = load_config()
-        x, y, width, height = settings["geometry"]
+        x, y, width, height = GEOMETRY
         self.setGeometry(x, y, width, height)
-        self.spacer_height = settings["button-size"] + 2 * settings["margin-top-y"]
+        self.spacer_height = BUTTON_SIZE + 2 * MARGIN_TOP_Y
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
@@ -70,17 +70,17 @@ class LayoutAndButtonApplication(QMainWindow):
                 color = get_color()["text"]
             if self.settings_button is None:
                 self.settings_button = get_basic_push_button()
-                self.settings_button.setFixedSize(load_config()["button-size"], load_config()["button-size"])
-                self.settings_button.move(load_config()["margin-top-y"], load_config()["margin-top-y"])
+                self.settings_button.setFixedSize(BUTTON_SIZE, BUTTON_SIZE)
+                self.settings_button.move(MARGIN_TOP_Y, MARGIN_TOP_Y)
 
                 # ! activates Button each time it is called -> potentially raising number of clicks needed
                 # to get rid of button if ths line is called every time create_settings_button is called:
                 self.settings_button.clicked.connect(self.open_settings)
 
             self.settings_button = get_colored_icon_button(button=self.settings_button,color=color)
-            self.settings_button.setIconSize(QSize(load_config()["button-size"], load_config()["button-size"]))
+            self.settings_button.setIconSize(QSize(BUTTON_SIZE, BUTTON_SIZE))
             format_layout_part(self.settings_button)
-            self.settings_button.setToolTip(f"<span style='font-size:{load_config()['font-size']}pt;'>"+
+            self.settings_button.setToolTip(f"<span style='font-size:{FONT_SIZE}pt;'>"+
                                             f"{get_general_text('settings_change')}</span>")
             self.settings_button.enterEvent = lambda event, button= self.settings_button: (
                                             self.change_status_message(get_general_text('settings_change')))
@@ -97,7 +97,7 @@ class LayoutAndButtonApplication(QMainWindow):
         dialog = SettingsDialog()
         if dialog.exec_():
             selected_color = dialog._selected_color()
-            for color in color_styles:
+            for color in ColorStyles:
                 if selected_color == color.value["name"]:
                     if color.value != get_color():
                         self.change_status_message()  # change background color in case of changed color
@@ -124,12 +124,11 @@ class LayoutAndButtonApplication(QMainWindow):
         if self.help_button is None:
             self.help_button = get_basic_push_button("?")
             self.help_button.setParent(self)
-            self.help_button.setFixedSize(load_config()['button-size'],load_config()['button-size'])
-            self.help_button.move(self.width() - load_config()['margin-top-y'] - load_config()['button-size'],
-                                  load_config()['margin-top-y'])
+            self.help_button.setFixedSize(BUTTON_SIZE, BUTTON_SIZE)
+            self.help_button.move(self.width() - MARGIN_TOP_Y - BUTTON_SIZE, MARGIN_TOP_Y)
             self.help_button.clicked.connect(self.show_info) # ! activates the click each time this is called
         format_layout_part(self.help_button)
-        self.help_button.setToolTip(f"<span style='font-size:{load_config()['font-size']}pt;'>{get_general_text('help')}</span>")
+        self.help_button.setToolTip(f"<span style='font-size:{FONT_SIZE}pt;'>{get_general_text('help')}</span>")
         self.help_button.enterEvent = lambda event, button=self.help_button:self.change_status_message(get_general_text("help"))
         self.help_button.leaveEvent = lambda event: self.change_status_message()
         self.help_button.setParent(self)
@@ -141,8 +140,7 @@ class LayoutAndButtonApplication(QMainWindow):
         removing help button upon event:
         automatically move help button further to the right in case the screen size is changed
         """
-        self.help_button.move(self.width() - (load_config()["margin-top-y"]) - load_config()["button-size"],
-                              load_config()["margin-top-y"])# x, y
+        self.help_button.move(self.width() - MARGIN_TOP_Y - BUTTON_SIZE, MARGIN_TOP_Y)# x, y
         event.accept()
 
     def set_language(self, chosen_language: str) -> None:
