@@ -1,5 +1,6 @@
 import time
 from PyQt5.QtCore import pyqtSignal, QThread
+from PyQt5.QtWidgets import QLabel
 
 from source.PermutationGroup import PermutationGroup
 from source.settings.settings_config import get_color, get_language
@@ -10,13 +11,15 @@ from source.settings.LanguageChoices import LanguageChoices
 
 class DownloadThread(QThread):
     """ needed to show download progress during the process """
-    update_progress = pyqtSignal(int,str)  # signal
-    def __init__(self, permutation_group:PermutationGroup, background_color:str, text_color:str, buttons):
+    update_progress = pyqtSignal(int, str)  # signal
+
+    def __init__(self, permutation_group:PermutationGroup, status_label:QLabel, background_color:str, text_color:str, buttons):
         super().__init__()
         self.permutation_group = permutation_group
         self.buttons = buttons
         self.background_color = background_color
         self.text_color = text_color
+        self.status_label = status_label
 
 
     def enable_all_buttons(self, activated:bool) -> None:
@@ -39,14 +42,16 @@ class DownloadThread(QThread):
                 print(e, flush=True)
                 pass # button already deleted
 
+
     def run(self) -> None:
         """
         splitting the download into sub-processes and assigning each a percent value (to describe the progress)
         """
         self.enable_all_buttons(activated=False)
         time.sleep(1)
+
         try:
-            self.update_progress.emit(10, "finding all tableaus")
+            self.update_progress.emit(10,"finding all tableaus")
             self.permutation_group.get_all_standard_tableaus()  # at least needed for chapter 4
             time.sleep(1)
 
@@ -59,6 +64,7 @@ class DownloadThread(QThread):
             time.sleep(1)
 
             self.update_progress.emit(50,"setting up spin-based tableaus" if get_language() == LanguageChoices.en.name else "Aufsetzen der Spinfunktionstableaus")
+            self.permutation_group.get_chapter_spinfunctions()
             self.permutation_group.get_chapter_spinfunctions()
             time.sleep(1)
 
@@ -76,7 +82,7 @@ class DownloadThread(QThread):
             # todo: matrix?
         except Exception as e:
             print("except", e, flush=True)
-            self.update_progress.emit(-1, get_general_text("failed_download"))
+            self.update_progress.emit(-1,get_general_text("failed_download"))
         else:
             self.update_progress.emit(100,get_general_text("successful_download"))
         finally:

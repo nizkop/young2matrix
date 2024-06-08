@@ -123,8 +123,9 @@ class ApplicationWindows(MainApplication):
         :param message: current process
         :return:
         """
+        self.download_thread.status_label.setText(f"{value}%: {message}...")
         self.progress_bar.setValue(value)
-        self.progress_bar.setFormat(f"{value}%: {message}...")
+        self.progress_bar.setFormat("")#bar itself empty
 
     def load_main_page(self) -> None:
         permutation_group_input = QVBoxLayout()
@@ -264,7 +265,6 @@ class ApplicationWindows(MainApplication):
                 get_basic_label(
                     fr"<p><b>!</b> <i>{get_general_text('too_small_for_overlap')}<\i></p>", self.width()))
 
-
     def load_hamilton_spin(self) -> None:
         self.set_ui_label(header=get_general_text("header_hamilton_spin"))
         self.scroll_layout.addWidget(get_basic_label(f"<b>{get_general_text('h_info_spin')}</b><br><br>",
@@ -280,7 +280,7 @@ class ApplicationWindows(MainApplication):
         self.progress_bar = QProgressBar()#<- bar to show the progress
         # self.progress_bar.setStyleSheet(f"background-color: {get_color()['status-background']};")
         self.progress_bar.setRange(0, 100)
-        format_layout_part(self.progress_bar)
+        format_layout_part(self.progress_bar, "margin-top: 100px;")
         # print("progress:", get_color()['status_background'], flush=True)
 
         download_layout = QVBoxLayout()
@@ -295,8 +295,13 @@ class ApplicationWindows(MainApplication):
 
         download_layout.addWidget(label)
         download_layout.addWidget(self.progress_bar)
-        spacer_top = QSpacerItem(0, self.spacer_height, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        download_layout.addItem(spacer_top)
+
+        l_status = QLabel()#<- actual status information
+        format_layout_part(l_status, "font-weight: bold;")
+        horizontal_layout = QHBoxLayout()# center label horizontally
+        horizontal_layout.addWidget(l_status, alignment=Qt.AlignCenter)
+        download_layout.addLayout(horizontal_layout)
+
         # add new layout:
         self.scroll_layout.addLayout(download_layout)
 
@@ -306,7 +311,7 @@ class ApplicationWindows(MainApplication):
                                     color=get_color()["disabled-text"])#disabled
 
         # start download thread:
-        self.download_thread = DownloadThread(self.permutation_group,
+        self.download_thread = DownloadThread(self.permutation_group,status_label=l_status,
                                               buttons=self.buttons+[self.help_button,self.settings_button],
                                               background_color=get_color()['background'], text_color=get_color()["text"])
         self.download_thread.update_progress.connect(self.update_progress_bar)
