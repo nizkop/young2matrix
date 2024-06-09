@@ -16,14 +16,12 @@ def calculate_overlap_integral_basisfunction(tableau_a: StandardTableau, tableau
     if tableau_a.permutation_group != tableau_b.permutation_group:
         raise Exception("function_combination error: The tableaus dont fit.")
 
-    info = {"bra": tableau_a.function.to_tex(), "ket": tableau_b.function.to_tex()}
     empty_function = FunctionDependency(ProductTerm(Sign("+"), ()), normalizable=False)
     # check if identical form
     if tableau_a.number_of_rows != tableau_b.number_of_rows or tableau_a.numbers_in_columns != tableau_b.numbers_in_columns:
         # basis function of young tableaux from different young diagrams are automatically diagonal
         empty_function.parts[0].factor = 0
         empty_function.parts = [empty_function.parts[0]]
-    # same young diagram (form):
 
     # test if same standard tableau:
     elif tableau_a.numbers_in_row == tableau_b.numbers_in_row:

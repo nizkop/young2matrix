@@ -9,7 +9,7 @@ from source.function_parts.SpinVsSpatialKind import SpinVsSpatialKind
 from source.function_parts.TextKinds import TextKinds
 from source.PermutationGroup import PermutationGroup
 from source.settings.GLOBALS import BUTTON_SIZE, FONT_SIZE
-from source.settings.settings_config import load_config, get_color
+from source.settings.settings_config import get_color
 from source.texts.general_texts import get_general_text
 from source.texts.get_info_spin_possibilities import get_info_spin_possibilities
 from source.texts.get_title_spatial import get_title_spatial

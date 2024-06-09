@@ -16,7 +16,6 @@ def calculate_overlap_integral_between_functions(function_a:FunctionDependency, 
     """
     empty_function = FunctionDependency(ProductTerm(Sign("+"), ()), normalizable=False)
 
-    # noinspection SpellCheckingInspection
     if function_a == function_b:
         empty_function.parts[0].factor = 1
         empty_function.parts[0].ordered_functions = ()
@@ -31,7 +30,6 @@ def calculate_overlap_integral_between_functions(function_a:FunctionDependency, 
         for i in function_a.parts:
             for j in function_b.parts:
                 no_of_terms += 1
-                # noinspection SpellCheckingInspection
                 p, eq_braket = i.integrational_multiply(j)
                 total_eq +=" +  "+ eq_braket
                 if p.factor != 0:

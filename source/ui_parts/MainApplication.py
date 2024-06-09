@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QHBoxLayout, 
 from qtpy import QtCore
 
 from source.settings.GLOBALS import BUTTON_SIZE, FONT_SIZE, MARGIN_TOP_Y
-from source.settings.settings_config import get_language, load_config, get_color
+from source.settings.settings_config import get_language, get_color
 from source.ui_parts.LayoutAndButtonApplication import LayoutAndButtonApplication
 from source.ui_parts.canvas_equations.determine_height_of_equation import determine_height_of_equation
 from source.ui_parts.canvas_equations.get_latex_canvas import get_latex_canvas
@@ -16,6 +16,7 @@ from source.ui_parts.small_basic_parts.get_basic_label import get_basic_label
 from source.ui_parts.small_basic_parts.get_basic_push_button import get_basic_push_button
 from source.settings.LanguageChoices import LanguageChoices
 from source.ui_parts.UiPages import UiPages, get_page_name
+
 
 
 class MainApplication(LayoutAndButtonApplication):
@@ -97,6 +98,7 @@ class MainApplication(LayoutAndButtonApplication):
                 button.clicked.connect(lambda _, index=page_info["index"].value: self.open_page(index))
                 button.setToolTip(f"<span style='font-size:{FONT_SIZE}pt;'>{page_info['name']}</span>")
                 name = page_info['name']  # Freeze current name (so that not the last triggerer counts for every event)
+                # noinspection PyUnresolvedReferences
                 button.enterEvent = lambda event, button=button, name=name: self.change_status_message(name)
                 button.leaveEvent = lambda event: self.change_status_message()
                 button_layout.addWidget(button)

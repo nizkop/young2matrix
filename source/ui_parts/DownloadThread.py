@@ -11,7 +11,7 @@ from source.settings.LanguageChoices import LanguageChoices
 
 class DownloadThread(QThread):
     """ needed to show download progress during the process """
-    update_progress = pyqtSignal(int, str)  # signal
+    update_progress = pyqtSignal(int, str)  # signal handling percentage of process and status message
 
     def __init__(self, permutation_group:PermutationGroup, status_label:QLabel, background_color:str, text_color:str, buttons):
         super().__init__()
@@ -28,7 +28,6 @@ class DownloadThread(QThread):
         showing the disabling by color change (this function can do everything for that except the icon color of the settings button)
         :param activated: boolean indicating whether buttons are activated or deactivated
         """
-        # print("enable_all_buttons", activated, len(self.buttons), flush=True)
         for button in self.buttons:
             try:
                 button.setEnabled(activated)
@@ -51,37 +50,43 @@ class DownloadThread(QThread):
         time.sleep(1)
 
         try:
-            self.update_progress.emit(10,"finding all tableaus")
+            self.update_progress.emit(10,"finding all tableaus" if get_language() == LanguageChoices.en.name
+                                      else "Finden aller Tableaus")
             self.permutation_group.get_all_standard_tableaus()  # at least needed for chapter 4
             time.sleep(1)
 
-            self.update_progress.emit(30,"calculating all tableaus" if get_language() == LanguageChoices.en.name else "Berechnung aller Tableaus")
+            self.update_progress.emit(30,"calculating all tableaus" if get_language() == LanguageChoices.en.name
+                                    else "Berechnung aller Tableaus")
             self.permutation_group.get_chapter_youngtableaus()
             time.sleep(1)
 
-            self.update_progress.emit(40,"multiplying out the tableaus" if get_language() == LanguageChoices.en.name else "Ausmultiplizieren der Tableaus")
+            self.update_progress.emit(40,"multiplying out the tableaus" if get_language() == LanguageChoices.en.name
+                                    else "Ausmultiplizieren der Tableaus")
             self.permutation_group.get_chapter_multiplied()
             time.sleep(1)
 
-            self.update_progress.emit(50,"setting up spin-based tableaus" if get_language() == LanguageChoices.en.name else "Aufsetzen der Spinfunktionstableaus")
+            self.update_progress.emit(50,"setting up spin-based tableaus" if get_language() == LanguageChoices.en.name
+                                    else "Aufsetzen der Spinfunktionstableaus")
             self.permutation_group.get_chapter_spinfunctions()
             self.permutation_group.get_chapter_spinfunctions()
             time.sleep(1)
 
-            self.update_progress.emit(70,"calculating overlap integrals" if get_language() == LanguageChoices.en.name else "Berechnung der Überlappintegrale")
+            self.update_progress.emit(70,"calculating overlap integrals" if get_language() == LanguageChoices.en.name
+                                    else "Berechnung der Überlappintegrale")
             self.permutation_group.get_chapter_overlapintegrals()
             time.sleep(1)
 
-            self.update_progress.emit(90,"calculating hamilton integrals" if get_language() == LanguageChoices.en.name else "Berechnung der Hamiltonintegrale")
+            self.update_progress.emit(90,"calculating hamilton integrals" if get_language() == LanguageChoices.en.name
+                                      else "Berechnung der Hamiltonintegrale")
             self.permutation_group.get_chapter_hamiltonintegrals()
             time.sleep(1)
 
-            self.update_progress.emit(95,"saving pdf" if get_language() == LanguageChoices.en.name else "PDF abspeichern")
+            self.update_progress.emit(95,"saving pdf" if get_language() == LanguageChoices.en.name
+                                        else "PDF abspeichern")
             self.permutation_group.overview.save()
             time.sleep(1)
             # todo: matrix?
-        except Exception as e:
-            print("except", e, flush=True)
+        except Exception:
             self.update_progress.emit(-1,get_general_text("failed_download"))
         else:
             self.update_progress.emit(100,get_general_text("successful_download"))

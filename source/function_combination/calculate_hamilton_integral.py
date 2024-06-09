@@ -10,7 +10,7 @@ from source.function_parts.HamiltonIntegral import HamiltonIntegral
 from source.function_parts.SpinVsSpatialKind import SpinVsSpatialKind
 
 
-# noinspection PyTypeChecker
+
 def calculate_hamilton_integral(tableau_a:ChemicalStandardTableau, tableau_b:ChemicalStandardTableau,
                                 kind:SpinVsSpatialKind) -> List[HamiltonIntegral]:
     """
@@ -35,7 +35,6 @@ def calculate_hamilton_integral(tableau_a:ChemicalStandardTableau, tableau_b:Che
     else:
         for bra in tableau_a.spin_parts:
             for ket in tableau_b.spin_parts:
-                # noinspection PyTypeChecker
                 for h in calculate_overlap_integral_between_functions(bra.function, ket.function):
                     norm = bra.function.get_normalization_factor()['fraction'] * ket.function.get_normalization_factor()['fraction']
                     h.factor *= norm
