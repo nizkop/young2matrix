@@ -1,5 +1,5 @@
 from source.ui_parts.canvas_equations.get_max_number_of_signs_in_equation import get_max_number_of_signs_in_equation
-
+# todo?
 tests = [
     {"eq": r"\sqrt{2}", "expected_length": 2, "width": 50},
     {"eq": r"\left(12\right)", "expected_length": 4, "width": 70},#
@@ -11,7 +11,6 @@ tests = [
     {"eq": r"\begin{array}{|c|} \hline123\\ \cline{1-1} 2\\ \cline{1-1} \end{array}", "expected_length": 3+8, "width": 90},
     {"eq": r"\begin{array}{|c|} \hline 1\\ \cline{1-1} 2\\ \cline{1-1} 3 \\ \cline{1-1} \end{array}", "expected_length": 1+8, "width": 48},
     {"eq": r" \begin{array}{|c|} \hline 1\\ \cline{1-1} \end{array} \quad \left( + a_{1}\right) ", "expected_length": 8+8, "width": 160},
-    # {"eq": r"", "expected_length": 1},
 ]
 
 
