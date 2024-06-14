@@ -49,6 +49,7 @@ class DownloadThread(QThread):
         self.enable_all_buttons(activated=False)
         time.sleep(1)
 
+        start_time = time.time()
         try:
             self.update_progress.emit(10,"finding all tableaus" if get_language() == LanguageChoices.en.name
                                       else "Finden aller Tableaus")
@@ -91,6 +92,8 @@ class DownloadThread(QThread):
         else:
             self.update_progress.emit(100,get_general_text("successful_download"))
         finally:
+            print(f"Die Gesamtzeit für alle Funktionsaufrufe beträgt {start_time - time.time:.4f} Sekunden.")
             self.enable_all_buttons(True)
+
 
 

@@ -27,6 +27,5 @@ def fit_arrayheight_from_rownumber(number_of_rows: int) -> int:
     :param number_of_rows: height of equation in number of rows
     :return: needed height in pixels
     """
-    # print(f"fit_arrayheight_from_rownumber: 35+35*{number_of_rows} = {35 + 35 * number_of_rows}", flush=True)
     return 35 + 35 * number_of_rows
 

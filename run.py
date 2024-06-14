@@ -1,4 +1,5 @@
 import sys
+import time
 from PyQt5.QtWidgets import QApplication
 
 from source.PermutationGroup import PermutationGroup
@@ -21,10 +22,19 @@ if __name__ == '__main__':
             except Exception as e:
                 print("\n", f"{str(e).replace('.','')}!", sep="")
         print(f"\n", get_general_text('download_start_info1'), permutation_no, get_general_text('download_start_info2').replace('\n\n','\n'), sep="")
+
+        start_time = time.time()
+
         p = PermutationGroup(permutation_no)
         p.get_overview_pdf()
+
+        print(f"Die Gesamtzeit für alle Funktionsaufrufe beträgt {start_time-time.time:.4f} Sekunden.")
     else:
         app = QApplication(sys.argv)
         window = ApplicationWindows()
         window.show()
         sys.exit(app.exec_())
+
+
+
+

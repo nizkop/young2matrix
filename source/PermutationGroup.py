@@ -35,7 +35,6 @@ class PermutationGroup(object):
         cls._instance_count += 1
         return instance
     def __del__(self):
-        # print("__del",flush=True)
         type(self)._instance_count -= 1
         self._instance = None
 

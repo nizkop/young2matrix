@@ -22,13 +22,19 @@ fit f(x) filename every ::1 using 1:2 via a, b
 
 
 # Plotten der Daten und der Funktion
+fontsize = 16
 set term png
 set output "plot_${filename}.png"
+set ylabel "benötigte Breite in Pixeln" font sprintf(",%d", fontsize)
+set xlabel "Breite x der Gleichung in Zeichen" font sprintf(",%d", fontsize)
 
-set key outside
+set terminal png size 800,500 font ",fontsize"
 
-plot filename every ::1 using 1:2 with points  title "Daten" \
-     , f(x) with lines title sprintf("%.2f + %.2f * x", a, b) \
+set key inside left top box spacing 1.5
+
+plot filename every ::1 using 1:2 with points pt 2 ps 2 linewidth 3 \
+      title "Beispielgleichungen" \
+     , f(x) with lines linewidth 3 title sprintf("%.2f + %.2f * x", a, b) \
 
 
 set output

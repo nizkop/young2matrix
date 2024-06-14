@@ -63,12 +63,10 @@ def get_max_number_of_signs_in_equation(eq: str) -> int:
 
 def fit_length_to_width(formula:str) -> int:
     """
-    fit function to translate the width of an equation
-     given as the number of relevant signs into a pixel size
+    fit function to translate the width of an equation, given as the number of relevant signs into a pixel size
     :param formula: latex formatted equation
     :return: needed width of equation in pixels
     """
     number_of_relevant_signs = get_max_number_of_signs_in_equation(eq=formula)
-    # print("number_of_relevant_signs", number_of_relevant_signs)
     return max(number_of_relevant_signs, math.ceil(29.04 + 15.10 * number_of_relevant_signs))# next higher integer
 
