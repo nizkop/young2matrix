@@ -1,3 +1,4 @@
+import gc
 import math
 from typing import Union
 from PyQt5.QtCore import Qt
@@ -89,12 +90,16 @@ class ApplicationWindows(MainApplication):
         using the input to set the group object on which calculations may occur
         :param input_value: number of permutation group, as given in the input box
         """
+        print("set_basi_permutation_attributes", flush=True)
         if (self.permutation_group_no is not None and self.permutation_group is not None and
                 self.permutation_group_no == input_value and self.permutation_group.permutation_group == input_value):
+            print("return")
             return
         self.permutation_group_no = input_value
-        del self.permutation_group # remove, to allow a new instance
+        if self.permutation_group is not None:
+            self.permutation_group.delete()
         self.permutation_group = PermutationGroup(self.permutation_group_no)
+        PermutationGroup(self.permutation_group_no)
 
     def update_page(self) -> None:
         """ adding content (in between general buttons at the top and information bar at the bottom) to layout """

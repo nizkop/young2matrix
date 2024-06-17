@@ -24,24 +24,33 @@ class PermutationGroup(object):
     this class bundles the chemical/mathematical functionality
     """
     _instance = None # used as a singleton, limited to 1 instance at a time
-    _instance_count = 0
-    _max_instances = 1
+    _instance_count = 0 # should always be 0 (no PermutationGroup object) or 1 (if an object exists)
+    _max_instances = 1 #<- limit of PermutationGroup objects
 
     @classmethod
     def __new__(cls, *args, **kwargs):
+        """
+        ensuring that only one object of this class exists at the same time by a counter
+        """
         if cls._instance_count >= cls._max_instances:
-            raise ValueError("to many permutation_group instances (at the same time)")
+            raise ValueError("too many permutation_group instances (at the same time)")
         instance = super().__new__(cls)
         cls._instance_count += 1
         return instance
-    def __del__(self):
+    def delete(self):
+        """
+        deletes this instance and enables a new object by setting the counter down
+        ( __del__ is only triggered by garbage collection -> can be too late )
+        """
         type(self)._instance_count -= 1
         self._instance = None
+        del self
+
 
     def __init__(self, permutation_group:int=0):
         self.permutation_group: int = permutation_group
-        self.tableaus : List[YoungTableau] = []
-        self.standard_tableaus : List[ChemicalStandardTableau] = []
+        self.tableaus: List[YoungTableau] = []
+        self.standard_tableaus: List[ChemicalStandardTableau] = []
         self.overview = OverviewPdf(permutation_group)
 
         self.overlap: List[dict] = []
