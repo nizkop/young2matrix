@@ -21,9 +21,6 @@ class StandardTableau(YoungTableau):
         self.permutation_group: int = self.get_permutation_group()
         self.function: Union[FunctionDependency, None] = None
 
-    def print(self) -> None:
-        print(self.to_text())
-
     def check(self) -> bool:
         """ checking the rules of standard tableau (numbers ascending in rows and columns)
          :return: boolean indicating whether this tableau is a standard tableau

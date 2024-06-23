@@ -19,7 +19,6 @@ def get_latex_canvas(eq:str, color:str) -> FigureCanvas:
     :param color: color of the text/lines/symbols in the equation (usually black)
     :return: figure of the equation
     """
-    print(eq)
     eq = eq.replace("_",r"\_")
     figure = plt.figure()
     ax = figure.add_axes([0, 0, 1, 1])
@@ -30,7 +29,6 @@ def get_latex_canvas(eq:str, color:str) -> FigureCanvas:
     ax.text(0.0, 0.5, rf"\[{eq}\]", color=color, horizontalalignment='left', verticalalignment='center', fontsize=20)
     ax.axis('off')
     figure.patch.set_facecolor('none')
-    # plt.tight_layout(pad=0.2)#centering horizontally
 
     canvas = FigureCanvas(figure)
     plt.close(figure)

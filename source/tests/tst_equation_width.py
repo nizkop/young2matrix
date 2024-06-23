@@ -1,5 +1,5 @@
 from source.ui_parts.canvas_equations.get_max_number_of_signs_in_equation import get_max_number_of_signs_in_equation
-# todo?
+
 tests = [
     {"eq": r"\sqrt{2}", "expected_length": 2, "width": 50},
     {"eq": r"\left(12\right)", "expected_length": 4, "width": 70},#

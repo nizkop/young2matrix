@@ -10,14 +10,13 @@ from source.function_parts.Sign import Sign
 
 
 class FunctionDependency(object):
-
+    """
+    class to represent a general mathematical function
+    """
     def __init__(self, basis: ProductTerm, normalizable:bool=True):
         self.basis = basis
         self.parts: List[ProductTerm] = [basis]
         self.normalizable:bool=normalizable
-
-    def print(self) -> None:
-        print(self.to_text())
 
     def to_text(self) -> str:
         intern = "  ".join([i.to_text() for i in self.parts])

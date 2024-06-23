@@ -56,12 +56,6 @@ class PermutationGroup(object):
         self.overlap: List[dict] = []
         self.hamilton_integrals: List[HamiltonIntegral] = []
 
-    def print(self) -> None:
-       print(f"permutation group: S_{self.permutation_group}")
-       for s in self.standard_tableaus:
-           s.print()
-           print()
-
 
     def get_young_tableau_equations(self) -> List[str]:
         """
@@ -218,7 +212,6 @@ class PermutationGroup(object):
         creating all possible young (standard) tableaus from the number of the permutation group
         :return: None, because result is written into self.standard_tableaus
         """
-        # print("get_all_standard_tableaus", flush=True)
         if len(self.standard_tableaus) > 0:
             # duplicate calculations are adding redundant tableaus
             # and re-calculation takes up more ressources

@@ -77,7 +77,6 @@ class MainApplication(LayoutAndButtonApplication):
         setting up the buttons for the current page and linking them to following pages / information;
         because the buttons shall be at the bottom of the screen, first the creation of all other content of the page is initialized
         """
-        # print("create widgets", flush=True)
         current_page_info = next((page_dict for page_dict in self.pages
                                   if page_dict.get("index").value == self.current_page), None)
         self.buttons = []#remove prior buttons from fast access
@@ -160,14 +159,12 @@ class MainApplication(LayoutAndButtonApplication):
 
         # adding to view:
         self.scroll_layout.addLayout(line)
-        # plt.close()
 
     def change_page(self, index: int) -> None:
         """
         changing a page by removing the old content and adding the new
         :param index: new page number
         """
-        # print("change page", flush=True)
         self.clear_screen()
         self.current_page = index
         if self.current_page != UiPages.DOWNLOAD.value:
@@ -178,13 +175,11 @@ class MainApplication(LayoutAndButtonApplication):
 
     def clear_screen(self) -> None:
         """ Clearing the current layout and its sublayouts """
-        # print("clear screen", flush=True)
         self.clear_layout()
         self.create_settings_button()
         self.create_help_button()
 
     def clear_layout(self, layout: Union[QHBoxLayout, QVBoxLayout, QLayout, None]=None) -> None:
-        # print("clear layout", flush=True)
         if layout == None:
             layout = self.scroll_layout
 

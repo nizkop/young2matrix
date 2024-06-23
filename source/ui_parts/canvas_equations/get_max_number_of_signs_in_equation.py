@@ -55,7 +55,6 @@ def get_max_number_of_signs_in_equation(eq: str) -> int:
     formula = re.sub(r"\\sqrt\{(.*?)\}", r"s\1", formula)
     formula = re.sub(r"\\bra\{(.*?)\}\\ket\{(.*?)\}", r"<\1sss\2>", formula)# spacing in the middle (s. tableaus in bra/ket possible)
 
-    # print("remaining:", [formula], len(formula))
     # counting number of relevant characters:
     relevant_characters = re.findall(r"[a-zA-Z0-9ß/ +\-=:&()*\_<>αβσΦ|]", formula)
     return len(relevant_characters)

@@ -4,8 +4,11 @@ from source.function_parts.IntegralPart import IntegralPart
 
 class SpatialPart(IntegralPart):
     """
-    class only needed for coherence, because spatial functions are the opposite of spin functions
-    but spatial functions/orbitals are not specifically given here, so that spatial parts fall back to the general integral parts
+    class only needed for coherence, because spatial functions are
+    the opposite of spin functions - but spatial functions/orbitals
+    are not specifically given here,
+    meaning spatial parts fall back to the general integral parts
+    and their functional behavior
     """
     def __init__(self, behavior:FunctionDependency):
         self.permutation_group : int = 0
@@ -17,3 +20,4 @@ class SpatialPart(IntegralPart):
 
     def to_text(self) -> str:
         return self.function.to_text()
+

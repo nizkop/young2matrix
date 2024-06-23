@@ -30,7 +30,6 @@ def get_colored_icon_button(button:QPushButton, color:str) -> QPushButton:
     :param color: color the button icon should have
     :return: colored button
     """
-    # print("get_colored_icon_button", color, flush=True)
     icon = QIcon(FILE_PATH_SETTINGS_ICON)
     if "rgb" in color:
         color = color.replace("rgb","").replace("(","").replace(")","")

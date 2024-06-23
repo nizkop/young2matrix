@@ -12,7 +12,6 @@ class HamiltonIntegral(object):
     """
 
     def __init__(self, bra:ProductTerm, ket:ProductTerm):
-        # print("calculating... \t <", bra.to_text(), "|H|", ket.to_text(), end=">\t")
         self.factor: int = bra.factor * ket.factor
         self.sign:Sign = Sign.PLUS if bra.sign == ket.sign else Sign.MINUS
 
@@ -24,7 +23,6 @@ class HamiltonIntegral(object):
         self.ket:ProductTerm = ket
 
         self.check_integral()
-        # print("\t\t==\t", self.sign.value, self.get_shortened_symbol(), end="\n")
 
     def __hash__(self):
         return hash(''.join(sorted(self.get_shortened_symbol())))

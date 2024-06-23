@@ -9,10 +9,11 @@ class SpinPart(IntegralPart):
     """
     quantum chemical integral representing spin functions
     """
-    def __init__(self, permutation_group:int, total_spin:float, ms:float, choices_for_spin:dict, behavior:FunctionDependency):
+    def __init__(self, permutation_group:int, total_spin:float, ms:float,
+                        choices_for_spin:dict, behavior:FunctionDependency):
         self.permutation_group:int=permutation_group
         self.total_spin = total_spin
-        self.ms = ms
+        self.ms = ms # spin quantum number
         self.function = copy.deepcopy(behavior)
         self.test_choices_for_spin_input(choices_for_spin=choices_for_spin)
         self.choices_for_spin : dict = choices_for_spin
@@ -49,9 +50,6 @@ class SpinPart(IntegralPart):
         if len(spin_ordered) != self.permutation_group:
             raise Exception("error in set_up_choices")
         self.function.set_spin_functions(spin_ordered)
-
-    def print(self) -> None:
-        print(self.to_text())
 
     def to_text(self) -> str:
         part_1 = f"| {self.get_shortend_form()} >"

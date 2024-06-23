@@ -42,7 +42,6 @@ class ApplicationWindows(MainApplication):
 
     def open_page(self, page_number:int) -> None:
         """ checking the input and (if the input is okay) loading another page """
-        # print("\nopen_page", page_number, flush=True)
         # getting and checking the input information:
         if page_number == UiPages.START.value:
             return self.change_page(page_number)
@@ -90,20 +89,16 @@ class ApplicationWindows(MainApplication):
         using the input to set the group object on which calculations may occur
         :param input_value: number of permutation group, as given in the input box
         """
-        print("set_basi_permutation_attributes", flush=True)
         if (self.permutation_group_no is not None and self.permutation_group is not None and
                 self.permutation_group_no == input_value and self.permutation_group.permutation_group == input_value):
-            print("return")
             return
         self.permutation_group_no = input_value
         if self.permutation_group is not None:
             self.permutation_group.delete()
         self.permutation_group = PermutationGroup(self.permutation_group_no)
-        PermutationGroup(self.permutation_group_no)
 
     def update_page(self) -> None:
         """ adding content (in between general buttons at the top and information bar at the bottom) to layout """
-        # print("update page", flush=True)
         try:
             page_info = next((page_dict for page_dict in self.pages
                               if page_dict.get("index").value == self.current_page), None)
@@ -278,15 +273,12 @@ class ApplicationWindows(MainApplication):
 
     def load_download(self) -> None:
         """ initializes download and goes back to main page """
-        # print("load download", flush=True)
         self.clear_screen()
         self.current_page = UiPages.DOWNLOAD.value
 
         self.progress_bar = QProgressBar()#<- bar to show the progress
-        # self.progress_bar.setStyleSheet(f"background-color: {get_color()['status-background']};")
         self.progress_bar.setRange(0, 100)
         format_layout_part(self.progress_bar, "margin-top: 100px;")
-        # print("progress:", get_color()['status_background'], flush=True)
 
         download_layout = QVBoxLayout()
         download_layout.setAlignment(Qt.AlignCenter)

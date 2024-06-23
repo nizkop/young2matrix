@@ -11,7 +11,6 @@ def determine_height_of_equation(formula: str) -> int:
     demanded_heights = [70]#<- default = minimal height of equation
     if "array" in formula:
         number_of_rows = get_number_of_array_rows_in_equation(formula)
-        # print("-> ", number_of_rows)
         height = fit_arrayheight_from_rownumber(number_of_rows)
         demanded_heights.append(height)
     if "frac" in formula:

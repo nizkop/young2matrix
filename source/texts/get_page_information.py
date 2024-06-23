@@ -1,10 +1,8 @@
 
-
 from source.settings.LanguageChoices import LanguageChoices
 from source.settings.settings_config import get_language
 from source.ui_parts.UiPages import UiPages
 
-# TODO: check content
 
 def get_page_information(page:UiPages) -> str:
     """
@@ -51,9 +49,9 @@ def get_page_information(page:UiPages) -> str:
             symmetric/antisymmetric, depending on the electrons, they describe. 
             Young tableaus are able to visualize, which parts are symmetric and which parts are antisymmetric. </p> <br>
             <b>What is a young tableau? </b>
-            <p>There are multiple elements in a young tableau; they are displayed next to eachother or above/below eachother.
-            This has different meaning: Boxes below eachother represent an antisymmetric combination,
-            boxes next to eachother say, that their elements behave symmetrically with regard to eachother. </p>
+            <p>There are multiple elements in a young tableau; they are displayed next to eachother or above/below each other.
+            This has different meaning: Boxes below each other represent an antisymmetric combination,
+            boxes next to each other say, that their elements behave symmetrically with regard to each other. </p>
             <p>The name young tableau is based on the basic form of a tableau: 
             If the number of boxes is only increasing in each row and each column, 
             this mathematical construct is called young diagram/standard tableau. 
@@ -219,4 +217,3 @@ def get_page_information(page:UiPages) -> str:
             Bitte sehen Sie in Ihrem Download-Ordner nach. </p>
             """
     return "unknown"
-

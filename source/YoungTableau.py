@@ -26,13 +26,6 @@ class YoungTableau(object):
             return False
         return True
 
-
-    def print(self) -> None:
-        if not self.check():
-            return
-        print(self.get_shortened_symbol()["plain_text"])
-        print(self.to_text())
-
     def to_text(self) -> str:
         s=""
         for i in range(self.number_of_rows):

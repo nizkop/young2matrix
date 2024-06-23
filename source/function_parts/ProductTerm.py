@@ -35,10 +35,6 @@ class ProductTerm(object):
 
     def to_text(self) -> str:
         return self.to_tex().replace("{","").replace("}","").replace(r"\cdot","*")
-
-    def print(self) -> None:
-        print(self.to_text())
-
     def to_tex(self) -> str:
         sign = f"{self.sign.value} "
         if len(self.ordered_functions) == 0:
@@ -55,7 +51,6 @@ class ProductTerm(object):
         function_factors = r" \cdot ".join(self.get_list_of_parts())
         eq = sign+factor+function_factors
         return eq.replace("α",r"\alpha").replace("β",r"\beta")
-
 
     def multiply(self, other#: product_term
         ):# -> product_term

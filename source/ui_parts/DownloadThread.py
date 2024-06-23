@@ -38,7 +38,6 @@ class DownloadThread(QThread):
                     format_layout_part(button,
                         f"background-color: {color['deactivated-button']}; color:{color['disabled-text']};")
             except Exception as e:
-                print(e, flush=True)
                 pass # button already deleted
 
 
@@ -86,7 +85,6 @@ class DownloadThread(QThread):
                                         else "PDF abspeichern")
             self.permutation_group.overview.save()
             time.sleep(1)
-            # todo: matrix?
         except Exception:
             self.update_progress.emit(-1,get_general_text("failed_download"))
         else:

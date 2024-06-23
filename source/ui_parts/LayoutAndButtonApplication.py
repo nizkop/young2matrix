@@ -65,7 +65,6 @@ class LayoutAndButtonApplication(QMainWindow):
 
     def create_settings_button(self, color:str=None) -> None:
             """ adding a button, that may change the settings, to the top of the screen """
-            # print("create_settings_button",flush=True)
             if color is None:
                 color = get_color()["text"]
             if self.settings_button is None:
@@ -93,7 +92,6 @@ class LayoutAndButtonApplication(QMainWindow):
         opening a separate ui box for the settings dialog
         :return:
         """
-        # print("open_settings",flush=True)
         dialog = SettingsDialog()
         if dialog.exec_():
             selected_color = dialog._selected_color()
@@ -147,7 +145,6 @@ class LayoutAndButtonApplication(QMainWindow):
         """ updating the language (as it was changed by the user)
         :param chosen_language: choice of a new language
         """
-        # print("set language: ", [chosen_language], flush=True)
         for language in LanguageChoices:
             if language.value == chosen_language:
                 break
@@ -156,8 +153,6 @@ class LayoutAndButtonApplication(QMainWindow):
         update_settings(language.name, "language")
         for p in range(len(self.pages)):# update pages names
             self.pages[p]["name"] = get_page_name(self.pages[p]["index"])
-        # self.create_settings_button()
-        # self.open_page(self.current_page)
 
     def change_status_message(self, message:Union[str,None]=None) -> None:
         """

@@ -27,14 +27,8 @@ class ChemicalStandardTableau(StandardTableau):
         self.spin_parts: List[SpinPart] = []
         self.overlap = []
 
-    def print(self) -> None:
-        super().print()
-
     def to_text(self) -> str:
         return super().to_text()
-
-    def solve(self):
-        pass
 
     def get_spatial_choices(self) -> None:
         """
@@ -44,14 +38,10 @@ class ChemicalStandardTableau(StandardTableau):
         angular momentum of a particle l = 0 (s orbital), 1 (p orbital, 2 (d orbital), ...
         ml = alignment of the individual orbital = { -l , ..., l }
         """
-        # print("we don't want to choose the orbitals yet")
         if self.function is None:#spatial part needs function as a general behavior pattern
             self.set_up_function()
         if max([len(i) for i in self.numbers_in_row]) > 2:
             # no spin tableaus with more than 2 rows -> spatial tableaus have to be conjoint to the spin tableaus -> 2 columns max.
-            # self.print()
-            # print("number of columns to high:", "number of columns:", self.number_of_columns, "number of rows:", self.number_of_rows,
-            #       "get number in columns:", self.get_numbers_in_columns(), "numbers in each row:", self.numbers_in_row)
             return
         if len(self.spatial_parts) == 0:
             self.spatial_parts.append(SpatialPart(behavior=self.function))
