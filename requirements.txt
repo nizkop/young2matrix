@@ -4,6 +4,7 @@
 sympy==1.9
 PyQt5==5.15.10
 matplotlib==3.5.1
+numpy==1.26.4
 pylatex==1.4.1
 qtpy==2.4.1
 #typing_extensions==4.9.0
