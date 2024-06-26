@@ -27,8 +27,7 @@ if __name__ == '__main__':
 
         p = PermutationGroup(permutation_no)
         p.get_overview_pdf()
-
-        print(f"Die Gesamtzeit für alle Funktionsaufrufe beträgt {-start_time+time.time():.4f} Sekunden.")
+        print(get_general_text("running_time")+f"{-start_time+time.time():.4f}.")
     else:
         app = QApplication(sys.argv)
         window = ApplicationWindows()

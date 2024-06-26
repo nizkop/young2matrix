@@ -29,7 +29,7 @@ def get_general_text(key:str) -> str:
             "header_hamilton_spin": "hamilton integrals based on spin functions",
             "ref_hspin": " (s. section 4.2) ",
             "header_overlap_general": "overlap integrals",
-
+            "running_time": "The time (in seconds) needed for all function calls was ",
 
             # solely UI:
             "settings_change": "change setting (language/design).",
@@ -51,11 +51,10 @@ def get_general_text(key:str) -> str:
             "successful_download": "The download was successful.",
             "failed_download": "Sadly, we encountered an unknown error while downloading the pdf.",
             "header_hamilton_spatial": "hamilton matrix elements for the spatial functions",
-            # "spatial_h_empty": "This permutation group is too small to build non-trivial hamilton integrals.",
 
             # sorely pdf:
             "pdf_title": "Generation \n of overlap and hamilton integrals \n by using the symmetry properties \n of young tableaus",
-            "permutation_part_title": "here for permutation group"
+            "permutation_part_title": "here for permutation group",
 
         }
     else: # default
@@ -75,6 +74,8 @@ def get_general_text(key:str) -> str:
             "ref_hspin": " (s. Kapitel 4.2) ",
             "header_overlap_general": "Überlappungsintegrale",
             "header_hamilton_spin": "Hamiltonmatrixelemente basierend auf Spinfunktionen",
+            "running_time": "Die Gesamtzeit (in Sekunden) für alle Funktionsaufrufe betrug ",
+
 
             # solely UI:
             "settings_change": "Einstellungen (Sprache/Design) ändern.",

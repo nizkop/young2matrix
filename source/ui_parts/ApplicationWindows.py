@@ -138,6 +138,7 @@ class ApplicationWindows(MainApplication):
         hbox.addSpacing(BUTTON_SIZE)
 
         permutation_group_label = get_basic_label(get_general_text("input_command"), self.width())
+        permutation_group_label.setMinimumWidth(self.width()//3)# english text needs morw space
         hbox.addWidget(permutation_group_label)
         hbox.addSpacing(BUTTON_SIZE)# distance between label and input box
 

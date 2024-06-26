@@ -90,7 +90,7 @@ class DownloadThread(QThread):
         else:
             self.update_progress.emit(100,get_general_text("successful_download"))
         finally:
-            print(f"Die Gesamtzeit für alle Funktionsaufrufe beträgt {start_time - time.time():.4f} Sekunden.")
+            print(get_general_text("running_time")+f"{start_time - time.time():.4f}.")
             self.enable_all_buttons(True)
 
 
