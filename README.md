@@ -1,4 +1,24 @@
 # young2matrix
+
+### Technical Requirements
+This program uses LaTeX to build equations and download a pdf. Thereby you need to have a latex compiler installed, for the program not to cause any errors.  
+(E.g. on Linux you may use:
+``` 
+# sudo apt-get update
+# sudo apt-get install texlive-full
+```
+)  
+Also you need python3. The needed python-packages are defined in the **requirements.txt**.
+(
+```
+# python3 -m venv venv
+# source venv/bin/activate
+# pip3 install -r requirements.txt
+```
+)  
+
+
+
 ### Context and Motivation
 In chemistry, the interaction between molecules is one of the most significant phenomena. It is essential for understanding the structure, reactivity, and properties of chemical compounds.
 
