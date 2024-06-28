@@ -92,7 +92,7 @@ class OverviewPdf(object):
         self.doc.append(Command('thispagestyle', 'fancy'))#ensure header & footer
 
         title = f"group_{self.permutation_group}"
-        self.doc.generate_pdf(title, clean_tex=True)
+        self.doc.generate_pdf(title, clean_tex=False)#save .tex too for case of wrong format in pdf
 
     def add_information(self, additional_info:str) -> None:
         """ adding text to the current chapter of the pdf

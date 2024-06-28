@@ -1,6 +1,7 @@
 
 from collections import Counter
 import string
+from fractions import Fraction
 from typing import Tuple, List
 
 from source.function_parts.Sign import Sign
@@ -47,7 +48,12 @@ class ProductTerm(object):
                 return "0"
             else:
                 return sign+str(self.factor)
-        factor = fr"{self.factor} \cdot " if self.factor > 1 else ""
+        if self.factor == 1:
+            factor = ""
+        elif isinstance(self.factor, Fraction):
+            factor = r"\frac{"+ str(self.factor.numerator) + r"}{" + str(self.factor.denominator) + r"} \cdot "
+        else:
+            factor = fr"{self.factor} \cdot "
         function_factors = r" \cdot ".join(self.get_list_of_parts())
         eq = sign+factor+function_factors
         return eq.replace("α",r"\alpha").replace("β",r"\beta")

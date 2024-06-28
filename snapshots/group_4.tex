@@ -1,0 +1,251 @@
+\documentclass[fleqn]{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage[a4paper,left=2cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}%
+\usepackage[doublespacing]{setspace}%
+\usepackage{fancyhdr}%
+\usepackage{ragged2e}%
+%
+\usepackage[ngerman]{babel}%
+\usepackage{tocloft}%
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}   % activating dots in table of contents%
+\usepackage{physics}%
+\usepackage{breqn}%
+\usepackage{needspace}%
+\newcommand{\checkpagebreak}{\needspace{.25\textheight}}%
+%
+\begin{document}%
+\normalsize%
+\noindent%
+\thispagestyle{empty}%
+\begin{center}%
+\vspace*{4cm}%
+\Huge{}%
+Erstellung %
+\\ %
+ von Überlappungs{-} und Hamiltonintegralen %
+\\ %
+ auf Basis der Symmetrieeigenschaften %
+\\ %
+ von Young{-}Tableaus%
+\\ %
+\vspace{1cm}%
+\Large{hier für die Permutationsgruppe: 4}%
+\\ %
+\vspace{4cm}%
+\Large{28. Juni 2024}%
+\end{center}%
+\newpage%
+\setcounter{page}{1}%
+\pagestyle{fancy}%
+\fancyhf{}%
+\fancyhead[L]{ Permutationsgruppe 4 }%
+\fancyhead[R]{\nouppercase{\leftmark}}%
+\renewcommand{\footrulewidth}{0.4pt}%
+\fancyfoot[C]{\thepage}%
+\section{Young{-}Tableaus}%
+\label{sec:Young{-}Tableaus}%
+Die möglichen (Standard-)Young-Tableaus zur Gruppe 4 lauten:
+
+%
+\vspace{0.25cm}%
+\begin{dmath*}\left[4\right]:\quad\begin{array}{|c|c|c|c|} \hline 1 & 2 & 3 & 4\\ \cline{1-4} \end{array} \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\left[13\right]:\quad\begin{array}{|c|c|c|} \hline 1 & 3 & 4\\ \cline{1-3} 2\\ \cline{1-1} \end{array} \quad , \quad \begin{array}{|c|c|c|} \hline 1 & 2 & 4\\ \cline{1-3} 3\\ \cline{1-1} \end{array} \quad , \quad \begin{array}{|c|c|c|} \hline 1 & 2 & 3\\ \cline{1-3} 4\\ \cline{1-1} \end{array} \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\left[2^2\right]:\quad\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3 & 4\\ \cline{1-2} \end{array} \quad , \quad \begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2 & 4\\ \cline{1-2} \end{array} \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\left[21^2\right]:\quad\begin{array}{|c|c|} \hline 1 & 4\\ \cline{1-2} 2\\ \cline{1-1} 3\\ \cline{1-1} \end{array} \quad , \quad \begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2\\ \cline{1-1} 4\\ \cline{1-1} \end{array} \quad , \quad \begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3\\ \cline{1-1} 4\\ \cline{1-1} \end{array} \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\left[1^4\right]:\quad\begin{array}{|c|} \hline 1\\ \cline{1-1} 2\\ \cline{1-1} 3\\ \cline{1-1} 4\\ \cline{1-1} \end{array} \end{dmath*}%
+\vspace{0.25cm}%
+\newpage%
+\section{Ausmultiplizierte Young{-}Tableaus}%
+\label{sec:AusmultiplizierteYoung{-}Tableaus}%
+
+%
+\subsection{Raum{-}Funktionen}%
+\label{subsec:Raum{-}Funktionen}%
+$a, b, c, \hdots \quad $ = allgemeine Funktionen, die beispielsweise p-Orbitale repräsentieren könnten
+
+%
+\vspace{0.25cm}%
+\begin{dmath*}\left[4\right]:\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|c|} \hline 1 & 2 & 3 & 4\\ \cline{1-4} \end{array} \quad \frac{1}{\sqrt{24}} \left( + a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}  + a_{1} \cdot b_{2} \cdot c_{4} \cdot d_{3}  + a_{1} \cdot b_{3} \cdot c_{2} \cdot d_{4}  + a_{1} \cdot b_{3} \cdot c_{4} \cdot d_{2}  + a_{1} \cdot b_{4} \cdot c_{2} \cdot d_{3}  + a_{1} \cdot b_{4} \cdot c_{3} \cdot d_{2}  + a_{2} \cdot b_{1} \cdot c_{3} \cdot d_{4}  + a_{2} \cdot b_{1} \cdot c_{4} \cdot d_{3}  + a_{2} \cdot b_{3} \cdot c_{1} \cdot d_{4}  + a_{2} \cdot b_{3} \cdot c_{4} \cdot d_{1}  + a_{2} \cdot b_{4} \cdot c_{1} \cdot d_{3}  + a_{2} \cdot b_{4} \cdot c_{3} \cdot d_{1}  + a_{3} \cdot b_{1} \cdot c_{2} \cdot d_{4}  + a_{3} \cdot b_{1} \cdot c_{4} \cdot d_{2}  + a_{3} \cdot b_{2} \cdot c_{1} \cdot d_{4}  + a_{3} \cdot b_{2} \cdot c_{4} \cdot d_{1}  + a_{3} \cdot b_{4} \cdot c_{1} \cdot d_{2}  + a_{3} \cdot b_{4} \cdot c_{2} \cdot d_{1}  + a_{4} \cdot b_{1} \cdot c_{2} \cdot d_{3}  + a_{4} \cdot b_{1} \cdot c_{3} \cdot d_{2}  + a_{4} \cdot b_{2} \cdot c_{1} \cdot d_{3}  + a_{4} \cdot b_{2} \cdot c_{3} \cdot d_{1}  + a_{4} \cdot b_{3} \cdot c_{1} \cdot d_{2}  + a_{4} \cdot b_{3} \cdot c_{2} \cdot d_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\begin{dmath*}\left[13\right]:\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|} \hline 1 & 3 & 4\\ \cline{1-3} 2\\ \cline{1-1} \end{array} \quad \frac{1}{\sqrt{12}} \left( + a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}  - a_{2} \cdot b_{1} \cdot c_{3} \cdot d_{4}  + a_{1} \cdot b_{2} \cdot c_{4} \cdot d_{3}  - a_{2} \cdot b_{1} \cdot c_{4} \cdot d_{3}  - a_{3} \cdot b_{1} \cdot c_{2} \cdot d_{4}  + a_{3} \cdot b_{2} \cdot c_{1} \cdot d_{4}  - a_{3} \cdot b_{1} \cdot c_{4} \cdot d_{2}  + a_{3} \cdot b_{2} \cdot c_{4} \cdot d_{1}  - a_{4} \cdot b_{1} \cdot c_{2} \cdot d_{3}  + a_{4} \cdot b_{2} \cdot c_{1} \cdot d_{3}  - a_{4} \cdot b_{1} \cdot c_{3} \cdot d_{2}  + a_{4} \cdot b_{2} \cdot c_{3} \cdot d_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|} \hline 1 & 2 & 4\\ \cline{1-3} 3\\ \cline{1-1} \end{array} \quad \frac{1}{\sqrt{12}} \left( + a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}  - a_{3} \cdot b_{2} \cdot c_{1} \cdot d_{4}  + a_{1} \cdot b_{4} \cdot c_{3} \cdot d_{2}  - a_{3} \cdot b_{4} \cdot c_{1} \cdot d_{2}  + a_{2} \cdot b_{1} \cdot c_{3} \cdot d_{4}  - a_{2} \cdot b_{3} \cdot c_{1} \cdot d_{4}  - a_{2} \cdot b_{4} \cdot c_{1} \cdot d_{3}  + a_{2} \cdot b_{4} \cdot c_{3} \cdot d_{1}  + a_{4} \cdot b_{1} \cdot c_{3} \cdot d_{2}  - a_{4} \cdot b_{3} \cdot c_{1} \cdot d_{2}  - a_{4} \cdot b_{2} \cdot c_{1} \cdot d_{3}  + a_{4} \cdot b_{2} \cdot c_{3} \cdot d_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|} \hline 1 & 2 & 3\\ \cline{1-3} 4\\ \cline{1-1} \end{array} \quad \frac{1}{\sqrt{12}} \left( + a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}  - a_{4} \cdot b_{2} \cdot c_{3} \cdot d_{1}  + a_{1} \cdot b_{3} \cdot c_{2} \cdot d_{4}  - a_{4} \cdot b_{3} \cdot c_{2} \cdot d_{1}  + a_{2} \cdot b_{1} \cdot c_{3} \cdot d_{4}  - a_{2} \cdot b_{4} \cdot c_{3} \cdot d_{1}  + a_{2} \cdot b_{3} \cdot c_{1} \cdot d_{4}  - a_{2} \cdot b_{3} \cdot c_{4} \cdot d_{1}  + a_{3} \cdot b_{1} \cdot c_{2} \cdot d_{4}  - a_{3} \cdot b_{4} \cdot c_{2} \cdot d_{1}  + a_{3} \cdot b_{2} \cdot c_{1} \cdot d_{4}  - a_{3} \cdot b_{2} \cdot c_{4} \cdot d_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\begin{dmath*}\left[2^2\right]:\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3 & 4\\ \cline{1-2} \end{array} \quad \frac{1}{\sqrt{16}} \left( + a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}  - a_{1} \cdot b_{4} \cdot c_{3} \cdot d_{2}  - a_{3} \cdot b_{2} \cdot c_{1} \cdot d_{4}  + a_{3} \cdot b_{4} \cdot c_{1} \cdot d_{2}  + a_{1} \cdot b_{2} \cdot c_{4} \cdot d_{3}  - a_{1} \cdot b_{4} \cdot c_{2} \cdot d_{3}  - a_{3} \cdot b_{2} \cdot c_{4} \cdot d_{1}  + a_{3} \cdot b_{4} \cdot c_{2} \cdot d_{1}  + a_{2} \cdot b_{1} \cdot c_{3} \cdot d_{4}  - a_{4} \cdot b_{1} \cdot c_{3} \cdot d_{2}  - a_{2} \cdot b_{3} \cdot c_{1} \cdot d_{4}  + a_{4} \cdot b_{3} \cdot c_{1} \cdot d_{2}  + a_{2} \cdot b_{1} \cdot c_{4} \cdot d_{3}  - a_{4} \cdot b_{1} \cdot c_{2} \cdot d_{3}  - a_{2} \cdot b_{3} \cdot c_{4} \cdot d_{1}  + a_{4} \cdot b_{3} \cdot c_{2} \cdot d_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2 & 4\\ \cline{1-2} \end{array} \quad \frac{1}{\sqrt{16}} \left( + a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}  - a_{1} \cdot b_{2} \cdot c_{4} \cdot d_{3}  - a_{2} \cdot b_{1} \cdot c_{3} \cdot d_{4}  + a_{2} \cdot b_{1} \cdot c_{4} \cdot d_{3}  - a_{1} \cdot b_{3} \cdot c_{4} \cdot d_{2}  + a_{1} \cdot b_{4} \cdot c_{3} \cdot d_{2}  + a_{2} \cdot b_{3} \cdot c_{4} \cdot d_{1}  - a_{2} \cdot b_{4} \cdot c_{3} \cdot d_{1}  - a_{3} \cdot b_{1} \cdot c_{2} \cdot d_{4}  + a_{4} \cdot b_{1} \cdot c_{2} \cdot d_{3}  + a_{3} \cdot b_{2} \cdot c_{1} \cdot d_{4}  - a_{4} \cdot b_{2} \cdot c_{1} \cdot d_{3}  + a_{3} \cdot b_{4} \cdot c_{1} \cdot d_{2}  - a_{4} \cdot b_{3} \cdot c_{1} \cdot d_{2}  - a_{3} \cdot b_{4} \cdot c_{2} \cdot d_{1}  + a_{4} \cdot b_{3} \cdot c_{2} \cdot d_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\begin{dmath*}\left[21^2\right]:\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|} \hline 1 & 4\\ \cline{1-2} 2\\ \cline{1-1} 3\\ \cline{1-1} \end{array} \quad \frac{1}{\sqrt{12}} \left( + a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}  - a_{1} \cdot b_{3} \cdot c_{2} \cdot d_{4}  - a_{2} \cdot b_{1} \cdot c_{3} \cdot d_{4}  + a_{2} \cdot b_{3} \cdot c_{1} \cdot d_{4}  + a_{3} \cdot b_{1} \cdot c_{2} \cdot d_{4}  - a_{3} \cdot b_{2} \cdot c_{1} \cdot d_{4}  + a_{4} \cdot b_{1} \cdot c_{2} \cdot d_{3}  - a_{4} \cdot b_{1} \cdot c_{3} \cdot d_{2}  - a_{4} \cdot b_{2} \cdot c_{1} \cdot d_{3}  + a_{4} \cdot b_{2} \cdot c_{3} \cdot d_{1}  + a_{4} \cdot b_{3} \cdot c_{1} \cdot d_{2}  - a_{4} \cdot b_{3} \cdot c_{2} \cdot d_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2\\ \cline{1-1} 4\\ \cline{1-1} \end{array} \quad \frac{1}{\sqrt{12}} \left( + a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}  - a_{1} \cdot b_{4} \cdot c_{3} \cdot d_{2}  - a_{2} \cdot b_{1} \cdot c_{3} \cdot d_{4}  + a_{2} \cdot b_{4} \cdot c_{3} \cdot d_{1}  + a_{4} \cdot b_{1} \cdot c_{3} \cdot d_{2}  - a_{4} \cdot b_{2} \cdot c_{3} \cdot d_{1}  - a_{3} \cdot b_{1} \cdot c_{2} \cdot d_{4}  + a_{3} \cdot b_{1} \cdot c_{4} \cdot d_{2}  + a_{3} \cdot b_{2} \cdot c_{1} \cdot d_{4}  - a_{3} \cdot b_{2} \cdot c_{4} \cdot d_{1}  - a_{3} \cdot b_{4} \cdot c_{1} \cdot d_{2}  + a_{3} \cdot b_{4} \cdot c_{2} \cdot d_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3\\ \cline{1-1} 4\\ \cline{1-1} \end{array} \quad \frac{1}{\sqrt{12}} \left( + a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}  - a_{1} \cdot b_{2} \cdot c_{4} \cdot d_{3}  - a_{3} \cdot b_{2} \cdot c_{1} \cdot d_{4}  + a_{3} \cdot b_{2} \cdot c_{4} \cdot d_{1}  + a_{4} \cdot b_{2} \cdot c_{1} \cdot d_{3}  - a_{4} \cdot b_{2} \cdot c_{3} \cdot d_{1}  + a_{2} \cdot b_{1} \cdot c_{3} \cdot d_{4}  - a_{2} \cdot b_{1} \cdot c_{4} \cdot d_{3}  - a_{2} \cdot b_{3} \cdot c_{1} \cdot d_{4}  + a_{2} \cdot b_{3} \cdot c_{4} \cdot d_{1}  + a_{2} \cdot b_{4} \cdot c_{1} \cdot d_{3}  - a_{2} \cdot b_{4} \cdot c_{3} \cdot d_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\begin{dmath*}\left[1^4\right]:\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|} \hline 1\\ \cline{1-1} 2\\ \cline{1-1} 3\\ \cline{1-1} 4\\ \cline{1-1} \end{array} \quad \frac{1}{\sqrt{24}} \left( + a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}  - a_{1} \cdot b_{2} \cdot c_{4} \cdot d_{3}  - a_{1} \cdot b_{3} \cdot c_{2} \cdot d_{4}  + a_{1} \cdot b_{3} \cdot c_{4} \cdot d_{2}  + a_{1} \cdot b_{4} \cdot c_{2} \cdot d_{3}  - a_{1} \cdot b_{4} \cdot c_{3} \cdot d_{2}  - a_{2} \cdot b_{1} \cdot c_{3} \cdot d_{4}  - a_{2} \cdot b_{1} \cdot c_{4} \cdot d_{3}  + a_{2} \cdot b_{3} \cdot c_{1} \cdot d_{4}  - a_{2} \cdot b_{3} \cdot c_{4} \cdot d_{1}  - a_{2} \cdot b_{4} \cdot c_{1} \cdot d_{3}  + a_{2} \cdot b_{4} \cdot c_{3} \cdot d_{1}  + a_{3} \cdot b_{1} \cdot c_{2} \cdot d_{4}  - a_{3} \cdot b_{1} \cdot c_{4} \cdot d_{2}  - a_{3} \cdot b_{2} \cdot c_{1} \cdot d_{4}  + a_{3} \cdot b_{2} \cdot c_{4} \cdot d_{1}  - a_{3} \cdot b_{4} \cdot c_{1} \cdot d_{2}  - a_{3} \cdot b_{4} \cdot c_{2} \cdot d_{1}  - a_{4} \cdot b_{1} \cdot c_{2} \cdot d_{3}  + a_{4} \cdot b_{1} \cdot c_{3} \cdot d_{2}  + a_{4} \cdot b_{2} \cdot c_{1} \cdot d_{3}  - a_{4} \cdot b_{2} \cdot c_{3} \cdot d_{1}  - a_{4} \cdot b_{3} \cdot c_{1} \cdot d_{2}  - a_{4} \cdot b_{3} \cdot c_{2} \cdot d_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\checkpagebreak%
+\subsection{Spin{-}Funktionen}%
+\label{subsec:Spin{-}Funktionen}%
+Die möglichen Kombinationen $\ket{S \; M_S}$ für die Tableaus der Permutationsgruppe 4 lauten:
+
+%
+\vspace{0.25cm}%
+\begin{dmath*}\left[4\right]:\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|c|} \hline 1 & 2 & 3 & 4\\ \cline{1-4} \end{array} \qquad \ket{ 2 \quad  +0 } = \frac{1}{\sqrt{6}} \left( + \alpha_{1} \cdot \alpha_{2} \cdot \beta_{3} \cdot \beta_{4}  + \alpha_{1} \cdot \alpha_{3} \cdot \beta_{2} \cdot \beta_{4}  + \alpha_{1} \cdot \alpha_{4} \cdot \beta_{2} \cdot \beta_{3}  + \alpha_{2} \cdot \alpha_{3} \cdot \beta_{1} \cdot \beta_{4}  + \alpha_{2} \cdot \alpha_{4} \cdot \beta_{1} \cdot \beta_{3}  + \alpha_{3} \cdot \alpha_{4} \cdot \beta_{1} \cdot \beta_{2}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|c|} \hline 1 & 2 & 3 & 4\\ \cline{1-4} \end{array} \qquad \ket{ 2 \quad  +1 } = \frac{1}{\sqrt{4}} \left( + \alpha_{1} \cdot \alpha_{2} \cdot \alpha_{3} \cdot \beta_{4}  + \alpha_{1} \cdot \alpha_{2} \cdot \alpha_{4} \cdot \beta_{3}  + \alpha_{1} \cdot \alpha_{3} \cdot \alpha_{4} \cdot \beta_{2}  + \alpha_{2} \cdot \alpha_{3} \cdot \alpha_{4} \cdot \beta_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|c|} \hline 1 & 2 & 3 & 4\\ \cline{1-4} \end{array} \qquad \ket{ 2 \quad  +2 } = \left( + \alpha_{1} \cdot \alpha_{2} \cdot \alpha_{3} \cdot \alpha_{4}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|c|} \hline 1 & 2 & 3 & 4\\ \cline{1-4} \end{array} \qquad \ket{ 2 \quad  -1 } = \frac{1}{\sqrt{4}} \left( + \beta_{1} \cdot \beta_{2} \cdot \beta_{3} \cdot \alpha_{4}  + \beta_{1} \cdot \beta_{2} \cdot \beta_{4} \cdot \alpha_{3}  + \beta_{1} \cdot \beta_{3} \cdot \beta_{4} \cdot \alpha_{2}  + \beta_{2} \cdot \beta_{3} \cdot \beta_{4} \cdot \alpha_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|c|} \hline 1 & 2 & 3 & 4\\ \cline{1-4} \end{array} \qquad \ket{ 2 \quad  -2 } = \left( + \beta_{1} \cdot \beta_{2} \cdot \beta_{3} \cdot \beta_{4}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\begin{dmath*}\left[13\right]:\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|} \hline 1 & 3 & 4\\ \cline{1-3} 2\\ \cline{1-1} \end{array} \qquad \ket{ 1 \quad  +0 } = \frac{1}{\sqrt{4}} \left( + \alpha_{1} \cdot \beta_{2} \cdot \alpha_{3} \cdot \beta_{4}  - \alpha_{2} \cdot \beta_{1} \cdot \alpha_{3} \cdot \beta_{4}  + \alpha_{1} \cdot \beta_{2} \cdot \alpha_{4} \cdot \beta_{3}  - \alpha_{2} \cdot \beta_{1} \cdot \alpha_{4} \cdot \beta_{3}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|} \hline 1 & 3 & 4\\ \cline{1-3} 2\\ \cline{1-1} \end{array} \qquad \ket{ 1 \quad  +1 } = \frac{1}{\sqrt{2}} \left( + \alpha_{1} \cdot \beta_{2} \cdot \alpha_{3} \cdot \alpha_{4}  - \alpha_{2} \cdot \beta_{1} \cdot \alpha_{3} \cdot \alpha_{4}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|} \hline 1 & 3 & 4\\ \cline{1-3} 2\\ \cline{1-1} \end{array} \qquad \ket{ 1 \quad  -1 } = \frac{1}{\sqrt{2}} \left( - \beta_{3} \cdot \beta_{1} \cdot \beta_{4} \cdot \alpha_{2}  + \beta_{3} \cdot \beta_{2} \cdot \beta_{4} \cdot \alpha_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|} \hline 1 & 2 & 4\\ \cline{1-3} 3\\ \cline{1-1} \end{array} \qquad \ket{ 1 \quad  +0 } = \frac{1}{\sqrt{4}} \left( + \alpha_{1} \cdot \alpha_{2} \cdot \beta_{3} \cdot \beta_{4}  - \alpha_{3} \cdot \alpha_{2} \cdot \beta_{1} \cdot \beta_{4}  + \alpha_{1} \cdot \alpha_{4} \cdot \beta_{3} \cdot \beta_{2}  - \alpha_{3} \cdot \alpha_{4} \cdot \beta_{1} \cdot \beta_{2}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|} \hline 1 & 2 & 4\\ \cline{1-3} 3\\ \cline{1-1} \end{array} \qquad \ket{ 1 \quad  +1 } = \frac{1}{\sqrt{2}} \left( + \alpha_{1} \cdot \alpha_{2} \cdot \beta_{3} \cdot \alpha_{4}  - \alpha_{3} \cdot \alpha_{2} \cdot \beta_{1} \cdot \alpha_{4}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|} \hline 1 & 2 & 4\\ \cline{1-3} 3\\ \cline{1-1} \end{array} \qquad \ket{ 1 \quad  -1 } = \frac{1}{\sqrt{2}} \left( - \beta_{2} \cdot \beta_{4} \cdot \beta_{1} \cdot \alpha_{3}  + \beta_{2} \cdot \beta_{4} \cdot \beta_{3} \cdot \alpha_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|} \hline 1 & 2 & 3\\ \cline{1-3} 4\\ \cline{1-1} \end{array} \qquad \ket{ 1 \quad  +0 } = \frac{1}{\sqrt{4}} \left( + \alpha_{1} \cdot \alpha_{2} \cdot \beta_{3} \cdot \beta_{4}  - \alpha_{4} \cdot \alpha_{2} \cdot \beta_{3} \cdot \beta_{1}  + \alpha_{1} \cdot \alpha_{3} \cdot \beta_{2} \cdot \beta_{4}  - \alpha_{4} \cdot \alpha_{3} \cdot \beta_{2} \cdot \beta_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|} \hline 1 & 2 & 3\\ \cline{1-3} 4\\ \cline{1-1} \end{array} \qquad \ket{ 1 \quad  +1 } = \frac{1}{\sqrt{2}} \left( + \alpha_{1} \cdot \alpha_{2} \cdot \alpha_{3} \cdot \beta_{4}  - \alpha_{4} \cdot \alpha_{2} \cdot \alpha_{3} \cdot \beta_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|c|} \hline 1 & 2 & 3\\ \cline{1-3} 4\\ \cline{1-1} \end{array} \qquad \ket{ 1 \quad  -1 } = \frac{1}{\sqrt{2}} \left( + \beta_{2} \cdot \beta_{3} \cdot \alpha_{1} \cdot \beta_{4}  - \beta_{2} \cdot \beta_{3} \cdot \alpha_{4} \cdot \beta_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\begin{dmath*}\left[2^2\right]:\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3 & 4\\ \cline{1-2} \end{array} \qquad \ket{ 0 \quad  +0 } = \frac{1}{\sqrt{4}} \left( + \alpha_{1} \cdot \alpha_{2} \cdot \beta_{3} \cdot \beta_{4}  - \alpha_{1} \cdot \alpha_{4} \cdot \beta_{3} \cdot \beta_{2}  - \alpha_{3} \cdot \alpha_{2} \cdot \beta_{1} \cdot \beta_{4}  + \alpha_{3} \cdot \alpha_{4} \cdot \beta_{1} \cdot \beta_{2}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2 & 4\\ \cline{1-2} \end{array} \qquad \ket{ 0 \quad  +0 } = \frac{1}{\sqrt{4}} \left( + \alpha_{1} \cdot \beta_{2} \cdot \alpha_{3} \cdot \beta_{4}  - \alpha_{1} \cdot \beta_{2} \cdot \alpha_{4} \cdot \beta_{3}  - \alpha_{2} \cdot \beta_{1} \cdot \alpha_{3} \cdot \beta_{4}  + \alpha_{2} \cdot \beta_{1} \cdot \alpha_{4} \cdot \beta_{3}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\begin{dmath*}\left[21^2\right]:\end{dmath*}%
+\vspace{0.25cm}%
+\textit{(Da es nur zwei Spinfunktionen $\alpha, \beta$ gibt, sind mehr als zwei antisymmetrische Funktionen nicht möglich.)}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\begin{dmath*}\left[1^4\right]:\end{dmath*}%
+\vspace{0.25cm}%
+\textit{(Da es nur zwei Spinfunktionen $\alpha, \beta$ gibt, sind mehr als zwei antisymmetrische Funktionen nicht möglich.)}%
+\vspace{0.25cm}%
+\newpage%
+\section{Überlappungsintegrale}%
+\label{sec:berlappungsintegrale}%
+
+%
+\subsection{Raumfunktionen}%
+\label{subsec:Raumfunktionen}%
+ (nur nicht verschwindende Kombinationen gezeigt)\\Identische Tableaus ergeben (aufgrund der normierten Funktionen darin) automatisch 1 und werden daher hier nicht aufgelistet.
+
+%
+\begin{dmath*}\bra{\,\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3 & 4\\ \cline{1-2} \end{array} \,} \ket{\,\begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2 & 4\\ \cline{1-2} \end{array} \,}_{\Phi} = \left( - 1/4\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\,\begin{array}{|c|c|} \hline 1 & 4\\ \cline{1-2} 2\\ \cline{1-1} 3\\ \cline{1-1} \end{array} \,} \ket{\,\begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2\\ \cline{1-1} 4\\ \cline{1-1} \end{array} \,}_{\Phi} = \left( - 1/6\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\,\begin{array}{|c|c|} \hline 1 & 4\\ \cline{1-2} 2\\ \cline{1-1} 3\\ \cline{1-1} \end{array} \,} \ket{\,\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3\\ \cline{1-1} 4\\ \cline{1-1} \end{array} \,}_{\Phi} = \left( - 1/6\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\,\begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2\\ \cline{1-1} 4\\ \cline{1-1} \end{array} \,} \ket{\,\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3\\ \cline{1-1} 4\\ \cline{1-1} \end{array} \,}_{\Phi} = \left( - 1/6\right) \end{dmath*}%
+\vspace{0.25cm}%
+\checkpagebreak%
+\subsection{Spinfunktionen}%
+\label{subsec:Spinfunktionen}%
+(nur nicht verschwindende Kombinationen gezeigt)\\ Überlapp zw. versch. Tableaus ist 0 (wird hier ausgelassen), Überlapp zwischen gleichen Tableaus mit gleichem $m_S$-Wert ist 1 (wird hier ausgelassen)\\hier informale Darstellung der Tableaus mit Spinfunktionen nach dem Schema: 
+
+%
+\begin{dmath*}\bra{\,\text{Tableau 1}\,}\ket{\,\text{Tableau 2}\,} = \bra{\, \underbrace{S \quad m_S}_{\text{von Tableau 1}} \,} \ket{\, \underbrace{S \quad m_S}_{\text{von Tableau 2}} \,} = \underbrace{...}_{\text{Überlapp der Tableaus 1 und 2}}\end{dmath*}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\,\begin{array}{|c|c|c|} \hline 1 & 3 & 4\\ \cline{1-3} 2\\ \cline{1-1} \end{array} \,} \ket{\,\begin{array}{|c|c|c|} \hline 1 & 2 & 4\\ \cline{1-3} 3\\ \cline{1-1} \end{array} \,}_{\sigma }=\bra{\, 1\quad -1 \,} \ket{\, 1\quad -1 \,}_{\Phi} = \left( + 1/2\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\,\begin{array}{|c|c|c|} \hline 1 & 3 & 4\\ \cline{1-3} 2\\ \cline{1-1} \end{array} \,} \ket{\,\begin{array}{|c|c|c|} \hline 1 & 2 & 3\\ \cline{1-3} 4\\ \cline{1-1} \end{array} \,}_{\sigma }=\bra{\, 1\quad -1 \,} \ket{\, 1\quad -1 \,}_{\Phi} = \left( + 1/2\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\,\begin{array}{|c|c|c|} \hline 1 & 2 & 4\\ \cline{1-3} 3\\ \cline{1-1} \end{array} \,} \ket{\,\begin{array}{|c|c|c|} \hline 1 & 2 & 3\\ \cline{1-3} 4\\ \cline{1-1} \end{array} \,}_{\sigma }=\bra{\, 1\quad -1 \,} \ket{\, 1\quad -1 \,}_{\Phi} = \left( + 1/2\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\,\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3 & 4\\ \cline{1-2} \end{array} \,} \ket{\,\begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2 & 4\\ \cline{1-2} \end{array} \,}_{\sigma }=\bra{\, 0\quad +0 \,} \ket{\, 0\quad +0 \,}_{\Phi} = \left( + 1/2\right) \end{dmath*}%
+\vspace{0.25cm}%
+\newpage%
+\section{Hamiltonmatrixelemente}%
+\label{sec:Hamiltonmatrixelemente}%
+
+%
+\subsection{Raum{-}Funktionen}%
+\label{subsec:Raum{-}Funktionen}%
+
+%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3 & 4\\ \cline{1-2} \end{array} }\hat{H}\ket{\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3 & 4\\ \cline{1-2} \end{array} }_{\Phi} = + \bra{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4} } \hat{H} \ket{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}}- \frac{1}{2}  \cdot \bra{ b_{2} \cdot d_{4} } \hat{H} \ket{ d_{2} \cdot b_{4}}- \frac{1}{2}  \cdot \bra{ a_{1} \cdot c_{3} } \hat{H} \ket{ c_{1} \cdot a_{3}}+ \bra{ c_{3} \cdot d_{4} } \hat{H} \ket{ d_{3} \cdot c_{4}}+ \bra{ a_{1} \cdot b_{2} } \hat{H} \ket{ b_{1} \cdot a_{2}}- \frac{1}{2}  \cdot \bra{ b_{2} \cdot c_{4} } \hat{H} \ket{ c_{2} \cdot b_{4}}- \frac{1}{2}  \cdot \bra{ a_{1} \cdot d_{3} } \hat{H} \ket{ d_{1} \cdot a_{3}}\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3 & 4\\ \cline{1-2} \end{array} }\hat{H}\ket{\begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2 & 4\\ \cline{1-2} \end{array} }_{\Phi} = - \frac{1}{4}  \cdot \bra{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4} } \hat{H} \ket{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}}- \frac{1}{4}  \cdot \bra{ c_{3} \cdot d_{4} } \hat{H} \ket{ d_{3} \cdot c_{4}}- \frac{1}{4}  \cdot \bra{ a_{1} \cdot b_{2} } \hat{H} \ket{ b_{1} \cdot a_{2}}- \frac{1}{4}  \cdot \bra{ b_{2} \cdot d_{4} } \hat{H} \ket{ d_{2} \cdot b_{4}}- \frac{1}{4}  \cdot \bra{ a_{1} \cdot c_{3} } \hat{H} \ket{ c_{1} \cdot a_{3}}+ \frac{1}{2}  \cdot \bra{ b_{4} \cdot c_{3} } \hat{H} \ket{ c_{4} \cdot b_{3}}+ \frac{1}{2}  \cdot \bra{ a_{1} \cdot d_{2} } \hat{H} \ket{ d_{1} \cdot a_{2}}\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2 & 4\\ \cline{1-2} \end{array} }\hat{H}\ket{\begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2 & 4\\ \cline{1-2} \end{array} }_{\Phi} = + \bra{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4} } \hat{H} \ket{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}}- \frac{1}{2}  \cdot \bra{ c_{3} \cdot d_{4} } \hat{H} \ket{ d_{3} \cdot c_{4}}- \frac{1}{2}  \cdot \bra{ a_{1} \cdot b_{2} } \hat{H} \ket{ b_{1} \cdot a_{2}}+ \bra{ b_{2} \cdot d_{4} } \hat{H} \ket{ d_{2} \cdot b_{4}}+ \bra{ a_{1} \cdot c_{3} } \hat{H} \ket{ c_{1} \cdot a_{3}}- \frac{1}{2}  \cdot \bra{ b_{3} \cdot c_{4} } \hat{H} \ket{ c_{3} \cdot b_{4}}- \frac{1}{2}  \cdot \bra{ a_{1} \cdot d_{2} } \hat{H} \ket{ d_{1} \cdot a_{2}}\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\begin{array}{|c|c|} \hline 1 & 4\\ \cline{1-2} 2\\ \cline{1-1} 3\\ \cline{1-1} \end{array} }\hat{H}\ket{\begin{array}{|c|c|} \hline 1 & 4\\ \cline{1-2} 2\\ \cline{1-1} 3\\ \cline{1-1} \end{array} }_{\Phi} = + \bra{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4} } \hat{H} \ket{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}}- \bra{ b_{2} \cdot c_{3} } \hat{H} \ket{ c_{2} \cdot b_{3}}- 1/2  \cdot \bra{ a_{1} \cdot b_{2} } \hat{H} \ket{ b_{1} \cdot a_{2}}- 1/2  \cdot \bra{ a_{1} \cdot c_{3} } \hat{H} \ket{ c_{1} \cdot a_{3}}+ \bra{ a_{1} \cdot d_{4} } \hat{H} \ket{ d_{1} \cdot a_{4}}- 1/2  \cdot \bra{ c_{2} \cdot d_{3} } \hat{H} \ket{ d_{2} \cdot c_{3}}- 1/2  \cdot \bra{ b_{1} \cdot d_{3} } \hat{H} \ket{ d_{1} \cdot b_{3}}\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\begin{array}{|c|c|} \hline 1 & 4\\ \cline{1-2} 2\\ \cline{1-1} 3\\ \cline{1-1} \end{array} }\hat{H}\ket{\begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2\\ \cline{1-1} 4\\ \cline{1-1} \end{array} }_{\Phi} = - 1/6  \cdot \bra{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4} } \hat{H} \ket{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}}+ 1/6  \cdot \bra{ b_{2} \cdot d_{4} } \hat{H} \ket{ d_{2} \cdot b_{4}}- 1/6  \cdot \bra{ a_{1} \cdot d_{4} } \hat{H} \ket{ d_{1} \cdot a_{4}}- 1/6  \cdot \bra{ a_{1} \cdot c_{3} } \hat{H} \ket{ c_{1} \cdot a_{3}}+ 1/6  \cdot \bra{ b_{3} \cdot c_{2} } \hat{H} \ket{ c_{3} \cdot b_{2}}+ 1/3  \cdot \bra{ c_{2} \cdot d_{4} } \hat{H} \ket{ d_{2} \cdot c_{4}}\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\begin{array}{|c|c|} \hline 1 & 4\\ \cline{1-2} 2\\ \cline{1-1} 3\\ \cline{1-1} \end{array} }\hat{H}\ket{\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3\\ \cline{1-1} 4\\ \cline{1-1} \end{array} }_{\Phi} = - 1/6  \cdot \bra{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4} } \hat{H} \ket{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}}+ 1/6  \cdot \bra{ c_{3} \cdot d_{4} } \hat{H} \ket{ d_{3} \cdot c_{4}}- 1/6  \cdot \bra{ a_{1} \cdot d_{4} } \hat{H} \ket{ d_{1} \cdot a_{4}}- 1/6  \cdot \bra{ a_{1} \cdot b_{2} } \hat{H} \ket{ b_{1} \cdot a_{2}}+ 1/6  \cdot \bra{ b_{3} \cdot c_{2} } \hat{H} \ket{ c_{3} \cdot b_{2}}+ 1/3  \cdot \bra{ b_{1} \cdot d_{4} } \hat{H} \ket{ d_{1} \cdot b_{4}}\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2\\ \cline{1-1} 4\\ \cline{1-1} \end{array} }\hat{H}\ket{\begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2\\ \cline{1-1} 4\\ \cline{1-1} \end{array} }_{\Phi} = + \bra{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4} } \hat{H} \ket{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}}- \bra{ b_{2} \cdot d_{4} } \hat{H} \ket{ d_{2} \cdot b_{4}}- 1/2  \cdot \bra{ a_{1} \cdot b_{2} } \hat{H} \ket{ b_{1} \cdot a_{2}}- 1/2  \cdot \bra{ a_{1} \cdot d_{4} } \hat{H} \ket{ d_{1} \cdot a_{4}}+ \bra{ a_{1} \cdot c_{3} } \hat{H} \ket{ c_{1} \cdot a_{3}}- 1/2  \cdot \bra{ c_{2} \cdot d_{4} } \hat{H} \ket{ d_{2} \cdot c_{4}}- 1/2  \cdot \bra{ b_{1} \cdot c_{2} } \hat{H} \ket{ c_{1} \cdot b_{2}}\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\begin{array}{|c|c|} \hline 1 & 3\\ \cline{1-2} 2\\ \cline{1-1} 4\\ \cline{1-1} \end{array} }\hat{H}\ket{\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3\\ \cline{1-1} 4\\ \cline{1-1} \end{array} }_{\Phi} = - 1/6  \cdot \bra{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4} } \hat{H} \ket{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}}+ 1/6  \cdot \bra{ c_{3} \cdot d_{4} } \hat{H} \ket{ d_{3} \cdot c_{4}}- 1/6  \cdot \bra{ a_{1} \cdot c_{3} } \hat{H} \ket{ c_{1} \cdot a_{3}}- 1/6  \cdot \bra{ a_{1} \cdot b_{2} } \hat{H} \ket{ b_{1} \cdot a_{2}}+ 1/6  \cdot \bra{ b_{4} \cdot d_{2} } \hat{H} \ket{ d_{4} \cdot b_{2}}+ 1/3  \cdot \bra{ b_{1} \cdot c_{3} } \hat{H} \ket{ c_{1} \cdot b_{3}}\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3\\ \cline{1-1} 4\\ \cline{1-1} \end{array} }\hat{H}\ket{\begin{array}{|c|c|} \hline 1 & 2\\ \cline{1-2} 3\\ \cline{1-1} 4\\ \cline{1-1} \end{array} }_{\Phi} = + \bra{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4} } \hat{H} \ket{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}}- \bra{ c_{3} \cdot d_{4} } \hat{H} \ket{ d_{3} \cdot c_{4}}- 1/2  \cdot \bra{ a_{1} \cdot c_{3} } \hat{H} \ket{ c_{1} \cdot a_{3}}- 1/2  \cdot \bra{ a_{1} \cdot d_{4} } \hat{H} \ket{ d_{1} \cdot a_{4}}+ \bra{ a_{1} \cdot b_{2} } \hat{H} \ket{ b_{1} \cdot a_{2}}- 1/2  \cdot \bra{ b_{1} \cdot c_{3} } \hat{H} \ket{ c_{1} \cdot b_{3}}- 1/2  \cdot \bra{ b_{1} \cdot d_{4} } \hat{H} \ket{ d_{1} \cdot b_{4}}\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\begin{array}{|c|} \hline 1\\ \cline{1-1} 2\\ \cline{1-1} 3\\ \cline{1-1} 4\\ \cline{1-1} \end{array} }\hat{H}\ket{\begin{array}{|c|} \hline 1\\ \cline{1-1} 2\\ \cline{1-1} 3\\ \cline{1-1} 4\\ \cline{1-1} \end{array} }_{\Phi} = + \bra{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4} } \hat{H} \ket{ a_{1} \cdot b_{2} \cdot c_{3} \cdot d_{4}}- 1/2  \cdot \bra{ c_{3} \cdot d_{4} } \hat{H} \ket{ d_{3} \cdot c_{4}}- 1/2  \cdot \bra{ b_{2} \cdot c_{3} } \hat{H} \ket{ c_{2} \cdot b_{3}}- 1/2  \cdot \bra{ b_{2} \cdot d_{4} } \hat{H} \ket{ d_{2} \cdot b_{4}}- 1/2  \cdot \bra{ a_{1} \cdot b_{2} } \hat{H} \ket{ b_{1} \cdot a_{2}}- 1/2  \cdot \bra{ a_{1} \cdot c_{3} } \hat{H} \ket{ c_{1} \cdot a_{3}}- 1/2  \cdot \bra{ a_{1} \cdot d_{4} } \hat{H} \ket{ d_{1} \cdot a_{4}}\end{dmath*}%
+\vspace{0.25cm}%
+\checkpagebreak%
+\subsection{Spin{-}Funktionen}%
+\label{subsec:Spin{-}Funktionen}%
+Achtung: Der Hamiltonoperator ist unabhängig vom Spin, daher werden die Hamiltonintegrale der Spin-Tableaus zu den Überlappungsintegralen und werden hier nicht erneut aufgeführt. (s. Kapitel 4.2) 
+
+%
+\newpage%
+\tableofcontents%
+\thispagestyle{fancy}%
+\end{document}

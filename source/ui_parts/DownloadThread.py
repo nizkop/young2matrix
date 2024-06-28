@@ -68,7 +68,6 @@ class DownloadThread(QThread):
             self.update_progress.emit(50,"setting up spin-based tableaus" if get_language() == LanguageChoices.en.name
                                     else "Aufsetzen der Spinfunktionstableaus")
             self.permutation_group.get_chapter_spinfunctions()
-            self.permutation_group.get_chapter_spinfunctions()
             time.sleep(1)
 
             self.update_progress.emit(70,"calculating overlap integrals" if get_language() == LanguageChoices.en.name

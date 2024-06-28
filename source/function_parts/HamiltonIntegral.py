@@ -1,3 +1,4 @@
+from fractions import Fraction
 from typing import Dict
 
 from source.function_parts.ProductTerm import ProductTerm
@@ -95,7 +96,16 @@ class HamiltonIntegral(object):
         return f" {self.sign.value} {self.factor} * <{self.bra.to_text().replace('+ ','')} |H| {self.ket.to_text().replace('+ ','')} >".replace(' '*2,' ')
 
     def to_tex(self) -> str:
-        eq = fr"{self.sign.value} {self.factor} \cdot " + r"\bra{ "
+        eq = fr"{self.sign.value} "
+        if self.factor == 0:
+            return " "
+        if self.factor != 1:
+            if isinstance(self.factor, Fraction):
+                eq += r"\frac{" + f"{self.factor.numerator}"+"}{"+ str(self.factor.denominator)+"} "
+            else:
+                eq += str(self.factor)+ " "
+            eq += fr" \cdot "
+        eq += r"\bra{ "
         eq += self.bra.to_tex().replace("+ ","")
         eq+= r" } \hat{H} \ket{ " + self.ket.to_tex().replace("+ ","")
         return eq + r"}"

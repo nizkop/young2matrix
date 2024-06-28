@@ -1,0 +1,129 @@
+\documentclass[fleqn]{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage[a4paper,left=2cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}%
+\usepackage[doublespacing]{setspace}%
+\usepackage{fancyhdr}%
+\usepackage{ragged2e}%
+%
+\usepackage[ngerman]{babel}%
+\usepackage{tocloft}%
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}   % activating dots in table of contents%
+\usepackage{physics}%
+\usepackage{breqn}%
+\usepackage{needspace}%
+\newcommand{\checkpagebreak}{\needspace{.25\textheight}}%
+%
+\begin{document}%
+\normalsize%
+\noindent%
+\thispagestyle{empty}%
+\begin{center}%
+\vspace*{4cm}%
+\Huge{}%
+Erstellung %
+\\ %
+ von Überlappungs{-} und Hamiltonintegralen %
+\\ %
+ auf Basis der Symmetrieeigenschaften %
+\\ %
+ von Young{-}Tableaus%
+\\ %
+\vspace{1cm}%
+\Large{hier für die Permutationsgruppe: 1}%
+\\ %
+\vspace{4cm}%
+\Large{28. Juni 2024}%
+\end{center}%
+\newpage%
+\setcounter{page}{1}%
+\pagestyle{fancy}%
+\fancyhf{}%
+\fancyhead[L]{ Permutationsgruppe 1 }%
+\fancyhead[R]{\nouppercase{\leftmark}}%
+\renewcommand{\footrulewidth}{0.4pt}%
+\fancyfoot[C]{\thepage}%
+\section{Young{-}Tableaus}%
+\label{sec:Young{-}Tableaus}%
+Die möglichen (Standard-)Young-Tableaus zur Gruppe 1 lauten:
+
+%
+\vspace{0.25cm}%
+\begin{dmath*}\left[1\right]:\quad\begin{array}{|c|} \hline 1\\ \cline{1-1} \end{array} \end{dmath*}%
+\vspace{0.25cm}%
+\newpage%
+\section{Ausmultiplizierte Young{-}Tableaus}%
+\label{sec:AusmultiplizierteYoung{-}Tableaus}%
+
+%
+\subsection{Raum{-}Funktionen}%
+\label{subsec:Raum{-}Funktionen}%
+$a, b, c, \hdots \quad $ = allgemeine Funktionen, die beispielsweise p-Orbitale repräsentieren könnten
+
+%
+\vspace{0.25cm}%
+\begin{dmath*}\left[1\right]:\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|} \hline 1\\ \cline{1-1} \end{array} \quad \left( + a_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\checkpagebreak%
+\subsection{Spin{-}Funktionen}%
+\label{subsec:Spin{-}Funktionen}%
+Die möglichen Kombinationen $\ket{S \; M_S}$ für die Tableaus der Permutationsgruppe 1 lauten:
+
+%
+\vspace{0.25cm}%
+\begin{dmath*}\left[1\right]:\end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|} \hline 1\\ \cline{1-1} \end{array} \qquad \ket{ 1/2 \quad  -1/2 } = \left( + \beta_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\begin{dmath*}\begin{array}{|c|} \hline 1\\ \cline{1-1} \end{array} \qquad \ket{ 1/2 \quad  +1/2 } = \left( + \alpha_{1}\right) \end{dmath*}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\newpage%
+\section{Überlappungsintegrale}%
+\label{sec:berlappungsintegrale}%
+
+%
+\subsection{Raumfunktionen}%
+\label{subsec:Raumfunktionen}%
+ (nur nicht verschwindende Kombinationen gezeigt)\\Identische Tableaus ergeben (aufgrund der normierten Funktionen darin) automatisch 1 und werden daher hier nicht aufgelistet.
+
+%
+\checkpagebreak%
+\subsection{Spinfunktionen}%
+\label{subsec:Spinfunktionen}%
+(nur nicht verschwindende Kombinationen gezeigt)\\ Überlapp zw. versch. Tableaus ist 0 (wird hier ausgelassen), Überlapp zwischen gleichen Tableaus mit gleichem $m_S$-Wert ist 1 (wird hier ausgelassen)\\hier informale Darstellung der Tableaus mit Spinfunktionen nach dem Schema: 
+
+%
+\begin{dmath*}\bra{\,\text{Tableau 1}\,}\ket{\,\text{Tableau 2}\,} = \bra{\, \underbrace{S \quad m_S}_{\text{von Tableau 1}} \,} \ket{\, \underbrace{S \quad m_S}_{\text{von Tableau 2}} \,} = \underbrace{...}_{\text{Überlapp der Tableaus 1 und 2}}\end{dmath*}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\newpage%
+\section{Hamiltonmatrixelemente}%
+\label{sec:Hamiltonmatrixelemente}%
+
+%
+\subsection{Raum{-}Funktionen}%
+\label{subsec:Raum{-}Funktionen}%
+
+%
+\vspace{0.25cm}%
+\vspace{0.25cm}%
+\begin{dmath*}\bra{\begin{array}{|c|} \hline 1\\ \cline{1-1} \end{array} }\hat{H}\ket{\begin{array}{|c|} \hline 1\\ \cline{1-1} \end{array} }_{\Phi} = + \bra{ a_{1} } \hat{H} \ket{ a_{1}}\end{dmath*}%
+\vspace{0.25cm}%
+\checkpagebreak%
+\subsection{Spin{-}Funktionen}%
+\label{subsec:Spin{-}Funktionen}%
+Achtung: Der Hamiltonoperator ist unabhängig vom Spin, daher werden die Hamiltonintegrale der Spin-Tableaus zu den Überlappungsintegralen und werden hier nicht erneut aufgeführt. (s. Kapitel 4.2) 
+
+%
+\newpage%
+\tableofcontents%
+\thispagestyle{fancy}%
+\end{document}
