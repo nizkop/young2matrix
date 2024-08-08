@@ -20,7 +20,7 @@ def format_layout_part(layout_part: Union[QPushButton, QLabel, QMessageBox, QSta
     try:
         color = ColorStyles[settings['color']]
     except:
-        color = ColorStyles["DEFAULT"]
+        color = ColorStyles["PLAIN"]
 
     if isinstance(layout_part, QScrollArea):
         layout_part.verticalScrollBar().setStyleSheet(get_scrollbar_colors(Directions.v))

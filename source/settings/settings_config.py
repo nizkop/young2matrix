@@ -12,8 +12,7 @@ def load_config() -> None:
         with open(FILE_PATH_CONFIG_FILE, 'r') as file:
             config = json.load(file)
     except FileNotFoundError:#default
-        config = {"language": "en", "color": "DEFAULT"}#<- changeable in UI
-                  # "font-size": 15, "button-font-size": 20, "margin-top-y": 10, "button-size": 50, "geometry": [100, 100, 800, 600]}
+        config = {"language": "en", "color": "PLAIN"}#<- changeable in UI
     return config
 
 def update_settings(new_input:str, key:str) -> None:

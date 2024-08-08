@@ -6,16 +6,16 @@ class ColorStyles(Enum):
     different choices of color schemes for the display of the GUI
     ! sorely UI relevant class
     """
-    DEFAULT = {"name": "default",
+    MINT = {"name": "mint",
                "text": "black",
                "status_text": "white",
-               "background": "rgb(182, 255, 145)",#B6FF91
-               "status_background": "rgb(50, 120, 50)",#327832
-               "button-background": "rgb(152, 225, 115)",#98E173
+               "background": "rgb(182, 255, 145)",  #B6FF91
+               "status_background": "rgb(50, 120, 50)",  #327832
+               "button-background": "rgb(152, 225, 115)",  #98E173
                "button-border": "rgb(30, 70, 30)",
                "deactivated-button": "#6fa287",
-               "disabled-text": "rgb(169, 169, 169)"#a9a9a9
-               }
+               "disabled-text": "rgb(169, 169, 169)"  #a9a9a9
+            }
     DARKMODE = {"name": "darkmode",
                 "text": "rgb(208, 225, 249)",#D0E1F9
                 "status_text": "black",
